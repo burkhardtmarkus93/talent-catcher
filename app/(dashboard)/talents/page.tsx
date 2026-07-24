@@ -34,7 +34,7 @@ export default async function TalentsPage() {
       ) : (
         <TalentTable
   talents={talents}
-  currentUserHasYouthAccess={appUser?.has_youth_access ?? false}
+  currentUserHasYouthAccess={appUser?.hasYouthAccess ?? false}
 />
       )}
     </div>
