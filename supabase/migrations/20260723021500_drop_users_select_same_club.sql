@@ -1,0 +1,1 @@
+drop policy if exists "users_select_same_club" on public.users;
