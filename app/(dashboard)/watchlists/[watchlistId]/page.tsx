@@ -27,7 +27,7 @@ export default function WatchlistDetailPage({
         subtitle={watchlist.description ?? undefined}
         action={<Button variant="secondary">+ Talent hinzufügen</Button>}
       />
-      <TalentTable talents={talents} />
+      <TalentTable talents={talents} currentUserHasYouthAccess={false} />
     </div>
   );
 }
