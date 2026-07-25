@@ -1,0 +1,45 @@
+name: "Bugfix"
+description: "Einen Fehler in Talent Catcher melden"
+title: "[Bug] "
+labels: ["type:bugfix", "needs-triage"]
+body:
+  - type: textarea
+    id: expected
+    attributes:
+      label: Erwartetes Verhalten
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Tatsächliches Verhalten
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Schritte zum Reproduzieren
+      description: Am besten nummeriert, inkl. betroffener Rolle/Login
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Schweregrad
+      options:
+        - Kritisch (Datenzugriff/Sicherheit betroffen)
+        - Hoch (Kernfunktion blockiert)
+        - Mittel
+        - Niedrig / kosmetisch
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: security-flag
+    attributes:
+      label: Sicherheitsrelevanz
+      options:
+        - label: Möglicherweise sieht eine Rolle Daten, die sie laut RLS/club_id nicht sehen sollte
