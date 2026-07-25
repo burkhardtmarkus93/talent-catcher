@@ -1,0 +1,57 @@
+name: "Feature"
+description: "Neue Funktionalität für Talent Catcher planen"
+title: "[Feature] "
+labels: ["type:feature", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Bitte so präzise ausfüllen, dass daraus direkt ein Prompt für Claude abgeleitet werden kann.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / Ziel
+      description: Was soll erreicht werden und warum?
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Umfang
+      description: Was gehört dazu, was ausdrücklich nicht?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: role-impact
+    attributes:
+      label: Betroffene Rolle(n)
+      multiple: true
+      options:
+        - Verein
+        - Trainer
+        - Eltern
+        - Verband
+        - NLZ
+        - Alle / noch keine Rollentrennung betroffen
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: data-sensitivity
+    attributes:
+      label: Datensensibilität (bitte ehrlich ankreuzen)
+      options:
+        - label: Diese Funktion betrifft Daten von Minderjährigen
+        - label: Diese Funktion erfordert neue oder geänderte RLS-Policies
+        - label: Diese Funktion berührt Vermittlung/Matching zwischen Personen (Phase-2-Thema, siehe CLAUDE.md)
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Akzeptanzkriterien
+      description: Woran erkennt man, dass die Aufgabe fertig ist?
+    validations:
+      required: true
