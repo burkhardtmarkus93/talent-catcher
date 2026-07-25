@@ -1,0 +1,21 @@
+name: "PR-Review anfordern"
+description: "Einen bestehenden Pull Request zur strukturierten Prüfung markieren"
+title: "[Review] "
+labels: ["type:review-only"]
+body:
+  - type: input
+    id: pr-link
+    attributes:
+      label: Link zum Pull Request
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: review-focus
+    attributes:
+      label: Worauf soll der Review besonders achten?
+      options:
+        - label: RLS-/club_id-Mandantentrennung
+        - label: Zugriff auf Minderjährigen-Daten
+        - label: Sicherheitsaspekte allgemein (Secrets, Validierung)
+        - label: Code-Konsistenz mit bestehenden Konventionen
