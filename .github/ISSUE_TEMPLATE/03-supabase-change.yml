@@ -1,0 +1,36 @@
+name: "Supabase-Änderung"
+description: "Schema-, RLS- oder Migrationsänderung an der Supabase-Datenbank"
+title: "[Supabase] "
+labels: ["type:supabase", "sensitive:review-required"]
+body:
+  - type: textarea
+    id: current
+    attributes:
+      label: Aktuelles Schema (relevanter Ausschnitt)
+      description: Betroffene Tabelle(n)/Spalten/bestehende Policies
+    validations:
+      required: true
+
+  - type: textarea
+    id: desired
+    attributes:
+      label: Gewünschte Änderung
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: rls-check
+    attributes:
+      label: RLS-Checkliste
+      options:
+        - label: Neue/geänderte Tabelle hat Personenbezug
+        - label: club_id-Mandantentrennung ist für diese Tabelle relevant
+        - label: Minderjährigen-Daten sind betroffen (Jugendschutz-Sperre beachten)
+
+  - type: textarea
+    id: rollback
+    attributes:
+      label: Rollback-Idee
+      description: Wie macht man die Migration im Zweifel rückgängig?
+    validations:
+      required: false
