@@ -6,7 +6,7 @@ Jugendschutz. Watchlists, Import, Admin-Bereich und Uploads bleiben
 bewusst unangetastet (Dummy-Daten bzw. nicht gebaut) — nicht Teil
 dieser Runde.
 
-## Lokal starten !!!
+## Lokal starten !
 
 ```bash
 npm install
