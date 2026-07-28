@@ -64,25 +64,29 @@ export async function createTalent(
 
   const supabase = await createClient();
 
-  const { data: inserted, error: insertError } = await supabase
-    .from("talents")
-    .insert({
-      club_id: appUser.clubId,
-      created_by: appUser.id,
-      first_name: firstName,
-      last_name: lastName,
-      birth_date: birthDate,
-      primary_position: primaryPosition,
-      secondary_position: secondaryPosition,
-      club_name_text: clubNameText,
-      team_name_text: teamNameText,
-      league_text: leagueText,
-      country_text: countryText,
-      contract_status: contractStatus,
-      contract_end_date: contractEndDate,
-    })
-    .select("id, is_minor")
-    .single();
+    const { error: insertError } = await supabase.from("talents").insert({
+    club_id: appUser.clubId,
+    created_by: appUser.id,
+    first_name: firstName,
+    last_name: lastName,
+    birth_date: birthDate,
+    primary_position: primaryPosition,
+    secondary_position: secondaryPosition,
+    club_name_text: clubNameText,
+    team_name_text: teamNameText,
+    league_text: leagueText,
+    country_text: countryText,
+    contract_status: contractStatus,
+    contract_end_date: contractEndDate,
+  });
+
+  if (insertError) {
+    console.error("createTalent() fehlgeschlagen:", insertError.message);
+    return { success: false, error: "Talent konnte nicht gespeichert werden." };
+  }
+
+  revalidatePath("/talents");
+  redirect("/talents");
 
   if (insertError || !inserted) {
     console.error("createTalent() fehlgeschlagen:", insertError?.message);
