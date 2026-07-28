@@ -31,7 +31,6 @@ export async function createTalent(
   const contractStatus = String(formData.get("contractStatus") ?? "unbekannt");
   const contractEndDate = String(formData.get("contractEndDate") ?? "").trim() || null;
 
-  // --- Pflichtfelder ---
   if (!firstName || !lastName || !birthDate || !primaryPosition) {
     return {
       success: false,
@@ -47,13 +46,21 @@ export async function createTalent(
   const isMinor = calculateAge(birthDate) < 18;
 
   const appUser = await getCurrentAppUser();
-  if (!appUser || !appUser.clubId) {
-    return { success: false, error: "Sitzung abgelaufen. Bitte erneut anmelden." };
+
+  if (!appUser) {
+    return {
+      success: false,
+      error: "Benutzerprofil nicht gefunden. Bitte erneut anmelden.",
+    };
   }
 
-  // Serverseitige Blockierung ohne has_youth_access — zusätzlich zur
-  // RLS-Policy in policies.sql (Defense-in-Depth), aber mit sachlicher
-  // Fehlermeldung statt eines rohen Datenbank-/Policy-Fehlers.
+  if (!appUser.clubId) {
+    return {
+      success: false,
+      error: "Deinem Benutzer ist kein Verein zugeordnet. Talentanlage ist erst nach Vereinszuordnung möglich.",
+    };
+  }
+
   if (isMinor && !appUser.hasYouthAccess) {
     return {
       success: false,
@@ -64,50 +71,27 @@ export async function createTalent(
 
   const supabase = await createClient();
 
-  const { data: inserted, error: insertError } = await supabase
-    .from("talents")
-    .insert({
-      club_id: appUser.clubId,
-      created_by: appUser.id,
-      first_name: firstName,
-      last_name: lastName,
-      birth_date: birthDate,
-      primary_position: primaryPosition,
-      secondary_position: secondaryPosition,
-      club_name_text: clubNameText,
-      team_name_text: teamNameText,
-      league_text: leagueText,
-      country_text: countryText,
-      contract_status: contractStatus,
-      contract_end_date: contractEndDate,
-    })
-    .select("id, is_minor")
-    .single();
+  const { error: insertError } = await supabase.from("talents").insert({
+    club_id: appUser.clubId,
+    created_by: appUser.id,
+    first_name: firstName,
+    last_name: lastName,
+    birth_date: birthDate,
+    primary_position: primaryPosition,
+    secondary_position: secondaryPosition,
+    club_name_text: clubNameText,
+    team_name_text: teamNameText,
+    league_text: leagueText,
+    country_text: countryText,
+    contract_status: contractStatus,
+    contract_end_date: contractEndDate,
+  });
 
-  if (insertError || !inserted) {
-    console.error("createTalent() fehlgeschlagen:", insertError?.message);
+  if (insertError) {
+    console.error("createTalent() fehlgeschlagen:", insertError.message);
     return { success: false, error: "Talent konnte nicht gespeichert werden." };
   }
 
-  // Consent-Platzhalter bei Minderjährigen — is_minor kommt hier bewusst
-  // aus der DB-Antwort (vom Trigger berechnet), nicht aus unserer
-  // eigenen JS-Berechnung oben, damit die DB die einzige Quelle bleibt.
-  if (inserted.is_minor) {
-    const { error: consentError } = await supabase.from("consent_records").insert({
-      talent_id: inserted.id,
-      scope: "profil_sichtbarkeit",
-      status: "angefragt",
-      requested_at: new Date().toISOString(),
-      recorded_by: appUser.id,
-    });
-
-    if (consentError) {
-      console.error("createTalent(): Consent-Platzhalter fehlgeschlagen:", consentError.message);
-      // Kein harter Fehler für den Nutzer — Talent ist bereits gespeichert,
-      // der fehlende Consent-Platzhalter ist im Admin-Bereich nachholbar.
-    }
-  }
-
   revalidatePath("/talents");
-  redirect(`/talents/${inserted.id}`);
+  redirect("/talents");
 }
