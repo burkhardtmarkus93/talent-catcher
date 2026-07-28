@@ -33,6 +33,19 @@ export async function createScoutReport(
   const scoreAthletik = Number(formData.get("scoreAthletik"));
   const scoreMentalitaet = Number(formData.get("scoreMentalitaet"));
 
+  const tinderTrainingssensitivitaet = Number(
+    formData.get("tinderTrainingssensitivitaet")
+  );
+  const tinderIntelligenz = Number(formData.get("tinderIntelligenz"));
+  const tinderNaturell = Number(formData.get("tinderNaturell"));
+  const tinderDynamik = Number(formData.get("tinderDynamik"));
+  const tinderErfolgsmotivation = Number(
+    formData.get("tinderErfolgsmotivation")
+  );
+  const tinderResilienz = Number(formData.get("tinderResilienz"));
+  const potenzial = Number(formData.get("potenzial"));
+  const reifegrad = Number(formData.get("reifegrad"));
+
   const overrideActive = formData.get("overrideActive") === "true";
   const overrideValueRaw = formData.get("overrideValue");
   const overrideReason = String(formData.get("overrideReason") ?? "").trim();
@@ -48,6 +61,36 @@ export async function createScoutReport(
     return {
       success: false,
       error: "Alle vier Bewertungskriterien müssen zwischen 1 und 5 liegen.",
+    };
+  }
+
+  const tinderScores = [
+    tinderTrainingssensitivitaet,
+    tinderIntelligenz,
+    tinderNaturell,
+    tinderDynamik,
+    tinderErfolgsmotivation,
+    tinderResilienz,
+  ];
+
+  if (tinderScores.some((s) => !Number.isInteger(s) || s < 1 || s > 4)) {
+    return {
+      success: false,
+      error: "Alle TINDER-Kriterien müssen zwischen 1 und 4 liegen.",
+    };
+  }
+
+  if (!Number.isInteger(potenzial) || potenzial < 1 || potenzial > 4) {
+    return {
+      success: false,
+      error: "Potenzial muss zwischen 1 und 4 liegen.",
+    };
+  }
+
+  if (!Number.isInteger(reifegrad) || reifegrad < -2 || reifegrad > 2) {
+    return {
+      success: false,
+      error: "Reifegrad muss zwischen -2 und +2 liegen.",
     };
   }
 
@@ -84,6 +127,14 @@ export async function createScoutReport(
     score_taktik: scoreTaktik,
     score_athletik: scoreAthletik,
     score_mentalitaet: scoreMentalitaet,
+    tinder_trainingssensitivitaet: tinderTrainingssensitivitaet,
+    tinder_intelligenz: tinderIntelligenz,
+    tinder_naturell: tinderNaturell,
+    tinder_dynamik: tinderDynamik,
+    tinder_erfolgsmotivation: tinderErfolgsmotivation,
+    tinder_resilienz: tinderResilienz,
+    potenzial,
+    reifegrad,
     comment,
     overall_rating_source: overrideActive ? "manual_override" : "calculated",
   };
