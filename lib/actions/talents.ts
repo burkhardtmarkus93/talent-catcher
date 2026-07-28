@@ -88,8 +88,17 @@ export async function createTalent(
   });
 
   if (insertError) {
-    console.error("createTalent() fehlgeschlagen:", insertError.message);
-    return { success: false, error: "Talent konnte nicht gespeichert werden." };
+    console.error("createTalent() vollständiger Fehler:", {
+      message: insertError.message,
+      code: insertError.code,
+      details: insertError.details,
+      hint: insertError.hint,
+    });
+
+    return {
+      success: false,
+      error: `Talent konnte nicht gespeichert werden. ${insertError.message}`,
+    };
   }
 
   revalidatePath("/talents");
