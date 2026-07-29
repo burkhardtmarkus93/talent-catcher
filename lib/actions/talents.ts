@@ -40,7 +40,10 @@ export async function createTalent(
 
   const birthDateObj = new Date(birthDate);
   if (Number.isNaN(birthDateObj.getTime()) || birthDateObj.getTime() > Date.now()) {
-    return { success: false, error: "Das Geburtsdatum ist ungültig oder liegt in der Zukunft." };
+    return {
+      success: false,
+      error: "Das Geburtsdatum ist ungültig oder liegt in der Zukunft.",
+    };
   }
 
   const isMinor = calculateAge(birthDate) < 18;
@@ -71,36 +74,61 @@ export async function createTalent(
 
   const supabase = await createClient();
 
-  const { error: insertError } = await supabase.from("talents").insert({
-    club_id: appUser.clubId,
-    created_by: appUser.id,
-    first_name: firstName,
-    last_name: lastName,
-    birth_date: birthDate,
-    primary_position: primaryPosition,
-    secondary_position: secondaryPosition,
-    club_name_text: clubNameText,
-    team_name_text: teamNameText,
-    league_text: leagueText,
-    country_text: countryText,
-    contract_status: contractStatus,
-    contract_end_date: contractEndDate,
-  });
+  const { data: inserted, error: insertError } = await supabase
+    .from("talents")
+    .insert({
+      club_id: appUser.clubId,
+      created_by: appUser.id,
+      first_name: firstName,
+      last_name: lastName,
+      birth_date: birthDate,
+      primary_position: primaryPosition,
+      secondary_position: secondaryPosition,
+      club_name_text: clubNameText,
+      team_name_text: teamNameText,
+      league_text: leagueText,
+      country_text: countryText,
+      contract_status: contractStatus,
+      contract_end_date: contractEndDate,
+    })
+    .select("id, is_minor")
+    .single();
 
-  if (insertError) {
+  if (insertError || !inserted) {
     console.error("createTalent() vollständiger Fehler:", {
-      message: insertError.message,
-      code: insertError.code,
-      details: insertError.details,
-      hint: insertError.hint,
+      message: insertError?.message,
+      code: insertError?.code,
+      details: insertError?.details,
+      hint: insertError?.hint,
     });
 
     return {
       success: false,
-      error: `Talent konnte nicht gespeichert werden. ${insertError.message}`,
+      error: insertError?.message
+        ? `Talent konnte nicht gespeichert werden. ${insertError.message}`
+        : "Talent konnte nicht gespeichert werden.",
     };
   }
 
+  if (inserted.is_minor) {
+    const { error: consentError } = await supabase.from("consent_records").insert({
+      talent_id: inserted.id,
+      scope: "profil_sichtbarkeit",
+      status: "angefragt",
+      requested_at: new Date().toISOString(),
+      recorded_by: appUser.id,
+    });
+
+    if (consentError) {
+      console.error("createTalent(): Consent-Platzhalter fehlgeschlagen:", {
+        message: consentError.message,
+        code: consentError.code,
+        details: consentError.details,
+        hint: consentError.hint,
+      });
+    }
+  }
+
   revalidatePath("/talents");
-  redirect("/talents");
+  redirect(`/talents/${inserted.id}`);
 }
