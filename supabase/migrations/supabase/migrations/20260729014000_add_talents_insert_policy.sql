@@ -1,3 +1,8 @@
+-- add insert policy for public.talents so authenticated users can create
+-- talents only for their own club and only as themselves
+
+drop policy if exists "talents_insert_same_club" on public.talents;
+
 create policy "talents_insert_same_club"
 on public.talents
 for insert
