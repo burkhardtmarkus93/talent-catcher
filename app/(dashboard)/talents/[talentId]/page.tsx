@@ -1,3 +1,4 @@
+import { archiveTalent } from "@/lib/actions/talents";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/Button";
@@ -22,6 +23,8 @@ export default async function TalentDetailPage({
 }) {
   const talent = await getTalentById(params.talentId);
   if (!talent) notFound();
+
+  const archiveTalentAction = archiveTalent.bind(null, talent.id);
 
   const fullName = `${talent.firstName} ${talent.lastName}`;
   const [reports, openReminders] = await Promise.all([
@@ -145,6 +148,15 @@ export default async function TalentDetailPage({
             <Link href={`/talents/${talent.id}/reports/new`}>
               <Button className="w-full">+ Neuer Bericht</Button>
             </Link>
+
+            <form action={archiveTalentAction}>
+              <button
+                type="submit"
+                className="w-full rounded-md border border-amber-500 bg-amber-50 px-4 py-2 text-sm font-medium text-amber-700 hover:bg-amber-100"
+              >
+                Talent archivieren
+              </button>
+            </form>
           </div>
 
           <ReminderForm talentId={talent.id} />
