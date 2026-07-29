@@ -190,9 +190,10 @@ export function ScoutReportForm({
         <div className="mb-3">
           <p className="text-sm font-semibold text-ink">TINDER-Kriterien</p>
           <p className="text-xs text-muted">
-            Zusätzliche Einschätzungsskalen von 1 bis 4. Sie beeinflussen das Gesamtrating
-            nicht direkt, sondern liefern Kontext für spätere Auswertungen und die Risk-Engine.
-          </p>
+  Zusätzliche Einschätzungsskalen von 1 bis 4: 1 = kaum ausgeprägt, 4 = stark ausgeprägt.
+  Sie beeinflussen das Gesamtrating nicht direkt, sondern liefern Kontext für spätere Auswertungen
+  und die Risk-Engine.
+</p>
         </div>
 
         <div className="flex flex-col gap-4">
