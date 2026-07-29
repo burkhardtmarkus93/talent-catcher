@@ -132,3 +132,50 @@ export async function createTalent(
   revalidatePath("/talents");
   redirect(`/talents/${inserted.id}`);
 }
+
+export async function archiveTalent(
+  talentId: string
+): Promise<{ success: boolean; error?: string }> {
+  const appUser = await getCurrentAppUser();
+
+  if (!appUser) {
+    return {
+      success: false,
+      error: "Benutzerprofil nicht gefunden. Bitte erneut anmelden.",
+    };
+  }
+
+  if (!appUser.clubId) {
+    return {
+      success: false,
+      error: "Deinem Benutzer ist kein Verein zugeordnet.",
+    };
+  }
+
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("talents")
+    .update({
+      archived_at: new Date().toISOString(),
+    })
+    .eq("id", talentId);
+
+  if (error) {
+    console.error("archiveTalent() fehlgeschlagen:", {
+      message: error.message,
+      code: error.code,
+      details: error.details,
+      hint: error.hint,
+    });
+
+    return {
+      success: false,
+      error: "Talent konnte nicht archiviert werden. Bitte erneut versuchen.",
+    };
+  }
+
+  revalidatePath("/talents");
+  revalidatePath(`/talents/${talentId}`);
+  redirect("/talents");
+}
