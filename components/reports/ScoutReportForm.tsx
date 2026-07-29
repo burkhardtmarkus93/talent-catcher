@@ -155,7 +155,11 @@ export function ScoutReportForm({
           />
         </label>
       </div>
-
+<div className="mb-2">
+  <p className="text-xs text-muted">
+    Hauptbewertungsskala 1–5: 1 = sehr schwach, 5 = sehr stark.
+  </p>
+</div>
       <div className="mb-6 flex flex-col gap-4">
         {(Object.keys(criteriaLabels) as Criterion[]).map((criterion) => (
           <div key={criterion} className="flex items-center justify-between">
