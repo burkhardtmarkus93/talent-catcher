@@ -41,9 +41,6 @@ function mapTalent(row: any): Talent {
     isMinor: row.is_minor,
     visibilityStatus: row.visibility_status,
     currentAlert: currentAlertRow ? mapAlert(currentAlertRow) : undefined,
-    // "letzter Bericht" wird separat pro Detailseite geladen (siehe
-    // getScoutReportsForTalent); für die Liste reicht der Alert-Zeitpunkt
-    // als grobe Näherung nicht aus, daher hier bewusst nicht befüllt.
     lastReportDate: null,
   };
 }
@@ -83,6 +80,7 @@ export async function getTalents(): Promise<Talent[]> {
   const { data, error } = await supabase
     .from("talents")
     .select("*, alerts(*)")
+    .is("archived_at", null)
     .order("last_name", { ascending: true });
 
   if (error) {
@@ -141,7 +139,10 @@ export async function getOpenRemindersForClub(): Promise<Reminder[]> {
   }
 
   return (data ?? []).map((row: any) =>
-    mapReminder(row, row.talents ? `${row.talents.first_name} ${row.talents.last_name}` : "Unbekannt")
+    mapReminder(
+      row,
+      row.talents ? `${row.talents.first_name} ${row.talents.last_name}` : "Unbekannt"
+    )
   );
 }
 
