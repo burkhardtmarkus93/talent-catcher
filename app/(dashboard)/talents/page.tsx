@@ -1,13 +1,19 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
+import { PageHeader } from "@/components/ui/PageHeader";
 
 export default function TalentsPage() {
   return (
     <div>
-      <h1>Talente</h1>
-      <Link href="/talents/new">
-        <Button>+ Neues Talent</Button>
-      </Link>
+      <PageHeader
+        title="Talente"
+        actions={
+          <Link href="/talents/new">
+            <Button>+ Neues Talent</Button>
+          </Link>
+        }
+      />
+      <p>Minimaltest</p>
     </div>
   );
 }
