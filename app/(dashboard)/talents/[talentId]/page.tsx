@@ -1,3 +1,4 @@
+import { archiveTalent } from "@/lib/actions/talents";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/Button";
@@ -35,7 +36,6 @@ export default async function TalentDetailPage({
         ← Zurück zur Talentliste
       </Link>
 
-      {/* Kopfbereich — schmaler Farbstreifen statt großflächiger Ampel-Karte */}
       <div className="mt-4 flex items-stretch overflow-hidden rounded-md border border-line bg-surface">
         <div
           className={`w-1.5 shrink-0 ${
@@ -145,6 +145,16 @@ export default async function TalentDetailPage({
             <Link href={`/talents/${talent.id}/reports/new`}>
               <Button className="w-full">+ Neuer Bericht</Button>
             </Link>
+
+            <form action={archiveTalent}>
+              <input type="hidden" name="talentId" value={talent.id} />
+              <button
+                type="submit"
+                className="w-full rounded-md border border-amber-500 bg-amber-50 px-4 py-2 text-sm font-medium text-amber-700 hover:bg-amber-100"
+              >
+                Talent archivieren
+              </button>
+            </form>
           </div>
 
           <ReminderForm talentId={talent.id} />
