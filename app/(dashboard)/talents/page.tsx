@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { getTalents } from "@/lib/queries/talents";
 
-export default function TalentsPage() {
+export default async function TalentsPage() {
+  const talents = await getTalents();
+
   return (
     <div>
       <PageHeader
@@ -13,7 +16,7 @@ export default function TalentsPage() {
           </Link>
         }
       />
-      <p>Minimaltest</p>
+      <p>Talente geladen: {talents.length}</p>
     </div>
   );
 }
