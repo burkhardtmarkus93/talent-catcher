@@ -10,10 +10,8 @@ import { getTalents } from "@/lib/queries/talents";
 // die tatsächliche Filterung über `searchParams` ist nicht Teil dieser
 // Runde und bleibt bewusst unverändert, um keinen Scope aufzumachen.
 export default async function TalentsPage() {
-  const [talents, appUser] = await Promise.all([
-    getTalents(),
-    getCurrentAppUser(),
-  ]);
+  const talents = await getTalents();
+  const appUser = await getCurrentAppUser();
 
   return (
     <div>
