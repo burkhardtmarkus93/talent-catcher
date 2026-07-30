@@ -17,6 +17,7 @@ export default async function TalentsPage() {
         }
       />
       <p>Talente geladen: {talents.length}</p>
+      <pre>{JSON.stringify(talents[0] ?? null, null, 2)}</pre>
     </div>
   );
 }
