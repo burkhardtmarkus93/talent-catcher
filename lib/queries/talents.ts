@@ -21,25 +21,25 @@ function mapAlert(row: any): Alert {
 
 function mapTalent(row: any): Talent {
   const currentAlertRow = Array.isArray(row.alerts)
-    ? row.alerts.find((a: any) => a.is_current)
+    ? row.alerts.find((a: any) => a?.is_current)
     : undefined;
 
   return {
-    id: row.id,
-    firstName: row.first_name,
-    lastName: row.last_name,
-    birthDate: row.birth_date,
-    primaryPosition: row.primary_position,
-    secondaryPosition: row.secondary_position,
-    clubNameText: row.club_name_text,
-    teamNameText: row.team_name_text,
-    leagueText: row.league_text,
-    countryText: row.country_text,
-    contractStatus: row.contract_status,
-    contractEndDate: row.contract_end_date,
-    status: row.status,
-    isMinor: row.is_minor,
-    visibilityStatus: row.visibility_status,
+    id: String(row.id),
+    firstName: String(row.first_name ?? ""),
+    lastName: String(row.last_name ?? ""),
+    birthDate: String(row.birth_date ?? ""),
+    primaryPosition: String(row.primary_position ?? ""),
+    secondaryPosition: row.secondary_position ?? null,
+    clubNameText: row.club_name_text ?? null,
+    teamNameText: row.team_name_text ?? null,
+    leagueText: row.league_text ?? null,
+    countryText: row.country_text ?? null,
+    contractStatus: row.contract_status ?? "unbekannt",
+    contractEndDate: row.contract_end_date ?? null,
+    status: row.status ?? "in_beobachtung",
+    isMinor: Boolean(row.is_minor),
+    visibilityStatus: row.visibility_status ?? "freigegeben",
     currentAlert: currentAlertRow ? mapAlert(currentAlertRow) : undefined,
     lastReportDate: null,
   };
