@@ -9,13 +9,15 @@ import type { Talent, Alert, ScoutReport, Reminder } from "@/lib/types";
 
 function mapAlert(row: any): Alert {
   return {
-    id: row.id,
-    talentId: row.talent_id,
-    riskLevel: row.risk_level,
-    riskScore: Number(row.risk_score),
-    triggeredReasons: row.triggered_reasons ?? [],
-    isHiddenGem: row.is_hidden_gem,
-    calculatedAt: row.calculated_at,
+    id: String(row.id),
+    talentId: String(row.talent_id),
+    riskLevel: row.risk_level ?? "gruen",
+    riskScore: Number(row.risk_score ?? 0),
+    triggeredReasons: Array.isArray(row.triggered_reasons)
+      ? row.triggered_reasons
+      : [],
+    isHiddenGem: Boolean(row.is_hidden_gem),
+    calculatedAt: row.calculated_at ?? null,
   };
 }
 
@@ -84,7 +86,12 @@ export async function getTalents(): Promise<Talent[]> {
     .order("last_name", { ascending: true });
 
   if (error) {
-    console.error("getTalents() fehlgeschlagen:", error.message);
+    console.error("getTalents() fehlgeschlagen:", {
+      message: error.message,
+      code: error.code,
+      details: error.details,
+      hint: error.hint,
+    });
     throw new Error("Talente konnten nicht geladen werden.");
   }
 
@@ -100,7 +107,12 @@ export async function getTalentById(id: string): Promise<Talent | null> {
     .maybeSingle();
 
   if (error) {
-    console.error("getTalentById() fehlgeschlagen:", error.message);
+    console.error("getTalentById() fehlgeschlagen:", {
+      message: error.message,
+      code: error.code,
+      details: error.details,
+      hint: error.hint,
+    });
     throw new Error("Talent konnte nicht geladen werden.");
   }
 
@@ -118,7 +130,12 @@ export async function getScoutReportsForTalent(
     .order("created_at", { ascending: false });
 
   if (error) {
-    console.error("getScoutReportsForTalent() fehlgeschlagen:", error.message);
+    console.error("getScoutReportsForTalent() fehlgeschlagen:", {
+      message: error.message,
+      code: error.code,
+      details: error.details,
+      hint: error.hint,
+    });
     throw new Error("Berichte konnten nicht geladen werden.");
   }
 
@@ -134,7 +151,12 @@ export async function getOpenRemindersForClub(): Promise<Reminder[]> {
     .order("due_date", { ascending: true });
 
   if (error) {
-    console.error("getOpenRemindersForClub() fehlgeschlagen:", error.message);
+    console.error("getOpenRemindersForClub() fehlgeschlagen:", {
+      message: error.message,
+      code: error.code,
+      details: error.details,
+      hint: error.hint,
+    });
     throw new Error("Wiedervorlagen konnten nicht geladen werden.");
   }
 
@@ -159,7 +181,12 @@ export async function getOpenRemindersForTalent(
     .order("due_date", { ascending: true });
 
   if (error) {
-    console.error("getOpenRemindersForTalent() fehlgeschlagen:", error.message);
+    console.error("getOpenRemindersForTalent() fehlgeschlagen:", {
+      message: error.message,
+      code: error.code,
+      details: error.details,
+      hint: error.hint,
+    });
     throw new Error("Wiedervorlagen konnten nicht geladen werden.");
   }
 
