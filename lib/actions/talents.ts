@@ -133,23 +133,21 @@ export async function createTalent(
   redirect(`/talents/${inserted.id}`);
 }
 
-export async function archiveTalent(
-  talentId: string
-): Promise<{ success: boolean; error?: string }> {
+export async function archiveTalent(formData: FormData): Promise<void> {
+  const talentId = String(formData.get("talentId") ?? "");
+
+  if (!talentId) {
+    throw new Error("Talent-ID fehlt.");
+  }
+
   const appUser = await getCurrentAppUser();
 
   if (!appUser) {
-    return {
-      success: false,
-      error: "Benutzerprofil nicht gefunden. Bitte erneut anmelden.",
-    };
+    throw new Error("Benutzerprofil nicht gefunden. Bitte erneut anmelden.");
   }
 
   if (!appUser.clubId) {
-    return {
-      success: false,
-      error: "Deinem Benutzer ist kein Verein zugeordnet.",
-    };
+    throw new Error("Deinem Benutzer ist kein Verein zugeordnet.");
   }
 
   const supabase = await createClient();
@@ -169,10 +167,7 @@ export async function archiveTalent(
       hint: error.hint,
     });
 
-    return {
-      success: false,
-      error: "Talent konnte nicht archiviert werden. Bitte erneut versuchen.",
-    };
+    throw new Error("Talent konnte nicht archiviert werden.");
   }
 
   revalidatePath("/talents");
