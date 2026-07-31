@@ -3,10 +3,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
-// Bewusst als Server Action direkt im <form action={...}> verdrahtet
-// (siehe app/(auth)/login/page.tsx) — kein Client-JS nötig für den
-// einfachsten Fall. Fehler werden über einen Query-Parameter an die
-// Login-Seite zurückgegeben, damit sie ohne JavaScript sichtbar sind.
 export async function signIn(formData: FormData) {
   const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
@@ -26,9 +22,12 @@ export async function signIn(formData: FormData) {
 }
 
 export async function signOut() {
-  const supabase = await createClient();
-  await supabase.auth.signOut();
-  redirect("/login");
+  try {
+    const supabase = await createClient();
+    await supabase.auth.signOut();
+  } finally {
+    redirect("/login");
+  }
 }
 
 export async function requestPasswordReset(formData: FormData) {
