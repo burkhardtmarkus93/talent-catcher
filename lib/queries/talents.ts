@@ -76,7 +76,6 @@ export async function getTalents(): Promise<Talent[]> {
   const { data, error } = await supabase
     .from("talents")
     .select("*")
-    .is("archived_at", null)
     .order("last_name", { ascending: true });
 
   if (error) {
