@@ -23,13 +23,15 @@ export async function createTalent(
   const lastName = String(formData.get("lastName") ?? "").trim();
   const birthDate = String(formData.get("birthDate") ?? "");
   const primaryPosition = String(formData.get("primaryPosition") ?? "").trim();
-  const secondaryPosition = String(formData.get("secondaryPosition") ?? "").trim() || null;
+  const secondaryPosition =
+    String(formData.get("secondaryPosition") ?? "").trim() || null;
   const clubNameText = String(formData.get("clubNameText") ?? "").trim() || null;
   const teamNameText = String(formData.get("teamNameText") ?? "").trim() || null;
   const leagueText = String(formData.get("leagueText") ?? "").trim() || null;
   const countryText = String(formData.get("countryText") ?? "").trim() || null;
   const contractStatus = String(formData.get("contractStatus") ?? "unbekannt");
-  const contractEndDate = String(formData.get("contractEndDate") ?? "").trim() || null;
+  const contractEndDate =
+    String(formData.get("contractEndDate") ?? "").trim() || null;
 
   if (!firstName || !lastName || !birthDate || !primaryPosition) {
     return {
@@ -60,7 +62,8 @@ export async function createTalent(
   if (!appUser.clubId) {
     return {
       success: false,
-      error: "Deinem Benutzer ist kein Verein zugeordnet. Talentanlage ist erst nach Vereinszuordnung möglich.",
+      error:
+        "Deinem Benutzer ist kein Verein zugeordnet. Talentanlage ist erst nach Vereinszuordnung möglich.",
     };
   }
 
@@ -151,6 +154,30 @@ export async function archiveTalent(formData: FormData): Promise<void> {
   }
 
   const supabase = await createClient();
+
+  const { data: talent, error: talentError } = await supabase
+    .from("talents")
+    .select("id, club_id")
+    .eq("id", talentId)
+    .maybeSingle();
+
+  if (talentError) {
+    console.error("archiveTalent(): Talent-Lookup fehlgeschlagen:", {
+      message: talentError.message,
+      code: talentError.code,
+      details: talentError.details,
+      hint: talentError.hint,
+    });
+    throw new Error("Talent konnte nicht geladen werden.");
+  }
+
+  if (!talent) {
+    throw new Error("Talent nicht gefunden.");
+  }
+
+  if (talent.club_id !== appUser.clubId) {
+    throw new Error("Du darfst dieses Talent nicht archivieren.");
+  }
 
   const { error } = await supabase
     .from("talents")
