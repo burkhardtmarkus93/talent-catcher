@@ -25,24 +25,27 @@ export type TalentStatus =
 
 export type ContractStatus = "aktiv" | "auslaufend" | "vereinslos" | "unbekannt";
 
+export type ReminderStatus = "offen" | "erledigt" | "ueberfaellig" | "storniert";
+
 export interface Talent {
   id: string;
   firstName: string;
   lastName: string;
-  birthDate: string; // ISO-Datum
+  birthDate: string;
   primaryPosition: string;
-  secondaryPosition?: string | null;
-  clubNameText: string;
-  teamNameText?: string | null;
-  leagueText?: string | null;
-  countryText?: string | null;
+  secondaryPosition: string | null;
+  clubNameText: string | null;
+  teamNameText: string | null;
+  leagueText: string | null;
+  countryText: string | null;
   contractStatus: ContractStatus;
-  contractEndDate?: string | null;
+  contractEndDate: string | null;
   status: TalentStatus;
   isMinor: boolean;
   visibilityStatus: "privat" | "freigegeben";
+  archived_at: string | null;
   currentAlert?: Alert;
-  lastReportDate?: string | null;
+  lastReportDate: string | null;
 }
 
 export interface Alert {
@@ -60,25 +63,23 @@ export interface ScoutReport {
   talentId: string;
   authorName: string;
   matchDate: string;
-  opponent?: string | null;
+  opponent: string | null;
   scoreTechnik: number;
   scoreTaktik: number;
   scoreAthletik: number;
   scoreMentalitaet: number;
   overallRating: number;
   overallRatingSource: "calculated" | "manual_override";
-  comment?: string | null;
+  comment: string | null;
   createdAt: string;
 }
-
-export type ReminderStatus = "offen" | "erledigt" | "ueberfaellig" | "storniert";
 
 export interface Reminder {
   id: string;
   talentId: string;
   talentName: string;
   dueDate: string;
-  reason?: string | null;
+  reason: string | null;
   status: ReminderStatus;
   isSystemGenerated: boolean;
 }
@@ -86,7 +87,7 @@ export interface Reminder {
 export interface Watchlist {
   id: string;
   name: string;
-  description?: string | null;
+  description: string | null;
   talentCount: number;
 }
 
