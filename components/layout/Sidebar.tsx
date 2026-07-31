@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { signOut } from "@/lib/actions/auth";
 import type { Role } from "@/lib/types";
 
 const navItems = [
@@ -52,11 +51,6 @@ export function Sidebar({ email, role }: { email: string; role: Role }) {
         <span className="font-medium text-ink">
           {roleLabels[role]} · {email}
         </span>
-        <form action={signOut} className="mt-2">
-          <button type="submit" className="text-xs text-muted underline-offset-2 hover:underline">
-            Abmelden
-          </button>
-        </form>
       </div>
     </aside>
   );
