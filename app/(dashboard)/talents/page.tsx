@@ -19,10 +19,7 @@ export default async function TalentsPage() {
         }
       />
       <FilterBar />
-      <TalentTable
-        talents={talents}
-        currentUserHasYouthAccess={false}
-      />
+      <TalentTable talents={talents} currentUserHasYouthAccess={false} />
     </div>
   );
 }
