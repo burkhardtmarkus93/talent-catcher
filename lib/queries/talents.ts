@@ -1,12 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import type { Talent, Alert, ScoutReport, Reminder } from "@/lib/types";
 
-// Diese Datei ersetzt lib/dummy-data.ts für Talentliste, Talentdetail
-// und die zugehörige Berichts-/Reminder-Anzeige. Die Mapping-Funktionen
-// übersetzen snake_case (Postgres) auf camelCase (Domain-Typen aus
-// lib/types.ts) — sobald `supabase gen types typescript` eingerichtet
-// ist, können die `any`-Zeilentypen unten dadurch ersetzt werden.
-
 function mapAlert(row: any): Alert {
   return {
     id: String(row.id),
@@ -95,7 +89,25 @@ export async function getTalents(): Promise<Talent[]> {
     throw new Error("Talente konnten nicht geladen werden.");
   }
 
-  return (data ?? []).map(mapTalent);
+  return (data ?? []).map((row: any) => ({
+    id: String(row.id),
+    firstName: String(row.first_name ?? ""),
+    lastName: String(row.last_name ?? ""),
+    birthDate: String(row.birth_date ?? ""),
+    primaryPosition: String(row.primary_position ?? ""),
+    secondaryPosition: row.secondary_position ?? null,
+    clubNameText: row.club_name_text ?? null,
+    teamNameText: row.team_name_text ?? null,
+    leagueText: row.league_text ?? null,
+    countryText: row.country_text ?? null,
+    contractStatus: row.contract_status ?? "unbekannt",
+    contractEndDate: row.contract_end_date ?? null,
+    status: row.status ?? "in_beobachtung",
+    isMinor: Boolean(row.is_minor),
+    visibilityStatus: row.visibility_status ?? "freigegeben",
+    currentAlert: undefined,
+    lastReportDate: null,
+  }));
 }
 
 export async function getTalentById(id: string): Promise<Talent | null> {
