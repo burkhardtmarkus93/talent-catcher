@@ -36,7 +36,8 @@ export async function createTalent(
   if (!firstName || !lastName || !birthDate || !primaryPosition) {
     return {
       success: false,
-      error: "Vorname, Nachname, Geburtsdatum und Hauptposition sind Pflichtfelder.",
+      error:
+        "Vorname, Nachname, Geburtsdatum und Hauptposition sind Pflichtfelder.",
     };
   }
 
@@ -179,10 +180,12 @@ export async function archiveTalent(formData: FormData): Promise<void> {
     throw new Error("Du darfst dieses Talent nicht archivieren.");
   }
 
+  const archivedAt = new Date().toISOString();
+
   const { error } = await supabase
     .from("talents")
     .update({
-      archived_at: new Date().toISOString(),
+      archived_at: archivedAt,
     })
     .eq("id", talentId);
 
@@ -193,8 +196,27 @@ export async function archiveTalent(formData: FormData): Promise<void> {
       details: error.details,
       hint: error.hint,
     });
-
     throw new Error("Talent konnte nicht archiviert werden.");
+  }
+
+  const { data: verify, error: verifyError } = await supabase
+    .from("talents")
+    .select("id, archived_at")
+    .eq("id", talentId)
+    .maybeSingle();
+
+  if (verifyError) {
+    console.error("archiveTalent(): Verifikation fehlgeschlagen:", {
+      message: verifyError.message,
+      code: verifyError.code,
+      details: verifyError.details,
+      hint: verifyError.hint,
+    });
+    throw new Error("Archivierung konnte nicht verifiziert werden.");
+  }
+
+  if (!verify || !verify.archived_at) {
+    throw new Error("Talent wurde nicht archiviert.");
   }
 
   revalidatePath("/talents");
