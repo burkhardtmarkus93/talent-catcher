@@ -19,6 +19,7 @@ export const dummyTalents: Talent[] = [
     lastName: "Keller",
     birthDate: "2009-03-14",
     primaryPosition: "IV",
+    secondaryPosition: null,
     clubNameText: "FC Beispiel",
     teamNameText: "U17",
     leagueText: "Regionalliga Süd",
@@ -49,6 +50,7 @@ export const dummyTalents: Talent[] = [
     lastName: "Aydin",
     birthDate: "2010-08-02",
     primaryPosition: "ST",
+    secondaryPosition: null,
     clubNameText: "SV Muster",
     teamNameText: "U16",
     leagueText: "Bezirksliga",
@@ -64,7 +66,10 @@ export const dummyTalents: Talent[] = [
       riskLevel: "rot",
       riskScore: 70,
       isHiddenGem: false,
-      triggeredReasons: ["Kein Bericht seit 40 Tagen (U16-Schwelle: 60 Tage überschritten in Kürze)", "Wiedervorlage überfällig"],
+      triggeredReasons: [
+        "Kein Bericht seit 40 Tagen (U16-Schwelle: 60 Tage überschritten in Kürze)",
+        "Wiedervorlage überfällig",
+      ],
       calculatedAt: "2026-07-20",
     },
   },
@@ -74,6 +79,7 @@ export const dummyTalents: Talent[] = [
     lastName: "Brandt",
     birthDate: "2007-11-23",
     primaryPosition: "TW",
+    secondaryPosition: null,
     clubNameText: "TSV Nordstadt",
     teamNameText: "U19",
     leagueText: "Landesliga",
@@ -100,10 +106,13 @@ export const dummyTalents: Talent[] = [
     lastName: "Weiss",
     birthDate: "2011-01-30",
     primaryPosition: "DM",
+    secondaryPosition: null,
     clubNameText: "FC Talberg",
     teamNameText: "U15",
+    leagueText: null,
     countryText: "Deutschland",
     contractStatus: "aktiv",
+    contractEndDate: null,
     status: "in_beobachtung",
     isMinor: true,
     visibilityStatus: "privat",
@@ -114,7 +123,9 @@ export const dummyTalents: Talent[] = [
       riskLevel: "gelb",
       riskScore: 35,
       isHiddenGem: false,
-      triggeredReasons: ["Aufwärtstrend über die letzten 3 Berichte erkannt (Late-Bloomer-Signal)"],
+      triggeredReasons: [
+        "Aufwärtstrend über die letzten 3 Berichte erkannt (Late-Bloomer-Signal)",
+      ],
       calculatedAt: "2026-07-20",
     },
   },
@@ -124,9 +135,13 @@ export const dummyTalents: Talent[] = [
     lastName: "Fischer",
     birthDate: "2008-05-19",
     primaryPosition: "RM",
+    secondaryPosition: null,
     clubNameText: "VfB Ostend",
     teamNameText: "U18",
+    leagueText: null,
+    countryText: "Deutschland",
     contractStatus: "aktiv",
+    contractEndDate: null,
     status: "empfehlung",
     isMinor: false,
     visibilityStatus: "freigegeben",
@@ -157,7 +172,8 @@ export const dummyReports: Record<string, ScoutReport[]> = {
       scoreMentalitaet: 4,
       overallRating: 4.3,
       overallRatingSource: "calculated",
-      comment: "Sehr ruhiger Spielaufbau, gewinnt die meisten Zweikämpfe antizipativ statt durch Zweikampfstärke.",
+      comment:
+        "Sehr ruhiger Spielaufbau, gewinnt die meisten Zweikämpfe antizipativ statt durch Zweikampfstärke.",
       createdAt: "2026-04-17",
     },
     {
@@ -172,7 +188,8 @@ export const dummyReports: Record<string, ScoutReport[]> = {
       scoreMentalitaet: 4,
       overallRating: 3.8,
       overallRatingSource: "calculated",
-      comment: "Solide Leistung, körperlich noch im Rückstand zu direkten Gegenspielern.",
+      comment:
+        "Solide Leistung, körperlich noch im Rückstand zu direkten Gegenspielern.",
       createdAt: "2026-02-02",
     },
   ],
@@ -209,14 +226,45 @@ export const dummyReminders: Reminder[] = [
 ];
 
 export const dummyWatchlists: Watchlist[] = [
-  { id: "w1", name: "U17-Kader Sommer-Turnier", description: "Kandidaten für das Einladungsturnier im August", talentCount: 8 },
-  { id: "w2", name: "Rückrunde-Fokus", description: null, talentCount: 5 },
-  { id: "w3", name: "Torhüter-Beobachtung 2026", description: "Gezielte TW-Sichtung über die Saison", talentCount: 3 },
+  {
+    id: "w1",
+    name: "U17-Kader Sommer-Turnier",
+    description: "Kandidaten für das Einladungsturnier im August",
+    talentCount: 8,
+  },
+  {
+    id: "w2",
+    name: "Rückrunde-Fokus",
+    description: null,
+    talentCount: 5,
+  },
+  {
+    id: "w3",
+    name: "Torhüter-Beobachtung 2026",
+    description: "Gezielte TW-Sichtung über die Saison",
+    talentCount: 3,
+  },
 ];
 
 export const dummyImportHistory: ImportJobPreview[] = [
-  { id: "i1", sourceFilename: "scouting_liste_2026_q2.xlsx", status: "teilweise_fehlgeschlagen", totalRows: 250, importedRows: 248, errorRows: 2, startedAt: "2026-07-12" },
-  { id: "i2", sourceFilename: "nachwuchs_uebersicht.csv", status: "abgeschlossen", totalRows: 112, importedRows: 112, errorRows: 0, startedAt: "2026-06-03" },
+  {
+    id: "i1",
+    sourceFilename: "scouting_liste_2026_q2.xlsx",
+    status: "teilweise_fehlgeschlagen",
+    totalRows: 250,
+    importedRows: 248,
+    errorRows: 2,
+    startedAt: "2026-07-12",
+  },
+  {
+    id: "i2",
+    sourceFilename: "nachwuchs_uebersicht.csv",
+    status: "abgeschlossen",
+    totalRows: 112,
+    importedRows: 112,
+    errorRows: 0,
+    startedAt: "2026-06-03",
+  },
 ];
 
 export function getTalentById(id: string): Talent | undefined {
