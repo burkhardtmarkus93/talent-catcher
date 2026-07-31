@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { Role } from "@/lib/types";
+import { signOut } from "@/lib/actions/auth";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard" },
@@ -28,6 +29,7 @@ export function Sidebar({ email, role }: { email: string; role: Role }) {
           Talent Catcher
         </span>
       </div>
+
       <nav className="flex flex-1 flex-col gap-0.5 p-3">
         {navItems.map((item) => {
           const active = pathname?.startsWith(item.href);
@@ -46,11 +48,23 @@ export function Sidebar({ email, role }: { email: string; role: Role }) {
           );
         })}
       </nav>
+
       <div className="border-t border-line px-5 py-4 text-xs text-muted">
-        Angemeldet als<br />
-        <span className="font-medium text-ink">
-          {roleLabels[role]} · {email}
-        </span>
+        <div>
+          Angemeldet als<br />
+          <span className="font-medium text-ink">
+            {roleLabels[role]} · {email}
+          </span>
+        </div>
+
+        <form action={signOut} className="mt-3">
+          <button
+            type="submit"
+            className="rounded-sm border border-line px-3 py-1.5 text-xs font-medium text-ink transition-colors hover:bg-pitch-dim"
+          >
+            Logout
+          </button>
+        </form>
       </div>
     </aside>
   );
