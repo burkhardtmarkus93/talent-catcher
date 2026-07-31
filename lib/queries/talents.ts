@@ -81,7 +81,7 @@ export async function getTalents(): Promise<Talent[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("talents")
-    .select("*, alerts(*)")
+    .select("*")
     .is("archived_at", null)
     .order("last_name", { ascending: true });
 
