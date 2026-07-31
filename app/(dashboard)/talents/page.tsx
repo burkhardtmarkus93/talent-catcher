@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { FilterBar } from "@/components/ui/FilterBar";
 import { getTalents } from "@/lib/queries/talents";
 
 export default async function TalentsPage() {
@@ -16,6 +17,7 @@ export default async function TalentsPage() {
           </Link>
         }
       />
+      <FilterBar />
       <p>Talente geladen: {talents.length}</p>
       <pre>{JSON.stringify(talents[0] ?? null, null, 2)}</pre>
     </div>
