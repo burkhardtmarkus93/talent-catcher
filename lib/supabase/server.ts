@@ -13,9 +13,15 @@ export async function createClient() {
         getAll() {
           return cookieStore.getAll();
         },
-        setAll(_cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
-          // In Server Components nicht setzen.
-          // Die Middleware bzw. Server Actions kümmern sich um Session-Refresh.
+        setAll(cookiesToSet) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              cookieStore.set(name, value, options);
+            });
+          } catch {
+            // In Server Components kann das in manchen Situationen
+            // nicht gesetzt werden; Middleware übernimmt den Refresh.
+          }
         },
       },
     }
