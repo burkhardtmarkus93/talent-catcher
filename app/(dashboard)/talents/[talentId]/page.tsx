@@ -1,4 +1,3 @@
-import { archiveTalent } from "@/lib/actions/talents";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/Button";
@@ -10,6 +9,7 @@ import {
   getScoutReportsForTalent,
   getOpenRemindersForTalent,
 } from "@/lib/queries/talents";
+import { archiveTalent } from "@/lib/actions/talents";
 
 function age(birthDate: string): number {
   const diff = Date.now() - new Date(birthDate).getTime();
@@ -61,7 +61,9 @@ export default async function TalentDetailPage({
             </div>
             <div className="flex items-center gap-2">
               {talent.currentAlert?.isHiddenGem && <HiddenGemBadge />}
-              {talent.currentAlert && <RiskDot level={talent.currentAlert.riskLevel} />}
+              {talent.currentAlert && (
+                <RiskDot level={talent.currentAlert.riskLevel} />
+              )}
             </div>
           </div>
 
