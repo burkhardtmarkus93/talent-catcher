@@ -1,101 +1,88 @@
-// Diese Typen spiegeln das im Datenmodell-Dokument definierte SQL-Schema.
-// Sobald `supabase gen types typescript` läuft, können sie durch die
-// generierten Typen ersetzt bzw. mit ihnen abgeglichen werden.
+import type { Talent } from "@/lib/types";
 
-// Technische Rollenwerte — verbindlich seit der Kickoff-Anweisung:
-// nur diese drei Strings, "verein" ist ab jetzt reine Fachsprache,
-// kein Rollenwert mehr im Code.
-export type Role = "scout" | "club_admin" | "admin";
-
-export interface AppUser {
-  id: string;
-  email: string;
-  clubId: string | null;
-  role: Role;
-  hasYouthAccess: boolean;
-}
-
-export type RiskLevel = "gruen" | "gelb" | "rot";
-
-export type TalentStatus =
-  | "in_beobachtung"
-  | "empfehlung"
-  | "abgeschlossen"
-  | "verloren";
-
-export type ContractStatus = "aktiv" | "auslaufend" | "vereinslos" | "unbekannt";
-
-export interface Talent {
-  id: string;
-  firstName: string;
-  lastName: string;
-  birthDate: string; // ISO-Datum
-  primaryPosition: string;
-  secondaryPosition?: string | null;
-  clubNameText: string;
-  teamNameText?: string | null;
-  leagueText?: string | null;
-  countryText?: string | null;
-  contractStatus: ContractStatus;
-  contractEndDate?: string | null;
-  status: TalentStatus;
-  isMinor: boolean;
-  visibilityStatus: "privat" | "freigegeben";
-  currentAlert?: Alert;
-  lastReportDate?: string | null;
-}
-
-export interface Alert {
-  id: string;
-  talentId: string;
-  riskLevel: RiskLevel;
-  riskScore: number;
-  triggeredReasons: string[];
-  isHiddenGem: boolean;
-  calculatedAt: string;
-}
-
-export interface ScoutReport {
-  id: string;
-  talentId: string;
-  authorName: string;
-  matchDate: string;
-  opponent?: string | null;
-  scoreTechnik: number;
-  scoreTaktik: number;
-  scoreAthletik: number;
-  scoreMentalitaet: number;
-  overallRating: number;
-  overallRatingSource: "calculated" | "manual_override";
-  comment?: string | null;
-  createdAt: string;
-}
-
-export type ReminderStatus = "offen" | "erledigt" | "ueberfaellig" | "storniert";
-
-export interface Reminder {
-  id: string;
-  talentId: string;
-  talentName: string;
-  dueDate: string;
-  reason?: string | null;
-  status: ReminderStatus;
-  isSystemGenerated: boolean;
-}
-
-export interface Watchlist {
-  id: string;
-  name: string;
-  description?: string | null;
-  talentCount: number;
-}
-
-export interface ImportJobPreview {
-  id: string;
-  sourceFilename: string;
-  status: "laeuft" | "abgeschlossen" | "fehlgeschlagen" | "teilweise_fehlgeschlagen";
-  totalRows: number;
-  importedRows: number;
-  errorRows: number;
-  startedAt: string;
-}
+export const dummyTalents: Talent[] = [
+  {
+    id: "t1",
+    firstName: "Max",
+    lastName: "Keller",
+    birthDate: "2008-02-14",
+    primaryPosition: "IV",
+    secondaryPosition: null,
+    clubNameText: "VfB Musterstadt",
+    teamNameText: "U17",
+    leagueText: "A-Junioren Regionalliga",
+    countryText: "Deutschland",
+    contractStatus: "auslaufend",
+    contractEndDate: "2026-06-30",
+    status: "in_beobachtung",
+    isMinor: true,
+    visibilityStatus: "freigegeben",
+    archived_at: null,
+    currentAlert: {
+      id: "a1",
+      talentId: "t1",
+      riskLevel: "gelb",
+      riskScore: 62,
+      triggeredReasons: ["Konstante Entwicklung", "Gute Kopfballwerte"],
+      isHiddenGem: false,
+      calculatedAt: "2026-07-31T00:00:00.000Z",
+    },
+    lastReportDate: "2026-07-21",
+  },
+  {
+    id: "t2",
+    firstName: "Leon",
+    lastName: "Weber",
+    birthDate: "2006-09-03",
+    primaryPosition: "ZOM",
+    secondaryPosition: "LA",
+    clubNameText: "SV Beispiel",
+    teamNameText: "U19",
+    leagueText: "A-Junioren Bundesliga",
+    countryText: "Deutschland",
+    contractStatus: "aktiv",
+    contractEndDate: null,
+    status: "empfehlung",
+    isMinor: true,
+    visibilityStatus: "freigegeben",
+    archived_at: null,
+    currentAlert: {
+      id: "a2",
+      talentId: "t2",
+      riskLevel: "gruen",
+      riskScore: 84,
+      triggeredReasons: ["Starke Spielintelligenz", "Hohe Passqualität"],
+      isHiddenGem: true,
+      calculatedAt: "2026-07-31T00:00:00.000Z",
+    },
+    lastReportDate: "2026-07-28",
+  },
+  {
+    id: "t3",
+    firstName: "Noah",
+    lastName: "Schmidt",
+    birthDate: "2004-11-19",
+    primaryPosition: "ST",
+    secondaryPosition: null,
+    clubNameText: "FC Demo",
+    teamNameText: "U21",
+    leagueText: "Regionalliga",
+    countryText: "Deutschland",
+    contractStatus: "vereinslos",
+    contractEndDate: null,
+    status: "verloren",
+    isMinor: false,
+    visibilityStatus: "privat",
+    archived_at: null,
+    currentAlert: {
+      id: "a3",
+      talentId: "t3",
+      riskLevel: "rot",
+      riskScore: 41,
+      triggeredReasons: ["Vertrag ausgelaufen", "Wenige Einsätze"],
+      isHiddenGem: false,
+      calculatedAt: "2026-07-31T00:00:00.000Z",
+    },
+    lastReportDate: "2026-07-10",
+  },
+];
