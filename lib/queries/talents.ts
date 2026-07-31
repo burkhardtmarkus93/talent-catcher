@@ -76,6 +76,7 @@ export async function getTalents(): Promise<Talent[]> {
   const { data, error } = await supabase
     .from("talents")
     .select("*")
+    .is("archived_at", null)
     .order("last_name", { ascending: true });
 
   if (error) {
@@ -88,25 +89,7 @@ export async function getTalents(): Promise<Talent[]> {
     throw new Error("Talente konnten nicht geladen werden.");
   }
 
-  return (data ?? []).map((row: any) => ({
-    id: String(row.id),
-    firstName: String(row.first_name ?? ""),
-    lastName: String(row.last_name ?? ""),
-    birthDate: String(row.birth_date ?? ""),
-    primaryPosition: String(row.primary_position ?? ""),
-    secondaryPosition: row.secondary_position ?? null,
-    clubNameText: row.club_name_text ?? null,
-    teamNameText: row.team_name_text ?? null,
-    leagueText: row.league_text ?? null,
-    countryText: row.country_text ?? null,
-    contractStatus: row.contract_status ?? "unbekannt",
-    contractEndDate: row.contract_end_date ?? null,
-    status: row.status ?? "in_beobachtung",
-    isMinor: Boolean(row.is_minor),
-    visibilityStatus: row.visibility_status ?? "freigegeben",
-    currentAlert: undefined,
-    lastReportDate: null,
-  }));
+  return (data ?? []).map(mapTalent);
 }
 
 export async function getTalentById(id: string): Promise<Talent | null> {
