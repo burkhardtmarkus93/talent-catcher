@@ -9,7 +9,7 @@ import {
   getScoutReportsForTalent,
   getOpenRemindersForTalent,
 } from "@/lib/queries/talents";
-import { archiveTalent } from "@/lib/actions/talents";
+import { archiveTalent, restoreTalent } from "@/lib/actions/talents";
 
 function age(birthDate: string): number {
   const diff = Date.now() - new Date(birthDate).getTime();
@@ -80,6 +80,12 @@ export default async function TalentDetailPage({
               Neuberechnung angezeigt).
             </p>
           )}
+
+          {talent.archived_at && (
+            <p className="mt-4 text-sm font-medium text-amber-700">
+              Dieses Talent ist archiviert.
+            </p>
+          )}
         </div>
       </div>
 
@@ -148,15 +154,27 @@ export default async function TalentDetailPage({
               <Button className="w-full">+ Neuer Bericht</Button>
             </Link>
 
-            <form action={archiveTalent}>
-              <input type="hidden" name="talentId" value={talent.id} />
-              <button
-                type="submit"
-                className="w-full rounded-md border border-amber-500 bg-amber-50 px-4 py-2 text-sm font-medium text-amber-700 hover:bg-amber-100"
-              >
-                Talent archivieren
-              </button>
-            </form>
+            {talent.archived_at ? (
+              <form action={restoreTalent}>
+                <input type="hidden" name="talentId" value={talent.id} />
+                <button
+                  type="submit"
+                  className="w-full rounded-md border border-green-500 bg-green-50 px-4 py-2 text-sm font-medium text-green-700 hover:bg-green-100"
+                >
+                  Talent wiederherstellen
+                </button>
+              </form>
+            ) : (
+              <form action={archiveTalent}>
+                <input type="hidden" name="talentId" value={talent.id} />
+                <button
+                  type="submit"
+                  className="w-full rounded-md border border-amber-500 bg-amber-50 px-4 py-2 text-sm font-medium text-amber-700 hover:bg-amber-100"
+                >
+                  Talent archivieren
+                </button>
+              </form>
+            )}
           </div>
 
           <ReminderForm talentId={talent.id} />
@@ -179,31 +197,4 @@ export default async function TalentDetailPage({
                       {reminder.status === "ueberfaellig" ? "Überfällig" : "Offen"} ·{" "}
                       {reminder.dueDate}
                     </p>
-                    {reminder.reason && (
-                      <p className="mt-1 text-sm text-ink">{reminder.reason}</p>
-                    )}
-                    <Link
-                      href={`/talents/${talent.id}/reports/new?reminderId=${reminder.id}`}
-                      className="mt-2 inline-block text-sm text-pitch hover:underline"
-                    >
-                      Bericht erfassen →
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Field({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <dt className="text-xs uppercase tracking-wide text-muted">{label}</dt>
-      <dd className="mt-0.5 text-ink">{value}</dd>
-    </div>
-  );
-}
+                    {reminder.reason
