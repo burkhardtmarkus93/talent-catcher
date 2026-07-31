@@ -1,15 +1,8 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { getTalents } from "@/lib/queries/talents";
-import { getCurrentAppUser } from "@/lib/queries/session";
 
-export default async function TalentsPage() {
-  const [talents, appUser] = await Promise.all([
-    getTalents(),
-    getCurrentAppUser(),
-  ]);
-
+export default function TalentsPage() {
   return (
     <div>
       <PageHeader
@@ -20,8 +13,7 @@ export default async function TalentsPage() {
           </Link>
         }
       />
-      <p>Talente geladen: {talents.length}</p>
-      <p>User: {appUser?.email ?? "kein User"}</p>
+      <p>Minimaltest</p>
     </div>
   );
 }
