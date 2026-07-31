@@ -1,3 +1,13 @@
-export default function TalentsPage() {
-  return <div>Minimaltest</div>;
+import "./globals.css";
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="de">
+      <body>{children}</body>
+    </html>
+  );
 }
