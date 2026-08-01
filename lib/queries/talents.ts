@@ -1,6 +1,11 @@
 import { createClient } from "@/lib/supabase/server";
 import type { Talent, Alert, ScoutReport, Reminder } from "@/lib/types";
 
+type TalentFilters = {
+  q?: string;
+  showArchived?: boolean;
+};
+
 function mapAlert(row: any): Alert {
   return {
     id: String(row.id),
@@ -71,13 +76,21 @@ function mapReminder(row: any, talentName: string): Reminder {
   };
 }
 
-export async function getTalents(): Promise<Talent[]> {
+export async function getTalents(filters: TalentFilters = {}): Promise<Talent[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase
+  const q = filters.q?.trim().toLowerCase() ?? "";
+  const showArchived = Boolean(filters.showArchived);
+
+  let query = supabase
     .from("talents")
     .select("*")
-    .is("archived_at", null)
     .order("last_name", { ascending: true });
+
+  if (!showArchived) {
+    query = query.is("archived_at", null);
+  }
+
+  const { data, error } = await query;
 
   if (error) {
     console.error("getTalents() fehlgeschlagen:", {
@@ -89,7 +102,22 @@ export async function getTalents(): Promise<Talent[]> {
     throw new Error("Talente konnten nicht geladen werden.");
   }
 
-  return (data ?? []).map(mapTalent);
+  const talents = (data ?? []).map(mapTalent);
+
+  if (!q) return talents;
+
+  return talents.filter((talent) => {
+    const haystack = [
+      talent.firstName,
+      talent.lastName,
+      talent.clubNameText ?? "",
+      talent.teamNameText ?? "",
+    ]
+      .join(" ")
+      .toLowerCase();
+
+    return haystack.includes(q);
+  });
 }
 
 export async function getTalentById(id: string): Promise<Talent | null> {
