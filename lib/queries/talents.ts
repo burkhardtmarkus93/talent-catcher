@@ -52,6 +52,7 @@ function mapTalent(row: any): Talent {
     status: row.status ?? "in_beobachtung",
     isMinor: Boolean(row.is_minor),
     visibilityStatus: row.visibility_status ?? "freigegeben",
+    archivedAt: row.archived_at ?? null,
     currentAlert: currentAlertRow ? mapAlert(currentAlertRow) : undefined,
     lastReportDate: null,
   };
