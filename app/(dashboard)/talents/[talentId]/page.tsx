@@ -10,6 +10,7 @@ import {
   getOpenRemindersForTalent,
 } from "@/lib/queries/talents";
 import { archiveTalent, restoreTalent } from "@/lib/actions/talents";
+import { getGkCoordinationTestsForTalent } from "@/lib/queries/gkTests";
 
 function age(birthDate: string): number {
   const diff = Date.now() - new Date(birthDate).getTime();
@@ -25,10 +26,13 @@ export default async function TalentDetailPage({
   if (!talent) notFound();
 
   const fullName = `${talent.firstName} ${talent.lastName}`;
-  const [reports, openReminders] = await Promise.all([
-    getScoutReportsForTalent(talent.id),
-    getOpenRemindersForTalent(talent.id, fullName),
-  ]);
+ const [reports, openReminders, gkTests] = await Promise.all([
+     getScoutReportsForTalent(talent.id),
+     getOpenRemindersForTalent(talent.id, fullName),
+     talent.primaryPosition === "TW"
+       ? getGkCoordinationTestsForTalent(talent.id)
+       : Promise.resolve([]),
+   ]);
 
   return (
     <div>
@@ -141,7 +145,43 @@ export default async function TalentDetailPage({
             )}
           </section>
         </div>
-
+        
+{talent.primaryPosition === "TW" && (
+               <section className="mt-6 rounded-md border border-line bg-surface p-5">
+                 <div className="flex items-center justify-between">
+                   <h2 className="font-display text-lg font-medium text-ink">
+                     Koordinationstest (Torhüter)
+                   </h2>
+                   <Link
+                     href={`/talents/${talent.id}/gk-tests/new`}
+                     className="text-sm text-pitch hover:underline"
+                   >
+                     + Neuer Test
+                   </Link>
+                 </div>
+                 {gkTests.length === 0 ? (
+                   <p className="mt-3 text-sm text-muted">
+                     Noch kein Koordinationstest erfasst.
+                   </p>
+                 ) : (
+                   <ul className="mt-3 divide-y divide-line">
+                     {gkTests.map((t) => (
+                       <li key={t.id} className="py-3">
+                         <div className="flex items-center justify-between">
+                           <span className="text-sm font-medium text-ink">
+                             {t.testDate} {t.ageCategory ? `· ${t.ageCategory}` : ""}
+                           </span>
+                           <span className="font-mono text-sm text-ink">
+                             {t.totalScore ?? "—"} Pkt.
+                           </span>
+                         </div>
+                       </li>
+                     ))}
+                   </ul>
+                 )}
+               </section>
+             )}
+        
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-3">
             <Link href={`/talents/${talent.id}/reports/new`}>
