@@ -11,7 +11,6 @@ const reminderStatusLabels: Record<ReminderStatus, string> = {
   offen: "Offen",
   erledigt: "Erledigt",
   ueberfaellig: "Überfällig",
-  storniert: "Storniert",
 };
 
 export default async function AlertsRemindersPage({
