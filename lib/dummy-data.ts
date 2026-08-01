@@ -30,6 +30,7 @@ export const dummyTalents: Talent[] = [
     isMinor: true,
     visibilityStatus: "privat",
     lastReportDate: "2026-04-17",
+    archivedAt: null,
     currentAlert: {
       id: "a1",
       talentId: "t1",
@@ -60,6 +61,7 @@ export const dummyTalents: Talent[] = [
     isMinor: true,
     visibilityStatus: "privat",
     lastReportDate: "2026-06-10",
+    archivedAt: null,
     currentAlert: {
       id: "a2",
       talentId: "t2",
@@ -90,6 +92,7 @@ export const dummyTalents: Talent[] = [
     isMinor: false,
     visibilityStatus: "freigegeben",
     lastReportDate: "2026-05-12",
+    archivedAt: null,
     currentAlert: {
       id: "a3",
       talentId: "t3",
@@ -117,6 +120,7 @@ export const dummyTalents: Talent[] = [
     isMinor: true,
     visibilityStatus: "privat",
     lastReportDate: "2026-07-01",
+    archivedAt: null,
     currentAlert: {
       id: "a4",
       talentId: "t4",
@@ -146,6 +150,7 @@ export const dummyTalents: Talent[] = [
     isMinor: false,
     visibilityStatus: "freigegeben",
     lastReportDate: "2026-07-15",
+    archivedAt: null,
     currentAlert: {
       id: "a5",
       talentId: "t5",
