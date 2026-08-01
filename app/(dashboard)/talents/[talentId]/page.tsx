@@ -9,7 +9,7 @@ import {
   getScoutReportsForTalent,
   getOpenRemindersForTalent,
 } from "@/lib/queries/talents";
-import { archiveTalent } from "@/lib/actions/talents";
+import { archiveTalent, restoreTalent } from "@/lib/actions/talents";
 
 function age(birthDate: string): number {
   const diff = Date.now() - new Date(birthDate).getTime();
@@ -148,15 +148,27 @@ export default async function TalentDetailPage({
               <Button className="w-full">+ Neuer Bericht</Button>
             </Link>
 
-            <form action={archiveTalent}>
-              <input type="hidden" name="talentId" value={talent.id} />
-              <button
-                type="submit"
-                className="w-full rounded-md border border-amber-500 bg-amber-50 px-4 py-2 text-sm font-medium text-amber-700 hover:bg-amber-100"
-              >
-                Talent archivieren
-              </button>
-            </form>
+            {talent.archivedAt ? (
+              <form action={restoreTalent}>
+                <input type="hidden" name="talentId" value={talent.id} />
+                <button
+                  type="submit"
+                  className="w-full rounded-md border border-pitch bg-emerald-50 px-4 py-2 text-sm font-medium text-pitch hover:bg-emerald-100"
+                >
+                  Talent wiederherstellen
+                </button>
+              </form>
+            ) : (
+              <form action={archiveTalent}>
+                <input type="hidden" name="talentId" value={talent.id} />
+                <button
+                  type="submit"
+                  className="w-full rounded-md border border-amber-500 bg-amber-50 px-4 py-2 text-sm font-medium text-amber-700 hover:bg-amber-100"
+                >
+                  Talent archivieren
+                </button>
+              </form>
+            )}
           </div>
 
           <ReminderForm talentId={talent.id} />
