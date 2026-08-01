@@ -6,9 +6,16 @@ import { TalentTable } from "@/components/talents/TalentTable";
 import { getTalents } from "@/lib/queries/talents";
 import { getCurrentAppUser } from "@/lib/queries/session";
 
-export default async function TalentsPage() {
+export default async function TalentsPage({
+  searchParams,
+}: {
+  searchParams?: { q?: string; showArchived?: string };
+}) {
+  const q = searchParams?.q?.trim() ?? "";
+  const showArchived = searchParams?.showArchived === "1";
+
   const [talents, appUser] = await Promise.all([
-    getTalents(),
+    getTalents({ q, showArchived }),
     getCurrentAppUser(),
   ]);
 
@@ -22,7 +29,7 @@ export default async function TalentsPage() {
           </Link>
         }
       />
-      <FilterBar />
+      <FilterBar q={q} showArchived={showArchived} />
       <TalentTable
         talents={talents}
         currentUserHasYouthAccess={appUser?.hasYouthAccess ?? false}
