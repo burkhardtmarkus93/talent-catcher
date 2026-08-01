@@ -71,7 +71,7 @@ export interface ScoutReport {
   createdAt: string;
 }
 
-export type ReminderStatus = "offen" | "erledigt" | "ueberfaellig" | "storniert";
+export type ReminderStatus = "offen" | "erledigt" | "ueberfaellig";
 
 export interface Reminder {
   id: string;
