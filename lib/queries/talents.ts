@@ -1,9 +1,13 @@
 import { createClient } from "@/lib/supabase/server";
-import type { Talent, Alert, ScoutReport, Reminder } from "@/lib/types";
+import type { Talent, Alert, ScoutReport, Reminder, TalentStatus, RiskLevel } from "@/lib/types";
 
 type TalentFilters = {
   q?: string;
   showArchived?: boolean;
+  position?: string;
+  status?: string;
+  alert?: string;
+  hiddenGem?: string;
 };
 
 function mapAlert(row: any): Alert {
@@ -78,12 +82,17 @@ function mapReminder(row: any, talentName: string): Reminder {
 
 export async function getTalents(filters: TalentFilters = {}): Promise<Talent[]> {
   const supabase = await createClient();
+
   const q = filters.q?.trim().toLowerCase() ?? "";
   const showArchived = Boolean(filters.showArchived);
+  const position = filters.position?.trim();
+  const status = filters.status?.trim();
+  const alert = filters.alert?.trim();
+  const hiddenGem = filters.hiddenGem?.trim();
 
   let query = supabase
     .from("talents")
-    .select("*")
+    .select("*, alerts(*)")
     .order("last_name", { ascending: true });
 
   if (!showArchived) {
@@ -102,22 +111,44 @@ export async function getTalents(filters: TalentFilters = {}): Promise<Talent[]>
     throw new Error("Talente konnten nicht geladen werden.");
   }
 
-  const talents = (data ?? []).map(mapTalent);
+  let talents = (data ?? []).map(mapTalent);
 
-  if (!q) return talents;
+  if (q) {
+    talents = talents.filter((talent) => {
+      const haystack = [
+        talent.firstName,
+        talent.lastName,
+        talent.clubNameText ?? "",
+        talent.teamNameText ?? "",
+      ]
+        .join(" ")
+        .toLowerCase();
 
-  return talents.filter((talent) => {
-    const haystack = [
-      talent.firstName,
-      talent.lastName,
-      talent.clubNameText ?? "",
-      talent.teamNameText ?? "",
-    ]
-      .join(" ")
-      .toLowerCase();
+      return haystack.includes(q);
+    });
+  }
 
-    return haystack.includes(q);
-  });
+  if (position && position !== "Alle") {
+    talents = talents.filter((talent) => talent.primaryPosition === position);
+  }
+
+  if (status && status !== "Alle") {
+    const normalizedStatus = status.toLowerCase().replace(/\s+/g, "_") as TalentStatus;
+    talents = talents.filter((talent) => talent.status === normalizedStatus);
+  }
+
+  if (alert && alert !== "Alle") {
+    const normalizedAlert = alert.toLowerCase() as RiskLevel;
+    talents = talents.filter(
+      (talent) => talent.currentAlert?.riskLevel === normalizedAlert
+    );
+  }
+
+  if (hiddenGem && hiddenGem !== "Alle") {
+    talents = talents.filter((talent) => Boolean(talent.currentAlert?.isHiddenGem));
+  }
+
+  return talents;
 }
 
 export async function getTalentById(id: string): Promise<Talent | null> {
