@@ -11,7 +11,6 @@ const reminderStatusLabels: Record<ReminderStatus, string> = {
   offen: "Offen",
   erledigt: "Erledigt",
   ueberfaellig: "Überfällig",
-  storniert: "Storniert",
 };
 
 export default async function AlertsRemindersPage({
@@ -28,7 +27,10 @@ export default async function AlertsRemindersPage({
 
   const alertTalents = talents
     .filter((t) => t.currentAlert && t.currentAlert.riskLevel !== "gruen")
-    .sort((a, b) => (b.currentAlert?.riskScore ?? 0) - (a.currentAlert?.riskScore ?? 0));
+    .sort(
+      (a, b) =>
+        (b.currentAlert?.riskScore ?? 0) - (a.currentAlert?.riskScore ?? 0)
+    );
 
   return (
     <div>
@@ -82,7 +84,10 @@ export default async function AlertsRemindersPage({
                     <RiskDot level={t.currentAlert!.riskLevel} showLabel />
                   </td>
                   <td className="td-cell">
-                    <Link href={`/talents/${t.id}`} className="font-medium hover:underline">
+                    <Link
+                      href={`/talents/${t.id}`}
+                      className="font-medium hover:underline"
+                    >
                       {t.firstName} {t.lastName}
                     </Link>{" "}
                     {t.currentAlert?.isHiddenGem && <HiddenGemBadge />}
@@ -130,7 +135,10 @@ export default async function AlertsRemindersPage({
                   </span>
                 </td>
                 <td className="td-cell">
-                  <Link href={`/talents/${r.talentId}`} className="font-medium hover:underline">
+                  <Link
+                    href={`/talents/${r.talentId}`}
+                    className="font-medium hover:underline"
+                  >
                     {r.talentName}
                   </Link>
                 </td>
