@@ -41,6 +41,7 @@ export interface Talent {
   status: TalentStatus;
   isMinor: boolean;
   visibilityStatus: "privat" | "freigegeben";
+  archivedAt: string | null;
   currentAlert?: Alert;
   lastReportDate?: string | null;
 }
@@ -71,7 +72,7 @@ export interface ScoutReport {
   createdAt: string;
 }
 
-export type ReminderStatus = "offen" | "erledigt" | "ueberfaellig" 
+export type ReminderStatus = "offen" | "erledigt" | "ueberfaellig";
 
 export interface Reminder {
   id: string;
@@ -93,7 +94,11 @@ export interface Watchlist {
 export interface ImportJobPreview {
   id: string;
   sourceFilename: string;
-  status: "laeuft" | "abgeschlossen" | "fehlgeschlagen" | "teilweise_fehlgeschlagen";
+  status:
+    | "laeuft"
+    | "abgeschlossen"
+    | "fehlgeschlagen"
+    | "teilweise_fehlgeschlagen";
   totalRows: number;
   importedRows: number;
   errorRows: number;
