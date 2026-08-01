@@ -6,9 +6,29 @@ import { TalentTable } from "@/components/talents/TalentTable";
 import { getTalents } from "@/lib/queries/talents";
 import { getCurrentAppUser } from "@/lib/queries/session";
 
-export default async function TalentsPage() {
+export default async function TalentsPage({
+  searchParams,
+}: {
+  searchParams?: {
+    q?: string;
+    showArchived?: string;
+    position?: string;
+    status?: string;
+    alert?: string;
+    hiddenGem?: string;
+  };
+}) {
+  const filters = {
+    q: searchParams?.q ?? "",
+    showArchived: searchParams?.showArchived === "1",
+    position: searchParams?.position ?? "Alle",
+    status: searchParams?.status ?? "Alle",
+    alert: searchParams?.alert ?? "Alle",
+    hiddenGem: searchParams?.hiddenGem ?? "Alle",
+  };
+
   const [talents, appUser] = await Promise.all([
-    getTalents(),
+    getTalents(filters),
     getCurrentAppUser(),
   ]);
 
@@ -22,7 +42,14 @@ export default async function TalentsPage() {
           </Link>
         }
       />
-      <FilterBar />
+      <FilterBar
+        q={filters.q}
+        showArchived={filters.showArchived}
+        position={filters.position}
+        status={filters.status}
+        alert={filters.alert}
+        hiddenGem={filters.hiddenGem}
+      />
       <TalentTable
         talents={talents}
         currentUserHasYouthAccess={appUser?.hasYouthAccess ?? false}
