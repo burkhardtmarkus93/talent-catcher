@@ -1,9 +1,5 @@
 import Link from "next/link";
-import { PageHeader } from "@/components/ui/PageHeader";
-import { Button } from "@/components/ui/Button";
-import { RiskDot } from "@/components/ui/RiskDot";
-import { HiddenGemBadge } from "@/components/ui/HiddenGemBadge";
-import { getTalents, getOpenRemindersForClub } from "@/lib/queries/talents";
+import { getOpenRemindersForClub, getTalents } from "@/lib/queries/talents";
 import { completeReminderManually } from "@/lib/actions/reminders";
 import type { ReminderStatus } from "@/lib/types";
 
@@ -11,160 +7,91 @@ const reminderStatusLabels: Record<ReminderStatus, string> = {
   offen: "Offen",
   erledigt: "Erledigt",
   ueberfaellig: "Überfällig",
-  storniert: "Storniert",
 };
 
 export default async function AlertsRemindersPage({
   searchParams,
 }: {
-  searchParams: { tab?: string };
+  searchParams?: { status?: string };
 }) {
-  const activeTab = searchParams.tab === "reminders" ? "reminders" : "alerts";
+  const status = searchParams?.status ?? "offen";
 
   const [talents, reminders] = await Promise.all([
-    getTalents(),
+    getTalents({ showArchived: true }),
     getOpenRemindersForClub(),
   ]);
 
-  const alertTalents = talents
-    .filter((t) => t.currentAlert && t.currentAlert.riskLevel !== "gruen")
-    .sort((a, b) => (b.currentAlert?.riskScore ?? 0) - (a.currentAlert?.riskScore ?? 0));
-
   return (
     <div>
-      <PageHeader
-        title="Alerts & Wiedervorlagen"
-        subtitle="Alle offenen Handlungsaufforderungen an einem Ort"
-      />
+      <div className="mb-4 flex items-center justify-between">
+        <h1 className="font-display text-2xl font-medium text-ink">
+          Alerts & Wiedervorlagen
+        </h1>
 
-      <div className="mb-6 flex gap-6 border-b border-line text-sm">
-        <Link
-          href="/alerts-reminders?tab=alerts"
-          className={`-mb-px border-b-2 py-3 ${
-            activeTab === "alerts"
-              ? "border-pitch font-medium text-ink"
-              : "border-transparent text-muted"
-          }`}
-        >
-          Alerts ({alertTalents.length})
-        </Link>
-        <Link
-          href="/alerts-reminders?tab=reminders"
-          className={`-mb-px border-b-2 py-3 ${
-            activeTab === "reminders"
-              ? "border-pitch font-medium text-ink"
-              : "border-transparent text-muted"
-          }`}
-        >
-          Wiedervorlagen ({reminders.length})
+        <Link href="/talents" className="text-sm text-pitch hover:underline">
+          Zur Talentliste
         </Link>
       </div>
 
-      {activeTab === "alerts" ? (
-        alertTalents.length === 0 ? (
-          <p className="rounded-sm border border-line bg-surface px-4 py-6 text-center text-sm text-muted">
-            Keine aktiven Alerts — alle Talente sind auf Grün.
-          </p>
+      <section className="rounded-md border border-line bg-surface p-5">
+        <h2 className="mb-4 font-display text-lg font-medium text-ink">
+          Status
+        </h2>
+
+        <div className="flex flex-wrap gap-2">
+          {Object.entries(reminderStatusLabels).map(([key, label]) => (
+            <Link
+              key={key}
+              href={`/alerts-reminders?status=${key}`}
+              className={`rounded-sm border px-3 py-1 text-sm ${
+                status === key
+                  ? "border-pitch bg-pitch text-white"
+                  : "border-line bg-white text-ink"
+              }`}
+            >
+              {label}
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-6 rounded-md border border-line bg-surface p-5">
+        <h2 className="mb-4 font-display text-lg font-medium text-ink">
+          Wiedervorlagen
+        </h2>
+
+        {reminders.length === 0 ? (
+          <p className="text-sm text-muted">Keine offenen Wiedervorlagen.</p>
         ) : (
-          <table className="w-full border-collapse rounded-sm border border-line bg-surface">
-            <thead>
-              <tr>
-                <th className="th-cell">Priorität</th>
-                <th className="th-cell">Talent</th>
-                <th className="th-cell">Begründung</th>
-                <th className="th-cell text-right">Aktion</th>
-              </tr>
-            </thead>
-            <tbody>
-              {alertTalents.map((t) => (
-                <tr key={t.id} className="hover:bg-pitch-dim/40">
-                  <td className="td-cell">
-                    <RiskDot level={t.currentAlert!.riskLevel} showLabel />
-                  </td>
-                  <td className="td-cell">
-                    <Link href={`/talents/${t.id}`} className="font-medium hover:underline">
-                      {t.firstName} {t.lastName}
-                    </Link>{" "}
-                    {t.currentAlert?.isHiddenGem && <HiddenGemBadge />}
-                  </td>
-                  <td className="td-cell text-muted">
-                    {t.currentAlert?.triggeredReasons.length
-                      ? t.currentAlert.triggeredReasons.join(" · ")
-                      : "—"}
-                  </td>
-                  <td className="td-cell text-right">
-                    <Link href={`/talents/${t.id}/reports/new`}>
-                      <Button variant="secondary">Bericht erfassen</Button>
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )
-      ) : reminders.length === 0 ? (
-        <p className="rounded-sm border border-line bg-surface px-4 py-6 text-center text-sm text-muted">
-          Keine offenen Wiedervorlagen.
-        </p>
-      ) : (
-        <table className="w-full border-collapse rounded-sm border border-line bg-surface">
-          <thead>
-            <tr>
-              <th className="th-cell">Status</th>
-              <th className="th-cell">Talent</th>
-              <th className="th-cell">Fällig am</th>
-              <th className="th-cell">Grund</th>
-              <th className="th-cell text-right">Aktion</th>
-            </tr>
-          </thead>
-          <tbody>
-            {reminders.map((r) => (
-              <tr key={r.id} className="hover:bg-pitch-dim/40">
-                <td className="td-cell">
-                  <span
-                    className={`text-xs font-medium uppercase tracking-wide ${
-                      r.status === "ueberfaellig" ? "text-brick" : "text-muted"
-                    }`}
-                  >
-                    {reminderStatusLabels[r.status]}
-                  </span>
-                </td>
-                <td className="td-cell">
-                  <Link href={`/talents/${r.talentId}`} className="font-medium hover:underline">
-                    {r.talentName}
-                  </Link>
-                </td>
-                <td className="td-cell text-muted">{r.dueDate}</td>
-                <td className="td-cell text-muted">
-                  {r.reason}
-                  {r.isSystemGenerated && (
-                    <span className="ml-2 font-mono text-[10px] uppercase text-muted">
-                      automatisch
-                    </span>
-                  )}
-                </td>
-                <td className="td-cell text-right">
-                  <div className="flex justify-end gap-2">
-                    <Link href={`/talents/${r.talentId}/reports/new?reminderId=${r.id}`}>
-                      <Button variant="secondary">Bericht erfassen</Button>
-                    </Link>
-                    <form
-                      action={async () => {
-                        "use server";
-                        await completeReminderManually(r.id);
-                      }}
-                    >
-                      <Button variant="ghost" type="submit">
-                        Ohne Bericht erledigen
-                      </Button>
-                    </form>
+          <ul className="space-y-3">
+            {reminders.map((reminder) => (
+              <li key={reminder.id} className="rounded-sm bg-paper p-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-ink">
+                      {reminder.talentName}
+                    </p>
+                    <p className="text-xs text-muted">
+                      {reminder.reason ?? "Ohne Begründung"}
+                    </p>
                   </div>
-                </td>
-              </tr>
+                  <span className="text-xs text-muted">{reminder.dueDate}</span>
+                </div>
+
+                <form action={completeReminderManually} className="mt-3">
+                  <input type="hidden" name="reminderId" value={reminder.id} />
+                  <button
+                    type="submit"
+                    className="rounded-md border border-pitch bg-white px-3 py-1 text-sm text-pitch hover:bg-pitch hover:text-white"
+                  >
+                    Als erledigt markieren
+                  </button>
+                </form>
+              </li>
             ))}
-          </tbody>
-        </table>
-      )}
+          </ul>
+        )}
+      </section>
     </div>
   );
 }
