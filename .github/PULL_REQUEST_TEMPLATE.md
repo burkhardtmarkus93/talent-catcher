@@ -14,6 +14,7 @@ Closes #<issue-nummer>
 - [ ] Code folgt bestehenden Konventionen (Next.js App Router, TypeScript, Tailwind)
 - [ ] Keine Secrets/API-Keys im Code oder Commit-Verlauf
 - [ ] Bei DB-Änderungen: neue, additive Migration (keine bestehende verändert)
+- [ ] Migration nach Merge zusätzlich manuell im Supabase SQL-Editor ausgeführt (Repo-Migration ≠ echte DB-Änderung!)
 - [ ] RLS-Policy für neue/geänderte Tabellen mit Personenbezug vorhanden und manuell getestet
 - [ ] club_id-Mandantentrennung greift korrekt (mit zwei unterschiedlichen Test-Accounts geprüft)
 - [ ] Kein Zugriff auf Jugendschutz-gesperrte Daten ohne Berechtigung möglich
