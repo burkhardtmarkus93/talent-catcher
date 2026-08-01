@@ -1,5 +1,12 @@
 import { createClient } from "@/lib/supabase/server";
-import type { Talent, Alert, ScoutReport, Reminder, TalentStatus, RiskLevel } from "@/lib/types";
+import type {
+  Talent,
+  Alert,
+  ScoutReport,
+  Reminder,
+  TalentStatus,
+  RiskLevel,
+} from "@/lib/types";
 
 type TalentFilters = {
   q?: string;
