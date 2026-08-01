@@ -29,6 +29,9 @@ export const dummyTalents: Talent[] = [
     status: "in_beobachtung",
     isMinor: true,
     visibilityStatus: "privat",
+    archived_at: null,
+    tinderSkala: 3,
+    potenzialSkala: 4,
     lastReportDate: "2026-04-17",
     currentAlert: {
       id: "a1",
@@ -59,6 +62,9 @@ export const dummyTalents: Talent[] = [
     status: "in_beobachtung",
     isMinor: true,
     visibilityStatus: "privat",
+    archived_at: null,
+    tinderSkala: 2,
+    potenzialSkala: 3,
     lastReportDate: "2026-06-10",
     currentAlert: {
       id: "a2",
@@ -89,6 +95,9 @@ export const dummyTalents: Talent[] = [
     status: "in_beobachtung",
     isMinor: false,
     visibilityStatus: "freigegeben",
+    archived_at: null,
+    tinderSkala: 4,
+    potenzialSkala: 3,
     lastReportDate: "2026-05-12",
     currentAlert: {
       id: "a3",
@@ -116,6 +125,9 @@ export const dummyTalents: Talent[] = [
     status: "in_beobachtung",
     isMinor: true,
     visibilityStatus: "privat",
+    archived_at: null,
+    tinderSkala: 3,
+    potenzialSkala: 4,
     lastReportDate: "2026-07-01",
     currentAlert: {
       id: "a4",
@@ -145,6 +157,9 @@ export const dummyTalents: Talent[] = [
     status: "empfehlung",
     isMinor: false,
     visibilityStatus: "freigegeben",
+    archived_at: null,
+    tinderSkala: 1,
+    potenzialSkala: 4,
     lastReportDate: "2026-07-15",
     currentAlert: {
       id: "a5",
