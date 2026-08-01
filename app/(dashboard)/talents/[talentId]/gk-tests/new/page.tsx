@@ -52,6 +52,8 @@ export default function CoordinationTestForm() {
     console.log(values);
   };
 
+  const fileUrl = "DEINE_SUPABASE_URL_HIER";
+
   return (
     <div className="mx-auto max-w-3xl p-6">
       <div className="mb-6">
@@ -67,7 +69,7 @@ export default function CoordinationTestForm() {
       </div>
 
       <div className="mb-6 rounded-md border border-gray-200 bg-green-50 p-4 text-sm text-gray-800">
-        <div className="font-medium">Bewertung je Übung: 0–3 Punkte</div>
+        <div className="font-medium">Bewertung je Test: 0–3 Punkte</div>
         <div className="mt-1">
           <span className="font-medium">0</span> = reagiert kaum auf Signale, Würfe unkontrolliert.
           <br />
@@ -77,6 +79,20 @@ export default function CoordinationTestForm() {
           <br />
           <span className="font-medium">3</span> = schnelle, richtige Reaktion, kontrollierte Würfe, flüssiger Ablauf.
         </div>
+      </div>
+
+      <div className="mb-6">
+        <a
+          href={fileUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center rounded-md bg-green-800 px-4 py-2 text-white hover:bg-green-900"
+        >
+          Word-Datei herunterladen
+        </a>
+        <p className="mt-2 text-sm text-gray-500">
+          Öffnet die Test-Word-Datei mit allen Beschreibungen und der Punkteskala.
+        </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
