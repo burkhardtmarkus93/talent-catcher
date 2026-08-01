@@ -5,97 +5,67 @@
 // Technische Rollenwerte — verbindlich seit der Kickoff-Anweisung:
 // nur diese drei Strings, "verein" ist ab jetzt reine Fachsprache,
 // kein Rollenwert mehr im Code.
-export type Role = "scout" | "club_admin" | "admin";
-
-export interface AppUser {
-  id: string;
-  email: string;
-  clubId: string | null;
-  role: Role;
-  hasYouthAccess: boolean;
-}
-
-export type RiskLevel = "gruen" | "gelb" | "rot";
-
 export type TalentStatus =
   | "in_beobachtung"
   | "empfehlung"
   | "abgeschlossen"
   | "verloren";
 
-export type ContractStatus = "aktiv" | "auslaufend" | "vereinslos" | "unbekannt";
+export type RiskLevel = "rot" | "gelb" | "gruen";
 
-export interface Talent {
-  id: string;
-  firstName: string;
-  lastName: string;
-  birthDate: string; // ISO-Datum
-  primaryPosition: string;
-  secondaryPosition?: string | null;
-  clubNameText: string;
-  teamNameText?: string | null;
-  leagueText?: string | null;
-  countryText?: string | null;
-  contractStatus: ContractStatus;
-  contractEndDate?: string | null;
-  status: TalentStatus;
-  isMinor: boolean;
-  visibilityStatus: "privat" | "freigegeben";
-  currentAlert?: Alert;
-  lastReportDate?: string | null;
-}
-
-export interface Alert {
+export type Alert = {
   id: string;
   talentId: string;
   riskLevel: RiskLevel;
   riskScore: number;
   triggeredReasons: string[];
   isHiddenGem: boolean;
-  calculatedAt: string;
-}
+  calculatedAt: string | null;
+};
 
-export interface ScoutReport {
+export type Talent = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  birthDate: string;
+  primaryPosition: string;
+  secondaryPosition: string | null;
+  clubNameText: string | null;
+  teamNameText: string | null;
+  leagueText: string | null;
+  countryText: string | null;
+  contractStatus: string;
+  contractEndDate: string | null;
+  status: TalentStatus;
+  isMinor: boolean;
+  visibilityStatus: string;
+  archivedAt: string | null;
+  currentAlert?: Alert;
+  lastReportDate: string | null;
+};
+
+export type ScoutReport = {
   id: string;
   talentId: string;
   authorName: string;
   matchDate: string;
-  opponent?: string | null;
-  scoreTechnik: number;
-  scoreTaktik: number;
-  scoreAthletik: number;
-  scoreMentalitaet: number;
+  opponent: string | null;
+  scoreTechnik: number | null;
+  scoreTaktik: number | null;
+  scoreAthletik: number | null;
+  scoreMentalitaet: number | null;
   overallRating: number;
-  overallRatingSource: "calculated" | "manual_override";
-  comment?: string | null;
+  overallRatingSource: string;
+  comment: string | null;
   createdAt: string;
-}
+};
 
-export type ReminderStatus = "offen" | "erledigt" | "ueberfaellig" | "storniert";
-
-export interface Reminder {
+export type Reminder = {
   id: string;
   talentId: string;
   talentName: string;
   dueDate: string;
-  reason?: string | null;
-  status: ReminderStatus;
+  reason: string | null;
+  status: "offen" | "ueberfaellig" | "erledigt";
   isSystemGenerated: boolean;
-}
-
-export interface Watchlist {
-  id: string;
-  name: string;
-  description?: string | null;
-  talentCount: number;
-}
-
-export interface ImportJobPreview {
-  id: string;
-  sourceFilename: string;
-  status: "laeuft" | "abgeschlossen" | "fehlgeschlagen" | "teilweise_fehlgeschlagen";
-  totalRows: number;
-  importedRows: number;
-  errorRows: number;
-  startedAt: string;
-}
+};
