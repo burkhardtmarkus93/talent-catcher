@@ -71,7 +71,7 @@ export interface ScoutReport {
   createdAt: string;
 }
 
-export type ReminderStatus = "offen" | "erledigt" | "ueberfaellig" | "storniert";
+export type ReminderStatus = "offen" | "erledigt" | "ueberfaellig";
 
 export interface Reminder {
   id: string;
@@ -93,7 +93,11 @@ export interface Watchlist {
 export interface ImportJobPreview {
   id: string;
   sourceFilename: string;
-  status: "laeuft" | "abgeschlossen" | "fehlgeschlagen" | "teilweise_fehlgeschlagen";
+  status:
+    | "laeuft"
+    | "abgeschlossen"
+    | "fehlgeschlagen"
+    | "teilweise_fehlgeschlagen";
   totalRows: number;
   importedRows: number;
   errorRows: number;
