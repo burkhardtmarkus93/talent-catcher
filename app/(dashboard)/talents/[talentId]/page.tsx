@@ -11,6 +11,8 @@ import {
 } from "@/lib/queries/talents";
 import { archiveTalent, restoreTalent } from "@/lib/actions/talents";
 import { getGkCoordinationTestsForTalent } from "@/lib/queries/gkTests";
+import { getTalentActivityStatus } from "@/lib/queries/talentActivity";
+import { InactivityBanner } from "@/components/talents/InactivityBanner";
 
 function age(birthDate: string): number {
   const diff = Date.now() - new Date(birthDate).getTime();
