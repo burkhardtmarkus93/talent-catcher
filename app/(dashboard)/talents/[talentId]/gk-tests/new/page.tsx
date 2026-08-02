@@ -32,7 +32,7 @@ function InfoIcon({ text }: { text: string }) {
   );
 }
 
-export default function CoordinationTestForm() {
+export default function GKTestNewPage() {
   const [values, setValues] = useState<Record<string, string>>({
     testdatum: "01.08.2026",
     wechselwurf: "",
@@ -52,7 +52,8 @@ export default function CoordinationTestForm() {
     console.log(values);
   };
 
-  const fileUrl = "DEINE_SUPABASE_URL_HIER";
+  const fileUrl =
+    "https://dziovesybrqumwygchdp.supabase.co/storage/v1/object/sign/documents/koordinationstest_tests_mit_skizzen.docx?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV82NTY4N2NkZS1iNmJmLTRhNzUtOWE0My02YWQzNTcxZGFiMjQiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJkb2N1bWVudHMva29vcmRpbmF0aW9uc3Rlc3RfdGVzdHNfbWl0X3NraXp6ZW4uZG9jeCIsInNjb3BlIjoiZG93bmxvYWQiLCJpYXQiOjE3ODU2Mjc3MzYsImV4cCI6NDkzOTIyNzczNn0.I694ESQ_gUIZL16PadqDFkwjWHFddrcgk42K67XRabA";
 
   return (
     <div className="mx-auto max-w-3xl p-6">
