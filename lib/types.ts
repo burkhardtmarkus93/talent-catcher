@@ -42,6 +42,7 @@ export interface Talent {
   isMinor: boolean;
   visibilityStatus: "privat" | "freigegeben";
   archivedAt: string | null;
+  updatedAt: string;
   currentAlert?: Alert;
   lastReportDate?: string | null;
 }
