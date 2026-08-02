@@ -33,6 +33,11 @@ export async function createTalent(
   const contractEndDate =
     String(formData.get("contractEndDate") ?? "").trim() || null;
 
+  const heightCmRaw = String(formData.get("heightCm") ?? "").trim();
+  const weightKgRaw = String(formData.get("weightKg") ?? "").trim();
+  const heightCm = heightCmRaw ? Number(heightCmRaw) : null;
+  const weightKg = weightKgRaw ? Number(weightKgRaw) : null;
+
   if (!firstName || !lastName || !birthDate || !primaryPosition) {
     return {
       success: false,
@@ -94,6 +99,8 @@ export async function createTalent(
       country_text: countryText,
       contract_status: contractStatus,
       contract_end_date: contractEndDate,
+      height_cm: heightCm,
+      weight_kg: weightKg,
     })
     .select("id, is_minor")
     .single();
