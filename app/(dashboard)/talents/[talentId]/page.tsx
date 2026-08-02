@@ -28,19 +28,27 @@ export default async function TalentDetailPage({
   if (!talent) notFound();
 
   const fullName = `${talent.firstName} ${talent.lastName}`;
- const [reports, openReminders, gkTests] = await Promise.all([
-     getScoutReportsForTalent(talent.id),
-     getOpenRemindersForTalent(talent.id, fullName),
-     talent.primaryPosition === "TW"
-       ? getGkCoordinationTestsForTalent(talent.id)
-       : Promise.resolve([]),
-   ]);
+  const [reports, openReminders, gkTests, activityStatus] = await Promise.all([
+    getScoutReportsForTalent(talent.id),
+    getOpenRemindersForTalent(talent.id, fullName),
+    talent.primaryPosition === "TW"
+      ? getGkCoordinationTestsForTalent(talent.id)
+      : Promise.resolve([]),
+    getTalentActivityStatus(talent.id, talent.updatedAt),
+  ]);
 
   return (
     <div>
       <Link href="/talents" className="text-sm text-muted hover:underline">
         ← Zurück zur Talentliste
       </Link>
+
+      {activityStatus.isInactive && (
+        <InactivityBanner
+          talentId={talent.id}
+          lastActivityAt={activityStatus.lastActivityAt}
+        />
+      )}
 
       <div className="mt-4 flex items-stretch overflow-hidden rounded-md border border-line bg-surface">
         <div
@@ -146,44 +154,44 @@ export default async function TalentDetailPage({
               </ul>
             )}
           </section>
+
+          {talent.primaryPosition === "TW" && (
+            <section className="mt-6 rounded-md border border-line bg-surface p-5">
+              <div className="flex items-center justify-between">
+                <h2 className="font-display text-lg font-medium text-ink">
+                  Koordinationstest (Torhüter)
+                </h2>
+                <Link
+                  href={`/talents/${talent.id}/gk-tests/new`}
+                  className="text-sm text-pitch hover:underline"
+                >
+                  + Neuer Test
+                </Link>
+              </div>
+              {gkTests.length === 0 ? (
+                <p className="mt-3 text-sm text-muted">
+                  Noch kein Koordinationstest erfasst.
+                </p>
+              ) : (
+                <ul className="mt-3 divide-y divide-line">
+                  {gkTests.map((t) => (
+                    <li key={t.id} className="py-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-ink">
+                          {t.testDate} {t.ageCategory ? `· ${t.ageCategory}` : ""}
+                        </span>
+                        <span className="font-mono text-sm text-ink">
+                          {t.totalScore ?? "—"} Pkt.
+                        </span>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          )}
         </div>
-        
-{talent.primaryPosition === "TW" && (
-               <section className="mt-6 rounded-md border border-line bg-surface p-5">
-                 <div className="flex items-center justify-between">
-                   <h2 className="font-display text-lg font-medium text-ink">
-                     Koordinationstest (Torhüter)
-                   </h2>
-                   <Link
-                     href={`/talents/${talent.id}/gk-tests/new`}
-                     className="text-sm text-pitch hover:underline"
-                   >
-                     + Neuer Test
-                   </Link>
-                 </div>
-                 {gkTests.length === 0 ? (
-                   <p className="mt-3 text-sm text-muted">
-                     Noch kein Koordinationstest erfasst.
-                   </p>
-                 ) : (
-                   <ul className="mt-3 divide-y divide-line">
-                     {gkTests.map((t) => (
-                       <li key={t.id} className="py-3">
-                         <div className="flex items-center justify-between">
-                           <span className="text-sm font-medium text-ink">
-                             {t.testDate} {t.ageCategory ? `· ${t.ageCategory}` : ""}
-                           </span>
-                           <span className="font-mono text-sm text-ink">
-                             {t.totalScore ?? "—"} Pkt.
-                           </span>
-                         </div>
-                       </li>
-                     ))}
-                   </ul>
-                 )}
-               </section>
-             )}
-        
+
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-3">
             <Link href={`/talents/${talent.id}/reports/new`}>
@@ -213,7 +221,9 @@ export default async function TalentDetailPage({
             )}
           </div>
 
-          <ReminderForm talentId={talent.id} />
+          <div id="reminder-form">
+            <ReminderForm talentId={talent.id} />
+          </div>
 
           <section className="rounded-md border border-line bg-surface p-4">
             <h2 className="mb-3 font-display text-base font-medium text-ink">
