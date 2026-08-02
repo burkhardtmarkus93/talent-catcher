@@ -31,6 +31,7 @@ export const dummyTalents: Talent[] = [
     visibilityStatus: "privat",
     lastReportDate: "2026-04-17",
     archivedAt: null,
+    updatedAt: "2026-04-17T09:30:00Z",
     currentAlert: {
       id: "a1",
       talentId: "t1",
@@ -62,6 +63,7 @@ export const dummyTalents: Talent[] = [
     visibilityStatus: "privat",
     lastReportDate: "2026-06-10",
     archivedAt: null,
+    updatedAt: "2026-06-10T14:00:00Z",
     currentAlert: {
       id: "a2",
       talentId: "t2",
@@ -93,6 +95,7 @@ export const dummyTalents: Talent[] = [
     visibilityStatus: "freigegeben",
     lastReportDate: "2026-05-12",
     archivedAt: null,
+    updatedAt: "2026-05-12T11:15:00Z",
     currentAlert: {
       id: "a3",
       talentId: "t3",
@@ -121,6 +124,7 @@ export const dummyTalents: Talent[] = [
     visibilityStatus: "privat",
     lastReportDate: "2026-07-01",
     archivedAt: null,
+    updatedAt: "2026-07-01T16:45:00Z",
     currentAlert: {
       id: "a4",
       talentId: "t4",
@@ -151,6 +155,7 @@ export const dummyTalents: Talent[] = [
     visibilityStatus: "freigegeben",
     lastReportDate: "2026-07-15",
     archivedAt: null,
+    updatedAt: "2026-07-15T10:00:00Z",
     currentAlert: {
       id: "a5",
       talentId: "t5",
