@@ -49,6 +49,8 @@ function mapTalent(row: any): Talent {
     countryText: row.country_text ?? null,
     contractStatus: row.contract_status ?? "unbekannt",
     contractEndDate: row.contract_end_date ?? null,
+    heightCm: row.height_cm ?? null,
+    weightKg: row.weight_kg ?? null,
     status: row.status ?? "in_beobachtung",
     isMinor: Boolean(row.is_minor),
     visibilityStatus: row.visibility_status ?? "freigegeben",
@@ -74,6 +76,14 @@ function mapScoutReport(row: any): ScoutReport {
     overallRatingSource: row.overall_rating_source,
     comment: row.comment,
     createdAt: row.created_at,
+    tinderTrainingssensitivitaet: row.tinder_trainingssensitivitaet ?? null,
+    tinderIntelligenz: row.tinder_intelligenz ?? null,
+    tinderNaturell: row.tinder_naturell ?? null,
+    tinderDynamik: row.tinder_dynamik ?? null,
+    tinderErfolgsmotivation: row.tinder_erfolgsmotivation ?? null,
+    tinderResilienz: row.tinder_resilienz ?? null,
+    potenzial: row.potenzial ?? null,
+    reifegrad: row.reifegrad ?? null,
   };
 }
 

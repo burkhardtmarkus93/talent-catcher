@@ -1,7 +1,6 @@
 // Diese Typen spiegeln das im Datenmodell-Dokument definierte SQL-Schema.
 // Sobald `supabase gen types typescript` läuft, können sie durch die
 // generierten Typen ersetzt bzw. mit ihnen abgeglichen werden.
-
 // Technische Rollenwerte — verbindlich seit der Kickoff-Anweisung:
 // nur diese drei Strings, "verein" ist ab jetzt reine Fachsprache,
 // kein Rollenwert mehr im Code.
@@ -38,6 +37,8 @@ export interface Talent {
   countryText?: string | null;
   contractStatus: ContractStatus;
   contractEndDate?: string | null;
+  heightCm?: number | null;
+  weightKg?: number | null;
   status: TalentStatus;
   isMinor: boolean;
   visibilityStatus: "privat" | "freigegeben";
@@ -71,6 +72,14 @@ export interface ScoutReport {
   overallRatingSource: "calculated" | "manual_override";
   comment?: string | null;
   createdAt: string;
+  tinderTrainingssensitivitaet?: number | null;
+  tinderIntelligenz?: number | null;
+  tinderNaturell?: number | null;
+  tinderDynamik?: number | null;
+  tinderErfolgsmotivation?: number | null;
+  tinderResilienz?: number | null;
+  potenzial?: number | null;
+  reifegrad?: number | null;
 }
 
 export type ReminderStatus = "offen" | "erledigt" | "ueberfaellig";
