@@ -16,17 +16,14 @@ export function NewTalentForm() {
           {state.error}
         </div>
       )}
-
       <div className="mb-4 grid grid-cols-2 gap-4">
         <Field label="Vorname *" name="firstName" required />
         <Field label="Nachname *" name="lastName" required />
       </div>
-
       <div className="mb-4 grid grid-cols-2 gap-4">
         <Field label="Geburtsdatum *" name="birthDate" type="date" required />
         <Field label="Hauptposition *" name="primaryPosition" placeholder="z. B. IV, TW, ST" required />
       </div>
-
       <div className="mb-4 grid grid-cols-2 gap-4">
         <Field label="Nebenposition" name="secondaryPosition" />
         <div>
@@ -45,21 +42,21 @@ export function NewTalentForm() {
           </label>
         </div>
       </div>
-
       <div className="mb-4 grid grid-cols-2 gap-4">
         <Field label="Aktueller Verein" name="clubNameText" />
         <Field label="Team/Jahrgang" name="teamNameText" placeholder="z. B. U17" />
       </div>
-
-      <div className="mb-6 grid grid-cols-2 gap-4">
+      <div className="mb-4 grid grid-cols-2 gap-4">
         <Field label="Liga" name="leagueText" />
         <Field label="Land" name="countryText" />
       </div>
-
+      <div className="mb-4 grid grid-cols-2 gap-4">
+        <Field label="Körpergröße (cm)" name="heightCm" type="number" />
+        <Field label="Gewicht (kg)" name="weightKg" type="number" />
+      </div>
       <div className="mb-6">
         <Field label="Vertragsende (falls bekannt)" name="contractEndDate" type="date" />
       </div>
-
       <div className="flex justify-end">
         <SubmitButton />
       </div>
