@@ -13,6 +13,7 @@ import { archiveTalent, restoreTalent } from "@/lib/actions/talents";
 import { getGkCoordinationTestsForTalent } from "@/lib/queries/gkTests";
 import { getTalentActivityStatus } from "@/lib/queries/talentActivity";
 import { InactivityBanner } from "@/components/talents/InactivityBanner";
+import { getCurrentAppUser } from "@/lib/queries/session";
 
 function age(birthDate: string): number {
   const diff = Date.now() - new Date(birthDate).getTime();
@@ -28,14 +29,18 @@ export default async function TalentDetailPage({
   if (!talent) notFound();
 
   const fullName = `${talent.firstName} ${talent.lastName}`;
-  const [reports, openReminders, gkTests, activityStatus] = await Promise.all([
-    getScoutReportsForTalent(talent.id),
-    getOpenRemindersForTalent(talent.id, fullName),
-    talent.primaryPosition === "TW"
-      ? getGkCoordinationTestsForTalent(talent.id)
-      : Promise.resolve([]),
-    getTalentActivityStatus(talent.id, talent.updatedAt),
-  ]);
+  const [reports, openReminders, gkTests, activityStatus, appUser] =
+    await Promise.all([
+      getScoutReportsForTalent(talent.id),
+      getOpenRemindersForTalent(talent.id, fullName),
+      talent.primaryPosition === "TW"
+        ? getGkCoordinationTestsForTalent(talent.id)
+        : Promise.resolve([]),
+      getTalentActivityStatus(talent.id, talent.updatedAt),
+      getCurrentAppUser(),
+    ]);
+
+  const canSeeBodyData = !talent.isMinor || Boolean(appUser?.hasYouthAccess);
 
   return (
     <div>
@@ -118,6 +123,18 @@ export default async function TalentDetailPage({
                 label="Sichtbarkeit"
                 value={talent.visibilityStatus === "privat" ? "Privat" : "Freigegeben"}
               />
+              {canSeeBodyData && (
+                <>
+                  <Field
+                    label="Größe"
+                    value={talent.heightCm ? `${talent.heightCm} cm` : "—"}
+                  />
+                  <Field
+                    label="Gewicht"
+                    value={talent.weightKg ? `${talent.weightKg} kg` : "—"}
+                  />
+                </>
+              )}
             </dl>
           </section>
 
