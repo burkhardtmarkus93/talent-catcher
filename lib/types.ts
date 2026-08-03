@@ -38,7 +38,8 @@ export interface Talent {
   contractStatus: ContractStatus;
   contractEndDate?: string | null;
   heightCm?: number | null;
-  weightKg?: number | null; tags?: string[];
+  weightKg?: number | null; 
+  tags?: string[];
   status: TalentStatus;
   isMinor: boolean;
   visibilityStatus: "privat" | "freigegeben";
