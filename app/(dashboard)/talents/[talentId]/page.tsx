@@ -20,6 +20,15 @@ function age(birthDate: string): number {
   return Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
 }
 
+const TINDER_LABELS: Record<string, string> = {
+  tinderTrainingssensitivitaet: "Trainingssensitivität",
+  tinderIntelligenz: "Intelligenz im Spiel",
+  tinderNaturell: "Naturell",
+  tinderDynamik: "Dynamik",
+  tinderErfolgsmotivation: "Erfolgsmotivation",
+  tinderResilienz: "Resilienz",
+};
+
 export default async function TalentDetailPage({
   params,
 }: {
@@ -149,25 +158,62 @@ export default async function TalentDetailPage({
               </p>
             ) : (
               <ul className="divide-y divide-line">
-                {reports.map((r) => (
-                  <li key={r.id} className="py-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-ink">
-                        {r.matchDate} {r.opponent ? `vs. ${r.opponent}` : ""}
-                      </span>
-                      <span className="font-mono text-sm text-ink">
-                        {r.overallRating.toFixed(1)}
-                        {r.overallRatingSource === "manual_override" && (
-                          <span className="ml-1 text-xs text-muted">(manuell)</span>
-                        )}
-                      </span>
-                    </div>
-                    {r.comment && (
-                      <p className="mt-1 text-sm text-muted">{r.comment}</p>
-                    )}
-                    <p className="mt-1 text-xs text-muted">{r.authorName}</p>
-                  </li>
-                ))}
+                {reports.map((r) => {
+                  const tinderEntries = Object.entries(TINDER_LABELS)
+                    .map(([key, label]) => ({
+                      label,
+                      value: (r as any)[key] as number | null | undefined,
+                    }))
+                    .filter((entry) => entry.value != null);
+
+                  const hasPotenzialOrReifegrad =
+                    r.potenzial != null || r.reifegrad != null;
+
+                  return (
+                    <li key={r.id} className="py-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-ink">
+                          {r.matchDate} {r.opponent ? `vs. ${r.opponent}` : ""}
+                        </span>
+                        <span className="font-mono text-sm text-ink">
+                          {r.overallRating.toFixed(1)}
+                          {r.overallRatingSource === "manual_override" && (
+                            <span className="ml-1 text-xs text-muted">(manuell)</span>
+                          )}
+                        </span>
+                      </div>
+                      {r.comment && (
+                        <p className="mt-1 text-sm text-muted">{r.comment}</p>
+                      )}
+
+                      {(tinderEntries.length > 0 || hasPotenzialOrReifegrad) && (
+                        <div className="mt-2 flex flex-wrap gap-1.5">
+                          {tinderEntries.map((entry) => (
+                            <span
+                              key={entry.label}
+                              className="inline-flex items-center gap-1 rounded-full bg-paper px-2.5 py-0.5 text-xs text-ink"
+                            >
+                              {entry.label}: {entry.value}/4
+                            </span>
+                          ))}
+                          {r.potenzial != null && (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-paper px-2.5 py-0.5 text-xs text-ink">
+                              Potenzial: {r.potenzial}/4
+                            </span>
+                          )}
+                          {r.reifegrad != null && (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-paper px-2.5 py-0.5 text-xs text-ink">
+                              Reifegrad: {r.reifegrad > 0 ? "+" : ""}
+                              {r.reifegrad}
+                            </span>
+                          )}
+                        </div>
+                      )}
+
+                      <p className="mt-1 text-xs text-muted">{r.authorName}</p>
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </section>
