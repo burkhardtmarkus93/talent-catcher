@@ -14,6 +14,7 @@ import { getGkCoordinationTestsForTalent } from "@/lib/queries/gkTests";
 import { getTalentActivityStatus } from "@/lib/queries/talentActivity";
 import { InactivityBanner } from "@/components/talents/InactivityBanner";
 import { getCurrentAppUser } from "@/lib/queries/session";
+import { TalentTags } from "@/components/talents/TalentTags";
 
 function age(birthDate: string): number {
   const diff = Date.now() - new Date(birthDate).getTime();
@@ -145,6 +146,13 @@ export default async function TalentDetailPage({
                 </>
               )}
             </dl>
+          </section>
+
+          <section className="mt-6 rounded-md border border-line bg-surface p-5">
+            <h2 className="mb-3 font-display text-lg font-medium text-ink">
+              Tags
+            </h2>
+            <TalentTags talentId={talent.id} tags={talent.tags ?? []} />
           </section>
 
           <section className="mt-6 rounded-md border border-line bg-surface p-5">
