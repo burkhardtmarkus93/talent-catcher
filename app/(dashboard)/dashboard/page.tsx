@@ -3,14 +3,20 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { RiskDot } from "@/components/ui/RiskDot";
 import { HiddenGemBadge } from "@/components/ui/HiddenGemBadge";
 import { Button } from "@/components/ui/Button";
-import { dummyTalents, dummyWatchlists } from "@/lib/dummy-data";
+import { getTalents, getOpenRemindersForClub } from "@/lib/queries/talents";
+import { getWatchlists } from "@/lib/queries/watchlists";
 
-export default function DashboardPage() {
-  const urgent = [...dummyTalents]
+export default async function DashboardPage() {
+  const [talents, openReminders, watchlists] = await Promise.all([
+    getTalents(),
+    getOpenRemindersForClub(),
+    getWatchlists(),
+  ]);
+
+  const urgent = [...talents]
     .filter((t) => t.currentAlert && t.currentAlert.riskLevel !== "gruen")
     .sort((a, b) => (b.currentAlert?.riskScore ?? 0) - (a.currentAlert?.riskScore ?? 0));
 
-  const openReminders = 12; // Platzhalter, bis Reminder-Query angebunden ist
   const highAlerts = urgent.filter((t) => t.currentAlert?.riskLevel === "rot").length;
 
   return (
@@ -51,7 +57,7 @@ export default function DashboardPage() {
                 Talente gesamt
               </p>
               <p className="mt-1 font-mono text-xl text-ink">
-                {dummyTalents.length}
+                {talents.length}
               </p>
             </div>
             <div>
@@ -59,7 +65,7 @@ export default function DashboardPage() {
                 Offene Wiedervorlagen
               </p>
               <p className="mt-1 font-mono text-xl text-ink">
-                {openReminders}
+                {openReminders.length}
               </p>
             </div>
           </div>
@@ -112,8 +118,13 @@ export default function DashboardPage() {
         <h2 className="mb-4 font-display text-lg font-medium text-ink">
           Meine Watchlists
         </h2>
+        {watchlists.length === 0 ? (
+          <p className="rounded-sm bg-paper px-4 py-6 text-center text-sm text-muted">
+            Noch keine Watchlist angelegt.
+          </p>
+        ) : (
         <ul className="flex flex-wrap gap-3">
-          {dummyWatchlists.map((w) => (
+          {watchlists.map((w) => (
             <li key={w.id}>
               <Link
                 href={`/watchlists/${w.id}`}
@@ -125,6 +136,7 @@ export default function DashboardPage() {
             </li>
           ))}
         </ul>
+        )}
       </section>
 
       {/* Prinzipien-Leiste, sinngemäß übersetzt aus der Bukara-Trust-Leiste:
