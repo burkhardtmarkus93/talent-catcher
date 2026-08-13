@@ -114,4 +114,5 @@ export interface ImportJobPreview {
   importedRows: number;
   errorRows: number;
   startedAt: string;
+  errorReport?: { row: number; reason: string }[] | null;
 }
