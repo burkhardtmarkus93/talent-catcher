@@ -1,7 +1,7 @@
 import { PageHeader } from "@/components/ui/PageHeader";
-import { Button } from "@/components/ui/Button";
-import { ColumnMapper } from "@/components/import/ColumnMapper";
-import { dummyImportHistory } from "@/lib/dummy-data";
+import { ImportFlow } from "@/components/import/ImportFlow";
+import { DownloadErrorReportButton } from "@/components/import/DownloadErrorReportButton";
+import { getImportJobs } from "@/lib/queries/importJobs";
 
 const statusLabels: Record<string, string> = {
   laeuft: "Läuft",
@@ -10,7 +10,9 @@ const statusLabels: Record<string, string> = {
   teilweise_fehlgeschlagen: "Teilweise fehlgeschlagen",
 };
 
-export default function ImportPage() {
+export default async function ImportPage() {
+  const importHistory = await getImportJobs();
+
   return (
     <div>
       <PageHeader
@@ -18,17 +20,8 @@ export default function ImportPage() {
         subtitle="Bestehende Scouting-Listen aus CSV/XLSX übernehmen"
       />
 
-      <div className="mb-6 flex items-center gap-4 rounded-md border border-line bg-surface p-5">
-        <span className="text-sm text-ink">Datei auswählen (CSV/XLSX)</span>
-        <input type="file" accept=".csv,.xlsx" className="text-sm" />
-      </div>
-
-      <div className="mb-6">
-        <ColumnMapper />
-      </div>
-
-      <div className="mb-8 flex justify-end">
-        <Button>Import starten</Button>
+      <div className="mb-8">
+        <ImportFlow />
       </div>
 
       <section>
@@ -46,28 +39,41 @@ export default function ImportPage() {
             </tr>
           </thead>
           <tbody>
-            {dummyImportHistory.map((job) => (
-              <tr key={job.id} className="hover:bg-pitch-dim/40">
-                <td className="td-cell">{job.sourceFilename}</td>
-                <td className="td-cell text-muted">{job.startedAt}</td>
-                <td className="td-cell">{statusLabels[job.status]}</td>
-                <td className="td-cell text-muted">
-                  {job.importedRows} von {job.totalRows}
-                  {job.errorRows > 0 && (
-                    <span className="ml-1 text-brick">
-                      ({job.errorRows} fehlerhaft)
-                    </span>
-                  )}
-                </td>
-                <td className="td-cell text-right">
-                  {job.errorRows > 0 ? (
-                    <Button variant="secondary">Herunterladen</Button>
-                  ) : (
-                    <span className="text-muted">—</span>
-                  )}
+            {importHistory.length === 0 ? (
+              <tr>
+                <td className="td-cell text-center text-muted" colSpan={5}>
+                  Noch keine Importe durchgeführt.
                 </td>
               </tr>
-            ))}
+            ) : (
+              importHistory.map((job) => (
+                <tr key={job.id} className="hover:bg-pitch-dim/40">
+                  <td className="td-cell">{job.sourceFilename}</td>
+                  <td className="td-cell text-muted">
+                    {new Date(job.startedAt).toLocaleDateString("de-DE")}
+                  </td>
+                  <td className="td-cell">{statusLabels[job.status]}</td>
+                  <td className="td-cell text-muted">
+                    {job.importedRows} von {job.totalRows}
+                    {job.errorRows > 0 && (
+                      <span className="ml-1 text-brick">
+                        ({job.errorRows} fehlerhaft)
+                      </span>
+                    )}
+                  </td>
+                  <td className="td-cell text-right">
+                    {job.errorRows > 0 && job.errorReport ? (
+                      <DownloadErrorReportButton
+                        sourceFilename={job.sourceFilename}
+                        errorReport={job.errorReport}
+                      />
+                    ) : (
+                      <span className="text-muted">—</span>
+                    )}
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </section>
