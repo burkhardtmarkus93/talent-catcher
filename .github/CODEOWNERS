@@ -1,0 +1,21 @@
+# CODEOWNERS für Talent Catcher
+#
+# Diese Pfade gelten als sensibel (Datenschutz/Jugendschutz-relevant,
+# siehe CLAUDE.md Kapitel 3 & 6) und benötigen bei jeder Änderung eine
+# explizite Freigabe, unabhängig von grünem CI-Status.
+#
+# Voraussetzung: In den Branch-Protection-Regeln für `main` muss
+# "Require review from Code Owners" aktiviert sein, sonst wirkt diese
+# Datei nicht.
+
+# Datenbankschema, RLS-Policies, Migrationen
+/supabase/migrations/ @burkhardtmarkus93
+
+# Auth-/Session-Handling
+/middleware.ts @burkhardtmarkus93
+
+# Jugendschutz-Zugriffsprüfung (has_youth_access)
+/lib/queries/session.ts @burkhardtmarkus93
+
+# Risk-Engine (Geschäftslogik der automatisierten Frühwarnung)
+/lib/alerts/riskEngine.ts @burkhardtmarkus93
