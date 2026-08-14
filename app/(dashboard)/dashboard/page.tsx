@@ -24,6 +24,11 @@ export default async function DashboardPage() {
       <PageHeader
         title="Dashboard"
         subtitle="Überblick über den aktuellen Handlungsbedarf"
+        icon={
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <path d="M4 13h6V4H4v9Zm0 7h6v-5H4v5Zm10 0h6V11h-6v9Zm0-16v5h6V4h-6Z" />
+          </svg>
+        }
         action={
           <Link href="/talents/new">
             <Button>+ Neues Talent</Button>
