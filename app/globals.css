@@ -26,4 +26,28 @@
   .td-cell {
     @apply px-4 py-3 text-sm text-ink border-b border-line;
   }
+
+  /* Gemeinsamer Stil für Text-/Datums-/Zahlen-Inputs und Textareas:
+     dezenter Schatten statt reiner Flat-Border, weicher Fokus-Ring statt
+     hartem Browser-Outline (siehe :focus-visible-Regel oben, die bleibt
+     für Buttons/Links zuständig). */
+  .field {
+    @apply w-full rounded-sm border border-line bg-white px-3 py-2 text-sm text-ink shadow-sm outline-none transition-shadow duration-150 placeholder:text-muted;
+  }
+  .field:hover {
+    @apply border-pitch/40;
+  }
+  .field:focus {
+    @apply border-pitch ring-2 ring-pitch/15;
+  }
+
+  /* Native <select>-Elemente sehen browserübergreifend stark veraltet
+     aus (Standard-Chrome). appearance:none + eigener Pfeil modernisiert
+     sie, ohne eine JS-Dropdown-Bibliothek einzuführen. */
+  .select-field {
+    @apply field appearance-none bg-no-repeat pr-9;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%236B7570' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 7.5L10 12l4.5-4.5'/%3E%3C/svg%3E");
+    background-position: right 0.65rem center;
+    background-size: 14px 14px;
+  }
 }

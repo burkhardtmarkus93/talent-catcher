@@ -27,7 +27,7 @@ export default function UpdatePasswordPage({
               name="password"
               required
               minLength={8}
-              className="rounded-sm border border-line px-3 py-2 text-sm outline-none focus:border-pitch"
+              className="field"
             />
           </label>
           <label className="flex flex-col gap-1.5 text-sm text-ink">
@@ -37,7 +37,7 @@ export default function UpdatePasswordPage({
               name="confirmPassword"
               required
               minLength={8}
-              className="rounded-sm border border-line px-3 py-2 text-sm outline-none focus:border-pitch"
+              className="field"
             />
           </label>
           <Button type="submit" className="w-full">

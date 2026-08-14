@@ -40,7 +40,7 @@ export function ReminderForm({ talentId }: { talentId: string }) {
           type="date"
           name="dueDate"
           required
-          className="rounded-sm border border-line px-2 py-1 text-sm text-ink"
+          className="field"
         />
       </label>
       <label className="flex flex-col gap-1 text-xs text-muted">
@@ -48,7 +48,7 @@ export function ReminderForm({ talentId }: { talentId: string }) {
         <input
           type="text"
           name="reason"
-          className="rounded-sm border border-line px-2 py-1 text-sm text-ink"
+          className="field"
         />
       </label>
       <SubmitButton />

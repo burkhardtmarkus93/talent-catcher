@@ -15,7 +15,7 @@ export default function WatchlistsPage() {
       <input
         type="search"
         placeholder="Watchlists durchsuchen..."
-        className="mb-4 w-full max-w-sm rounded-sm border border-line px-3 py-2 text-sm outline-none focus:border-pitch"
+        className="field mb-4 max-w-sm"
       />
 
       <ul className="divide-y divide-line rounded-sm border border-line bg-surface">

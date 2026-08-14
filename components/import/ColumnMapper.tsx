@@ -26,7 +26,7 @@ export function ColumnMapper({ headers, mapping, onChange }: ColumnMapperProps) 
               onChange={(e) =>
                 onChange(column, e.target.value as ImportFieldKey | "")
               }
-              className="rounded-sm border border-line px-3 py-2 text-sm text-ink"
+              className="select-field"
             >
               {IMPORT_SYSTEM_FIELDS.map((f) => (
                 <option key={f.label} value={f.key}>

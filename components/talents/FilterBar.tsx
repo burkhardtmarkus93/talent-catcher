@@ -50,7 +50,7 @@ export function FilterBar({
             type="text"
             defaultValue={q}
             placeholder="Name oder Verein"
-            className="w-full rounded-sm border border-line bg-white px-3 py-2 text-ink"
+            className="field"
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 updateParams({ q: e.currentTarget.value, showArchived });
@@ -129,7 +129,7 @@ function Select({
       <select
         value={value}
         onChange={(e) => onChange(e.currentTarget.value)}
-        className="rounded-sm border border-line bg-white px-2 py-1 text-ink"
+        className="select-field w-auto py-1"
       >
         {options.map((o) => (
           <option key={o}>{o}</option>
