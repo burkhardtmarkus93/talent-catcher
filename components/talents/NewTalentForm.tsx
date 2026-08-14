@@ -32,7 +32,7 @@ export function NewTalentForm() {
             <select
               name="contractStatus"
               defaultValue="unbekannt"
-              className="rounded-sm border border-line px-3 py-2 text-sm text-ink outline-none focus:border-pitch"
+              className="select-field"
             >
               <option value="unbekannt">Unbekannt</option>
               <option value="aktiv">Aktiv</option>
@@ -85,7 +85,7 @@ function Field({
         name={name}
         required={required}
         placeholder={placeholder}
-        className="rounded-sm border border-line px-3 py-2 text-sm outline-none focus:border-pitch"
+        className="field"
       />
     </label>
   );

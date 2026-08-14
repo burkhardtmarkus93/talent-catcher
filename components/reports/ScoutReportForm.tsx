@@ -142,7 +142,7 @@ export function ScoutReportForm({
             type="date"
             name="matchDate"
             required
-            className="rounded-sm border border-line px-3 py-2 text-sm outline-none focus:border-pitch"
+            className="field"
           />
         </label>
         <label className="flex flex-col gap-1.5 text-sm text-ink">
@@ -151,7 +151,7 @@ export function ScoutReportForm({
             type="text"
             name="opponent"
             placeholder="z. B. SC Nachbarort"
-            className="rounded-sm border border-line px-3 py-2 text-sm outline-none focus:border-pitch"
+            className="field"
           />
         </label>
       </div>
@@ -229,7 +229,7 @@ export function ScoutReportForm({
           <select
             value={potenzial}
             onChange={(e) => setPotenzial(Number(e.target.value))}
-            className="rounded-sm border border-line px-3 py-2 text-sm outline-none focus:border-pitch"
+            className="select-field"
           >
             <option value={1}>1 – hoch</option>
             <option value={2}>2 – überdurchschnittlich</option>
@@ -246,7 +246,7 @@ export function ScoutReportForm({
           <select
             value={reifegrad}
             onChange={(e) => setReifegrad(Number(e.target.value))}
-            className="rounded-sm border border-line px-3 py-2 text-sm outline-none focus:border-pitch"
+            className="select-field"
           >
             <option value={-2}>-2 – Spätentwickler</option>
             <option value={-1}>-1 – eher spät entwickelt</option>
@@ -288,7 +288,7 @@ export function ScoutReportForm({
               step={0.1}
               value={overrideValue}
               onChange={(e) => setOverrideValue(parseFloat(e.target.value))}
-              className="rounded-sm border border-line px-3 py-2 text-sm outline-none focus:border-pitch"
+              className="field"
             />
           </label>
           <label className="flex flex-col gap-1.5 text-sm text-ink">
@@ -298,7 +298,7 @@ export function ScoutReportForm({
               value={overrideReason}
               onChange={(e) => setOverrideReason(e.target.value)}
               placeholder="z. B. Einzelaktion überstrahlt Gesamtleistung"
-              className="rounded-sm border border-line px-3 py-2 text-sm outline-none focus:border-pitch"
+              className="field"
             />
           </label>
         </div>
@@ -310,7 +310,7 @@ export function ScoutReportForm({
           name="comment"
           rows={4}
           placeholder="Freitext-Beobachtung..."
-          className="rounded-sm border border-line px-3 py-2 text-sm outline-none focus:border-pitch"
+          className="field"
         />
       </label>
 

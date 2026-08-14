@@ -52,7 +52,7 @@ export function TalentTags({
           value={newTag}
           onChange={(e) => setNewTag(e.target.value)}
           placeholder="z. B. torgefährlich"
-          className="flex-1 rounded-sm border border-line px-3 py-1.5 text-sm outline-none focus:border-pitch"
+          className="field flex-1"
         />
         <button
           type="submit"

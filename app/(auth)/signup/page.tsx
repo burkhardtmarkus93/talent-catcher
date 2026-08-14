@@ -37,7 +37,7 @@ export default function SignupPage({
                 name="clubName"
                 required
                 placeholder="FC Beispiel"
-                className="rounded-sm border border-line px-3 py-2 text-sm outline-none focus:border-pitch"
+                className="field"
               />
             </label>
 
@@ -48,7 +48,7 @@ export default function SignupPage({
                 name="email"
                 required
                 placeholder="scout@verein.de"
-                className="rounded-sm border border-line px-3 py-2 text-sm outline-none focus:border-pitch"
+                className="field"
               />
             </label>
 
@@ -60,7 +60,7 @@ export default function SignupPage({
                 required
                 minLength={8}
                 placeholder="Mindestens 8 Zeichen"
-                className="rounded-sm border border-line px-3 py-2 text-sm outline-none focus:border-pitch"
+                className="field"
               />
             </label>
           </div>
