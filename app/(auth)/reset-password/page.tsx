@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
+import { LogoLockup } from "@/components/ui/LogoLockup";
 import { requestPasswordReset } from "@/lib/actions/auth";
 
 export default function ResetPasswordPage({
@@ -11,7 +12,8 @@ export default function ResetPasswordPage({
     <main className="flex min-h-screen items-center justify-center bg-paper px-4">
       <div className="w-full max-w-sm rounded-xl border border-line bg-surface p-8 shadow-sm">
         <div className="mb-8 text-center">
-          <h1 className="font-display text-2xl font-medium text-ink">
+          <LogoLockup height={90} className="mb-2" />
+          <h1 className="font-display text-xl font-medium text-ink">
             Passwort zurücksetzen
           </h1>
           <p className="mt-1 text-sm text-muted">
@@ -19,15 +21,15 @@ export default function ResetPasswordPage({
           </p>
 
           {searchParams.error ? (
-            <p className="mt-4 rounded-lg border border-error/30 bg-error/10 px-3 py-2 text-sm text-error">
+            <div className="mt-4 rounded-lg border border-brick/30 bg-brick/5 px-3 py-2 text-sm text-brick">
               {searchParams.error}
-            </p>
+            </div>
           ) : null}
 
           {searchParams.success ? (
-            <p className="mt-4 rounded-lg border border-green-600/30 bg-green-600/10 px-3 py-2 text-sm text-green-700">
+            <div className="mt-4 rounded-lg border border-pitch/30 bg-pitch/5 px-3 py-2 text-sm text-pitch">
               {searchParams.success}
-            </p>
+            </div>
           ) : null}
         </div>
 
