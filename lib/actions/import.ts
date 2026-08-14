@@ -8,6 +8,8 @@ import {
   REQUIRED_IMPORT_FIELDS,
   type ImportFieldKey,
 } from "@/lib/import/fields";
+import { getActiveTalentCount } from "@/lib/queries/talents";
+import { PLANS } from "@/lib/plans";
 
 const CONTRACT_STATUS_VALUES = new Set([
   "aktiv",
@@ -150,6 +152,12 @@ export async function runImport(input: RunImportInput): Promise<RunImportResult>
   const errors: RowError[] = [];
   let importedRows = 0;
 
+  const planLimit = appUser.clubPlan ? PLANS[appUser.clubPlan]?.maxActiveTalents : null;
+  let activeTalentCount =
+    planLimit !== null && planLimit !== undefined
+      ? await getActiveTalentCount(appUser.clubId)
+      : 0;
+
   const get = (row: string[], field: ImportFieldKey): string => {
     const index = columnIndexByField.get(field);
     return index === undefined ? "" : (row[index] ?? "").trim();
@@ -158,6 +166,14 @@ export async function runImport(input: RunImportInput): Promise<RunImportResult>
   for (let i = 0; i < input.rows.length; i++) {
     const row = input.rows[i];
     const spreadsheetRow = i + 2; // +1 Kopfzeile, +1 für 1-basierten Index
+
+    if (planLimit !== null && planLimit !== undefined && activeTalentCount >= planLimit) {
+      errors.push({
+        row: spreadsheetRow,
+        reason: `Plan-Limit erreicht (max. ${planLimit} aktive Talente). Bitte upgraden, um weitere Zeilen zu importieren.`,
+      });
+      continue;
+    }
 
     const firstName = get(row, "firstName");
     const lastName = get(row, "lastName");
@@ -233,6 +249,7 @@ export async function runImport(input: RunImportInput): Promise<RunImportResult>
     }
 
     importedRows++;
+    activeTalentCount++;
 
     if (inserted.is_minor) {
       const { error: consentError } = await supabase.from("consent_records").insert({

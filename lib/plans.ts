@@ -1,0 +1,88 @@
+// Zentrale Plan-Definition für Talent Catcher.
+//
+// Preisherleitung (Stand August 2026, siehe Chat-Verlauf für Quellen):
+// Spezialisierte Scouting-Tools für den Amateurbereich liegen zwischen
+// ca. 10€/Monat (Scout App) und 20-90€/Monat (Scout52); allgemeine
+// Vereinssoftware zwischen 7€ und 80€/Monat je nach Funktionsumfang.
+// Talent Catcher ist kein Vereinsverwaltungstool (Mitglieder/Buchhaltung),
+// sondern ein spezialisiertes Scouting-Frühwarnsystem — daher näher an
+// der Scouting-Nische als an allgemeiner Vereinssoftware positioniert.
+// Profi-Tools wie Wyscout (20k+£/Jahr) sind kein relevanter Vergleich
+// für die Zielgruppe Amateurverein/Scout.
+
+export type PlanKey = "start" | "verein" | "verband";
+export type BillingInterval = "monatlich" | "jaehrlich";
+
+export interface Plan {
+  key: PlanKey;
+  name: string;
+  tagline: string;
+  priceMonthly: number | null; // null = kein Selfservice-Preis (Verband/NLZ)
+  priceYearly: number | null; // Gesamtpreis pro Jahr, nicht pro Monat
+  maxScouts: number | null; // null = unbegrenzt
+  maxActiveTalents: number | null; // null = unbegrenzt
+  features: string[];
+  selfService: boolean;
+}
+
+export const PLANS: Record<PlanKey, Plan> = {
+  start: {
+    key: "start",
+    name: "Start",
+    tagline: "Für den ersten Überblick in einem kleinen Verein",
+    priceMonthly: 19,
+    priceYearly: 190, // entspricht ~15,83€/Monat, 2 Monate gratis
+    maxScouts: 1,
+    maxActiveTalents: 25,
+    features: [
+      "1 Scout-Zugang",
+      "Bis zu 25 aktive Talente",
+      "Talent-Profile & Scout-Reports",
+      "Automatische Risk-Engine-Alerts",
+      "Dashboard & Wiedervorlagen",
+    ],
+    selfService: true,
+  },
+  verein: {
+    key: "verein",
+    name: "Verein",
+    tagline: "Für Vereine mit mehreren Scouts",
+    priceMonthly: 49,
+    priceYearly: 490, // entspricht ~40,83€/Monat, 2 Monate gratis
+    maxScouts: 5,
+    maxActiveTalents: null,
+    features: [
+      "Bis zu 5 Scout-Zugänge",
+      "Unbegrenzte aktive Talente",
+      "Alles aus Start",
+      "CSV/XLSX-Import",
+      "Watchlists",
+      "Torwart-Koordinationstests",
+    ],
+    selfService: true,
+  },
+  verband: {
+    key: "verband",
+    name: "Verband / NLZ",
+    tagline: "Individuelles Zugriffsmodell für mehrere Vereine oder Zubringerstrukturen",
+    priceMonthly: null,
+    priceYearly: null,
+    maxScouts: null,
+    maxActiveTalents: null,
+    features: [
+      "Mehrere Vereine / Zubringerstrukturen",
+      "Individuelles Rollenmodell",
+      "Dedizierter Ansprechpartner",
+      "Preis auf Anfrage",
+    ],
+    selfService: false,
+  },
+};
+
+export function formatEuro(amount: number): string {
+  return new Intl.NumberFormat("de-DE", {
+    style: "currency",
+    currency: "EUR",
+    minimumFractionDigits: amount % 1 === 0 ? 0 : 2,
+  }).format(amount);
+}

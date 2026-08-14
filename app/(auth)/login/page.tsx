@@ -75,6 +75,13 @@ export default function LoginPage({
             Passwort vergessen?
           </Link>
         </p>
+
+        <p className="mt-2 text-center text-sm text-muted">
+          Noch kein Konto?{" "}
+          <Link href="/signup" className="text-pitch underline-offset-2 hover:underline">
+            Verein registrieren
+          </Link>
+        </p>
       </div>
     </main>
   );
