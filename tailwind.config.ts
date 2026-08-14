@@ -1,8 +1,10 @@
 import type { Config } from "tailwindcss";
 
-// Design-System "Scouting-Dossier": ruhig, seriös, datenorientiert.
-// Bewusst kein warmes Creme/Terracotta-Duo und kein Neon-auf-Schwarz —
-// stattdessen eine gedeckte, an ein Aktenblatt und den Rasen angelehnte Palette.
+// Design-System "Scouting-Dossier": datenorientiert, aber an die
+// Mint-Akzentfarbe der Bildmarke angeglichen statt einem eigenständigen,
+// unverwandten Waldgrün. Ampelfarben als Soft-Tint-Paar (kräftiger Text-
+// /Icon-Ton + heller Hintergrund-Ton), wie bei modernen SaaS-Dashboards
+// üblich — siehe Design-Vorschlag "Talent Catcher Neugestaltung".
 const config: Config = {
   content: [
     "./app/**/*.{ts,tsx}",
@@ -15,12 +17,20 @@ const config: Config = {
         paper: "#F5F6F3",     // Seitenhintergrund, kühles Papierweiß
         surface: "#FFFFFF",   // Karten-/Tabellenflächen
         pitch: {
-          DEFAULT: "#1F5F44", // Primärakzent: gedecktes Rasengrün
-          dim: "#E7EEEA",     // heller Hover-/Hintergrundton
-          dark: "#163F2E",
+          DEFAULT: "#0D9488", // Primärakzent: an das Logo-Mint angeglichenes Teal
+          dark: "#0B7A70",    // Hover-/Pressed-Ton
+          dim: "#E3F7F4",     // heller Soft-Tint-Hintergrund (Badges, Hover)
+          bright: "#2DD4BF",  // sparsam: Icon-Chips/Highlights, nah am Logo-Mint
         },
-        amber: "#C9922B",     // Ampel gelb, gedeckter Senfton statt Signalgelb
-        brick: "#A13D2E",     // Ampel rot, gedeckter Ziegelton statt Signalrot
+        amber: {
+          DEFAULT: "#D98C1B", // Ampel gelb
+          dark: "#B8791A",    // Text auf amber-dim
+          dim: "#FDF1DE",     // heller Soft-Tint-Hintergrund
+        },
+        brick: {
+          DEFAULT: "#C1402B", // Ampel rot
+          dim: "#FCEAE6",     // heller Soft-Tint-Hintergrund
+        },
         line: "#DCDFD9",      // Trennlinien, Tabellen-Hairlines
         muted: "#6B7570",     // Sekundärtext
       },

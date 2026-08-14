@@ -9,7 +9,7 @@ export default function ResetPasswordPage({
 }) {
   return (
     <main className="flex min-h-screen items-center justify-center bg-paper px-4">
-      <div className="w-full max-w-sm rounded-md border border-line bg-surface p-8 shadow-sm">
+      <div className="w-full max-w-sm rounded-xl border border-line bg-surface p-8 shadow-sm">
         <div className="mb-8 text-center">
           <h1 className="font-display text-2xl font-medium text-ink">
             Passwort zurücksetzen
@@ -19,13 +19,13 @@ export default function ResetPasswordPage({
           </p>
 
           {searchParams.error ? (
-            <p className="mt-4 rounded-sm border border-error/30 bg-error/10 px-3 py-2 text-sm text-error">
+            <p className="mt-4 rounded-lg border border-error/30 bg-error/10 px-3 py-2 text-sm text-error">
               {searchParams.error}
             </p>
           ) : null}
 
           {searchParams.success ? (
-            <p className="mt-4 rounded-sm border border-green-600/30 bg-green-600/10 px-3 py-2 text-sm text-green-700">
+            <p className="mt-4 rounded-lg border border-green-600/30 bg-green-600/10 px-3 py-2 text-sm text-green-700">
               {searchParams.success}
             </p>
           ) : null}
@@ -51,7 +51,7 @@ export default function ResetPasswordPage({
         <div className="mt-6">
           <Link
             href="/login"
-            className="inline-flex w-full items-center justify-center rounded-sm border border-line px-3 py-2 text-sm text-ink transition hover:bg-paper"
+            className="inline-flex w-full items-center justify-center rounded-lg border border-line px-3 py-2 text-sm text-ink transition hover:bg-paper"
           >
             Zurück zum Login
           </Link>

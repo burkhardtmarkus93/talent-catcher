@@ -11,7 +11,7 @@ export function InactivityBanner({
   const formattedDate = lastActivityAt.toLocaleDateString("de-DE");
 
   return (
-    <div className="mb-4 rounded-sm border border-amber-500/40 bg-amber-50 px-4 py-3">
+    <div className="mb-4 rounded-lg border border-amber-500/40 bg-amber-50 px-4 py-3">
       <p className="text-sm text-amber-800">
         Seit über 3 Monaten keine Aktivität bei diesem Talent (zuletzt:{" "}
         {formattedDate}).
@@ -21,14 +21,14 @@ export function InactivityBanner({
           <input type="hidden" name="talentId" value={talentId} />
           <button
             type="submit"
-            className="rounded-sm border border-amber-600 bg-white px-3 py-1.5 text-sm font-medium text-amber-800 hover:bg-amber-100"
+            className="rounded-lg border border-amber-600 bg-white px-3 py-1.5 text-sm font-medium text-amber-800 hover:bg-amber-100"
           >
             Archivieren
           </button>
         </form>
         <Link
           href={`#reminder-form`}
-          className="rounded-sm border border-line bg-white px-3 py-1.5 text-sm text-ink hover:bg-paper"
+          className="rounded-lg border border-line bg-white px-3 py-1.5 text-sm text-ink hover:bg-paper"
         >
           Nochmal nachhaken →
         </Link>

@@ -73,7 +73,7 @@ export function ScoutReportForm({
   const displayedRating = overrideActive ? overrideValue : calculatedRating;
 
   return (
-    <form action={formAction} className="rounded-md border border-line bg-surface p-6">
+    <form action={formAction} className="rounded-xl border border-line bg-surface p-6">
       <input type="hidden" name="talentId" value={talentId} />
       {reminderId && <input type="hidden" name="reminderId" value={reminderId} />}
 
@@ -124,13 +124,13 @@ export function ScoutReportForm({
       )}
 
       {state.error && (
-        <div className="mb-4 rounded-sm border border-brick/30 bg-brick/5 px-3 py-2 text-sm text-brick">
+        <div className="mb-4 rounded-lg border border-brick/30 bg-brick/5 px-3 py-2 text-sm text-brick">
           {state.error}
         </div>
       )}
 
       {reminderId && (
-        <p className="mb-4 rounded-sm bg-pitch-dim px-3 py-2 text-xs text-pitch-dark">
+        <p className="mb-4 rounded-lg bg-pitch-dim px-3 py-2 text-xs text-pitch-dark">
           Dieser Bericht schließt die zugehörige Wiedervorlage automatisch ab.
         </p>
       )}
@@ -172,7 +172,7 @@ export function ScoutReportForm({
                   onClick={() =>
                     setScores((prev) => ({ ...prev, [criterion]: value }))
                   }
-                  className={`h-8 w-8 rounded-sm border text-sm font-mono transition-colors ${
+                  className={`h-8 w-8 rounded-lg border text-sm font-mono transition-colors ${
                     scores[criterion] === value
                       ? "border-pitch bg-pitch text-white"
                       : "border-line bg-white text-ink hover:bg-pitch-dim"
@@ -186,7 +186,7 @@ export function ScoutReportForm({
         ))}
       </div>
 
-      <div className="mb-6 rounded-sm border border-line bg-paper p-4">
+      <div className="mb-6 rounded-lg border border-line bg-paper p-4">
         <div className="mb-3">
           <p className="text-sm font-semibold text-ink">TINDER-Kriterien</p>
           <p className="text-xs text-muted">
@@ -208,7 +208,7 @@ export function ScoutReportForm({
                     onClick={() =>
                       setTinderScores((prev) => ({ ...prev, [criterion]: value }))
                     }
-                    className={`h-8 w-8 rounded-sm border text-sm font-mono transition-colors ${
+                    className={`h-8 w-8 rounded-lg border text-sm font-mono transition-colors ${
                       tinderScores[criterion] === value
                         ? "border-pitch bg-pitch text-white"
                         : "border-line bg-white text-ink hover:bg-pitch-dim"
@@ -260,7 +260,7 @@ export function ScoutReportForm({
         </label>
       </div>
 
-      <div className="mb-6 flex items-center justify-between rounded-sm bg-paper px-4 py-3">
+      <div className="mb-6 flex items-center justify-between rounded-lg bg-paper px-4 py-3">
         <div>
           <p className="text-xs uppercase tracking-wide text-muted">
             Gesamtrating {overrideActive ? "(manuell)" : "(wird bei Speichern berechnet)"}

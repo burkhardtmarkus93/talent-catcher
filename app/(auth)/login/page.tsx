@@ -10,7 +10,7 @@ export default function LoginPage({
 }) {
   return (
     <main className="flex min-h-screen items-center justify-center bg-paper px-4">
-      <div className="w-full max-w-sm rounded-md border border-line bg-surface p-8 shadow-sm">
+      <div className="w-full max-w-sm rounded-xl border border-line bg-surface p-8 shadow-sm">
         <div className="mb-8 text-center">
           <LogoLockup height={100} className="mb-2" />
           <p className="mt-1 text-sm text-muted">
@@ -19,13 +19,13 @@ export default function LoginPage({
         </div>
 
         {searchParams.error ? (
-          <div className="mb-4 rounded-sm border border-brick/30 bg-brick/5 px-3 py-2 text-sm text-brick">
+          <div className="mb-4 rounded-lg border border-brick/30 bg-brick/5 px-3 py-2 text-sm text-brick">
             {searchParams.error}
           </div>
         ) : null}
 
         {searchParams.success ? (
-          <div className="mb-4 rounded-sm border border-green-600/30 bg-green-600/10 px-3 py-2 text-sm text-green-700">
+          <div className="mb-4 rounded-lg border border-green-600/30 bg-green-600/10 px-3 py-2 text-sm text-green-700">
             {searchParams.success}
           </div>
         ) : null}
@@ -56,7 +56,7 @@ export default function LoginPage({
             <input
               type="checkbox"
               name="remember"
-              className="rounded-sm border-line"
+              className="rounded border-line"
             />
             Angemeldet bleiben
           </label>

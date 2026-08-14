@@ -33,7 +33,7 @@ export default async function DashboardPage() {
 
       {/* Hero-These statt drei gleichgewichtete Statistik-Kacheln:
           Ein klarer Fokuspunkt, Nebenzahlen kleiner daneben. */}
-      <div className="mb-8 overflow-hidden rounded-md border border-line bg-surface">
+      <div className="mb-8 overflow-hidden rounded-xl border border-line bg-surface">
         <div className="flex flex-col gap-6 p-6 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-xs uppercase tracking-wide text-muted">
@@ -51,28 +51,46 @@ export default async function DashboardPage() {
               )}
             </p>
           </div>
-          <div className="flex gap-8 border-t border-line pt-4 md:border-t-0 md:border-l md:pl-8 md:pt-0">
-            <div>
-              <p className="text-xs uppercase tracking-wide text-muted">
-                Talente gesamt
-              </p>
-              <p className="mt-1 font-mono text-xl text-ink">
-                {talents.length}
-              </p>
+          <div className="flex gap-4 border-t border-line pt-4 md:border-t-0 md:border-l md:pl-8 md:pt-0">
+            <div className="flex items-start gap-3 rounded-lg bg-paper px-3 py-2">
+              <span className="flex h-8 w-8 flex-none items-center justify-center rounded-lg bg-pitch-dim text-pitch-dark">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+              </span>
+              <div>
+                <p className="text-xs uppercase tracking-wide text-muted">
+                  Talente gesamt
+                </p>
+                <p className="mt-0.5 font-mono text-xl text-ink">
+                  {talents.length}
+                </p>
+              </div>
             </div>
-            <div>
-              <p className="text-xs uppercase tracking-wide text-muted">
-                Offene Wiedervorlagen
-              </p>
-              <p className="mt-1 font-mono text-xl text-ink">
-                {openReminders.length}
-              </p>
+            <div className="flex items-start gap-3 rounded-lg bg-paper px-3 py-2">
+              <span className="flex h-8 w-8 flex-none items-center justify-center rounded-lg bg-amber-dim text-amber-dark">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M12 7v5l3 3" />
+                </svg>
+              </span>
+              <div>
+                <p className="text-xs uppercase tracking-wide text-muted">
+                  Offene Wiedervorlagen
+                </p>
+                <p className="mt-0.5 font-mono text-xl text-ink">
+                  {openReminders.length}
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <section className="mb-8 rounded-md border border-line bg-surface p-5">
+      <section className="mb-8 rounded-xl border border-line bg-surface p-5">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="font-display text-lg font-medium text-ink">
             Dringendster Handlungsbedarf
@@ -83,7 +101,7 @@ export default async function DashboardPage() {
         </div>
 
         {urgent.length === 0 ? (
-          <p className="rounded-sm bg-paper px-4 py-6 text-center text-sm text-muted">
+          <p className="rounded-lg bg-paper px-4 py-6 text-center text-sm text-muted">
             Kein akuter Handlungsbedarf. Neue Alerts erscheinen hier automatisch.
           </p>
         ) : (
@@ -92,10 +110,13 @@ export default async function DashboardPage() {
               <li key={t.id}>
                 <Link
                   href={`/talents/${t.id}`}
-                  className="flex items-center justify-between rounded-sm border border-line bg-paper px-4 py-3 transition-colors hover:border-pitch"
+                  className="flex items-center justify-between rounded-lg border border-line bg-paper px-4 py-3 transition-colors hover:border-pitch"
                 >
                   <div className="flex items-center gap-3">
-                    <RiskDot level={t.currentAlert!.riskLevel} showLabel={false} />
+                    <span className="flex h-8 w-8 flex-none items-center justify-center rounded-lg bg-pitch-dim text-xs font-bold text-pitch-dark">
+                      {t.firstName[0]}
+                      {t.lastName[0]}
+                    </span>
                     <div>
                       <p className="text-sm font-medium text-ink">
                         {t.firstName} {t.lastName}
@@ -106,7 +127,10 @@ export default async function DashboardPage() {
                     </div>
                     {t.currentAlert?.isHiddenGem && <HiddenGemBadge />}
                   </div>
-                  <span className="text-sm text-pitch">Öffnen →</span>
+                  <div className="flex items-center gap-3">
+                    <RiskDot level={t.currentAlert!.riskLevel} />
+                    <span className="text-sm text-pitch">Öffnen →</span>
+                  </div>
                 </Link>
               </li>
             ))}
@@ -114,12 +138,12 @@ export default async function DashboardPage() {
         )}
       </section>
 
-      <section className="mb-8 rounded-md border border-line bg-surface p-5">
+      <section className="mb-8 rounded-xl border border-line bg-surface p-5">
         <h2 className="mb-4 font-display text-lg font-medium text-ink">
           Meine Watchlists
         </h2>
         {watchlists.length === 0 ? (
-          <p className="rounded-sm bg-paper px-4 py-6 text-center text-sm text-muted">
+          <p className="rounded-lg bg-paper px-4 py-6 text-center text-sm text-muted">
             Noch keine Watchlist angelegt.
           </p>
         ) : (
@@ -128,7 +152,7 @@ export default async function DashboardPage() {
             <li key={w.id}>
               <Link
                 href={`/watchlists/${w.id}`}
-                className="inline-flex items-center gap-1.5 rounded-sm border border-line bg-paper px-3 py-1.5 text-sm text-ink transition-colors hover:border-pitch"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-paper px-3 py-1.5 text-sm text-ink transition-colors hover:border-pitch"
               >
                 {w.name}
                 <span className="text-muted">({w.talentCount})</span>
@@ -141,7 +165,7 @@ export default async function DashboardPage() {
 
       {/* Prinzipien-Leiste, sinngemäß übersetzt aus der Bukara-Trust-Leiste:
           kurze, sachliche Vertrauenssignale statt Versand/Zahlung. */}
-      <section className="rounded-md border border-line bg-paper p-5">
+      <section className="rounded-xl border border-line bg-paper p-5">
         <ul className="grid grid-cols-2 gap-4 text-xs text-muted sm:grid-cols-4">
           <li className="flex flex-col gap-1">
             <span className="font-medium text-ink">Jugendschutz eingebaut</span>

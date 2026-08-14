@@ -65,7 +65,7 @@ export default async function TalentDetailPage({
         />
       )}
 
-      <div className="mt-4 flex items-stretch overflow-hidden rounded-md border border-line bg-surface">
+      <div className="mt-4 flex items-stretch overflow-hidden rounded-xl border border-line bg-surface">
         <div
           className={`w-1.5 shrink-0 ${
             talent.currentAlert?.riskLevel === "rot"
@@ -97,7 +97,7 @@ export default async function TalentDetailPage({
           </div>
 
           {talent.currentAlert && talent.currentAlert.triggeredReasons.length > 0 && (
-            <div className="mt-4 rounded-sm bg-paper px-4 py-3 text-sm text-ink">
+            <div className="mt-4 rounded-lg bg-paper px-4 py-3 text-sm text-ink">
               <span className="font-medium">Begründung: </span>
               {talent.currentAlert.triggeredReasons.join(" · ")}
             </div>
@@ -114,7 +114,7 @@ export default async function TalentDetailPage({
 
       <div className="mt-6 grid grid-cols-3 gap-6">
         <div className="col-span-2">
-          <section className="rounded-md border border-line bg-surface p-5">
+          <section className="rounded-xl border border-line bg-surface p-5">
             <h2 className="mb-4 font-display text-lg font-medium text-ink">
               Übersicht
             </h2>
@@ -148,14 +148,14 @@ export default async function TalentDetailPage({
             </dl>
           </section>
 
-          <section className="mt-6 rounded-md border border-line bg-surface p-5">
+          <section className="mt-6 rounded-xl border border-line bg-surface p-5">
             <h2 className="mb-3 font-display text-lg font-medium text-ink">
               Tags
             </h2>
             <TalentTags talentId={talent.id} tags={talent.tags ?? []} />
           </section>
 
-          <section className="mt-6 rounded-md border border-line bg-surface p-5">
+          <section className="mt-6 rounded-xl border border-line bg-surface p-5">
             <h2 className="mb-4 font-display text-lg font-medium text-ink">
               Berichtsverlauf
             </h2>
@@ -227,7 +227,7 @@ export default async function TalentDetailPage({
           </section>
 
           {talent.primaryPosition === "TW" && (
-            <section className="mt-6 rounded-md border border-line bg-surface p-5">
+            <section className="mt-6 rounded-xl border border-line bg-surface p-5">
               <div className="flex items-center justify-between">
                 <h2 className="font-display text-lg font-medium text-ink">
                   Koordinationstest (Torhüter)
@@ -296,7 +296,7 @@ export default async function TalentDetailPage({
             <ReminderForm talentId={talent.id} />
           </div>
 
-          <section className="rounded-md border border-line bg-surface p-4">
+          <section className="rounded-xl border border-line bg-surface p-4">
             <h2 className="mb-3 font-display text-base font-medium text-ink">
               Offene Wiedervorlagen
             </h2>
@@ -305,7 +305,7 @@ export default async function TalentDetailPage({
             ) : (
               <ul className="flex flex-col gap-3">
                 {openReminders.map((reminder) => (
-                  <li key={reminder.id} className="rounded-sm bg-paper p-3">
+                  <li key={reminder.id} className="rounded-lg bg-paper p-3">
                     <p
                       className={`text-xs font-medium uppercase tracking-wide ${
                         reminder.status === "ueberfaellig" ? "text-brick" : "text-muted"

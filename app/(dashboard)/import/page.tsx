@@ -28,7 +28,7 @@ export default async function ImportPage() {
         <h2 className="mb-3 font-display text-lg font-medium text-ink">
           Frühere Importe
         </h2>
-        <table className="w-full border-collapse rounded-sm border border-line bg-surface">
+        <table className="w-full border-collapse rounded-lg border border-line bg-surface">
           <thead>
             <tr>
               <th className="th-cell">Datei</th>
