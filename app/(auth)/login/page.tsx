@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
+import { LogoMark } from "@/components/ui/LogoMark";
 import { signIn } from "@/lib/actions/auth";
 
 export default function LoginPage({
@@ -11,6 +12,7 @@ export default function LoginPage({
     <main className="flex min-h-screen items-center justify-center bg-paper px-4">
       <div className="w-full max-w-sm rounded-md border border-line bg-surface p-8 shadow-sm">
         <div className="mb-8 text-center">
+          <LogoMark className="mx-auto mb-3 h-9 w-9 text-pitch" />
           <h1 className="font-display text-2xl font-medium text-ink">
             Talent Catcher
           </h1>
