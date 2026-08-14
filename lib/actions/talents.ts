@@ -4,6 +4,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentAppUser } from "@/lib/queries/session";
+import { getActiveTalentCount } from "@/lib/queries/talents";
+import { PLANS } from "@/lib/plans";
 
 export interface TalentActionState {
   success: boolean;
@@ -79,6 +81,17 @@ export async function createTalent(
       error:
         "Für die Anlage minderjähriger Talente ist die Berechtigung „Zugriff auf Jugendtalente“ erforderlich.",
     };
+  }
+
+  const planLimit = appUser.clubPlan ? PLANS[appUser.clubPlan]?.maxActiveTalents : null;
+  if (planLimit !== null && planLimit !== undefined) {
+    const activeCount = await getActiveTalentCount(appUser.clubId);
+    if (activeCount >= planLimit) {
+      return {
+        success: false,
+        error: `Dein Plan „${PLANS[appUser.clubPlan!].name}“ ist auf ${planLimit} aktive Talente begrenzt. Bitte upgraden oder ein Talent archivieren.`,
+      };
+    }
   }
 
   const supabase = await createClient();

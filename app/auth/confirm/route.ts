@@ -31,6 +31,11 @@ export async function GET(request: NextRequest) {
     });
 
     if (!error) {
+      if (type === "signup") {
+        return NextResponse.redirect(
+          `${origin}/login?success=E-Mail%20best%C3%A4tigt.%20Bitte%20melde%20dich%20an.`
+        );
+      }
       return NextResponse.redirect(`${origin}/update-password`);
     }
   }

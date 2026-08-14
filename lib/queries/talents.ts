@@ -215,6 +215,27 @@ export async function getScoutReportsForTalent(
   return (data ?? []).map(mapScoutReport);
 }
 
+export async function getActiveTalentCount(clubId: string): Promise<number> {
+  const supabase = await createClient();
+  const { count, error } = await supabase
+    .from("talents")
+    .select("id", { count: "exact", head: true })
+    .eq("club_id", clubId)
+    .is("archived_at", null);
+
+  if (error) {
+    console.error("getActiveTalentCount() fehlgeschlagen:", {
+      message: error.message,
+      code: error.code,
+      details: error.details,
+      hint: error.hint,
+    });
+    throw new Error("Talent-Anzahl konnte nicht ermittelt werden.");
+  }
+
+  return count ?? 0;
+}
+
 export async function getOpenRemindersForClub(): Promise<Reminder[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
