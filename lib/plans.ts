@@ -90,3 +90,21 @@ export function formatEuro(amount: number): string {
     minimumFractionDigits: amount % 1 === 0 ? 0 : 2,
   }).format(amount);
 }
+
+// Stripe-Price-Lookup-Keys. Statt Price-IDs irgendwo zu speichern/kopieren,
+// werden Preise zur Laufzeit per lookup_key aufgelöst (stripe.prices.list)
+// — lib/plans.ts bleibt so die einzige Quelle der Wahrheit für Preise.
+export function stripeLookupKey(plan: PlanKey, billingInterval: BillingInterval): string {
+  return `${plan}_${billingInterval === "monatlich" ? "monthly" : "yearly"}`;
+}
+
+export function planAndIntervalFromLookupKey(
+  lookupKey: string
+): { plan: PlanKey; billingInterval: BillingInterval } | null {
+  const match = lookupKey.match(/^(start|verein|verband)_(monthly|yearly)$/);
+  if (!match) return null;
+  return {
+    plan: match[1] as PlanKey,
+    billingInterval: match[2] === "monthly" ? "monatlich" : "jaehrlich",
+  };
+}
