@@ -38,7 +38,10 @@ export default async function DashboardPage() {
 
       {/* Hero-These statt drei gleichgewichtete Statistik-Kacheln:
           Ein klarer Fokuspunkt, Nebenzahlen kleiner daneben. */}
-      <div className="animate-fade-in-up relative mb-8 overflow-hidden rounded-xl border border-line bg-surface">
+      <div
+        data-tour-id="tour-dashboard-hero"
+        className="animate-fade-in-up relative mb-8 overflow-hidden rounded-xl border border-line bg-surface"
+      >
         <div
           className="pointer-events-none absolute -right-16 -top-24 h-56 w-56 rounded-full bg-gradient-to-br from-pitch-bright/25 to-pitch/0 blur-2xl"
           aria-hidden
@@ -100,6 +103,7 @@ export default async function DashboardPage() {
       </div>
 
       <section
+        data-tour-id="tour-dashboard-urgent"
         className="animate-fade-in-up mb-8 rounded-xl border border-line bg-surface p-5"
         style={{ animationDelay: "80ms" }}
       >
@@ -158,6 +162,7 @@ export default async function DashboardPage() {
       </section>
 
       <section
+        data-tour-id="tour-dashboard-watchlists"
         className="animate-fade-in-up mb-8 rounded-xl border border-line bg-surface p-5"
         style={{ animationDelay: "140ms" }}
       >

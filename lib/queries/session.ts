@@ -15,7 +15,7 @@ export async function getCurrentAppUser(): Promise<AppUser | null> {
 
   const { data: profile, error } = await supabase
     .from("users")
-    .select("id, club_id, email, role, has_youth_access, clubs(plan)")
+    .select("id, club_id, email, role, has_youth_access, has_seen_intro_tour, clubs(plan)")
     .eq("id", authUser.id)
     .maybeSingle();
 
@@ -32,5 +32,6 @@ export async function getCurrentAppUser(): Promise<AppUser | null> {
     role: profile.role,
     hasYouthAccess: profile.has_youth_access,
     clubPlan: club?.plan ?? null,
+    hasSeenIntroTour: profile.has_seen_intro_tour,
   };
 }

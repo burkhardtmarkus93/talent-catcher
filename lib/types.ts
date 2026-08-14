@@ -13,6 +13,7 @@ export interface AppUser {
   role: Role;
   hasYouthAccess: boolean;
   clubPlan: "start" | "verein" | "verband" | null;
+  hasSeenIntroTour: boolean;
 }
 
 export type RiskLevel = "gruen" | "gelb" | "rot";
