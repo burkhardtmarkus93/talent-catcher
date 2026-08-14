@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import type { Role } from "@/lib/types";
 import { signOut } from "@/lib/actions/auth";
 import { LogoLockup } from "@/components/ui/LogoLockup";
+import { startIntroTour } from "@/components/tour/ProductTour";
 
 const navItems = [
   {
@@ -17,6 +18,7 @@ const navItems = [
   {
     href: "/talents",
     label: "Talente",
+    tourId: "tour-nav-talente",
     icon: (
       <>
         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -29,6 +31,7 @@ const navItems = [
   {
     href: "/alerts-reminders",
     label: "Alerts & Wiedervorlagen",
+    tourId: "tour-nav-alerts",
     icon: (
       <>
         <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
@@ -39,11 +42,13 @@ const navItems = [
   {
     href: "/watchlists",
     label: "Watchlists",
+    tourId: "tour-nav-watchlists",
     icon: <path d="M19 21 12 16l-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16Z" />,
   },
   {
     href: "/import",
     label: "Import",
+    tourId: "tour-nav-import",
     icon: (
       <>
         <path d="M12 3v12" />
@@ -55,6 +60,7 @@ const navItems = [
   {
     href: "/billing",
     label: "Abo",
+    tourId: "tour-nav-abo",
     icon: (
       <>
         <rect x="2" y="5" width="20" height="14" rx="2" />
@@ -87,6 +93,7 @@ export function Sidebar({ email, role }: { email: string; role: Role }) {
             <Link
               key={item.href}
               href={item.href}
+              data-tour-id={item.tourId}
               className={`group relative flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-all duration-150 ${
                 active
                   ? "bg-pitch-dim font-medium text-pitch-dark"
@@ -122,6 +129,19 @@ export function Sidebar({ email, role }: { email: string; role: Role }) {
       </nav>
 
       <div className="border-t border-line p-3">
+        <button
+          type="button"
+          onClick={() => startIntroTour()}
+          className="mb-2 flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs font-medium text-muted transition-colors hover:bg-pitch-dim hover:text-pitch-dark"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <circle cx="12" cy="12" r="10" />
+            <path d="M9.5 9a2.5 2.5 0 0 1 4.9.8c0 1.7-2.4 1.7-2.4 3.2" />
+            <path d="M12 17h.01" />
+          </svg>
+          Erste-Schritte-Tour
+        </button>
+
         <div className="flex items-center gap-3 rounded-xl px-2.5 py-2 transition-colors hover:bg-pitch-dim/50">
           <span className="relative flex h-9 w-9 flex-none items-center justify-center rounded-full bg-gradient-to-br from-pitch-bright to-pitch text-xs font-semibold text-white shadow-sm">
             {initials}

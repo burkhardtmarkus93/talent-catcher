@@ -1,7 +1,9 @@
 import { redirect } from "next/navigation";
 import { DashboardShell } from "@/components/layout/DashboardShell";
+import { ProductTour } from "@/components/tour/ProductTour";
 import { getCurrentAppUser } from "@/lib/queries/session";
 import { getClubBilling, hasActiveAccess } from "@/lib/queries/billing";
+import { INTRO_TOUR_STEPS } from "@/lib/tour/steps";
 
 // Zweite Schutzschicht zusätzlich zur Middleware (Defense-in-Depth,
 // siehe technischer Umsetzungsplan): selbst wenn die Middleware aus
@@ -31,5 +33,12 @@ export default async function DashboardLayout({
     }
   }
 
-  return <DashboardShell appUser={appUser}>{children}</DashboardShell>;
+  return (
+    <DashboardShell appUser={appUser}>
+      <>
+        {children}
+        <ProductTour steps={INTRO_TOUR_STEPS} autoStart={!appUser.hasSeenIntroTour} />
+      </>
+    </DashboardShell>
+  );
 }
