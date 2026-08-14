@@ -11,6 +11,7 @@ const navItems = [
   { href: "/alerts-reminders", label: "Alerts & Wiedervorlagen" },
   { href: "/watchlists", label: "Watchlists" },
   { href: "/import", label: "Import" },
+  { href: "/billing", label: "Abo" },
 ];
 
 const roleLabels: Record<Role, string> = {
