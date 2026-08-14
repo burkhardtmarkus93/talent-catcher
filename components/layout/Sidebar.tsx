@@ -27,7 +27,7 @@ export function Sidebar({ email, role }: { email: string; role: Role }) {
   return (
     <aside className="flex w-60 shrink-0 flex-col border-r border-line bg-surface">
       <div className="flex items-center gap-2 border-b border-line px-5 py-5">
-        <LogoMark className="h-6 w-6 text-pitch" />
+        <LogoMark height={24} />
         <span className="font-display text-lg font-semibold text-ink">
           Talent Catcher
         </span>
