@@ -20,6 +20,10 @@ export default function SignupPage({
           <p className="mt-1 text-sm text-muted">
             Ein Konto pro Verein — du wirst automatisch Admin.
           </p>
+          <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-pitch-dim px-3 py-1 text-xs font-semibold text-pitch-dark">
+            <span className="h-1.5 w-1.5 rounded-full bg-current" aria-hidden />
+            3 Tage kostenlos testen — keine Zahlungsdaten nötig
+          </p>
         </div>
 
         {searchParams.error ? (
@@ -66,18 +70,23 @@ export default function SignupPage({
           </div>
 
           <div>
-            <p className="mb-4 text-center text-sm font-medium text-ink">Plan wählen</p>
+            <p className="mb-1 text-center text-sm font-medium text-ink">
+              Plan für nach der Testphase wählen
+            </p>
+            <p className="mb-4 text-center text-xs text-muted">
+              Wird erst nach den 3 kostenlosen Tagen aktiv — du kannst das jederzeit auf der Abo-Seite ändern.
+            </p>
             <PlanSelector />
           </div>
 
           <Button type="submit" className="w-full">
-            Kostenpflichtig registrieren
+            Kostenlos starten
           </Button>
 
           <p className="text-center text-xs text-muted">
             Mit der Registrierung akzeptierst du, dass dein Verein für die Verarbeitung von
             Talentdaten Minderjähriger verantwortlich ist und die dafür nötigen
-            Einwilligungen einholt.
+            Einwilligungen einholt. Nach 3 Tagen wird ein kostenpflichtiger Plan benötigt.
           </p>
         </form>
 

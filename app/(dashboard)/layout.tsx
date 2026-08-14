@@ -1,11 +1,18 @@
 import { redirect } from "next/navigation";
-import { Sidebar } from "@/components/layout/Sidebar";
+import { DashboardShell } from "@/components/layout/DashboardShell";
 import { getCurrentAppUser } from "@/lib/queries/session";
+import { getClubBilling, hasActiveAccess } from "@/lib/queries/billing";
 
 // Zweite Schutzschicht zusätzlich zur Middleware (Defense-in-Depth,
 // siehe technischer Umsetzungsplan): selbst wenn die Middleware aus
 // irgendeinem Grund nicht greift, blockiert dieses Layout serverseitig
 // jeden Zugriff ohne gültige Session und ohne passendes users-Profil.
+//
+// Zusätzlich: Trial-Gate. Nach Ablauf der kostenlosen 3-Tage-Testphase
+// (clubs.trial_ends_at) ohne aktives Abo wird auf /billing umgeleitet.
+// Die Abo-Seite liegt bewusst außerhalb dieser Route-Gruppe (app/billing/,
+// eigenes Layout ohne diesen Check), damit sie erreichbar bleibt, um
+// einen Plan zu wählen — sonst gäbe es eine Redirect-Schleife.
 export default async function DashboardLayout({
   children,
 }: {
@@ -17,10 +24,12 @@ export default async function DashboardLayout({
     redirect("/login");
   }
 
-  return (
-    <div className="flex min-h-screen bg-paper">
-      <Sidebar email={appUser.email} role={appUser.role} />
-      <main className="flex-1 overflow-y-auto px-8 py-8">{children}</main>
-    </div>
-  );
+  if (appUser.clubId) {
+    const billing = await getClubBilling(appUser.clubId);
+    if (billing && !hasActiveAccess(billing)) {
+      redirect("/billing?reason=trial_expired");
+    }
+  }
+
+  return <DashboardShell appUser={appUser}>{children}</DashboardShell>;
 }

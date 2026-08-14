@@ -1,7 +1,7 @@
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Button } from "@/components/ui/Button";
 import { getCurrentAppUser } from "@/lib/queries/session";
-import { getClubBilling } from "@/lib/queries/billing";
+import { getClubBilling, hasActiveAccess, trialDaysRemaining } from "@/lib/queries/billing";
 import { PLANS, formatEuro } from "@/lib/plans";
 import { createCheckoutSession, createBillingPortalSession } from "@/lib/actions/billing";
 
@@ -30,12 +30,16 @@ const statusTone: Record<string, string> = {
 export default async function BillingPage({
   searchParams,
 }: {
-  searchParams: { error?: string; success?: string; canceled?: string };
+  searchParams: { error?: string; success?: string; canceled?: string; reason?: string };
 }) {
   const appUser = await getCurrentAppUser();
   const billing = appUser?.clubId ? await getClubBilling(appUser.clubId) : null;
   const currentPlan = billing ? PLANS[billing.plan] : null;
   const isAdmin = appUser?.role === "admin";
+
+  const onFreeTrial = Boolean(billing && !billing.hasStripeCustomer);
+  const trialActive = Boolean(billing && onFreeTrial && hasActiveAccess(billing));
+  const daysLeft = billing ? trialDaysRemaining(billing.trialEndsAt) : 0;
 
   return (
     <div>
@@ -53,6 +57,11 @@ export default async function BillingPage({
       {searchParams.error ? (
         <div className="mb-6 rounded-lg border border-brick/30 bg-brick/5 px-3 py-2 text-sm text-brick">
           {decodeURIComponent(searchParams.error)}
+        </div>
+      ) : null}
+      {searchParams.reason === "trial_expired" ? (
+        <div className="mb-6 rounded-lg border border-brick/30 bg-brick/5 px-3 py-2 text-sm text-brick">
+          Deine kostenlose 3-Tage-Testphase ist abgelaufen. Bitte wähle unten einen Plan, um weiterzumachen.
         </div>
       ) : null}
       {searchParams.success ? (
@@ -94,9 +103,23 @@ export default async function BillingPage({
                   {statusLabels[billing.subscriptionStatus] ?? billing.subscriptionStatus}
                 </span>
               )}
-              {!billing?.hasStripeCustomer && (
+              {onFreeTrial && (
+                <span
+                  className={`mt-2 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${
+                    trialActive ? "bg-pitch-dim text-pitch-dark" : "bg-brick-dim text-brick"
+                  }`}
+                >
+                  <span className="h-1.5 w-1.5 rounded-full bg-current" aria-hidden />
+                  {trialActive
+                    ? `Kostenlose Testphase · noch ${daysLeft} ${daysLeft === 1 ? "Tag" : "Tage"}`
+                    : "Testphase abgelaufen"}
+                </span>
+              )}
+              {onFreeTrial && (
                 <p className="mt-2 text-sm text-muted">
-                  Noch kein aktives, bezahltes Abo — wähle unten einen Plan.
+                  {trialActive
+                    ? "Du testest gerade kostenlos — wähle unten schon jetzt einen Plan, oder warte bis zum Ende der Testphase."
+                    : "Bitte wähle unten einen Plan, um Talent Catcher weiter zu nutzen."}
                 </p>
               )}
             </div>
