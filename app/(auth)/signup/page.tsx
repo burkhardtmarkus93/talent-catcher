@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
+import { LogoLockup } from "@/components/ui/LogoLockup";
 import { PlanSelector } from "@/components/auth/PlanSelector";
 import { signUp } from "@/lib/actions/auth";
 
@@ -12,8 +13,9 @@ export default function SignupPage({
     <main className="flex min-h-screen items-center justify-center bg-paper px-4 py-12">
       <div className="w-full max-w-3xl rounded-md border border-line bg-surface p-8 shadow-sm">
         <div className="mb-8 text-center">
-          <h1 className="font-display text-2xl font-medium text-ink">
-            Talent Catcher für deinen Verein einrichten
+          <LogoLockup height={90} className="mb-2" />
+          <h1 className="font-display text-xl font-medium text-ink">
+            für deinen Verein einrichten
           </h1>
           <p className="mt-1 text-sm text-muted">
             Ein Konto pro Verein — du wirst automatisch Admin.
