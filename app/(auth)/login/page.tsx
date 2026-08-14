@@ -25,7 +25,7 @@ export default function LoginPage({
         ) : null}
 
         {searchParams.success ? (
-          <div className="mb-4 rounded-lg border border-green-600/30 bg-green-600/10 px-3 py-2 text-sm text-green-700">
+          <div className="mb-4 rounded-lg border border-pitch/30 bg-pitch/5 px-3 py-2 text-sm text-pitch">
             {searchParams.success}
           </div>
         ) : null}

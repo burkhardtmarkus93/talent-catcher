@@ -1,0 +1,50 @@
+<!--
+  Supabase Auth email template: "Reset password" (recovery).
+  Recommended subject line (set separately in the Supabase Dashboard
+  under Authentication → Email Templates, or via config.toml if that's
+  ever wired up): "Setze dein Talent-Catcher-Passwort zurück"
+
+  Table-based layout + inline styles throughout: required for
+  reasonable rendering across email clients (Outlook, Gmail, etc. don't
+  reliably support external/embedded stylesheets or flexbox/grid).
+  Colors match the app's Tailwind design tokens (tailwind.config.ts):
+  paper #F5F6F3, surface #FFFFFF, ink #1A2421, muted #6B7570,
+  pitch #0D9488, line #DCDFD9.
+-->
+<!doctype html>
+<html lang="de">
+  <body style="margin:0; padding:0; background-color:#F5F6F3; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F5F6F3;">
+      <tr>
+        <td align="center" style="padding: 40px 16px;">
+          <table role="presentation" width="480" cellpadding="0" cellspacing="0" style="max-width:480px; width:100%; background-color:#FFFFFF; border-radius:16px; border:1px solid #DCDFD9;">
+            <tr>
+              <td style="padding: 40px 40px 8px 40px; text-align:center;">
+                <img src="{{ .SiteURL }}/brand/lockup-app.png" width="72" height="72" alt="Talent Catcher" style="display:block; margin:0 auto 24px auto; border:0;" />
+                <h1 style="margin:0 0 12px 0; font-family: Georgia, 'Times New Roman', serif; font-size:22px; font-weight:600; color:#1A2421;">
+                  Setze dein Passwort zurück
+                </h1>
+                <p style="margin:0 0 24px 0; font-size:14px; line-height:1.6; color:#6B7570;">
+                  Wir haben eine Anfrage erhalten, das Passwort für dein Talent-Catcher-Konto zurückzusetzen. Klicke auf den Button, um ein neues Passwort zu vergeben.
+                </p>
+                <a href="{{ .ConfirmationURL }}" style="display:inline-block; padding:12px 28px; background-color:#0D9488; color:#FFFFFF; font-size:14px; font-weight:600; text-decoration:none; border-radius:8px;">
+                  Neues Passwort vergeben
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 24px 40px 32px 40px; border-top:1px solid #DCDFD9; text-align:center;">
+                <p style="margin:0; font-size:12px; color:#6B7570;">
+                  Falls du das nicht warst, kannst du diese E-Mail einfach ignorieren — an deinem Passwort ändert sich nichts.
+                </p>
+              </td>
+            </tr>
+          </table>
+          <p style="margin: 24px 0 0 0; font-size:11px; color:#9BA39D; text-align:center;">
+            Talent Catcher — Scouting-Frühwarnsystem für Talentförderung
+          </p>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
