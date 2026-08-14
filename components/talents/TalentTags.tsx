@@ -57,7 +57,7 @@ export function TalentTags({
         <button
           type="submit"
           disabled={isPending}
-          className="rounded-sm border border-line px-3 py-1.5 text-sm text-ink hover:bg-paper disabled:opacity-50"
+          className="rounded-lg border border-line px-3 py-1.5 text-sm text-ink hover:bg-paper disabled:opacity-50"
         >
           + Tag
         </button>

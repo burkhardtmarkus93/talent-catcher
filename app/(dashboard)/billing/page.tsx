@@ -31,22 +31,22 @@ export default async function BillingPage({
       <PageHeader title="Abo" subtitle="Plan und Zahlungsdaten deines Vereins" />
 
       {searchParams.error ? (
-        <div className="mb-6 rounded-sm border border-brick/30 bg-brick/5 px-3 py-2 text-sm text-brick">
+        <div className="mb-6 rounded-lg border border-brick/30 bg-brick/5 px-3 py-2 text-sm text-brick">
           {decodeURIComponent(searchParams.error)}
         </div>
       ) : null}
       {searchParams.success ? (
-        <div className="mb-6 rounded-sm border border-pitch/30 bg-pitch/5 px-3 py-2 text-sm text-pitch">
+        <div className="mb-6 rounded-lg border border-pitch/30 bg-pitch/5 px-3 py-2 text-sm text-pitch">
           Zahlung erfolgreich — dein Abo wird in Kürze aktiv (kann bis zu einer Minute dauern).
         </div>
       ) : null}
       {searchParams.canceled ? (
-        <div className="mb-6 rounded-sm border border-line bg-paper px-3 py-2 text-sm text-muted">
+        <div className="mb-6 rounded-lg border border-line bg-paper px-3 py-2 text-sm text-muted">
           Checkout abgebrochen — es wurde nichts abgebucht.
         </div>
       ) : null}
 
-      <div className="mb-8 rounded-md border border-line bg-surface p-6">
+      <div className="mb-8 rounded-xl border border-line bg-surface p-6">
         <p className="text-xs uppercase tracking-wide text-muted">Aktueller Plan</p>
         <p className="mt-1 font-display text-2xl font-medium text-ink">
           {currentPlan?.name ?? "—"}
@@ -80,7 +80,7 @@ export default async function BillingPage({
               return (
                 <div
                   key={key}
-                  className="flex flex-col gap-3 rounded-md border border-line bg-surface p-5"
+                  className="flex flex-col gap-3 rounded-xl border border-line bg-surface p-5"
                 >
                   <div>
                     <p className="font-display text-lg font-medium text-ink">{plan.name}</p>

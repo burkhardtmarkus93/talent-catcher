@@ -8,13 +8,13 @@ export default function UpdatePasswordPage({
 }) {
   return (
     <main className="flex min-h-screen items-center justify-center bg-paper px-4">
-      <div className="w-full max-w-sm rounded-md border border-line bg-surface p-8 shadow-sm">
+      <div className="w-full max-w-sm rounded-xl border border-line bg-surface p-8 shadow-sm">
         <div className="mb-8 text-center">
           <h1 className="font-display text-2xl font-medium text-ink">
             Neues Passwort setzen
           </h1>
           {searchParams.error ? (
-            <p className="mt-4 rounded-sm border border-error/30 bg-error/10 px-3 py-2 text-sm text-error">
+            <p className="mt-4 rounded-lg border border-error/30 bg-error/10 px-3 py-2 text-sm text-error">
               {searchParams.error}
             </p>
           ) : null}

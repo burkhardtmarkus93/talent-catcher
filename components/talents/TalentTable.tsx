@@ -34,7 +34,7 @@ export function TalentTable({
   currentUserHasYouthAccess: boolean;
 }) {
   return (
-    <table className="w-full border-collapse overflow-hidden rounded-sm border border-line bg-surface">
+    <table className="w-full border-collapse overflow-hidden rounded-lg border border-line bg-surface">
       <thead>
         <tr>
           <th className="th-cell">Name</th>
@@ -53,17 +53,19 @@ export function TalentTable({
           return (
             <tr key={t.id} className="transition-colors hover:bg-pitch-dim/40">
               <td className="td-cell">
-                <Link
-                  href={`/talents/${t.id}`}
-                  className="font-medium text-ink underline-offset-2 hover:underline"
-                >
-                  {t.firstName} {t.lastName}
-                </Link>
-                {t.currentAlert?.isHiddenGem && (
-                  <span className="ml-2 align-middle">
-                    <HiddenGemBadge />
+                <div className="flex items-center gap-2.5">
+                  <span className="flex h-7 w-7 flex-none items-center justify-center rounded-lg bg-pitch-dim text-[11px] font-bold text-pitch-dark">
+                    {t.firstName[0]}
+                    {t.lastName[0]}
                   </span>
-                )}
+                  <Link
+                    href={`/talents/${t.id}`}
+                    className="font-medium text-ink underline-offset-2 hover:underline"
+                  >
+                    {t.firstName} {t.lastName}
+                  </Link>
+                  {t.currentAlert?.isHiddenGem && <HiddenGemBadge />}
+                </div>
               </td>
               <td className="td-cell">{t.primaryPosition}</td>
               <td className="td-cell">{age(t.birthDate)}</td>

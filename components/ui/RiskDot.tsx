@@ -1,9 +1,9 @@
 import type { RiskLevel } from "@/lib/types";
 
-const levelConfig: Record<RiskLevel, { color: string; ring: string; label: string }> = {
-  gruen: { color: "bg-pitch", ring: "ring-pitch/30", label: "Grün" },
-  gelb: { color: "bg-amber", ring: "ring-amber/30", label: "Gelb" },
-  rot: { color: "bg-brick", ring: "ring-brick/30", label: "Rot" },
+const levelConfig: Record<RiskLevel, { bg: string; text: string; dot: string; label: string }> = {
+  gruen: { bg: "bg-pitch-dim", text: "text-pitch-dark", dot: "bg-pitch", label: "Grün" },
+  gelb: { bg: "bg-amber-dim", text: "text-amber-dark", dot: "bg-amber", label: "Gelb" },
+  rot: { bg: "bg-brick-dim", text: "text-brick", dot: "bg-brick", label: "Rot" },
 };
 
 interface RiskDotProps {
@@ -11,17 +11,27 @@ interface RiskDotProps {
   showLabel?: boolean;
 }
 
-// Bewusst ein kleiner Punkt mit dünnem Ring statt einer großflächig
-// eingefärbten Zeile/Karte — die Ampel soll informieren, nicht dominieren.
+// Soft-Tint-Pill statt reinem Punkt: heller Statushintergrund + kräftiger
+// Text-/Punktton, analog zu den Ampel-Badges bei Stripe/Linear/Vercel.
+// Ohne Label (kompakte Listen) bleibt es ein reiner Punkt ohne Pill-Chrome.
 export function RiskDot({ level, showLabel = true }: RiskDotProps) {
   const config = levelConfig[level];
-  return (
-    <span className="inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-wide text-muted">
+
+  if (!showLabel) {
+    return (
       <span
-        className={`h-2.5 w-2.5 rounded-full ring-4 ${config.color} ${config.ring}`}
-        aria-hidden
+        className={`inline-flex h-2.5 w-2.5 rounded-full ${config.dot}`}
+        aria-label={config.label}
       />
-      {showLabel && config.label}
+    );
+  }
+
+  return (
+    <span
+      className={`inline-flex flex-none items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-semibold ${config.bg} ${config.text}`}
+    >
+      <span className={`h-1.5 w-1.5 rounded-full ${config.dot}`} aria-hidden />
+      {config.label}
     </span>
   );
 }

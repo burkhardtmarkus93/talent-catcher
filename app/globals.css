@@ -32,7 +32,7 @@
      hartem Browser-Outline (siehe :focus-visible-Regel oben, die bleibt
      für Buttons/Links zuständig). */
   .field {
-    @apply w-full rounded-sm border border-line bg-white px-3 py-2 text-sm text-ink shadow-sm outline-none transition-shadow duration-150 placeholder:text-muted;
+    @apply w-full rounded-lg border border-line bg-white px-3 py-2 text-sm text-ink shadow-sm outline-none transition-shadow duration-150 placeholder:text-muted;
   }
   .field:hover {
     @apply border-pitch/40;

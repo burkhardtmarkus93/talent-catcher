@@ -18,7 +18,7 @@ export default function WatchlistsPage() {
         className="field mb-4 max-w-sm"
       />
 
-      <ul className="divide-y divide-line rounded-sm border border-line bg-surface">
+      <ul className="divide-y divide-line rounded-lg border border-line bg-surface">
         {dummyWatchlists.map((w) => (
           <li key={w.id} className="flex items-center justify-between px-4 py-3">
             <div>

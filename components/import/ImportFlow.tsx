@@ -88,19 +88,19 @@ export function ImportFlow() {
   return (
     <div>
       {error && (
-        <div className="mb-6 rounded-sm border border-brick/30 bg-brick/5 px-3 py-2 text-sm text-brick">
+        <div className="mb-6 rounded-lg border border-brick/30 bg-brick/5 px-3 py-2 text-sm text-brick">
           {error}
         </div>
       )}
 
       {result && (
-        <div className="mb-6 rounded-sm border border-pitch/30 bg-pitch/5 px-3 py-2 text-sm text-pitch">
+        <div className="mb-6 rounded-lg border border-pitch/30 bg-pitch/5 px-3 py-2 text-sm text-pitch">
           Import abgeschlossen: {result.importedRows} Talente importiert
           {result.errorRows > 0 && `, ${result.errorRows} Zeilen mit Fehlern`}.
         </div>
       )}
 
-      <div className="mb-6 flex items-center gap-4 rounded-md border border-line bg-surface p-5">
+      <div className="mb-6 flex items-center gap-4 rounded-xl border border-line bg-surface p-5">
         <span className="text-sm text-ink">Datei auswählen (CSV/XLSX)</span>
         <input
           type="file"

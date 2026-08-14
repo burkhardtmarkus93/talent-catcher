@@ -10,9 +10,9 @@ export function NewTalentForm() {
   const [state, formAction] = useFormState(createTalent, initialState);
 
   return (
-    <form action={formAction} className="rounded-md border border-line bg-surface p-6">
+    <form action={formAction} className="rounded-xl border border-line bg-surface p-6">
       {state.error && (
-        <div className="mb-4 rounded-sm border border-brick/30 bg-brick/5 px-3 py-2 text-sm text-brick">
+        <div className="mb-4 rounded-lg border border-brick/30 bg-brick/5 px-3 py-2 text-sm text-brick">
           {state.error}
         </div>
       )}

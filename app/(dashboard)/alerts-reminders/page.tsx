@@ -61,11 +61,11 @@ export default async function AlertsRemindersPage({
 
       {activeTab === "alerts" ? (
         alertTalents.length === 0 ? (
-          <p className="rounded-sm border border-line bg-surface px-4 py-6 text-center text-sm text-muted">
+          <p className="rounded-lg border border-line bg-surface px-4 py-6 text-center text-sm text-muted">
             Keine aktiven Alerts — alle Talente sind auf Grün.
           </p>
         ) : (
-          <table className="w-full border-collapse rounded-sm border border-line bg-surface">
+          <table className="w-full border-collapse rounded-lg border border-line bg-surface">
             <thead>
               <tr>
                 <th className="th-cell">Priorität</th>
@@ -102,11 +102,11 @@ export default async function AlertsRemindersPage({
           </table>
         )
       ) : reminders.length === 0 ? (
-        <p className="rounded-sm border border-line bg-surface px-4 py-6 text-center text-sm text-muted">
+        <p className="rounded-lg border border-line bg-surface px-4 py-6 text-center text-sm text-muted">
           Keine offenen Wiedervorlagen.
         </p>
       ) : (
-        <table className="w-full border-collapse rounded-sm border border-line bg-surface">
+        <table className="w-full border-collapse rounded-lg border border-line bg-surface">
           <thead>
             <tr>
               <th className="th-cell">Status</th>

@@ -61,7 +61,7 @@ export function PlanSelector() {
               type="button"
               onClick={() => setPlan(key)}
               aria-pressed={selected}
-              className={`flex flex-col items-start gap-2 rounded-md border p-4 text-left transition-colors ${
+              className={`flex flex-col items-start gap-2 rounded-xl border p-4 text-left transition-colors ${
                 selected
                   ? "border-pitch bg-pitch-dim"
                   : "border-line bg-surface hover:border-pitch/50"
@@ -87,7 +87,7 @@ export function PlanSelector() {
           );
         })}
 
-        <div className="flex flex-col items-start gap-2 rounded-md border border-dashed border-line bg-paper p-4 text-left">
+        <div className="flex flex-col items-start gap-2 rounded-xl border border-dashed border-line bg-paper p-4 text-left">
           <span className="font-display text-base font-medium text-ink">
             {PLANS.verband.name}
           </span>

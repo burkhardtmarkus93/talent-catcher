@@ -10,14 +10,14 @@ interface ColumnMapperProps {
 
 export function ColumnMapper({ headers, mapping, onChange }: ColumnMapperProps) {
   return (
-    <div className="rounded-md border border-line bg-surface p-5">
+    <div className="rounded-xl border border-line bg-surface p-5">
       <h2 className="mb-4 font-display text-lg font-medium text-ink">
         Spalten-Zuordnung
       </h2>
       <div className="flex flex-col gap-3">
         {headers.map((column) => (
           <div key={column} className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
-            <span className="rounded-sm bg-paper px-3 py-2 text-sm text-ink">
+            <span className="rounded-lg bg-paper px-3 py-2 text-sm text-ink">
               &quot;{column}&quot;
             </span>
             <span className="text-muted">→</span>

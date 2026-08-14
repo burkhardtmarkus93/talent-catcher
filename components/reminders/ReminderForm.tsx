@@ -16,7 +16,7 @@ export function ReminderForm({ talentId }: { talentId: string }) {
 
   if (state.success) {
     return (
-      <p className="rounded-sm bg-pitch-dim px-3 py-2 text-sm text-pitch-dark">
+      <p className="rounded-lg bg-pitch-dim px-3 py-2 text-sm text-pitch-dark">
         Wiedervorlage gespeichert.
       </p>
     );
@@ -31,7 +31,7 @@ export function ReminderForm({ talentId }: { talentId: string }) {
   }
 
   return (
-    <form action={formAction} className="flex flex-col gap-2 rounded-sm border border-line bg-paper p-3">
+    <form action={formAction} className="flex flex-col gap-2 rounded-lg border border-line bg-paper p-3">
       <input type="hidden" name="talentId" value={talentId} />
       {state.error && <p className="text-xs text-brick">{state.error}</p>}
       <label className="flex flex-col gap-1 text-xs text-muted">

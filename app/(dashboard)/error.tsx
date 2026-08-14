@@ -17,7 +17,7 @@ export default function DashboardError({
       </p>
       <button
         onClick={reset}
-        className="rounded-sm border border-line px-4 py-2 text-sm text-ink hover:bg-pitch-dim"
+        className="rounded-lg border border-line px-4 py-2 text-sm text-ink hover:bg-pitch-dim"
       >
         Erneut versuchen
       </button>

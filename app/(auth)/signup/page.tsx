@@ -11,7 +11,7 @@ export default function SignupPage({
 }) {
   return (
     <main className="flex min-h-screen items-center justify-center bg-paper px-4 py-12">
-      <div className="w-full max-w-3xl rounded-md border border-line bg-surface p-8 shadow-sm">
+      <div className="w-full max-w-3xl rounded-xl border border-line bg-surface p-8 shadow-sm">
         <div className="mb-8 text-center">
           <LogoLockup height={90} className="mb-2" />
           <h1 className="font-display text-xl font-medium text-ink">
@@ -23,7 +23,7 @@ export default function SignupPage({
         </div>
 
         {searchParams.error ? (
-          <div className="mb-6 rounded-sm border border-brick/30 bg-brick/5 px-3 py-2 text-sm text-brick">
+          <div className="mb-6 rounded-lg border border-brick/30 bg-brick/5 px-3 py-2 text-sm text-brick">
             {searchParams.error}
           </div>
         ) : null}

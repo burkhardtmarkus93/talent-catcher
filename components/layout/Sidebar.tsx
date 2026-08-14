@@ -37,7 +37,7 @@ export function Sidebar({ email, role }: { email: string; role: Role }) {
             <Link
               key={item.href}
               href={item.href}
-              className={`rounded-sm px-3 py-2 text-sm transition-colors ${
+              className={`rounded-lg px-3 py-2 text-sm transition-colors ${
                 active
                   ? "bg-pitch-dim font-medium text-pitch-dark"
                   : "text-ink hover:bg-pitch-dim"
@@ -60,7 +60,7 @@ export function Sidebar({ email, role }: { email: string; role: Role }) {
         <form action={signOut} className="mt-3">
           <button
             type="submit"
-            className="rounded-sm border border-line px-3 py-1.5 text-xs font-medium text-ink transition-colors hover:bg-pitch-dim"
+            className="rounded-lg border border-line px-3 py-1.5 text-xs font-medium text-ink transition-colors hover:bg-pitch-dim"
           >
             Logout
           </button>
