@@ -9,6 +9,10 @@
 // der Scouting-Nische als an allgemeiner Vereinssoftware positioniert.
 // Profi-Tools wie Wyscout (20k+£/Jahr) sind kein relevanter Vergleich
 // für die Zielgruppe Amateurverein/Scout.
+//
+// Scout-Zugänge im Verein-Plan bewusst auf 3 begrenzt (nicht 5): selbst
+// professionelle NLZ sind bei dedizierten Scouting-Stellen oft knapper
+// besetzt — 5 Zugänge für einen Amateurverein wäre am Markt vorbei.
 
 export type PlanKey = "start" | "verein" | "verband";
 export type BillingInterval = "monatlich" | "jaehrlich";
@@ -49,10 +53,10 @@ export const PLANS: Record<PlanKey, Plan> = {
     tagline: "Für Vereine mit mehreren Scouts",
     priceMonthly: 49,
     priceYearly: 490, // entspricht ~40,83€/Monat, 2 Monate gratis
-    maxScouts: 5,
+    maxScouts: 3,
     maxActiveTalents: null,
     features: [
-      "Bis zu 5 Scout-Zugänge",
+      "Bis zu 3 Scout-Zugänge",
       "Unbegrenzte aktive Talente",
       "Alles aus Start",
       "CSV/XLSX-Import",
