@@ -33,8 +33,12 @@ export default async function DashboardPage() {
 
       {/* Hero-These statt drei gleichgewichtete Statistik-Kacheln:
           Ein klarer Fokuspunkt, Nebenzahlen kleiner daneben. */}
-      <div className="mb-8 overflow-hidden rounded-xl border border-line bg-surface">
-        <div className="flex flex-col gap-6 p-6 md:flex-row md:items-center md:justify-between">
+      <div className="animate-fade-in-up relative mb-8 overflow-hidden rounded-xl border border-line bg-surface">
+        <div
+          className="pointer-events-none absolute -right-16 -top-24 h-56 w-56 rounded-full bg-gradient-to-br from-pitch-bright/25 to-pitch/0 blur-2xl"
+          aria-hidden
+        />
+        <div className="relative flex flex-col gap-6 p-6 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-xs uppercase tracking-wide text-muted">
               Jetzt wichtig
@@ -52,8 +56,8 @@ export default async function DashboardPage() {
             </p>
           </div>
           <div className="flex gap-4 border-t border-line pt-4 md:border-t-0 md:border-l md:pl-8 md:pt-0">
-            <div className="flex items-start gap-3 rounded-lg bg-paper px-3 py-2">
-              <span className="flex h-8 w-8 flex-none items-center justify-center rounded-lg bg-pitch-dim text-pitch-dark">
+            <div className="flex items-start gap-3 rounded-lg bg-paper px-3 py-2 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm">
+              <span className="flex h-8 w-8 flex-none items-center justify-center rounded-lg bg-gradient-to-br from-pitch-bright to-pitch text-white shadow-sm">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                   <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
                   <circle cx="9" cy="7" r="4" />
@@ -70,7 +74,7 @@ export default async function DashboardPage() {
                 </p>
               </div>
             </div>
-            <div className="flex items-start gap-3 rounded-lg bg-paper px-3 py-2">
+            <div className="flex items-start gap-3 rounded-lg bg-paper px-3 py-2 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm">
               <span className="flex h-8 w-8 flex-none items-center justify-center rounded-lg bg-amber-dim text-amber-dark">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                   <circle cx="12" cy="12" r="9" />
@@ -90,12 +94,18 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      <section className="mb-8 rounded-xl border border-line bg-surface p-5">
+      <section
+        className="animate-fade-in-up mb-8 rounded-xl border border-line bg-surface p-5"
+        style={{ animationDelay: "80ms" }}
+      >
         <div className="mb-4 flex items-center justify-between">
           <h2 className="font-display text-lg font-medium text-ink">
             Dringendster Handlungsbedarf
           </h2>
-          <Link href="/talents" className="text-sm text-pitch hover:underline">
+          <Link
+            href="/talents"
+            className="text-sm text-pitch transition-transform hover:translate-x-0.5 hover:underline"
+          >
             Alle anzeigen →
           </Link>
         </div>
@@ -106,11 +116,15 @@ export default async function DashboardPage() {
           </p>
         ) : (
           <ul className="flex flex-col gap-2">
-            {urgent.slice(0, 5).map((t) => (
-              <li key={t.id}>
+            {urgent.slice(0, 5).map((t, i) => (
+              <li
+                key={t.id}
+                className="animate-fade-in-up"
+                style={{ animationDelay: `${120 + i * 40}ms` }}
+              >
                 <Link
                   href={`/talents/${t.id}`}
-                  className="flex items-center justify-between rounded-lg border border-line bg-paper px-4 py-3 transition-colors hover:border-pitch"
+                  className="flex items-center justify-between rounded-lg border border-line bg-paper px-4 py-3 transition-all duration-150 hover:-translate-y-0.5 hover:border-pitch hover:shadow-sm"
                 >
                   <div className="flex items-center gap-3">
                     <span className="flex h-8 w-8 flex-none items-center justify-center rounded-lg bg-pitch-dim text-xs font-bold text-pitch-dark">
@@ -138,7 +152,10 @@ export default async function DashboardPage() {
         )}
       </section>
 
-      <section className="mb-8 rounded-xl border border-line bg-surface p-5">
+      <section
+        className="animate-fade-in-up mb-8 rounded-xl border border-line bg-surface p-5"
+        style={{ animationDelay: "140ms" }}
+      >
         <h2 className="mb-4 font-display text-lg font-medium text-ink">
           Meine Watchlists
         </h2>
@@ -152,7 +169,7 @@ export default async function DashboardPage() {
             <li key={w.id}>
               <Link
                 href={`/watchlists/${w.id}`}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-paper px-3 py-1.5 text-sm text-ink transition-colors hover:border-pitch"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-paper px-3 py-1.5 text-sm text-ink transition-all duration-150 hover:-translate-y-0.5 hover:border-pitch hover:shadow-sm"
               >
                 {w.name}
                 <span className="text-muted">({w.talentCount})</span>
@@ -165,24 +182,63 @@ export default async function DashboardPage() {
 
       {/* Prinzipien-Leiste, sinngemäß übersetzt aus der Bukara-Trust-Leiste:
           kurze, sachliche Vertrauenssignale statt Versand/Zahlung. */}
-      <section className="rounded-xl border border-line bg-paper p-5">
-        <ul className="grid grid-cols-2 gap-4 text-xs text-muted sm:grid-cols-4">
-          <li className="flex flex-col gap-1">
-            <span className="font-medium text-ink">Jugendschutz eingebaut</span>
-            Sensible Daten nur mit Berechtigung sichtbar
-          </li>
-          <li className="flex flex-col gap-1">
-            <span className="font-medium text-ink">Vereinsstrikt getrennt</span>
-            Kein Zugriff über Vereinsgrenzen hinweg
-          </li>
-          <li className="flex flex-col gap-1">
-            <span className="font-medium text-ink">DFB-Methodik</span>
-            TINDER-Kriterien für Potenzialeinschätzung
-          </li>
-          <li className="flex flex-col gap-1">
-            <span className="font-medium text-ink">Automatische Frühwarnung</span>
-            Alerts entstehen aus echten Beobachtungsdaten
-          </li>
+      <section
+        className="animate-fade-in-up rounded-xl border border-line bg-paper p-5"
+        style={{ animationDelay: "200ms" }}
+      >
+        <ul className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          {[
+            {
+              title: "Jugendschutz eingebaut",
+              text: "Sensible Daten nur mit Berechtigung sichtbar",
+              icon: (
+                <path d="M12 2 4 5v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V5l-8-3Z" />
+              ),
+            },
+            {
+              title: "Vereinsstrikt getrennt",
+              text: "Kein Zugriff über Vereinsgrenzen hinweg",
+              icon: (
+                <>
+                  <rect x="3" y="10" width="7" height="10" rx="1" />
+                  <rect x="14" y="6" width="7" height="14" rx="1" />
+                </>
+              ),
+            },
+            {
+              title: "DFB-Methodik",
+              text: "TINDER-Kriterien für Potenzialeinschätzung",
+              icon: (
+                <>
+                  <path d="m9 11 3 3L22 4" />
+                  <path d="M21 12v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h11" />
+                </>
+              ),
+            },
+            {
+              title: "Automatische Frühwarnung",
+              text: "Alerts entstehen aus echten Beobachtungsdaten",
+              icon: (
+                <>
+                  <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                  <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                </>
+              ),
+            },
+          ].map((item) => (
+            <li
+              key={item.title}
+              className="flex flex-col gap-2 rounded-lg p-2 text-xs text-muted transition-all duration-150 hover:-translate-y-0.5 hover:bg-surface hover:shadow-sm"
+            >
+              <span className="flex h-7 w-7 flex-none items-center justify-center rounded-lg bg-pitch-dim text-pitch-dark">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  {item.icon}
+                </svg>
+              </span>
+              <span className="font-medium text-ink">{item.title}</span>
+              {item.text}
+            </li>
+          ))}
         </ul>
       </section>
     </div>
