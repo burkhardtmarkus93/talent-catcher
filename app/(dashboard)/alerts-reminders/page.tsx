@@ -13,6 +13,12 @@ const reminderStatusLabels: Record<ReminderStatus, string> = {
   ueberfaellig: "Überfällig",
 };
 
+const reminderStatusTone: Record<ReminderStatus, string> = {
+  offen: "bg-paper text-muted",
+  erledigt: "bg-pitch-dim text-pitch-dark",
+  ueberfaellig: "bg-brick-dim text-brick",
+};
+
 export default async function AlertsRemindersPage({
   searchParams,
 }: {
@@ -34,25 +40,31 @@ export default async function AlertsRemindersPage({
       <PageHeader
         title="Alerts & Wiedervorlagen"
         subtitle="Alle offenen Handlungsaufforderungen an einem Ort"
+        icon={
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+          </svg>
+        }
       />
 
-      <div className="mb-6 flex gap-6 border-b border-line text-sm">
+      <div className="mb-6 inline-flex gap-1 rounded-lg bg-paper p-1 text-sm">
         <Link
           href="/alerts-reminders?tab=alerts"
-          className={`-mb-px border-b-2 py-3 ${
+          className={`rounded-md px-4 py-1.5 transition-colors ${
             activeTab === "alerts"
-              ? "border-pitch font-medium text-ink"
-              : "border-transparent text-muted"
+              ? "bg-surface font-medium text-ink shadow-sm"
+              : "text-muted hover:text-ink"
           }`}
         >
           Alerts ({alertTalents.length})
         </Link>
         <Link
           href="/alerts-reminders?tab=reminders"
-          className={`-mb-px border-b-2 py-3 ${
+          className={`rounded-md px-4 py-1.5 transition-colors ${
             activeTab === "reminders"
-              ? "border-pitch font-medium text-ink"
-              : "border-transparent text-muted"
+              ? "bg-surface font-medium text-ink shadow-sm"
+              : "text-muted hover:text-ink"
           }`}
         >
           Wiedervorlagen ({reminders.length})
@@ -65,7 +77,7 @@ export default async function AlertsRemindersPage({
             Keine aktiven Alerts — alle Talente sind auf Grün.
           </p>
         ) : (
-          <table className="w-full border-collapse rounded-lg border border-line bg-surface">
+          <table className="animate-fade-in-up w-full border-collapse rounded-lg border border-line bg-surface">
             <thead>
               <tr>
                 <th className="th-cell">Priorität</th>
@@ -76,7 +88,7 @@ export default async function AlertsRemindersPage({
             </thead>
             <tbody>
               {alertTalents.map((t) => (
-                <tr key={t.id} className="hover:bg-pitch-dim/40">
+                <tr key={t.id} className="transition-colors hover:bg-pitch-dim/40">
                   <td className="td-cell">
                     <RiskDot level={t.currentAlert!.riskLevel} showLabel />
                   </td>
@@ -106,7 +118,7 @@ export default async function AlertsRemindersPage({
           Keine offenen Wiedervorlagen.
         </p>
       ) : (
-        <table className="w-full border-collapse rounded-lg border border-line bg-surface">
+        <table className="animate-fade-in-up w-full border-collapse rounded-lg border border-line bg-surface">
           <thead>
             <tr>
               <th className="th-cell">Status</th>
@@ -118,13 +130,12 @@ export default async function AlertsRemindersPage({
           </thead>
           <tbody>
             {reminders.map((r) => (
-              <tr key={r.id} className="hover:bg-pitch-dim/40">
+              <tr key={r.id} className="transition-colors hover:bg-pitch-dim/40">
                 <td className="td-cell">
                   <span
-                    className={`text-xs font-medium uppercase tracking-wide ${
-                      r.status === "ueberfaellig" ? "text-brick" : "text-muted"
-                    }`}
+                    className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${reminderStatusTone[r.status]}`}
                   >
+                    <span className="h-1.5 w-1.5 rounded-full bg-current" aria-hidden />
                     {reminderStatusLabels[r.status]}
                   </span>
                 </td>
