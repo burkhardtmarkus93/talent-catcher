@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { Role } from "@/lib/types";
 import { signOut } from "@/lib/actions/auth";
-import { LogoMark } from "@/components/ui/LogoMark";
+import { LogoLockup } from "@/components/ui/LogoLockup";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard" },
@@ -26,11 +26,8 @@ export function Sidebar({ email, role }: { email: string; role: Role }) {
 
   return (
     <aside className="flex w-60 shrink-0 flex-col border-r border-line bg-surface">
-      <div className="flex items-center gap-2 border-b border-line px-5 py-5">
-        <LogoMark height={24} />
-        <span className="font-display text-lg font-semibold text-ink">
-          Talent Catcher
-        </span>
+      <div className="flex items-center justify-center border-b border-line px-5 py-4">
+        <LogoLockup height={72} />
       </div>
 
       <nav className="flex flex-1 flex-col gap-0.5 p-3">
