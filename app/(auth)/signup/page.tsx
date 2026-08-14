@@ -15,7 +15,7 @@ export default function SignupPage({
         <div className="mb-8 text-center">
           <LogoLockup height={90} className="mb-2" />
           <h1 className="font-display text-xl font-medium text-ink">
-            für deinen Verein einrichten
+            Für deinen Verein einrichten
           </h1>
           <p className="mt-1 text-sm text-muted">
             Ein Konto pro Verein — du wirst automatisch Admin.
