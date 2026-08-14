@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
-import { LogoMark } from "@/components/ui/LogoMark";
+import { LogoLockup } from "@/components/ui/LogoLockup";
 import { signIn } from "@/lib/actions/auth";
 
 export default function LoginPage({
@@ -12,10 +12,7 @@ export default function LoginPage({
     <main className="flex min-h-screen items-center justify-center bg-paper px-4">
       <div className="w-full max-w-sm rounded-md border border-line bg-surface p-8 shadow-sm">
         <div className="mb-8 text-center">
-          <LogoMark height={40} className="mb-3" />
-          <h1 className="font-display text-2xl font-medium text-ink">
-            Talent Catcher
-          </h1>
+          <LogoLockup height={100} className="mb-2" />
           <p className="mt-1 text-sm text-muted">
             Anmelden, um mit dem Scouting fortzufahren
           </p>
