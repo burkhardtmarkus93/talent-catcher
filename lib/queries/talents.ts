@@ -69,6 +69,8 @@ function mapTalent(row: any): Talent {
     verbandsauswahl: Boolean(row.verbandsauswahl),
     nationalmannschaft: Boolean(row.nationalmannschaft),
     nlz: Boolean(row.nlz),
+    upcomingTransferClubText: row.upcoming_transfer_club_text ?? null,
+    upcomingTransferNote: row.upcoming_transfer_note ?? null,
   };
 }
 

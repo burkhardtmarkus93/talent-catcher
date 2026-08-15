@@ -59,6 +59,8 @@ export interface Talent {
   verbandsauswahl?: boolean;
   nationalmannschaft?: boolean;
   nlz?: boolean;
+  upcomingTransferClubText?: string | null;
+  upcomingTransferNote?: string | null;
 }
 
 export interface Alert {

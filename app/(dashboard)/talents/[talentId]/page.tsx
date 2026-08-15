@@ -14,6 +14,7 @@ import {
   restoreTalent,
   updateExternalProfiles,
   updateTalentOverview,
+  updateTalentClub,
 } from "@/lib/actions/talents";
 import { getGkCoordinationTestsForTalent } from "@/lib/queries/gkTests";
 import { getTalentActivityStatus } from "@/lib/queries/talentActivity";
@@ -23,6 +24,8 @@ import { TalentTags } from "@/components/talents/TalentTags";
 import { getVideosForTalent } from "@/lib/queries/videos";
 import { hasGrantedVideoConsent } from "@/lib/queries/consent";
 import { VideoUploadForm } from "@/components/videos/VideoUploadForm";
+import { getSiblingsForTalent } from "@/lib/queries/siblings";
+import { addSibling, deleteSibling } from "@/lib/actions/siblings";
 
 function age(birthDate: string): number {
   const diff = Date.now() - new Date(birthDate).getTime();
@@ -59,7 +62,7 @@ export default async function TalentDetailPage({
   if (!talent) notFound();
 
   const fullName = `${talent.firstName} ${talent.lastName}`;
-  const [reports, openReminders, gkTests, activityStatus, appUser, videos] =
+  const [reports, openReminders, gkTests, activityStatus, appUser, videos, siblings] =
     await Promise.all([
       getScoutReportsForTalent(talent.id),
       getOpenRemindersForTalent(talent.id, fullName),
@@ -69,6 +72,7 @@ export default async function TalentDetailPage({
       getTalentActivityStatus(talent.id, talent.updatedAt),
       getCurrentAppUser(),
       getVideosForTalent(talent.id),
+      getSiblingsForTalent(talent.id),
     ]);
 
   const canSeeBodyData = !talent.isMinor || Boolean(appUser?.hasYouthAccess);
@@ -87,6 +91,20 @@ export default async function TalentDetailPage({
           talentId={talent.id}
           lastActivityAt={activityStatus.lastActivityAt}
         />
+      )}
+
+      {talent.upcomingTransferClubText && (
+        <div className="mt-4 flex items-start gap-3 rounded-lg border border-amber-500/30 bg-amber-dim px-4 py-3">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5 flex-none text-amber-dark" aria-hidden>
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </svg>
+          <div className="text-sm text-amber-dark">
+            <span className="font-medium">Bevorstehender Wechsel: </span>
+            zu {talent.upcomingTransferClubText}
+            {talent.upcomingTransferNote && ` — ${talent.upcomingTransferNote}`}
+          </div>
+        </div>
       )}
 
       <div className="mt-4 flex items-stretch overflow-hidden rounded-xl border border-line bg-surface">
@@ -283,6 +301,76 @@ export default async function TalentDetailPage({
           </section>
 
           <section className="mt-6 rounded-xl border border-line bg-surface p-5">
+            <h2 className="mb-4 font-display text-lg font-medium text-ink">
+              Verein &amp; Wechsel
+            </h2>
+            <form action={updateTalentClub} className="flex flex-col gap-4 text-sm">
+              <input type="hidden" name="talentId" value={talent.id} />
+              <div className="grid grid-cols-2 gap-4">
+                <label className="flex flex-col gap-1.5 text-ink">
+                  Aktueller Verein
+                  <input
+                    type="text"
+                    name="clubNameText"
+                    defaultValue={talent.clubNameText ?? ""}
+                    required
+                    className="field"
+                  />
+                </label>
+                <label className="flex flex-col gap-1.5 text-ink">
+                  Team/Jahrgang
+                  <input
+                    type="text"
+                    name="teamNameText"
+                    defaultValue={talent.teamNameText ?? ""}
+                    placeholder="z. B. U17"
+                    className="field"
+                  />
+                </label>
+              </div>
+
+              <div>
+                <p className="mb-1 text-xs uppercase tracking-wide text-muted">
+                  Bevorstehender Wechsel (optional)
+                </p>
+                <p className="mb-3 text-xs text-muted">
+                  Reine Notiz für dich selbst — z. B. um zu wissen, dass sich
+                  eine Kontaktaufnahme aktuell nicht lohnt. Keine Vermittlung,
+                  kein Kontakt zu Dritten.
+                </p>
+                <div className="grid grid-cols-2 gap-4">
+                  <label className="flex flex-col gap-1.5 text-ink">
+                    Wechselt voraussichtlich zu
+                    <input
+                      type="text"
+                      name="upcomingTransferClubText"
+                      defaultValue={talent.upcomingTransferClubText ?? ""}
+                      placeholder="z. B. FC Beispiel U19"
+                      className="field"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1.5 text-ink">
+                    Notiz
+                    <input
+                      type="text"
+                      name="upcomingTransferNote"
+                      defaultValue={talent.upcomingTransferNote ?? ""}
+                      placeholder="z. B. wohl ab Sommer 2027, laut Trainer bereits einig"
+                      className="field"
+                    />
+                  </label>
+                </div>
+              </div>
+
+              <div>
+                <Button type="submit" variant="secondary">
+                  Speichern
+                </Button>
+              </div>
+            </form>
+          </section>
+
+          <section className="mt-6 rounded-xl border border-line bg-surface p-5">
             <h2 className="mb-1 font-display text-lg font-medium text-ink">
               Externe Profile
             </h2>
@@ -360,6 +448,95 @@ export default async function TalentDetailPage({
               Tags
             </h2>
             <TalentTags talentId={talent.id} tags={talent.tags ?? []} />
+          </section>
+
+          <section className="mt-6 rounded-xl border border-line bg-surface p-5">
+            <h2 className="mb-1 font-display text-lg font-medium text-ink">
+              Talentierte Geschwister
+            </h2>
+            <p className="mb-4 text-xs text-muted">
+              Reine Notiz für dich — z. B. wenn beim Scouting auffällt, dass
+              es noch ein(e) talentierte(n) Bruder/Schwester gibt. Legt kein
+              eigenes Talent-Profil an; dafür gibt es unten den Link „Als
+              Talent erfassen".
+            </p>
+
+            {siblings.length === 0 ? (
+              <p className="mb-4 text-sm text-muted">
+                Noch keine Geschwister vermerkt.
+              </p>
+            ) : (
+              <ul className="mb-4 divide-y divide-line">
+                {siblings.map((s) => (
+                  <li key={s.id} className="flex items-center justify-between gap-3 py-3">
+                    <div>
+                      <p className="text-sm font-medium text-ink">
+                        {s.firstName} {s.lastName}
+                        {s.birthDate && (
+                          <span className="ml-2 font-normal text-muted">
+                            {age(s.birthDate)} Jahre
+                          </span>
+                        )}
+                      </p>
+                      {s.note && <p className="mt-0.5 text-sm text-muted">{s.note}</p>}
+                    </div>
+                    <div className="flex flex-none items-center gap-3">
+                      <Link
+                        href={`/talents/new?firstName=${encodeURIComponent(
+                          s.firstName
+                        )}&lastName=${encodeURIComponent(s.lastName)}${
+                          s.birthDate ? `&birthDate=${encodeURIComponent(s.birthDate)}` : ""
+                        }`}
+                        className="text-sm text-pitch hover:underline"
+                      >
+                        Als Talent erfassen →
+                      </Link>
+                      <form action={deleteSibling}>
+                        <input type="hidden" name="talentId" value={talent.id} />
+                        <input type="hidden" name="siblingId" value={s.id} />
+                        <button
+                          type="submit"
+                          className="text-sm text-muted hover:text-brick"
+                          aria-label="Geschwister-Eintrag entfernen"
+                        >
+                          Entfernen
+                        </button>
+                      </form>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            <form action={addSibling} className="grid grid-cols-1 gap-3 sm:grid-cols-4">
+              <input type="hidden" name="talentId" value={talent.id} />
+              <label className="flex flex-col gap-1.5 text-sm text-ink">
+                Vorname
+                <input type="text" name="firstName" required className="field" />
+              </label>
+              <label className="flex flex-col gap-1.5 text-sm text-ink">
+                Nachname
+                <input type="text" name="lastName" required className="field" />
+              </label>
+              <label className="flex flex-col gap-1.5 text-sm text-ink">
+                Geburtsdatum
+                <input type="date" name="birthDate" className="field" />
+              </label>
+              <label className="flex flex-col gap-1.5 text-sm text-ink">
+                Notiz
+                <input
+                  type="text"
+                  name="note"
+                  placeholder="z. B. spielt auch bei uns in der U15"
+                  className="field"
+                />
+              </label>
+              <div className="sm:col-span-4">
+                <Button type="submit" variant="secondary">
+                  Geschwister hinzufügen
+                </Button>
+              </div>
+            </form>
           </section>
 
           <section className="mt-6 rounded-xl border border-line bg-surface p-5">

@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useFormState, useFormStatus } from "react-dom";
 import { Button } from "@/components/ui/Button";
 import { createTalent, type TalentActionState } from "@/lib/actions/talents";
@@ -8,6 +9,10 @@ const initialState: TalentActionState = { success: false };
 
 export function NewTalentForm() {
   const [state, formAction] = useFormState(createTalent, initialState);
+  const searchParams = useSearchParams();
+  const prefillFirstName = searchParams.get("firstName") ?? "";
+  const prefillLastName = searchParams.get("lastName") ?? "";
+  const prefillBirthDate = searchParams.get("birthDate") ?? "";
 
   return (
     <form action={formAction} className="rounded-xl border border-line bg-surface p-6">
@@ -16,12 +21,23 @@ export function NewTalentForm() {
           {state.error}
         </div>
       )}
+      {prefillFirstName && (
+        <div className="mb-4 rounded-lg border border-pitch/30 bg-pitch/5 px-3 py-2 text-sm text-pitch">
+          Vorausgefüllt aus einem Geschwister-Eintrag — bitte restliche Felder ergänzen.
+        </div>
+      )}
       <div className="mb-4 grid grid-cols-2 gap-4">
-        <Field label="Vorname *" name="firstName" required />
-        <Field label="Nachname *" name="lastName" required />
+        <Field label="Vorname *" name="firstName" required defaultValue={prefillFirstName} />
+        <Field label="Nachname *" name="lastName" required defaultValue={prefillLastName} />
       </div>
       <div className="mb-4 grid grid-cols-2 gap-4">
-        <Field label="Geburtsdatum *" name="birthDate" type="date" required />
+        <Field
+          label="Geburtsdatum *"
+          name="birthDate"
+          type="date"
+          required
+          defaultValue={prefillBirthDate}
+        />
         <Field label="Hauptposition *" name="primaryPosition" placeholder="z. B. IV, TW, ST" required />
       </div>
       <div className="mb-4 grid grid-cols-2 gap-4">
@@ -70,12 +86,14 @@ function Field({
   type = "text",
   required = false,
   placeholder,
+  defaultValue,
 }: {
   label: string;
   name: string;
   type?: string;
   required?: boolean;
   placeholder?: string;
+  defaultValue?: string;
 }) {
   return (
     <label className="flex flex-col gap-1.5 text-sm text-ink">
@@ -85,6 +103,7 @@ function Field({
         name={name}
         required={required}
         placeholder={placeholder}
+        defaultValue={defaultValue}
         className="field"
       />
     </label>
