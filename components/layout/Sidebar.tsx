@@ -68,6 +68,17 @@ const navItems = [
       </>
     ),
   },
+  {
+    href: "/admin",
+    label: "Verwaltung",
+    adminOnly: true,
+    icon: (
+      <>
+        <path d="M12 20h9" />
+        <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+      </>
+    ),
+  },
 ];
 
 const roleLabels: Record<Role, string> = {
@@ -87,7 +98,9 @@ export function Sidebar({ email, role }: { email: string; role: Role }) {
       </div>
 
       <nav className="flex flex-1 flex-col gap-0.5 p-3">
-        {navItems.map((item) => {
+        {navItems
+          .filter((item) => !item.adminOnly || role === "admin")
+          .map((item) => {
           const active = pathname?.startsWith(item.href);
           return (
             <Link
@@ -142,7 +155,10 @@ export function Sidebar({ email, role }: { email: string; role: Role }) {
           Erste-Schritte-Tour
         </button>
 
-        <div className="flex items-center gap-3 rounded-xl px-2.5 py-2 transition-colors hover:bg-pitch-dim/50">
+        <Link
+          href="/profile"
+          className="flex items-center gap-3 rounded-xl px-2.5 py-2 transition-colors hover:bg-pitch-dim/50"
+        >
           <span className="relative flex h-9 w-9 flex-none items-center justify-center rounded-full bg-gradient-to-br from-pitch-bright to-pitch text-xs font-semibold text-white shadow-sm">
             {initials}
             <span
@@ -157,7 +173,7 @@ export function Sidebar({ email, role }: { email: string; role: Role }) {
             </p>
             <p className="truncate text-xs text-muted">{email}</p>
           </div>
-        </div>
+        </Link>
 
         <form action={signOut} className="mt-2">
           <button
