@@ -45,6 +45,18 @@ export const INTRO_TOUR_STEPS: TourStep[] = [
     path: "/talents",
   },
   {
+    id: "talents-filters",
+    title: "Auswahl & Förderung filtern",
+    body: "Zusätzlich zu Position, Vertragsstatus und Ampel lässt sich die Liste nach DFB-Stützpunkt, Verbandsauswahl, Nationalmannschaft und NLZ-Status filtern.",
+    targetId: "tour-talents-filters",
+    path: "/talents",
+  },
+  {
+    id: "talent-detail",
+    title: "Auf der Talent-Detailseite",
+    body: "Verein und Team lassen sich jederzeit aktualisieren, inklusive Notiz zu einem bevorstehenden Wechsel. Transfermarkt- und FuPa-Profil verknüpfen, Video-Highlights hochladen — und falls ein Talent noch ein talentiertes Geschwisterkind hat, trägst du Name und Geburtsdatum direkt mit ein.",
+  },
+  {
     id: "nav-alerts",
     title: "Alerts & Wiedervorlagen",
     body: "Alle offenen Handlungsaufforderungen an einem Ort — automatische Alerts und von dir gesetzte Wiedervorlagen.",
