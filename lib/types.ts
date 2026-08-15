@@ -49,6 +49,8 @@ export interface Talent {
   updatedAt: string;
   currentAlert?: Alert;
   lastReportDate?: string | null;
+  transfermarktUrl?: string | null;
+  fupaUrl?: string | null;
 }
 
 export interface Alert {
