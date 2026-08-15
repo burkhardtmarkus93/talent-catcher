@@ -301,6 +301,95 @@ export default async function TalentDetailPage({
           </section>
 
           <section className="mt-6 rounded-xl border border-line bg-surface p-5">
+            <h2 className="mb-1 font-display text-lg font-medium text-ink">
+              Talentierte Geschwister
+            </h2>
+            <p className="mb-4 text-xs text-muted">
+              Reine Notiz für dich — z. B. wenn beim Scouting auffällt, dass
+              es noch ein(e) talentierte(n) Bruder/Schwester gibt. Legt kein
+              eigenes Talent-Profil an; dafür gibt es unten den Link „Als
+              Talent erfassen".
+            </p>
+
+            {siblings.length === 0 ? (
+              <p className="mb-4 text-sm text-muted">
+                Noch keine Geschwister vermerkt.
+              </p>
+            ) : (
+              <ul className="mb-4 divide-y divide-line">
+                {siblings.map((s) => (
+                  <li key={s.id} className="flex items-center justify-between gap-3 py-3">
+                    <div>
+                      <p className="text-sm font-medium text-ink">
+                        {s.firstName} {s.lastName}
+                        {s.birthDate && (
+                          <span className="ml-2 font-normal text-muted">
+                            {age(s.birthDate)} Jahre
+                          </span>
+                        )}
+                      </p>
+                      {s.note && <p className="mt-0.5 text-sm text-muted">{s.note}</p>}
+                    </div>
+                    <div className="flex flex-none items-center gap-3">
+                      <Link
+                        href={`/talents/new?firstName=${encodeURIComponent(
+                          s.firstName
+                        )}&lastName=${encodeURIComponent(s.lastName)}${
+                          s.birthDate ? `&birthDate=${encodeURIComponent(s.birthDate)}` : ""
+                        }`}
+                        className="text-sm text-pitch hover:underline"
+                      >
+                        Als Talent erfassen →
+                      </Link>
+                      <form action={deleteSibling}>
+                        <input type="hidden" name="talentId" value={talent.id} />
+                        <input type="hidden" name="siblingId" value={s.id} />
+                        <button
+                          type="submit"
+                          className="text-sm text-muted hover:text-brick"
+                          aria-label="Geschwister-Eintrag entfernen"
+                        >
+                          Entfernen
+                        </button>
+                      </form>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            <form action={addSibling} className="grid grid-cols-1 gap-3 sm:grid-cols-4">
+              <input type="hidden" name="talentId" value={talent.id} />
+              <label className="flex flex-col gap-1.5 text-sm text-ink">
+                Vorname
+                <input type="text" name="firstName" required className="field" />
+              </label>
+              <label className="flex flex-col gap-1.5 text-sm text-ink">
+                Nachname
+                <input type="text" name="lastName" required className="field" />
+              </label>
+              <label className="flex flex-col gap-1.5 text-sm text-ink">
+                Geburtsdatum
+                <input type="date" name="birthDate" className="field" />
+              </label>
+              <label className="flex flex-col gap-1.5 text-sm text-ink">
+                Notiz
+                <input
+                  type="text"
+                  name="note"
+                  placeholder="z. B. spielt auch bei uns in der U15"
+                  className="field"
+                />
+              </label>
+              <div className="sm:col-span-4">
+                <Button type="submit" variant="secondary">
+                  Geschwister hinzufügen
+                </Button>
+              </div>
+            </form>
+          </section>
+
+          <section className="mt-6 rounded-xl border border-line bg-surface p-5">
             <h2 className="mb-4 font-display text-lg font-medium text-ink">
               Verein &amp; Wechsel
             </h2>
@@ -448,95 +537,6 @@ export default async function TalentDetailPage({
               Tags
             </h2>
             <TalentTags talentId={talent.id} tags={talent.tags ?? []} />
-          </section>
-
-          <section className="mt-6 rounded-xl border border-line bg-surface p-5">
-            <h2 className="mb-1 font-display text-lg font-medium text-ink">
-              Talentierte Geschwister
-            </h2>
-            <p className="mb-4 text-xs text-muted">
-              Reine Notiz für dich — z. B. wenn beim Scouting auffällt, dass
-              es noch ein(e) talentierte(n) Bruder/Schwester gibt. Legt kein
-              eigenes Talent-Profil an; dafür gibt es unten den Link „Als
-              Talent erfassen".
-            </p>
-
-            {siblings.length === 0 ? (
-              <p className="mb-4 text-sm text-muted">
-                Noch keine Geschwister vermerkt.
-              </p>
-            ) : (
-              <ul className="mb-4 divide-y divide-line">
-                {siblings.map((s) => (
-                  <li key={s.id} className="flex items-center justify-between gap-3 py-3">
-                    <div>
-                      <p className="text-sm font-medium text-ink">
-                        {s.firstName} {s.lastName}
-                        {s.birthDate && (
-                          <span className="ml-2 font-normal text-muted">
-                            {age(s.birthDate)} Jahre
-                          </span>
-                        )}
-                      </p>
-                      {s.note && <p className="mt-0.5 text-sm text-muted">{s.note}</p>}
-                    </div>
-                    <div className="flex flex-none items-center gap-3">
-                      <Link
-                        href={`/talents/new?firstName=${encodeURIComponent(
-                          s.firstName
-                        )}&lastName=${encodeURIComponent(s.lastName)}${
-                          s.birthDate ? `&birthDate=${encodeURIComponent(s.birthDate)}` : ""
-                        }`}
-                        className="text-sm text-pitch hover:underline"
-                      >
-                        Als Talent erfassen →
-                      </Link>
-                      <form action={deleteSibling}>
-                        <input type="hidden" name="talentId" value={talent.id} />
-                        <input type="hidden" name="siblingId" value={s.id} />
-                        <button
-                          type="submit"
-                          className="text-sm text-muted hover:text-brick"
-                          aria-label="Geschwister-Eintrag entfernen"
-                        >
-                          Entfernen
-                        </button>
-                      </form>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-
-            <form action={addSibling} className="grid grid-cols-1 gap-3 sm:grid-cols-4">
-              <input type="hidden" name="talentId" value={talent.id} />
-              <label className="flex flex-col gap-1.5 text-sm text-ink">
-                Vorname
-                <input type="text" name="firstName" required className="field" />
-              </label>
-              <label className="flex flex-col gap-1.5 text-sm text-ink">
-                Nachname
-                <input type="text" name="lastName" required className="field" />
-              </label>
-              <label className="flex flex-col gap-1.5 text-sm text-ink">
-                Geburtsdatum
-                <input type="date" name="birthDate" className="field" />
-              </label>
-              <label className="flex flex-col gap-1.5 text-sm text-ink">
-                Notiz
-                <input
-                  type="text"
-                  name="note"
-                  placeholder="z. B. spielt auch bei uns in der U15"
-                  className="field"
-                />
-              </label>
-              <div className="sm:col-span-4">
-                <Button type="submit" variant="secondary">
-                  Geschwister hinzufügen
-                </Button>
-              </div>
-            </form>
           </section>
 
           <section className="mt-6 rounded-xl border border-line bg-surface p-5">
