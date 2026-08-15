@@ -33,11 +33,15 @@ export default async function DashboardLayout({
     }
   }
 
+  const tourSteps = INTRO_TOUR_STEPS.filter(
+    (step) => !step.adminOnly || appUser.role === "admin"
+  );
+
   return (
     <DashboardShell appUser={appUser}>
       <>
         {children}
-        <ProductTour steps={INTRO_TOUR_STEPS} autoStart={!appUser.hasSeenIntroTour} />
+        <ProductTour steps={tourSteps} autoStart={!appUser.hasSeenIntroTour} />
       </>
     </DashboardShell>
   );

@@ -71,6 +71,7 @@ const navItems = [
   {
     href: "/admin",
     label: "Verwaltung",
+    tourId: "tour-nav-verwaltung",
     adminOnly: true,
     icon: (
       <>
