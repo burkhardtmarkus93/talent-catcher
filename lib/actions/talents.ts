@@ -373,3 +373,70 @@ export async function updateExternalProfiles(formData: FormData): Promise<void> 
 
   revalidatePath(`/talents/${talentId}`);
 }
+
+export async function updateTalentOverview(formData: FormData): Promise<void> {
+  const talentId = String(formData.get("talentId") ?? "");
+  if (!talentId) {
+    throw new Error("Talent-ID fehlt.");
+  }
+
+  const appUser = await getCurrentAppUser();
+  if (!appUser?.clubId) {
+    throw new Error("Nicht angemeldet.");
+  }
+
+  const status = String(formData.get("status") ?? "in_beobachtung");
+  const contractStatus = String(formData.get("contractStatus") ?? "unbekannt");
+  const contractEndDate =
+    String(formData.get("contractEndDate") ?? "").trim() || null;
+  const leagueText = String(formData.get("leagueText") ?? "").trim() || null;
+  const countryText = String(formData.get("countryText") ?? "").trim() || null;
+  const visibilityStatus = String(formData.get("visibilityStatus") ?? "privat");
+
+  const update: Record<string, unknown> = {
+    status,
+    contract_status: contractStatus,
+    contract_end_date: contractEndDate,
+    league_text: leagueText,
+    country_text: countryText,
+    visibility_status: visibilityStatus,
+    dfb_stuetzpunkt: formData.get("dfbStuetzpunkt") === "on",
+    verbandsauswahl: formData.get("verbandsauswahl") === "on",
+    nationalmannschaft: formData.get("nationalmannschaft") === "on",
+    nlz: formData.get("nlz") === "on",
+  };
+
+  // Größe/Gewicht nur übernehmen, wenn das Formular sie überhaupt enthält
+  // — die Felder werden nur gezeigt, wenn der bearbeitende Nutzer
+  // Jugendschutz-Zugriff hat (oder das Talent volljährig ist). So wird
+  // ein bestehender Wert nicht durch das Fehlen des Feldes gelöscht, nur
+  // weil der aktuelle Nutzer es gerade nicht sehen darf.
+  if (formData.has("heightCm")) {
+    const heightCmRaw = String(formData.get("heightCm") ?? "").trim();
+    update.height_cm = heightCmRaw ? Number(heightCmRaw) : null;
+  }
+  if (formData.has("weightKg")) {
+    const weightKgRaw = String(formData.get("weightKg") ?? "").trim();
+    update.weight_kg = weightKgRaw ? Number(weightKgRaw) : null;
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("talents")
+    .update(update)
+    .eq("id", talentId)
+    .eq("club_id", appUser.clubId);
+
+  if (error) {
+    console.error("updateTalentOverview() fehlgeschlagen:", {
+      message: error.message,
+      code: error.code,
+      details: error.details,
+      hint: error.hint,
+    });
+    throw new Error("Talent konnte nicht aktualisiert werden.");
+  }
+
+  revalidatePath(`/talents/${talentId}`);
+  revalidatePath("/talents");
+}

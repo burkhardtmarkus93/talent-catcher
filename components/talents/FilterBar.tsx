@@ -9,6 +9,10 @@ type FilterBarProps = {
   status?: string;
   alert?: string;
   hiddenGem?: string;
+  dfbStuetzpunkt?: string;
+  verbandsauswahl?: string;
+  nationalmannschaft?: string;
+  nlz?: string;
 };
 
 export function FilterBar({
@@ -18,6 +22,10 @@ export function FilterBar({
   status = "Alle",
   alert = "Alle",
   hiddenGem = "Alle",
+  dfbStuetzpunkt = "Alle",
+  verbandsauswahl = "Alle",
+  nationalmannschaft = "Alle",
+  nlz = "Alle",
 }: FilterBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -106,6 +114,36 @@ export function FilterBar({
           onChange={(value) =>
             updateParams({ q, showArchived, hiddenGem: value })
           }
+        />
+        <Select
+          label="DFB-Stützpunkt"
+          value={dfbStuetzpunkt}
+          options={["Alle", "Ja", "Nein"]}
+          onChange={(value) =>
+            updateParams({ q, showArchived, dfbStuetzpunkt: value })
+          }
+        />
+        <Select
+          label="Verbandsauswahl"
+          value={verbandsauswahl}
+          options={["Alle", "Ja", "Nein"]}
+          onChange={(value) =>
+            updateParams({ q, showArchived, verbandsauswahl: value })
+          }
+        />
+        <Select
+          label="Nationalmannschaft"
+          value={nationalmannschaft}
+          options={["Alle", "Ja", "Nein"]}
+          onChange={(value) =>
+            updateParams({ q, showArchived, nationalmannschaft: value })
+          }
+        />
+        <Select
+          label="NLZ"
+          value={nlz}
+          options={["Alle", "Ja", "Nein"]}
+          onChange={(value) => updateParams({ q, showArchived, nlz: value })}
         />
       </div>
     </div>
