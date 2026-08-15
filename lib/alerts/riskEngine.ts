@@ -5,12 +5,23 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 // - Torhüter-spezifische Schwellenwerte sind vorbereitet (Multiplikator),
 //   aber die volle Altersstufen-Differenzierung (U15/U16 vs. U17-U19)
 //   ist hier noch nicht abgebildet.
-// - Hidden-Gem-Erkennung prüft nur "letzte Berichte konstant stark",
+// - Hidden-Gem-Erkennung prüft "letzte Berichte konstant stark" ODER
+//   "solide aktuelle Leistung + Potenzial-/Reifegrad-/TINDER-Signale",
 //   NICHT zusätzlich "Status seit > 180 Tagen unverändert" — dafür
 //   fehlt eine Statuswechsel-Historie, die es in diesem Prototyp noch
 //   nicht gibt.
 // Diese Vereinfachungen sind bewusst und sollten vor Produktivbetrieb
 // gegen das volle Alert-Engine-Dokument nachgeschärft werden.
+//
+// Gewichtung der Zusatzsignale (TINDER/Potenzial/Reifegrad/Koordinations-
+// test) unten ist eine begründete ERSTFASSUNG, keine abgestimmte
+// Geschäftsentscheidung — bitte gegenprüfen, bevor sie sich auf reale
+// Bewertungen auswirkt (siehe CLAUDE.md Kapitel 7: "Bei Unsicherheit über
+// Produktentscheidungen ... nachfragen statt stillschweigend annehmen").
+// Bewusst NICHT eingeflossen: dfb_stuetzpunkt/verbandsauswahl/
+// nationalmannschaft/nlz — das sind Auswahl-/Förderstatus-Flags, keine
+// Leistungs- oder Potenzialbewertungen; sie in einen Risikoscore zu
+// pressen wäre eine Annahme, die so nirgends angefragt wurde.
 export async function recalculateAlertForTalent(
   supabase: SupabaseClient,
   talentId: string
@@ -32,7 +43,9 @@ export async function recalculateAlertForTalent(
 
   const { data: reports, error: reportsError } = await supabase
     .from("scout_reports")
-    .select("created_at, overall_rating")
+    .select(
+      "created_at, overall_rating, potenzial, reifegrad, tinder_trainingssensitivitaet, tinder_intelligenz, tinder_naturell, tinder_dynamik, tinder_erfolgsmotivation, tinder_resilienz"
+    )
     .eq("talent_id", talentId)
     .order("created_at", { ascending: false })
     .limit(3);
@@ -54,6 +67,29 @@ export async function recalculateAlertForTalent(
   }
 
   const isGoalkeeper = talent.primary_position === "TW";
+
+  // Nur für Torhüter relevant: jüngster Koordinationstest, als
+  // zusätzliches Werthaltigkeits-Signal (siehe Multiplikator unten).
+  let latestGkTestScore: number | null = null;
+  if (isGoalkeeper) {
+    const { data: gkTest, error: gkTestError } = await supabase
+      .from("gk_coordination_tests")
+      .select("total_score")
+      .eq("talent_id", talentId)
+      .order("test_date", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (gkTestError) {
+      console.error(
+        "recalculateAlertForTalent(): Koordinationstest konnte nicht geladen werden",
+        gkTestError.message
+      );
+    } else {
+      latestGkTestScore = gkTest?.total_score ?? null;
+    }
+  }
+
   const reasons: string[] = [];
   let neglectScore = 0;
 
@@ -99,6 +135,28 @@ export async function recalculateAlertForTalent(
   const ratings = (reports ?? []).map((r) => Number(r.overall_rating)).filter((n) => !Number.isNaN(n));
   const avgRating = ratings.length > 0 ? ratings.reduce((a, b) => a + b, 0) / ratings.length : null;
 
+  // Potenzial/Reifegrad/TINDER-Kriterien beziehen sich auf die
+  // Einschätzung des Scouts zum Zeitpunkt des jüngsten Berichts, nicht
+  // auf einen Verlauf — anders als overall_rating werden sie deshalb aus
+  // reports[0] gelesen, nicht gemittelt.
+  const latestReport = reports?.[0] ?? null;
+  const latestPotenzial = latestReport?.potenzial ?? null;
+  const latestReifegrad = latestReport?.reifegrad ?? null;
+
+  const tinderValues = latestReport
+    ? [
+        latestReport.tinder_trainingssensitivitaet,
+        latestReport.tinder_intelligenz,
+        latestReport.tinder_naturell,
+        latestReport.tinder_dynamik,
+        latestReport.tinder_erfolgsmotivation,
+        latestReport.tinder_resilienz,
+      ].filter((v): v is number => v !== null && v !== undefined)
+    : [];
+  // Nur werten, wenn alle sechs TINDER-Kriterien im jüngsten Bericht
+  // vorliegen — kein verzerrter Schnitt aus Teildaten.
+  const tinderAvg = tinderValues.length === 6 ? tinderValues.reduce((a, b) => a + b, 0) / 6 : null;
+
   let multiplier = 1.0;
   if (avgRating !== null) {
     if (avgRating >= 4.5) multiplier = 1.4;
@@ -107,19 +165,70 @@ export async function recalculateAlertForTalent(
     else multiplier = 0.8;
   }
 
+  const multiplierCap = 1.8;
+
   const trendThreshold = isGoalkeeper ? 0.3 : 0.5;
   const isUpwardTrend =
     ratings.length >= 2 && ratings[0] - ratings[ratings.length - 1] >= trendThreshold;
   if (isUpwardTrend) {
-    multiplier = Math.min(multiplier + 0.2, 1.5);
+    multiplier = Math.min(multiplier + 0.2, multiplierCap);
     reasons.push("Aufwärtstrend über die letzten Berichte erkannt (Late-Bloomer-Signal)");
   }
 
-  const isHiddenGem =
+  // Potenzial 1 = "hoch" (Skala 1–4, 1 ist bester Wert).
+  const hasHighPotenzial = latestPotenzial === 1;
+  if (hasHighPotenzial) {
+    multiplier = Math.min(multiplier + 0.15, multiplierCap);
+    reasons.push("Hohes Potenzial laut jüngstem Bericht");
+  }
+
+  // Reifegrad <= -1 = "eher spät" bis "Spätentwickler" (Skala -2..+2).
+  // Nur relevant in Kombination mit bereits solider aktueller Leistung —
+  // ein schwacher Spätentwickler ist kein eigenes Signal wert.
+  const isLateBloomer = latestReifegrad !== null && latestReifegrad <= -1;
+  if (isLateBloomer && avgRating !== null && avgRating >= 3.0) {
+    multiplier = Math.min(multiplier + 0.1, multiplierCap);
+    reasons.push("Spätentwickler mit bereits solider Leistung (Reifegrad-Signal)");
+  }
+
+  const hasStrongTinderAvg = tinderAvg !== null && tinderAvg >= 3.5;
+  if (hasStrongTinderAvg) {
+    multiplier = Math.min(multiplier + 0.1, multiplierCap);
+    reasons.push("TINDER-Kriterien im jüngsten Bericht durchweg stark ausgeprägt");
+  }
+
+  const gkTestThreshold = 15; // von max. 18 Punkten (6 Tests × 0–3)
+  const hasStrongGkTest = latestGkTestScore !== null && latestGkTestScore >= gkTestThreshold;
+  if (hasStrongGkTest) {
+    multiplier = Math.min(multiplier + 0.15, multiplierCap);
+    reasons.push(`Starker Koordinationstest (${latestGkTestScore}/18 Punkten)`);
+  }
+
+  const isHiddenGemByRating =
     ratings.length >= (isGoalkeeper ? 2 : 3) && ratings.every((r) => r >= 4.0);
-  if (isHiddenGem) {
+  if (isHiddenGemByRating) {
     reasons.push("Wiederholt stark bewertet (Hidden-Gem-Signal)");
   }
+
+  // Zweiter Hidden-Gem-Pfad: (noch) keine durchweg exzellente Bewertung,
+  // aber solide aktuelle Leistung (3.0–4.0) kombiniert mit Potenzial-
+  // oder Reifegrad-Signal UND durchweg starken TINDER-Werten — genau das
+  // Muster "zeigt sich noch nicht in der Rohbewertung, hat aber
+  // erkennbares Entwicklungspotenzial".
+  const isHiddenGemBySignals =
+    !isHiddenGemByRating &&
+    avgRating !== null &&
+    avgRating >= 3.0 &&
+    avgRating < 4.0 &&
+    (hasHighPotenzial || isLateBloomer) &&
+    hasStrongTinderAvg;
+  if (isHiddenGemBySignals) {
+    reasons.push(
+      "Solide Leistung mit starken Potenzial-/Reifegrad-/TINDER-Signalen (Hidden-Gem-Signal)"
+    );
+  }
+
+  const isHiddenGem = isHiddenGemByRating || isHiddenGemBySignals;
 
   const riskScore = Math.min(Math.round(neglectScore * multiplier * 100) / 100, 100);
   const riskLevel = riskScore >= 60 ? "rot" : riskScore >= 30 ? "gelb" : "gruen";
