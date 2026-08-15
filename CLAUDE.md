@@ -4,11 +4,11 @@ Diese Datei gibt Claude (über Claude Code / die GitHub-App) verbindliche Regeln
 
 ## 1. Projektüberblick
 
-Talent Catcher ist ein Scouting- und Frühwarnsystem für Talentförderung im Amateur- und Nachwuchsfußball. Kernidee: automatisierte Risiko-/Chancen-Erkennung auf Basis gesammelter Bewertungsdaten (nicht nur Berichtsverwaltung).
+Talent Catcher ist ein Scouting- und Frühwarnsystem für Talentförderung im Nachwuchs- und Profifußball. Kernidee: automatisierte Risiko-/Chancen-Erkennung auf Basis gesammelter Bewertungsdaten (nicht nur Berichtsverwaltung).
 
 **Aktuelle Ausbaustufe:** Stufe 1 (MVP) — Scouting-Frühwarnsystem für Vereine/Scouts. Rollen für Trainer, Eltern, Landesverbände und NLZ sind geplante Erweiterungen, aber noch nicht implementiert.
 
-**Zielgruppen (Reihenfolge der Priorität):** 1. Amateurvereine/Scouts, 2. Landesverbände, 3. Profi-NLZ als Zubringer-Kunde, 4. Trainer (Trainerbörse), 5. Eltern.
+**Zielgruppen (Reihenfolge der Priorität, Stand 15.08.2026 aktualisiert):** 1. Profivereine/NLZ, 2. Landesverbände, 3. Amateurvereine/Scouts (die meisten Amateurvereine haben keinen dedizierten Scout, daher nachrangig), 4. Trainer (Trainerbörse), 5. Eltern. Konsequenz für fachliche Tiefe: Bewertungsraster, die für hauptamtliches Scouting-/NLZ-Personal ausgelegt sind (viele Bewertungsachsen pro Bericht, spezialisierte Testmodule wie der Torwart-Koordinationstest), sind für diese Zielgruppe angemessen und nicht per se "zu viel" — anders als bei ehrenamtlichen Amateur-Scouts mit wenig Zeit pro Sichtung.
 
 ## 2. Tech-Stack (bitte einhalten, nicht wechseln)
 
@@ -35,6 +35,8 @@ Dieses Produkt verarbeitet perspektivisch Daten von **Minderjährigen**. Für je
 **Phase 2 (NICHT ohne ausdrückliche Freigabe umsetzen):** Aktive Vermittlungs- oder Matching-Funktionen zwischen Personen (Trainerbörse mit direkter Kontaktvermittlung, "Tinder"-artiges Spieler-Matching, automatisierte Vereinswechsel-Abwicklung). Diese Funktionen berühren die DFB-Jugendordnung (Wechselfristen, Ausbildungsentschädigung bei Wechsel zu Leistungszentrums-Vereinen) und ggf. FIFA-Regularien. **Claude soll hierzu Vorschläge/Entwürfe machen dürfen, aber keine Funktion live schalten oder als "fertig" markieren, ohne dass der Projektverantwortliche das explizit bestätigt.**
 
 Wenn eine Aufgabe implizit in Richtung Phase 2 geht (z. B. "baue eine Kontaktfunktion zwischen Spieler und Trainer"), soll Claude das **explizit benennen** und nachfragen, statt es einfach umzusetzen.
+
+Mit der Zielgruppen-Priorisierung auf Profivereine/NLZ (siehe Kapitel 1) ist Wechselfristen-/Ausbildungsentschädigungs-Thematik nicht mehr nur hypothetisch, sondern für die primäre Zielgruppe direkt relevant — bei Funktionen rund um Vereinswechsel deshalb besonders sorgfältig zwischen "Beobachtung/Dokumentation für den eigenen Verein" (Phase 1, erlaubt) und "Vermittlung/Abwicklung zwischen Vereinen" (Phase 2, Freigabe nötig) unterscheiden.
 
 ## 5. Code- und Architekturkonventionen
 

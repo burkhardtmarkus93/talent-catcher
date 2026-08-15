@@ -191,8 +191,9 @@ export function ScoutReportForm({
           <p className="text-sm font-semibold text-ink">TINDER-Kriterien</p>
           <p className="text-xs text-muted">
   Zusätzliche Einschätzungsskalen von 1 bis 4: 1 = kaum ausgeprägt, 4 = stark ausgeprägt.
-  Sie beeinflussen weder das Gesamtrating noch die Risikobewertung direkt — sie werden nur
-  gespeichert und angezeigt, als Kontext für spätere, manuelle Auswertungen.
+  Beeinflussen nicht das Gesamtrating (das bleibt der Schnitt aus Technik/Taktik/Athletik/
+  Mentalität), fließen aber — zusammen mit Potenzial und Reifegrad — in die automatische
+  Risikobewertung ein, z. B. als zusätzliches Hidden-Gem-Signal.
 </p>
         </div>
 
