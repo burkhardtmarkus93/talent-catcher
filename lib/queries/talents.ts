@@ -35,7 +35,7 @@ function mapAlert(row: any): Alert {
   };
 }
 
-function mapTalent(row: any): Talent {
+export function mapTalent(row: any): Talent {
   const currentAlertRow = Array.isArray(row.alerts)
     ? row.alerts.find((a: any) => a?.is_current)
     : undefined;

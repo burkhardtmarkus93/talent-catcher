@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import type { Talent } from "@/lib/types";
 import { RiskDot } from "@/components/ui/RiskDot";
 import { HiddenGemBadge } from "@/components/ui/HiddenGemBadge";
@@ -29,9 +30,11 @@ const statusLabels: Partial<Record<Talent["status"], string>> = {
 export function TalentTable({
   talents,
   currentUserHasYouthAccess,
+  renderActions,
 }: {
   talents: Talent[];
   currentUserHasYouthAccess: boolean;
+  renderActions?: (talent: Talent) => ReactNode;
 }) {
   return (
     <table className="w-full border-collapse overflow-hidden rounded-lg border border-line bg-surface">
@@ -44,6 +47,7 @@ export function TalentTable({
           <th className="th-cell">Status</th>
           <th className="th-cell">Ampel</th>
           <th className="th-cell">Letzter Bericht</th>
+          {renderActions && <th className="th-cell" />}
         </tr>
       </thead>
       <tbody>
@@ -90,6 +94,9 @@ export function TalentTable({
                 )}
               </td>
               <td className="td-cell text-muted">{daysSince(t.lastReportDate)}</td>
+              {renderActions && (
+                <td className="td-cell text-right">{renderActions(t)}</td>
+              )}
             </tr>
           );
         })}
