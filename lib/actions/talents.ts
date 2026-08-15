@@ -328,3 +328,48 @@ export async function restoreTalent(formData: FormData): Promise<void> {
   revalidatePath(`/talents/${talentId}`);
   redirect(`/talents/${talentId}`);
 }
+
+export async function updateExternalProfiles(formData: FormData): Promise<void> {
+  const talentId = String(formData.get("talentId") ?? "");
+  const transfermarktUrl = String(formData.get("transfermarktUrl") ?? "").trim();
+  const fupaUrl = String(formData.get("fupaUrl") ?? "").trim();
+
+  if (!talentId) {
+    throw new Error("Talent-ID fehlt.");
+  }
+
+  for (const url of [transfermarktUrl, fupaUrl]) {
+    if (url && !/^https?:\/\//i.test(url)) {
+      throw new Error(
+        "Bitte eine vollständige URL angeben (beginnend mit http:// oder https://)."
+      );
+    }
+  }
+
+  const appUser = await getCurrentAppUser();
+  if (!appUser?.clubId) {
+    throw new Error("Nicht angemeldet.");
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("talents")
+    .update({
+      transfermarkt_url: transfermarktUrl || null,
+      fupa_url: fupaUrl || null,
+    })
+    .eq("id", talentId)
+    .eq("club_id", appUser.clubId);
+
+  if (error) {
+    console.error("updateExternalProfiles() fehlgeschlagen:", {
+      message: error.message,
+      code: error.code,
+      details: error.details,
+      hint: error.hint,
+    });
+    throw new Error("Externe Profile konnten nicht gespeichert werden.");
+  }
+
+  revalidatePath(`/talents/${talentId}`);
+}

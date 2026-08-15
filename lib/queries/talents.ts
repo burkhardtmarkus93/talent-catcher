@@ -59,6 +59,8 @@ function mapTalent(row: any): Talent {
     updatedAt: row.updated_at,
     currentAlert: currentAlertRow ? mapAlert(currentAlertRow) : undefined,
     lastReportDate: null,
+    transfermarktUrl: row.transfermarkt_url ?? null,
+    fupaUrl: row.fupa_url ?? null,
   };
 }
 

@@ -9,16 +9,35 @@ import {
   getScoutReportsForTalent,
   getOpenRemindersForTalent,
 } from "@/lib/queries/talents";
-import { archiveTalent, restoreTalent } from "@/lib/actions/talents";
+import {
+  archiveTalent,
+  restoreTalent,
+  updateExternalProfiles,
+} from "@/lib/actions/talents";
 import { getGkCoordinationTestsForTalent } from "@/lib/queries/gkTests";
 import { getTalentActivityStatus } from "@/lib/queries/talentActivity";
 import { InactivityBanner } from "@/components/talents/InactivityBanner";
 import { getCurrentAppUser } from "@/lib/queries/session";
 import { TalentTags } from "@/components/talents/TalentTags";
+import { getVideosForTalent } from "@/lib/queries/videos";
+import { hasGrantedVideoConsent } from "@/lib/queries/consent";
+import { VideoUploadForm } from "@/components/videos/VideoUploadForm";
 
 function age(birthDate: string): number {
   const diff = Date.now() - new Date(birthDate).getTime();
   return Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+}
+
+function formatFileSize(bytes: number | null): string {
+  if (!bytes) return "—";
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function formatDuration(seconds: number | null): string {
+  if (!seconds) return "";
+  const m = Math.floor(seconds / 60);
+  const s = Math.round(seconds % 60);
+  return ` · ${m}:${s.toString().padStart(2, "0")} min`;
 }
 
 const TINDER_LABELS: Record<string, string> = {
@@ -39,7 +58,7 @@ export default async function TalentDetailPage({
   if (!talent) notFound();
 
   const fullName = `${talent.firstName} ${talent.lastName}`;
-  const [reports, openReminders, gkTests, activityStatus, appUser] =
+  const [reports, openReminders, gkTests, activityStatus, appUser, videos] =
     await Promise.all([
       getScoutReportsForTalent(talent.id),
       getOpenRemindersForTalent(talent.id, fullName),
@@ -48,9 +67,13 @@ export default async function TalentDetailPage({
         : Promise.resolve([]),
       getTalentActivityStatus(talent.id, talent.updatedAt),
       getCurrentAppUser(),
+      getVideosForTalent(talent.id),
     ]);
 
   const canSeeBodyData = !talent.isMinor || Boolean(appUser?.hasYouthAccess);
+  const canUploadVideo = talent.isMinor
+    ? await hasGrantedVideoConsent(talent.id)
+    : true;
 
   return (
     <div>
@@ -149,6 +172,79 @@ export default async function TalentDetailPage({
           </section>
 
           <section className="mt-6 rounded-xl border border-line bg-surface p-5">
+            <h2 className="mb-1 font-display text-lg font-medium text-ink">
+              Externe Profile
+            </h2>
+            <p className="mb-4 text-xs text-muted">
+              Nur ein Link zum jeweiligen Profil — aus rechtlichen Gründen
+              (Nutzungsbedingungen der Anbieter) keine eingebetteten Daten.
+            </p>
+            <div className="mb-4 flex flex-wrap gap-2">
+              {talent.transfermarktUrl && (
+                <a
+                  href={talent.transfermarktUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-paper px-3 py-1.5 text-sm text-ink transition-colors hover:border-pitch"
+                >
+                  Transfermarkt-Profil öffnen
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                    <path d="M15 3h6v6" />
+                    <path d="M10 14 21 3" />
+                  </svg>
+                </a>
+              )}
+              {talent.fupaUrl && (
+                <a
+                  href={talent.fupaUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-paper px-3 py-1.5 text-sm text-ink transition-colors hover:border-pitch"
+                >
+                  FuPa-Profil öffnen
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                    <path d="M15 3h6v6" />
+                    <path d="M10 14 21 3" />
+                  </svg>
+                </a>
+              )}
+              {!talent.transfermarktUrl && !talent.fupaUrl && (
+                <p className="text-sm text-muted">Noch kein externes Profil verknüpft.</p>
+              )}
+            </div>
+            <form action={updateExternalProfiles} className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <input type="hidden" name="talentId" value={talent.id} />
+              <label className="flex flex-col gap-1.5 text-sm text-ink">
+                Transfermarkt-URL
+                <input
+                  type="url"
+                  name="transfermarktUrl"
+                  defaultValue={talent.transfermarktUrl ?? ""}
+                  placeholder="https://www.transfermarkt.de/..."
+                  className="field"
+                />
+              </label>
+              <label className="flex flex-col gap-1.5 text-sm text-ink">
+                FuPa-URL
+                <input
+                  type="url"
+                  name="fupaUrl"
+                  defaultValue={talent.fupaUrl ?? ""}
+                  placeholder="https://www.fupa.net/..."
+                  className="field"
+                />
+              </label>
+              <div className="sm:col-span-2">
+                <Button type="submit" variant="secondary">
+                  Speichern
+                </Button>
+              </div>
+            </form>
+          </section>
+
+          <section className="mt-6 rounded-xl border border-line bg-surface p-5">
             <h2 className="mb-3 font-display text-lg font-medium text-ink">
               Tags
             </h2>
@@ -223,6 +319,49 @@ export default async function TalentDetailPage({
                   );
                 })}
               </ul>
+            )}
+          </section>
+
+          <section className="mt-6 rounded-xl border border-line bg-surface p-5">
+            <h2 className="mb-4 font-display text-lg font-medium text-ink">
+              Video-Highlights
+            </h2>
+
+            {videos.length === 0 ? (
+              <p className="mb-4 text-sm text-muted">
+                Noch keine Videos hochgeladen.
+              </p>
+            ) : (
+              <div className="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {videos.map((v) => (
+                  <div key={v.id} className="overflow-hidden rounded-lg border border-line bg-paper">
+                    {v.playbackUrl ? (
+                      <video controls className="aspect-video w-full bg-black" preload="metadata">
+                        <source src={v.playbackUrl} type="video/mp4" />
+                      </video>
+                    ) : (
+                      <div className="flex aspect-video w-full items-center justify-center bg-ink/5 text-xs text-muted">
+                        Video nicht verfügbar
+                      </div>
+                    )}
+                    <div className="px-3 py-2 text-xs text-muted">
+                      {formatFileSize(v.fileSizeBytes)}
+                      {formatDuration(v.durationSeconds)}
+                      {v.uploaderEmail && <> · {v.uploaderEmail}</>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {canUploadVideo ? (
+              <VideoUploadForm talentId={talent.id} clubId={appUser?.clubId ?? ""} />
+            ) : (
+              <p className="rounded-lg bg-amber-dim px-4 py-3 text-sm text-amber-dark">
+                Für dieses minderjährige Talent liegt noch keine dokumentierte
+                Einwilligung für Videomaterial vor — Upload ist deshalb
+                gesperrt.
+              </p>
             )}
           </section>
 
