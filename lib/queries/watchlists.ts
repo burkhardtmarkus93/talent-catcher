@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
-import type { Watchlist } from "@/lib/types";
+import type { Watchlist, Talent } from "@/lib/types";
+import { mapTalent } from "@/lib/queries/talents";
 
 function mapWatchlist(row: any): Watchlist {
   const talentCount = Array.isArray(row.watchlist_talents)
@@ -32,4 +33,48 @@ export async function getWatchlists(): Promise<Watchlist[]> {
   }
 
   return (data ?? []).map(mapWatchlist);
+}
+
+export async function getWatchlistById(id: string): Promise<Watchlist | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("watchlists")
+    .select("id, name, description, watchlist_talents(count)")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (error) {
+    console.error("getWatchlistById() fehlgeschlagen:", {
+      message: error.message,
+      code: error.code,
+      details: error.details,
+      hint: error.hint,
+    });
+    throw new Error("Watchlist konnte nicht geladen werden.");
+  }
+
+  return data ? mapWatchlist(data) : null;
+}
+
+export async function getTalentsForWatchlist(watchlistId: string): Promise<Talent[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("watchlist_talents")
+    .select("talents(*, alerts(*))")
+    .eq("watchlist_id", watchlistId);
+
+  if (error) {
+    console.error("getTalentsForWatchlist() fehlgeschlagen:", {
+      message: error.message,
+      code: error.code,
+      details: error.details,
+      hint: error.hint,
+    });
+    throw new Error("Talente der Watchlist konnten nicht geladen werden.");
+  }
+
+  return (data ?? [])
+    .map((row: any) => row.talents)
+    .filter(Boolean)
+    .map(mapTalent);
 }

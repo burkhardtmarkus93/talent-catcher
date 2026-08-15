@@ -51,14 +51,10 @@ export interface Talent {
   lastReportDate?: string | null;
   transfermarktUrl?: string | null;
   fupaUrl?: string | null;
-  // Optional statt required: lib/dummy-data.ts (noch verwendet von
-  // app/(dashboard)/watchlists/page.tsx) hat diese Felder nicht — echte
-  // Queries (lib/queries/talents.ts::mapTalent) liefern immer einen
-  // echten boolean, nie undefined.
-  dfbStuetzpunkt?: boolean;
-  verbandsauswahl?: boolean;
-  nationalmannschaft?: boolean;
-  nlz?: boolean;
+  dfbStuetzpunkt: boolean;
+  verbandsauswahl: boolean;
+  nationalmannschaft: boolean;
+  nlz: boolean;
   upcomingTransferClubText?: string | null;
   upcomingTransferNote?: string | null;
 }
