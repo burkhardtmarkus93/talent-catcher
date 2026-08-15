@@ -13,6 +13,7 @@ import {
   archiveTalent,
   restoreTalent,
   updateExternalProfiles,
+  updateTalentOverview,
 } from "@/lib/actions/talents";
 import { getGkCoordinationTestsForTalent } from "@/lib/queries/gkTests";
 import { getTalentActivityStatus } from "@/lib/queries/talentActivity";
@@ -141,34 +142,144 @@ export default async function TalentDetailPage({
             <h2 className="mb-4 font-display text-lg font-medium text-ink">
               Übersicht
             </h2>
-            <dl className="grid grid-cols-2 gap-4 text-sm">
-              <Field label="Status" value={talent.status.replace("_", " ")} />
-              <Field
-                label="Vertragsstatus"
-                value={`${talent.contractStatus}${
-                  talent.contractEndDate ? `, bis ${talent.contractEndDate}` : ""
-                }`}
-              />
-              <Field label="Liga" value={talent.leagueText ?? "—"} />
-              <Field label="Land" value={talent.countryText ?? "—"} />
-              <Field label="Minderjährig" value={talent.isMinor ? "Ja" : "Nein"} />
-              <Field
-                label="Sichtbarkeit"
-                value={talent.visibilityStatus === "privat" ? "Privat" : "Freigegeben"}
-              />
-              {canSeeBodyData && (
-                <>
-                  <Field
-                    label="Größe"
-                    value={talent.heightCm ? `${talent.heightCm} cm` : "—"}
+            <form action={updateTalentOverview} className="flex flex-col gap-4 text-sm">
+              <input type="hidden" name="talentId" value={talent.id} />
+              <div className="grid grid-cols-2 gap-4">
+                <label className="flex flex-col gap-1.5 text-ink">
+                  Status
+                  <select name="status" defaultValue={talent.status} className="select-field">
+                    <option value="in_beobachtung">In Beobachtung</option>
+                    <option value="empfehlung">Empfehlung</option>
+                    <option value="abgeschlossen">Abgeschlossen</option>
+                    <option value="verloren">Verloren</option>
+                  </select>
+                </label>
+                <label className="flex flex-col gap-1.5 text-ink">
+                  Sichtbarkeit
+                  <select
+                    name="visibilityStatus"
+                    defaultValue={talent.visibilityStatus}
+                    className="select-field"
+                  >
+                    <option value="privat">Privat</option>
+                    <option value="freigegeben">Freigegeben</option>
+                  </select>
+                </label>
+                <label className="flex flex-col gap-1.5 text-ink">
+                  Vertragsstatus
+                  <select
+                    name="contractStatus"
+                    defaultValue={talent.contractStatus}
+                    className="select-field"
+                  >
+                    <option value="unbekannt">Unbekannt</option>
+                    <option value="aktiv">Aktiv</option>
+                    <option value="auslaufend">Auslaufend</option>
+                    <option value="vereinslos">Vereinslos</option>
+                  </select>
+                </label>
+                <label className="flex flex-col gap-1.5 text-ink">
+                  Vertragsende
+                  <input
+                    type="date"
+                    name="contractEndDate"
+                    defaultValue={talent.contractEndDate ?? ""}
+                    className="field"
                   />
-                  <Field
-                    label="Gewicht"
-                    value={talent.weightKg ? `${talent.weightKg} kg` : "—"}
+                </label>
+                <label className="flex flex-col gap-1.5 text-ink">
+                  Liga
+                  <input
+                    type="text"
+                    name="leagueText"
+                    defaultValue={talent.leagueText ?? ""}
+                    className="field"
                   />
-                </>
-              )}
-            </dl>
+                </label>
+                <label className="flex flex-col gap-1.5 text-ink">
+                  Land
+                  <input
+                    type="text"
+                    name="countryText"
+                    defaultValue={talent.countryText ?? ""}
+                    className="field"
+                  />
+                </label>
+                {canSeeBodyData && (
+                  <>
+                    <label className="flex flex-col gap-1.5 text-ink">
+                      Größe (cm)
+                      <input
+                        type="number"
+                        name="heightCm"
+                        defaultValue={talent.heightCm ?? ""}
+                        className="field"
+                      />
+                    </label>
+                    <label className="flex flex-col gap-1.5 text-ink">
+                      Gewicht (kg)
+                      <input
+                        type="number"
+                        name="weightKg"
+                        defaultValue={talent.weightKg ?? ""}
+                        className="field"
+                      />
+                    </label>
+                  </>
+                )}
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-muted">
+                    Minderjährig
+                  </p>
+                  <p className="mt-2 text-ink">{talent.isMinor ? "Ja" : "Nein"}</p>
+                  <p className="mt-0.5 text-xs text-muted">
+                    Ergibt sich automatisch aus dem Geburtsdatum.
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <p className="mb-2 text-xs uppercase tracking-wide text-muted">
+                  Auswahl / Förderung
+                </p>
+                <div className="flex flex-wrap gap-x-6 gap-y-2">
+                  <label className="flex items-center gap-2 text-ink">
+                    <input
+                      type="checkbox"
+                      name="dfbStuetzpunkt"
+                      defaultChecked={talent.dfbStuetzpunkt}
+                    />
+                    DFB-Stützpunkt
+                  </label>
+                  <label className="flex items-center gap-2 text-ink">
+                    <input
+                      type="checkbox"
+                      name="verbandsauswahl"
+                      defaultChecked={talent.verbandsauswahl}
+                    />
+                    Verbandsauswahl
+                  </label>
+                  <label className="flex items-center gap-2 text-ink">
+                    <input
+                      type="checkbox"
+                      name="nationalmannschaft"
+                      defaultChecked={talent.nationalmannschaft}
+                    />
+                    Nationalmannschaft
+                  </label>
+                  <label className="flex items-center gap-2 text-ink">
+                    <input type="checkbox" name="nlz" defaultChecked={talent.nlz} />
+                    NLZ
+                  </label>
+                </div>
+              </div>
+
+              <div>
+                <Button type="submit" variant="secondary">
+                  Speichern
+                </Button>
+              </div>
+            </form>
           </section>
 
           <section className="mt-6 rounded-xl border border-line bg-surface p-5">
@@ -469,15 +580,6 @@ export default async function TalentDetailPage({
           </section>
         </div>
       </div>
-    </div>
-  );
-}
-
-function Field({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <dt className="text-xs uppercase tracking-wide text-muted">{label}</dt>
-      <dd className="mt-0.5 text-ink">{value}</dd>
     </div>
   );
 }

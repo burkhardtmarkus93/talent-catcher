@@ -15,6 +15,10 @@ type TalentFilters = {
   status?: string;
   alert?: string;
   hiddenGem?: string;
+  dfbStuetzpunkt?: string;
+  verbandsauswahl?: string;
+  nationalmannschaft?: string;
+  nlz?: string;
 };
 
 function mapAlert(row: any): Alert {
@@ -61,6 +65,10 @@ function mapTalent(row: any): Talent {
     lastReportDate: null,
     transfermarktUrl: row.transfermarkt_url ?? null,
     fupaUrl: row.fupa_url ?? null,
+    dfbStuetzpunkt: Boolean(row.dfb_stuetzpunkt),
+    verbandsauswahl: Boolean(row.verbandsauswahl),
+    nationalmannschaft: Boolean(row.nationalmannschaft),
+    nlz: Boolean(row.nlz),
   };
 }
 
@@ -111,6 +119,10 @@ export async function getTalents(filters: TalentFilters = {}): Promise<Talent[]>
   const status = filters.status?.trim();
   const alert = filters.alert?.trim();
   const hiddenGem = filters.hiddenGem?.trim();
+  const dfbStuetzpunkt = filters.dfbStuetzpunkt?.trim();
+  const verbandsauswahl = filters.verbandsauswahl?.trim();
+  const nationalmannschaft = filters.nationalmannschaft?.trim();
+  const nlz = filters.nlz?.trim();
 
   let query = supabase
     .from("talents")
@@ -168,6 +180,20 @@ export async function getTalents(filters: TalentFilters = {}): Promise<Talent[]>
 
   if (hiddenGem && hiddenGem !== "Alle") {
     talents = talents.filter((talent) => Boolean(talent.currentAlert?.isHiddenGem));
+  }
+
+  const flagFilters: [string | undefined, keyof Talent][] = [
+    [dfbStuetzpunkt, "dfbStuetzpunkt"],
+    [verbandsauswahl, "verbandsauswahl"],
+    [nationalmannschaft, "nationalmannschaft"],
+    [nlz, "nlz"],
+  ];
+
+  for (const [value, key] of flagFilters) {
+    if (value && value !== "Alle") {
+      const wanted = value === "Ja";
+      talents = talents.filter((talent) => Boolean(talent[key]) === wanted);
+    }
   }
 
   return talents;

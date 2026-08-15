@@ -16,6 +16,10 @@ export default async function TalentsPage({
     status?: string;
     alert?: string;
     hiddenGem?: string;
+    dfbStuetzpunkt?: string;
+    verbandsauswahl?: string;
+    nationalmannschaft?: string;
+    nlz?: string;
   };
 }) {
   const filters = {
@@ -25,6 +29,10 @@ export default async function TalentsPage({
     status: searchParams?.status ?? "Alle",
     alert: searchParams?.alert ?? "Alle",
     hiddenGem: searchParams?.hiddenGem ?? "Alle",
+    dfbStuetzpunkt: searchParams?.dfbStuetzpunkt ?? "Alle",
+    verbandsauswahl: searchParams?.verbandsauswahl ?? "Alle",
+    nationalmannschaft: searchParams?.nationalmannschaft ?? "Alle",
+    nlz: searchParams?.nlz ?? "Alle",
   };
 
   const [talents, appUser] = await Promise.all([
@@ -57,6 +65,10 @@ export default async function TalentsPage({
         status={filters.status}
         alert={filters.alert}
         hiddenGem={filters.hiddenGem}
+        dfbStuetzpunkt={filters.dfbStuetzpunkt}
+        verbandsauswahl={filters.verbandsauswahl}
+        nationalmannschaft={filters.nationalmannschaft}
+        nlz={filters.nlz}
       />
       <div className="animate-fade-in-up">
         <TalentTable
