@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { RiskDot } from "@/components/ui/RiskDot";
 import { HiddenGemBadge } from "@/components/ui/HiddenGemBadge";
+import { CollapsibleSection } from "@/components/ui/CollapsibleSection";
 import { ReminderForm } from "@/components/reminders/ReminderForm";
 import {
   getTalentById,
@@ -26,6 +27,8 @@ import { hasGrantedVideoConsent } from "@/lib/queries/consent";
 import { VideoUploadForm } from "@/components/videos/VideoUploadForm";
 import { getSiblingsForTalent } from "@/lib/queries/siblings";
 import { addSibling, deleteSibling } from "@/lib/actions/siblings";
+import { getInjuriesForTalent } from "@/lib/queries/injuries";
+import { addInjury, deleteInjury } from "@/lib/actions/injuries";
 
 function age(birthDate: string): number {
   const diff = Date.now() - new Date(birthDate).getTime();
@@ -62,23 +65,37 @@ export default async function TalentDetailPage({
   if (!talent) notFound();
 
   const fullName = `${talent.firstName} ${talent.lastName}`;
-  const [reports, openReminders, gkTests, activityStatus, appUser, videos, siblings] =
-    await Promise.all([
-      getScoutReportsForTalent(talent.id),
-      getOpenRemindersForTalent(talent.id, fullName),
-      talent.primaryPosition === "TW"
-        ? getGkCoordinationTestsForTalent(talent.id)
-        : Promise.resolve([]),
-      getTalentActivityStatus(talent.id, talent.updatedAt),
-      getCurrentAppUser(),
-      getVideosForTalent(talent.id),
-      getSiblingsForTalent(talent.id),
-    ]);
+  const [
+    reports,
+    openReminders,
+    gkTests,
+    activityStatus,
+    appUser,
+    videos,
+    siblings,
+    injuries,
+  ] = await Promise.all([
+    getScoutReportsForTalent(talent.id),
+    getOpenRemindersForTalent(talent.id, fullName),
+    talent.primaryPosition === "TW"
+      ? getGkCoordinationTestsForTalent(talent.id)
+      : Promise.resolve([]),
+    getTalentActivityStatus(talent.id, talent.updatedAt),
+    getCurrentAppUser(),
+    getVideosForTalent(talent.id),
+    getSiblingsForTalent(talent.id),
+    getInjuriesForTalent(talent.id),
+  ]);
 
   const canSeeBodyData = !talent.isMinor || Boolean(appUser?.hasYouthAccess);
   const canUploadVideo = talent.isMinor
     ? await hasGrantedVideoConsent(talent.id)
     : true;
+
+  const today = new Date().toISOString().slice(0, 10);
+  const activeInjury = injuries.find(
+    (i) => !i.expectedReturnDate || i.expectedReturnDate >= today
+  );
 
   return (
     <div>
@@ -103,6 +120,22 @@ export default async function TalentDetailPage({
             <span className="font-medium">Bevorstehender Wechsel: </span>
             zu {talent.upcomingTransferClubText}
             {talent.upcomingTransferNote && ` — ${talent.upcomingTransferNote}`}
+          </div>
+        </div>
+      )}
+
+      {canSeeBodyData && activeInjury && (
+        <div className="mt-4 flex items-start gap-3 rounded-lg border border-brick/30 bg-brick/5 px-4 py-3">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5 flex-none text-brick" aria-hidden>
+            <path d="M12 9v4" />
+            <path d="M12 17h.01" />
+            <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L14.71 3.86a2 2 0 0 0-3.42 0Z" />
+          </svg>
+          <div className="text-sm text-brick">
+            <span className="font-medium">Aktuell verletzt: </span>
+            {activeInjury.injuryType}
+            {activeInjury.expectedReturnDate &&
+              ` — Rückkehr voraussichtlich ${activeInjury.expectedReturnDate}`}
           </div>
         </div>
       )}
@@ -300,10 +333,10 @@ export default async function TalentDetailPage({
             </form>
           </section>
 
-          <section className="mt-6 rounded-xl border border-line bg-surface p-5">
-            <h2 className="mb-1 font-display text-lg font-medium text-ink">
-              Talentierte Geschwister
-            </h2>
+          <CollapsibleSection
+            title="Talentierte Geschwister"
+            meta={siblings.length > 0 ? `${siblings.length}` : undefined}
+          >
             <p className="mb-4 text-xs text-muted">
               Reine Notiz für dich — z. B. wenn beim Scouting auffällt, dass
               es noch ein(e) talentierte(n) Bruder/Schwester gibt. Legt kein
@@ -387,12 +420,16 @@ export default async function TalentDetailPage({
                 </Button>
               </div>
             </form>
-          </section>
+          </CollapsibleSection>
 
-          <section className="mt-6 rounded-xl border border-line bg-surface p-5">
-            <h2 className="mb-4 font-display text-lg font-medium text-ink">
-              Verein &amp; Wechsel
-            </h2>
+          <CollapsibleSection
+            title="Verein & Wechsel"
+            meta={
+              talent.upcomingTransferClubText
+                ? "Wechsel vermerkt"
+                : talent.clubNameText
+            }
+          >
             <form action={updateTalentClub} className="flex flex-col gap-4 text-sm">
               <input type="hidden" name="talentId" value={talent.id} />
               <div className="grid grid-cols-2 gap-4">
@@ -457,12 +494,16 @@ export default async function TalentDetailPage({
                 </Button>
               </div>
             </form>
-          </section>
+          </CollapsibleSection>
 
-          <section className="mt-6 rounded-xl border border-line bg-surface p-5">
-            <h2 className="mb-1 font-display text-lg font-medium text-ink">
-              Externe Profile
-            </h2>
+          <CollapsibleSection
+            title="Externe Profile"
+            meta={
+              [talent.transfermarktUrl, talent.fupaUrl].filter(Boolean).length > 0
+                ? `${[talent.transfermarktUrl, talent.fupaUrl].filter(Boolean).length} verknüpft`
+                : "keins verknüpft"
+            }
+          >
             <p className="mb-4 text-xs text-muted">
               Nur ein Link zum jeweiligen Profil — aus rechtlichen Gründen
               (Nutzungsbedingungen der Anbieter) keine eingebetteten Daten.
@@ -530,14 +571,14 @@ export default async function TalentDetailPage({
                 </Button>
               </div>
             </form>
-          </section>
+          </CollapsibleSection>
 
-          <section className="mt-6 rounded-xl border border-line bg-surface p-5">
-            <h2 className="mb-3 font-display text-lg font-medium text-ink">
-              Tags
-            </h2>
+          <CollapsibleSection
+            title="Tags"
+            meta={talent.tags && talent.tags.length > 0 ? `${talent.tags.length}` : undefined}
+          >
             <TalentTags talentId={talent.id} tags={talent.tags ?? []} />
-          </section>
+          </CollapsibleSection>
 
           <section className="mt-6 rounded-xl border border-line bg-surface p-5">
             <h2 className="mb-4 font-display text-lg font-medium text-ink">
@@ -610,11 +651,10 @@ export default async function TalentDetailPage({
             )}
           </section>
 
-          <section className="mt-6 rounded-xl border border-line bg-surface p-5">
-            <h2 className="mb-4 font-display text-lg font-medium text-ink">
-              Video-Highlights
-            </h2>
-
+          <CollapsibleSection
+            title="Video-Highlights"
+            meta={videos.length > 0 ? `${videos.length}` : undefined}
+          >
             {videos.length === 0 ? (
               <p className="mb-4 text-sm text-muted">
                 Noch keine Videos hochgeladen.
@@ -651,14 +691,106 @@ export default async function TalentDetailPage({
                 gesperrt.
               </p>
             )}
-          </section>
+          </CollapsibleSection>
+
+          {canSeeBodyData && (
+            <CollapsibleSection
+              title="Verletzungen"
+              meta={
+                activeInjury
+                  ? "aktuell verletzt"
+                  : injuries.length > 0
+                  ? `${injuries.length}`
+                  : undefined
+              }
+            >
+              <p className="mb-4 text-xs text-muted">
+                Verletzungshistorie als Beobachtungsnotiz — fließt bewusst
+                nicht automatisch in die Risikobewertung ein.
+              </p>
+
+              {injuries.length === 0 ? (
+                <p className="mb-4 text-sm text-muted">
+                  Noch keine Verletzung vermerkt.
+                </p>
+              ) : (
+                <ul className="mb-4 divide-y divide-line">
+                  {injuries.map((i) => (
+                    <li key={i.id} className="flex items-center justify-between gap-3 py-3">
+                      <div>
+                        <p className="text-sm font-medium text-ink">
+                          {i.injuryType}
+                          <span className="ml-2 font-normal text-muted">
+                            {i.injuryDate}
+                          </span>
+                        </p>
+                        {i.expectedReturnDate && (
+                          <p className="mt-0.5 text-sm text-muted">
+                            Rückkehr voraussichtlich {i.expectedReturnDate}
+                          </p>
+                        )}
+                        {i.note && <p className="mt-0.5 text-sm text-muted">{i.note}</p>}
+                      </div>
+                      <form action={deleteInjury}>
+                        <input type="hidden" name="talentId" value={talent.id} />
+                        <input type="hidden" name="injuryId" value={i.id} />
+                        <button
+                          type="submit"
+                          className="flex-none text-sm text-muted hover:text-brick"
+                          aria-label="Verletzungs-Eintrag entfernen"
+                        >
+                          Entfernen
+                        </button>
+                      </form>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              <form action={addInjury} className="grid grid-cols-1 gap-3 sm:grid-cols-4">
+                <input type="hidden" name="talentId" value={talent.id} />
+                <label className="flex flex-col gap-1.5 text-sm text-ink">
+                  Art der Verletzung
+                  <input
+                    type="text"
+                    name="injuryType"
+                    placeholder="z. B. Muskelfaserriss"
+                    required
+                    className="field"
+                  />
+                </label>
+                <label className="flex flex-col gap-1.5 text-sm text-ink">
+                  Datum
+                  <input type="date" name="injuryDate" required className="field" />
+                </label>
+                <label className="flex flex-col gap-1.5 text-sm text-ink">
+                  Rückkehr voraussichtlich
+                  <input type="date" name="expectedReturnDate" className="field" />
+                </label>
+                <label className="flex flex-col gap-1.5 text-sm text-ink">
+                  Notiz
+                  <input
+                    type="text"
+                    name="note"
+                    placeholder="z. B. laut Trainer noch im Aufbautraining"
+                    className="field"
+                  />
+                </label>
+                <div className="sm:col-span-4">
+                  <Button type="submit" variant="secondary">
+                    Verletzung hinzufügen
+                  </Button>
+                </div>
+              </form>
+            </CollapsibleSection>
+          )}
 
           {talent.primaryPosition === "TW" && (
-            <section className="mt-6 rounded-xl border border-line bg-surface p-5">
-              <div className="flex items-center justify-between">
-                <h2 className="font-display text-lg font-medium text-ink">
-                  Koordinationstest (Torhüter)
-                </h2>
+            <CollapsibleSection
+              title="Koordinationstest (Torhüter)"
+              meta={gkTests.length > 0 ? `${gkTests.length}` : undefined}
+            >
+              <div className="mb-3 flex justify-end">
                 <Link
                   href={`/talents/${talent.id}/gk-tests/new`}
                   className="text-sm text-pitch hover:underline"
@@ -667,11 +799,11 @@ export default async function TalentDetailPage({
                 </Link>
               </div>
               {gkTests.length === 0 ? (
-                <p className="mt-3 text-sm text-muted">
+                <p className="text-sm text-muted">
                   Noch kein Koordinationstest erfasst.
                 </p>
               ) : (
-                <ul className="mt-3 divide-y divide-line">
+                <ul className="divide-y divide-line">
                   {gkTests.map((t) => (
                     <li key={t.id} className="py-3">
                       <div className="flex items-center justify-between">
@@ -686,7 +818,7 @@ export default async function TalentDetailPage({
                   ))}
                 </ul>
               )}
-            </section>
+            </CollapsibleSection>
           )}
         </div>
 

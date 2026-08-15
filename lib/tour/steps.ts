@@ -54,7 +54,7 @@ export const INTRO_TOUR_STEPS: TourStep[] = [
   {
     id: "talent-detail",
     title: "Auf der Talent-Detailseite",
-    body: "Verein und Team lassen sich jederzeit aktualisieren, inklusive Notiz zu einem bevorstehenden Wechsel. Transfermarkt- und FuPa-Profil verknüpfen, Video-Highlights hochladen — und falls ein Talent noch ein talentiertes Geschwisterkind hat, trägst du Name und Geburtsdatum direkt mit ein.",
+    body: "Verein und Team aktualisieren, Transfermarkt-/FuPa-Profil verknüpfen, Video-Highlights hochladen, Verletzungen dokumentieren, talentierte Geschwister vermerken — und mehr. Damit das bei so vielen Details übersichtlich bleibt, sind die Bereiche unterhalb der Übersicht aufklappbar: antippen zum Auf- und Zuklappen.",
   },
   {
     id: "nav-alerts",
