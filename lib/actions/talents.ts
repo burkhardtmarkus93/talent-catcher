@@ -440,3 +440,51 @@ export async function updateTalentOverview(formData: FormData): Promise<void> {
   revalidatePath(`/talents/${talentId}`);
   revalidatePath("/talents");
 }
+
+export async function updateTalentClub(formData: FormData): Promise<void> {
+  const talentId = String(formData.get("talentId") ?? "");
+  if (!talentId) {
+    throw new Error("Talent-ID fehlt.");
+  }
+
+  const appUser = await getCurrentAppUser();
+  if (!appUser?.clubId) {
+    throw new Error("Nicht angemeldet.");
+  }
+
+  const clubNameText = String(formData.get("clubNameText") ?? "").trim();
+  const teamNameText = String(formData.get("teamNameText") ?? "").trim() || null;
+  const upcomingTransferClubText =
+    String(formData.get("upcomingTransferClubText") ?? "").trim() || null;
+  const upcomingTransferNote =
+    String(formData.get("upcomingTransferNote") ?? "").trim() || null;
+
+  if (!clubNameText) {
+    throw new Error("Aktueller Verein darf nicht leer sein.");
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("talents")
+    .update({
+      club_name_text: clubNameText,
+      team_name_text: teamNameText,
+      upcoming_transfer_club_text: upcomingTransferClubText,
+      upcoming_transfer_note: upcomingTransferNote,
+    })
+    .eq("id", talentId)
+    .eq("club_id", appUser.clubId);
+
+  if (error) {
+    console.error("updateTalentClub() fehlgeschlagen:", {
+      message: error.message,
+      code: error.code,
+      details: error.details,
+      hint: error.hint,
+    });
+    throw new Error("Verein konnte nicht aktualisiert werden.");
+  }
+
+  revalidatePath(`/talents/${talentId}`);
+  revalidatePath("/talents");
+}

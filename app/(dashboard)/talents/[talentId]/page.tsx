@@ -14,6 +14,7 @@ import {
   restoreTalent,
   updateExternalProfiles,
   updateTalentOverview,
+  updateTalentClub,
 } from "@/lib/actions/talents";
 import { getGkCoordinationTestsForTalent } from "@/lib/queries/gkTests";
 import { getTalentActivityStatus } from "@/lib/queries/talentActivity";
@@ -87,6 +88,20 @@ export default async function TalentDetailPage({
           talentId={talent.id}
           lastActivityAt={activityStatus.lastActivityAt}
         />
+      )}
+
+      {talent.upcomingTransferClubText && (
+        <div className="mt-4 flex items-start gap-3 rounded-lg border border-amber-500/30 bg-amber-dim px-4 py-3">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5 flex-none text-amber-dark" aria-hidden>
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </svg>
+          <div className="text-sm text-amber-dark">
+            <span className="font-medium">Bevorstehender Wechsel: </span>
+            zu {talent.upcomingTransferClubText}
+            {talent.upcomingTransferNote && ` — ${talent.upcomingTransferNote}`}
+          </div>
+        </div>
       )}
 
       <div className="mt-4 flex items-stretch overflow-hidden rounded-xl border border-line bg-surface">
@@ -270,6 +285,76 @@ export default async function TalentDetailPage({
                   <label className="flex items-center gap-2 text-ink">
                     <input type="checkbox" name="nlz" defaultChecked={talent.nlz} />
                     NLZ
+                  </label>
+                </div>
+              </div>
+
+              <div>
+                <Button type="submit" variant="secondary">
+                  Speichern
+                </Button>
+              </div>
+            </form>
+          </section>
+
+          <section className="mt-6 rounded-xl border border-line bg-surface p-5">
+            <h2 className="mb-4 font-display text-lg font-medium text-ink">
+              Verein &amp; Wechsel
+            </h2>
+            <form action={updateTalentClub} className="flex flex-col gap-4 text-sm">
+              <input type="hidden" name="talentId" value={talent.id} />
+              <div className="grid grid-cols-2 gap-4">
+                <label className="flex flex-col gap-1.5 text-ink">
+                  Aktueller Verein
+                  <input
+                    type="text"
+                    name="clubNameText"
+                    defaultValue={talent.clubNameText ?? ""}
+                    required
+                    className="field"
+                  />
+                </label>
+                <label className="flex flex-col gap-1.5 text-ink">
+                  Team/Jahrgang
+                  <input
+                    type="text"
+                    name="teamNameText"
+                    defaultValue={talent.teamNameText ?? ""}
+                    placeholder="z. B. U17"
+                    className="field"
+                  />
+                </label>
+              </div>
+
+              <div>
+                <p className="mb-1 text-xs uppercase tracking-wide text-muted">
+                  Bevorstehender Wechsel (optional)
+                </p>
+                <p className="mb-3 text-xs text-muted">
+                  Reine Notiz für dich selbst — z. B. um zu wissen, dass sich
+                  eine Kontaktaufnahme aktuell nicht lohnt. Keine Vermittlung,
+                  kein Kontakt zu Dritten.
+                </p>
+                <div className="grid grid-cols-2 gap-4">
+                  <label className="flex flex-col gap-1.5 text-ink">
+                    Wechselt voraussichtlich zu
+                    <input
+                      type="text"
+                      name="upcomingTransferClubText"
+                      defaultValue={talent.upcomingTransferClubText ?? ""}
+                      placeholder="z. B. FC Beispiel U19"
+                      className="field"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1.5 text-ink">
+                    Notiz
+                    <input
+                      type="text"
+                      name="upcomingTransferNote"
+                      defaultValue={talent.upcomingTransferNote ?? ""}
+                      placeholder="z. B. wohl ab Sommer 2027, laut Trainer bereits einig"
+                      className="field"
+                    />
                   </label>
                 </div>
               </div>
