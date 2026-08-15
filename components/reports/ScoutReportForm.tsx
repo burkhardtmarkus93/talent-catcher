@@ -191,8 +191,8 @@ export function ScoutReportForm({
           <p className="text-sm font-semibold text-ink">TINDER-Kriterien</p>
           <p className="text-xs text-muted">
   Zusätzliche Einschätzungsskalen von 1 bis 4: 1 = kaum ausgeprägt, 4 = stark ausgeprägt.
-  Sie beeinflussen das Gesamtrating nicht direkt, sondern liefern Kontext für spätere Auswertungen
-  und die Risk-Engine.
+  Sie beeinflussen weder das Gesamtrating noch die Risikobewertung direkt — sie werden nur
+  gespeichert und angezeigt, als Kontext für spätere, manuelle Auswertungen.
 </p>
         </div>
 
