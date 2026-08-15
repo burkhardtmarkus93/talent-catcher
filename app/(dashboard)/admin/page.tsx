@@ -10,6 +10,7 @@ import {
   updateTeamMemberRole,
   setTeamMemberActive,
 } from "@/lib/actions/team";
+import { triggerStripeSetup } from "@/lib/actions/adminStripe";
 import type { Role } from "@/lib/types";
 
 const roleLabels: Record<Role, string> = {
@@ -194,6 +195,25 @@ export default async function AdminPage({
             </select>
           </label>
           <Button type="submit">Einladen</Button>
+        </form>
+      </section>
+
+      <section
+        className="animate-fade-in-up mt-8 rounded-xl border border-line bg-surface p-5"
+        style={{ animationDelay: "200ms" }}
+      >
+        <h2 className="mb-1 font-display text-lg font-medium text-ink">
+          Abrechnung einrichten
+        </h2>
+        <p className="mb-4 text-xs text-muted">
+          Legt die Stripe-Produkte/-Preise für alle Selfservice-Pläne an
+          (Start, Verein) — einmalig nötig, bevor ein Verein ein Abo
+          abschließen kann. Mehrfacher Klick legt nichts doppelt an.
+        </p>
+        <form action={triggerStripeSetup}>
+          <Button type="submit" variant="secondary">
+            Stripe-Einrichtung ausführen
+          </Button>
         </form>
       </section>
     </div>
