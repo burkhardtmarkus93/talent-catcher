@@ -6,6 +6,8 @@ export interface TourStep {
   targetId?: string;
   /** Route to navigate to before spotlighting targetId, if not already there. */
   path?: string;
+  /** Only include this step for club admins — filtered server-side before reaching ProductTour. */
+  adminOnly?: boolean;
 }
 
 export const INTRO_TOUR_STEPS: TourStep[] = [
@@ -68,6 +70,13 @@ export const INTRO_TOUR_STEPS: TourStep[] = [
     title: "Abo",
     body: "Dein aktueller Plan und deine Testphase — nach der kostenlosen Testphase wählst du hier ein Abo.",
     targetId: "tour-nav-abo",
+  },
+  {
+    id: "nav-verwaltung",
+    title: "Verwaltung",
+    body: "Vereinsname bearbeiten, Teammitglieder verwalten (Rolle, Jugendschutz-Zugriff, deaktivieren) und neue Scouts per E-Mail einladen.",
+    targetId: "tour-nav-verwaltung",
+    adminOnly: true,
   },
   {
     id: "finish",
