@@ -1,144 +1,117 @@
-"use client";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { Button } from "@/components/ui/Button";
+import { getTalentById } from "@/lib/queries/talents";
+import { getKoordinationstestDocUrl } from "@/lib/queries/documents";
+import { createGkCoordinationTest } from "@/lib/actions/gkTests";
 
-import React, { useState } from "react";
-
-type TestField = {
-  key: string;
-  label: string;
-};
-
-const tests: TestField[] = [
-  { key: "wechselwurf", label: "Wechselwurf mit Reaktionssignal" },
-  { key: "kreuzprellen", label: "Kreuzprellen mit Handwechsel-Signal" },
-  { key: "wandreaktion", label: "Wand-Reaktionswurf mit variabler Distanz" },
-  { key: "doppelwand", label: "Doppel-Wandwurf mit Kreuzfang" },
-  { key: "wurfdrehung", label: "Wurf-Drehung-Fang" },
-  { key: "doppeldrehung", label: "Doppel-Drehung mit Bodenkontakt" },
+const TESTS: { name: string; label: string }[] = [
+  { name: "scoreWechselwurf", label: "Wechselwurf mit Reaktionssignal" },
+  { name: "scoreKreuzprellen", label: "Kreuzprellen mit Handwechsel-Signal" },
+  { name: "scoreWandreaktion", label: "Wand-Reaktionswurf mit variabler Distanz" },
+  { name: "scoreDoppelwandwurf", label: "Doppel-Wandwurf mit Kreuzfang" },
+  { name: "scoreWurfdrehung", label: "Wurf-Drehung-Fang" },
+  { name: "scoreDoppeldrehung", label: "Doppel-Drehung mit Bodenkontakt" },
 ];
 
-const scoreHelp =
-  "0 = reagiert kaum auf Signale, Würfe unkontrolliert. 1 = reagiert, aber häufig falsch oder sehr langsam. 2 = überwiegend richtige Reaktion, Tempo ok, vereinzelt Fehler. 3 = schnelle, richtige Reaktion, kontrollierte Würfe, flüssiger Ablauf.";
+export default async function GKTestNewPage({
+  params,
+  searchParams,
+}: {
+  params: { talentId: string };
+  searchParams: { error?: string };
+}) {
+  const talent = await getTalentById(params.talentId);
+  if (!talent) notFound();
 
-function InfoIcon({ text }: { text: string }) {
-  return (
-    <span className="relative group inline-flex items-center ml-2 cursor-help align-middle">
-      <span className="flex h-5 w-5 items-center justify-center rounded-full border border-green-800 text-xs font-bold text-green-800 bg-white">
-        i
-      </span>
-      <span className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 hidden w-80 -translate-x-1/2 rounded-md bg-gray-900 px-3 py-2 text-sm text-white shadow-lg group-hover:block">
-        {text}
-      </span>
-    </span>
-  );
-}
-
-export default function GKTestNewPage() {
-  const [values, setValues] = useState<Record<string, string>>({
-    testdatum: "01.08.2026",
-    wechselwurf: "",
-    kreuzprellen: "",
-    wandreaktion: "",
-    doppelwand: "",
-    wurfdrehung: "",
-    doppeldrehung: "",
-  });
-
-  const handleChange = (key: string, value: string) => {
-    setValues((prev) => ({ ...prev, [key]: value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log(values);
-  };
-
-  const fileUrl =
-    "https://dziovesybrqumwygchdp.supabase.co/storage/v1/object/sign/documents/koordinationstest_tests_mit_skizzen.docx?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV82NTY4N2NkZS1iNmJmLTRhNzUtOWE0My02YWQzNTcxZGFiMjQiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJkb2N1bWVudHMva29vcmRpbmF0aW9uc3Rlc3RfdGVzdHNfbWl0X3NraXp6ZW4uZG9jeCIsInNjb3BlIjoiZG93bmxvYWQiLCJpYXQiOjE3ODU2Mjc3MzYsImV4cCI6NDkzOTIyNzczNn0.I694ESQ_gUIZL16PadqDFkwjWHFddrcgk42K67XRabA";
+  const docUrl = await getKoordinationstestDocUrl();
+  const today = new Date().toISOString().slice(0, 10);
 
   return (
-    <div className="mx-auto max-w-3xl p-6">
-      <div className="mb-6">
-        <a href="#" className="text-sm text-green-800 hover:underline">
-          ← Zurück
-        </a>
-        <h1 className="mt-2 text-3xl font-semibold text-gray-900">
-          Koordinationstest erfassen
-        </h1>
-        <p className="mt-2 text-gray-600">
-          Eigenständiges Torwart-Koordinationsmodul — Altersklasse wird automatisch aus Jahrgang und Testdatum abgeleitet.
-        </p>
-      </div>
+    <div className="mx-auto max-w-2xl">
+      <Link
+        href={`/talents/${talent.id}`}
+        className="text-sm text-muted hover:underline"
+      >
+        ← Zurück zu {talent.firstName} {talent.lastName}
+      </Link>
 
-      <div className="mb-6 rounded-md border border-gray-200 bg-green-50 p-4 text-sm text-gray-800">
+      <h1 className="mt-2 font-display text-2xl font-medium text-ink">
+        Koordinationstest erfassen
+      </h1>
+      <p className="mt-2 text-sm text-muted">
+        Eigenständiges Torwart-Koordinationsmodul — Altersklasse wird
+        automatisch aus Jahrgang und Testdatum abgeleitet.
+      </p>
+
+      {searchParams.error && (
+        <div className="mt-4 rounded-lg border border-brick/30 bg-brick/5 px-3 py-2 text-sm text-brick">
+          {decodeURIComponent(searchParams.error)}
+        </div>
+      )}
+
+      <div className="mt-6 rounded-xl border border-line bg-pitch-dim p-4 text-sm text-ink">
         <div className="font-medium">Bewertung je Test: 0–3 Punkte</div>
-        <div className="mt-1">
-          <span className="font-medium">0</span> = reagiert kaum auf Signale, Würfe unkontrolliert.
+        <div className="mt-1 text-muted">
+          <span className="font-medium text-ink">0</span> = reagiert kaum auf
+          Signale, Würfe unkontrolliert.
           <br />
-          <span className="font-medium">1</span> = reagiert, aber häufig falsch oder sehr langsam.
+          <span className="font-medium text-ink">1</span> = reagiert, aber
+          häufig falsch oder sehr langsam.
           <br />
-          <span className="font-medium">2</span> = überwiegend richtige Reaktion, Tempo ok, vereinzelt Fehler.
+          <span className="font-medium text-ink">2</span> = überwiegend
+          richtige Reaktion, Tempo ok, vereinzelt Fehler.
           <br />
-          <span className="font-medium">3</span> = schnelle, richtige Reaktion, kontrollierte Würfe, flüssiger Ablauf.
+          <span className="font-medium text-ink">3</span> = schnelle,
+          richtige Reaktion, kontrollierte Würfe, flüssiger Ablauf.
         </div>
       </div>
 
-      <div className="mb-6">
-        <a
-          href={fileUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="inline-flex items-center rounded-md bg-green-800 px-4 py-2 text-white hover:bg-green-900"
-        >
-          Word-Datei herunterladen
-        </a>
-        <p className="mt-2 text-sm text-gray-500">
-          Öffnet die Test-Word-Datei mit allen Beschreibungen und der Punkteskala.
-        </p>
-      </div>
+      {docUrl && (
+        <div className="mt-6">
+          <a href={docUrl} target="_blank" rel="noreferrer">
+            <Button variant="secondary">Word-Datei herunterladen</Button>
+          </a>
+          <p className="mt-2 text-xs text-muted">
+            Öffnet die Test-Word-Datei mit allen Beschreibungen und der
+            Punkteskala (Link eine Stunde gültig).
+          </p>
+        </div>
+      )}
 
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <div>
-          <label className="mb-2 block text-sm font-medium text-gray-800" htmlFor="testdatum">
-            Testdatum
-          </label>
+      <form
+        action={createGkCoordinationTest}
+        className="mt-6 flex flex-col gap-5 rounded-xl border border-line bg-surface p-5"
+      >
+        <input type="hidden" name="talentId" value={talent.id} />
+        <label className="flex flex-col gap-1.5 text-sm text-ink">
+          Testdatum
           <input
-            id="testdatum"
-            type="text"
-            value={values.testdatum}
-            onChange={(e) => handleChange("testdatum", e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-4 py-3 outline-none focus:border-green-700"
+            type="date"
+            name="testDate"
+            defaultValue={today}
+            required
+            className="field"
           />
-        </div>
+        </label>
 
-        {tests.map((test) => (
-          <div key={test.key}>
-            <label className="mb-2 flex items-center text-sm font-medium text-gray-800" htmlFor={test.key}>
-              {test.label}
-              <span className="ml-1 text-gray-500">(0–3 Punkte)</span>
-              <InfoIcon text={scoreHelp} />
-            </label>
+        {TESTS.map((t) => (
+          <label key={t.name} className="flex flex-col gap-1.5 text-sm text-ink">
+            {t.label} <span className="font-normal text-muted">(0–3 Punkte)</span>
             <input
-              id={test.key}
               type="number"
+              name={t.name}
               min={0}
               max={3}
               step={1}
               inputMode="numeric"
               placeholder="Punkte eingeben"
-              value={values[test.key]}
-              onChange={(e) => handleChange(test.key, e.target.value)}
-              className="w-full rounded-md border border-gray-300 px-4 py-3 outline-none focus:border-green-700"
+              className="field"
             />
-            <div className="mt-1 text-xs text-gray-500">Nur Werte von 0 bis 3 erlaubt.</div>
-          </div>
+          </label>
         ))}
 
-        <button
-          type="submit"
-          className="w-full rounded-md bg-green-800 px-4 py-3 font-medium text-white hover:bg-green-900"
-        >
-          Test speichern
-        </button>
+        <Button type="submit">Test speichern</Button>
       </form>
     </div>
   );
