@@ -29,6 +29,7 @@ import { getSiblingsForTalent } from "@/lib/queries/siblings";
 import { addSibling, deleteSibling } from "@/lib/actions/siblings";
 import { getInjuriesForTalent } from "@/lib/queries/injuries";
 import { addInjury, deleteInjury } from "@/lib/actions/injuries";
+import { grantVideoConsent } from "@/lib/actions/consent";
 
 function age(birthDate: string): number {
   const diff = Date.now() - new Date(birthDate).getTime();
@@ -685,11 +686,61 @@ export default async function TalentDetailPage({
             {canUploadVideo ? (
               <VideoUploadForm talentId={talent.id} clubId={appUser?.clubId ?? ""} />
             ) : (
-              <p className="rounded-lg bg-amber-dim px-4 py-3 text-sm text-amber-dark">
-                Für dieses minderjährige Talent liegt noch keine dokumentierte
-                Einwilligung für Videomaterial vor — Upload ist deshalb
-                gesperrt.
-              </p>
+              <div className="flex flex-col gap-4">
+                <p className="rounded-lg bg-amber-dim px-4 py-3 text-sm text-amber-dark">
+                  Für dieses minderjährige Talent liegt noch keine dokumentierte
+                  Einwilligung für Videomaterial vor — Upload ist deshalb
+                  gesperrt.
+                </p>
+
+                {appUser?.hasYouthAccess ? (
+                  <form
+                    action={grantVideoConsent}
+                    className="flex flex-col gap-3 rounded-lg border border-line bg-paper p-4"
+                  >
+                    <input type="hidden" name="talentId" value={talent.id} />
+                    <p className="text-sm font-medium text-ink">
+                      Einwilligung erteilen
+                    </p>
+                    <p className="text-xs text-muted">
+                      Erst eintragen, wenn eine wirksame Einwilligung der/des
+                      Erziehungsberechtigten tatsächlich vorliegt (z. B.
+                      unterschriebenes Formular). Diese App speichert nur den
+                      Nachweis-Vermerk, kein Dokument.
+                    </p>
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                      <label className="flex flex-col gap-1.5 text-sm text-ink">
+                        Gültig bis (optional)
+                        <input type="date" name="validUntil" className="field" />
+                      </label>
+                      <label className="flex flex-col gap-1.5 text-sm text-ink">
+                        Notiz
+                        <input
+                          type="text"
+                          name="notes"
+                          placeholder="z. B. schriftliches Formular liegt im Vereinsbüro vor"
+                          className="field"
+                        />
+                      </label>
+                    </div>
+                    <label className="flex items-start gap-2 text-sm text-ink">
+                      <input type="checkbox" name="confirmed" required className="mt-0.5" />
+                      Ich bestätige, dass eine wirksame Einwilligung der/des
+                      Erziehungsberechtigten für Videomaterial vorliegt.
+                    </label>
+                    <div>
+                      <Button type="submit" variant="secondary">
+                        Einwilligung erteilen
+                      </Button>
+                    </div>
+                  </form>
+                ) : (
+                  <p className="text-xs text-muted">
+                    Eine Einwilligung kann nur ein Teammitglied mit
+                    Jugendschutz-Zugriff erteilen.
+                  </p>
+                )}
+              </div>
             )}
           </CollapsibleSection>
 
