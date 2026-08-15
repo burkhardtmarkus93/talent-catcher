@@ -1,17 +1,34 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { RiskDot } from "@/components/ui/RiskDot";
 import { HiddenGemBadge } from "@/components/ui/HiddenGemBadge";
 import { Button } from "@/components/ui/Button";
 import { getTalents, getOpenRemindersForClub } from "@/lib/queries/talents";
 import { getWatchlists } from "@/lib/queries/watchlists";
+import { createClient } from "@/lib/supabase/server";
 
 export default async function DashboardPage() {
-  const [talents, openReminders, watchlists] = await Promise.all([
-    getTalents(),
-    getOpenRemindersForClub(),
-    getWatchlists(),
-  ]);
+  let talents, openReminders, watchlists;
+  try {
+    [talents, openReminders, watchlists] = await Promise.all([
+      getTalents(),
+      getOpenRemindersForClub(),
+      getWatchlists(),
+    ]);
+  } catch {
+    // Eine abgelaufene/inkonsistente Session (z. B. nach mehrfachem
+    // Passwort-Reset im selben Browser) lässt getUser() im Layout noch
+    // durchgehen, aber die anschließenden RLS-Queries hier mit einem
+    // Auth-Fehler scheitern — das würde sonst als kryptischer 500er in
+    // der generischen error.tsx landen. Sauberer: Session verwerfen und
+    // zurück zum Login, statt eine tote Fehlerseite zu zeigen.
+    const supabase = await createClient();
+    await supabase.auth.signOut();
+    redirect(
+      "/login?error=Sitzung%20abgelaufen%20%E2%80%94%20bitte%20erneut%20anmelden."
+    );
+  }
 
   const urgent = [...talents]
     .filter((t) => t.currentAlert && t.currentAlert.riskLevel !== "gruen")
