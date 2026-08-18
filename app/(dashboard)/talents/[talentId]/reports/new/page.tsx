@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { getTalentById } from "@/lib/queries/talents";
 import { ScoutReportForm } from "@/components/reports/ScoutReportForm";
 
@@ -14,6 +15,7 @@ export default async function NewScoutReportPage({
   if (!talent) notFound();
 
   const fullName = `${talent.firstName} ${talent.lastName}`;
+  const t = await getTranslations("newReportPage");
 
   return (
     <div className="mx-auto max-w-2xl">
@@ -21,10 +23,10 @@ export default async function NewScoutReportPage({
         href={`/talents/${talent.id}`}
         className="text-sm text-muted hover:underline"
       >
-        ← Zurück zur Talentakte
+        {t("backToFile")}
       </Link>
       <h1 className="mb-6 mt-2 font-display text-2xl font-medium text-ink">
-        Neuer Bericht — {fullName}{" "}
+        {t("heading", { name: fullName })}{" "}
         <span className="text-base font-normal text-muted">
           ({talent.primaryPosition})
         </span>

@@ -1,18 +1,19 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/Button";
 import { getTalentById } from "@/lib/queries/talents";
 import { getKoordinationstestDocUrl } from "@/lib/queries/documents";
 import { createGkCoordinationTest } from "@/lib/actions/gkTests";
 
-const TESTS: { name: string; label: string }[] = [
-  { name: "scoreWechselwurf", label: "Wechselwurf mit Reaktionssignal" },
-  { name: "scoreKreuzprellen", label: "Kreuzprellen mit Handwechsel-Signal" },
-  { name: "scoreWandreaktion", label: "Wand-Reaktionswurf mit variabler Distanz" },
-  { name: "scoreDoppelwandwurf", label: "Doppel-Wandwurf mit Kreuzfang" },
-  { name: "scoreWurfdrehung", label: "Wurf-Drehung-Fang" },
-  { name: "scoreDoppeldrehung", label: "Doppel-Drehung mit Bodenkontakt" },
-];
+const TEST_KEYS = [
+  "scoreWechselwurf",
+  "scoreKreuzprellen",
+  "scoreWandreaktion",
+  "scoreDoppelwandwurf",
+  "scoreWurfdrehung",
+  "scoreDoppeldrehung",
+] as const;
 
 export default async function GKTestNewPage({
   params,
@@ -26,6 +27,7 @@ export default async function GKTestNewPage({
 
   const docUrl = await getKoordinationstestDocUrl();
   const today = new Date().toISOString().slice(0, 10);
+  const t = await getTranslations("gkTest");
 
   return (
     <div className="mx-auto max-w-2xl">
@@ -33,16 +35,13 @@ export default async function GKTestNewPage({
         href={`/talents/${talent.id}`}
         className="text-sm text-muted hover:underline"
       >
-        ← Zurück zu {talent.firstName} {talent.lastName}
+        {t("backTo", { name: `${talent.firstName} ${talent.lastName}` })}
       </Link>
 
       <h1 className="mt-2 font-display text-2xl font-medium text-ink">
-        Koordinationstest erfassen
+        {t("title")}
       </h1>
-      <p className="mt-2 text-sm text-muted">
-        Eigenständiges Torwart-Koordinationsmodul — Altersklasse wird
-        automatisch aus Jahrgang und Testdatum abgeleitet.
-      </p>
+      <p className="mt-2 text-sm text-muted">{t("subtitle")}</p>
 
       {searchParams.error && (
         <div className="mt-4 rounded-lg border border-brick/30 bg-brick/5 px-3 py-2 text-sm text-brick">
@@ -51,31 +50,24 @@ export default async function GKTestNewPage({
       )}
 
       <div className="mt-6 rounded-xl border border-line bg-pitch-dim p-4 text-sm text-ink">
-        <div className="font-medium">Bewertung je Test: 0–3 Punkte</div>
+        <div className="font-medium">{t("scoreLegendTitle")}</div>
         <div className="mt-1 text-muted">
-          <span className="font-medium text-ink">0</span> = reagiert kaum auf
-          Signale, Würfe unkontrolliert.
+          <span className="font-medium text-ink">0</span> = {t("score0")}
           <br />
-          <span className="font-medium text-ink">1</span> = reagiert, aber
-          häufig falsch oder sehr langsam.
+          <span className="font-medium text-ink">1</span> = {t("score1")}
           <br />
-          <span className="font-medium text-ink">2</span> = überwiegend
-          richtige Reaktion, Tempo ok, vereinzelt Fehler.
+          <span className="font-medium text-ink">2</span> = {t("score2")}
           <br />
-          <span className="font-medium text-ink">3</span> = schnelle,
-          richtige Reaktion, kontrollierte Würfe, flüssiger Ablauf.
+          <span className="font-medium text-ink">3</span> = {t("score3")}
         </div>
       </div>
 
       {docUrl && (
         <div className="mt-6">
           <a href={docUrl} target="_blank" rel="noreferrer">
-            <Button variant="secondary">Word-Datei herunterladen</Button>
+            <Button variant="secondary">{t("downloadDoc")}</Button>
           </a>
-          <p className="mt-2 text-xs text-muted">
-            Öffnet die Test-Word-Datei mit allen Beschreibungen und der
-            Punkteskala (Link eine Stunde gültig).
-          </p>
+          <p className="mt-2 text-xs text-muted">{t("downloadDocHint")}</p>
         </div>
       )}
 
@@ -85,7 +77,7 @@ export default async function GKTestNewPage({
       >
         <input type="hidden" name="talentId" value={talent.id} />
         <label className="flex flex-col gap-1.5 text-sm text-ink">
-          Testdatum
+          {t("testDate")}
           <input
             type="date"
             name="testDate"
@@ -95,23 +87,24 @@ export default async function GKTestNewPage({
           />
         </label>
 
-        {TESTS.map((t) => (
-          <label key={t.name} className="flex flex-col gap-1.5 text-sm text-ink">
-            {t.label} <span className="font-normal text-muted">(0–3 Punkte)</span>
+        {TEST_KEYS.map((key) => (
+          <label key={key} className="flex flex-col gap-1.5 text-sm text-ink">
+            {t(`tests.${key}`)}{" "}
+            <span className="font-normal text-muted">{t("pointsRange")}</span>
             <input
               type="number"
-              name={t.name}
+              name={key}
               min={0}
               max={3}
               step={1}
               inputMode="numeric"
-              placeholder="Punkte eingeben"
+              placeholder={t("pointsPlaceholder")}
               className="field"
             />
           </label>
         ))}
 
-        <Button type="submit">Test speichern</Button>
+        <Button type="submit">{t("save")}</Button>
       </form>
     </div>
   );

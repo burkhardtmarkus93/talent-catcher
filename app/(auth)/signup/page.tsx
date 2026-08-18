@@ -1,28 +1,28 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/Button";
 import { LogoLockup } from "@/components/ui/LogoLockup";
 import { PlanSelector } from "@/components/auth/PlanSelector";
 import { signUp } from "@/lib/actions/auth";
 
-export default function SignupPage({
+export default async function SignupPage({
   searchParams,
 }: {
   searchParams: { error?: string };
 }) {
+  const t = await getTranslations("signup");
   return (
     <main className="flex min-h-screen items-center justify-center bg-paper px-4 py-12">
       <div className="w-full max-w-3xl rounded-xl border border-line bg-surface p-8 shadow-sm">
         <div className="mb-8 text-center">
           <LogoLockup height={90} className="mb-2" />
           <h1 className="font-display text-xl font-medium text-ink">
-            Für deinen Verein einrichten
+            {t("title")}
           </h1>
-          <p className="mt-1 text-sm text-muted">
-            Ein Konto pro Verein — du wirst automatisch Admin.
-          </p>
+          <p className="mt-1 text-sm text-muted">{t("tagline")}</p>
           <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-pitch-dim px-3 py-1 text-xs font-semibold text-pitch-dark">
             <span className="h-1.5 w-1.5 rounded-full bg-current" aria-hidden />
-            3 Tage kostenlos testen — keine Zahlungsdaten nötig
+            {t("trialBadge")}
           </p>
         </div>
 
@@ -35,7 +35,7 @@ export default function SignupPage({
         <form action={signUp} className="flex flex-col gap-8">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <label className="flex flex-col gap-1.5 text-sm text-ink">
-              Vereinsname
+              {t("clubName")}
               <input
                 type="text"
                 name="clubName"
@@ -46,7 +46,7 @@ export default function SignupPage({
             </label>
 
             <label className="flex flex-col gap-1.5 text-sm text-ink">
-              E-Mail
+              {t("email")}
               <input
                 type="email"
                 name="email"
@@ -57,13 +57,13 @@ export default function SignupPage({
             </label>
 
             <label className="flex flex-col gap-1.5 text-sm text-ink sm:col-span-2">
-              Passwort
+              {t("password")}
               <input
                 type="password"
                 name="password"
                 required
                 minLength={8}
-                placeholder="Mindestens 8 Zeichen"
+                placeholder={t("passwordPlaceholder")}
                 className="field"
               />
             </label>
@@ -71,29 +71,25 @@ export default function SignupPage({
 
           <div>
             <p className="mb-1 text-center text-sm font-medium text-ink">
-              Plan für nach der Testphase wählen
+              {t("planHeading")}
             </p>
             <p className="mb-4 text-center text-xs text-muted">
-              Wird erst nach den 3 kostenlosen Tagen aktiv — du kannst das jederzeit auf der Abo-Seite ändern.
+              {t("planSubheading")}
             </p>
             <PlanSelector />
           </div>
 
           <Button type="submit" className="w-full">
-            Kostenlos starten
+            {t("submit")}
           </Button>
 
-          <p className="text-center text-xs text-muted">
-            Mit der Registrierung akzeptierst du, dass dein Verein für die Verarbeitung von
-            Talentdaten Minderjähriger verantwortlich ist und die dafür nötigen
-            Einwilligungen einholt. Nach 3 Tagen wird ein kostenpflichtiger Plan benötigt.
-          </p>
+          <p className="text-center text-xs text-muted">{t("legalNote")}</p>
         </form>
 
         <p className="mt-6 text-center text-sm text-muted">
-          Schon ein Konto?{" "}
+          {t("alreadyHaveAccount")}{" "}
           <Link href="/login" className="text-pitch underline-offset-2 hover:underline">
-            Anmelden
+            {t("signIn")}
           </Link>
         </p>
       </div>

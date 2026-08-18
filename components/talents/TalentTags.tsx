@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useTranslations } from "next-intl";
 import { addTalentTag, removeTalentTag } from "@/lib/actions/tags";
 
 export function TalentTags({
@@ -12,6 +13,7 @@ export function TalentTags({
 }) {
   const [newTag, setNewTag] = useState("");
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations("talentTags");
 
   return (
     <div>
@@ -28,14 +30,14 @@ export function TalentTags({
                 startTransition(() => removeTalentTag(talentId, tag))
               }
               className="text-muted hover:text-brick"
-              aria-label={`Tag ${tag} entfernen`}
+              aria-label={t("removeTag", { tag })}
             >
               ×
             </button>
           </span>
         ))}
         {tags.length === 0 && (
-          <span className="text-sm text-muted">Noch keine Tags vergeben.</span>
+          <span className="text-sm text-muted">{t("empty")}</span>
         )}
       </div>
       <form
@@ -51,7 +53,7 @@ export function TalentTags({
           type="text"
           value={newTag}
           onChange={(e) => setNewTag(e.target.value)}
-          placeholder="z. B. torgefährlich"
+          placeholder={t("placeholder")}
           className="field flex-1"
         />
         <button
@@ -59,7 +61,7 @@ export function TalentTags({
           disabled={isPending}
           className="rounded-lg border border-line px-3 py-1.5 text-sm text-ink hover:bg-paper disabled:opacity-50"
         >
-          + Tag
+          {t("addTag")}
         </button>
       </form>
     </div>

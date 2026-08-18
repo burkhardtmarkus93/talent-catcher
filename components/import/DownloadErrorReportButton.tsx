@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 
 interface DownloadErrorReportButtonProps {
@@ -11,8 +12,9 @@ export function DownloadErrorReportButton({
   sourceFilename,
   errorReport,
 }: DownloadErrorReportButtonProps) {
+  const t = useTranslations("downloadErrorReportButton");
   function handleDownload() {
-    const header = "Zeile;Fehler\n";
+    const header = `${t("csvHeaderRow")};${t("csvHeaderError")}\n`;
     const body = errorReport
       .map((e) => `${e.row};"${e.reason.replace(/"/g, '""')}"`)
       .join("\n");
@@ -30,7 +32,7 @@ export function DownloadErrorReportButton({
 
   return (
     <Button variant="secondary" onClick={handleDownload}>
-      Herunterladen
+      {t("download")}
     </Button>
   );
 }

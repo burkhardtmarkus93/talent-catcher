@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { createScoutReport, type ScoutReportActionState } from "@/lib/actions/reports";
 
@@ -15,22 +16,6 @@ type TinderCriterion =
   | "erfolgsmotivation"
   | "resilienz";
 
-const criteriaLabels: Record<Criterion, string> = {
-  technik: "Technik",
-  taktik: "Taktik",
-  athletik: "Athletik",
-  mentalitaet: "Mentalität",
-};
-
-const tinderLabels: Record<TinderCriterion, string> = {
-  trainingssensitivitaet: "Trainingssensitivität",
-  intelligenz: "Intelligenz im Spiel",
-  naturell: "Naturell",
-  dynamik: "Dynamik",
-  erfolgsmotivation: "Erfolgsmotivation",
-  resilienz: "Resilienz",
-};
-
 const initialState: ScoutReportActionState = { success: false };
 
 export function ScoutReportForm({
@@ -41,6 +26,23 @@ export function ScoutReportForm({
   reminderId?: string;
 }) {
   const [state, formAction] = useFormState(createScoutReport, initialState);
+  const t = useTranslations("scoutReportForm");
+
+  const criteriaLabels: Record<Criterion, string> = {
+    technik: t("criterionTechnik"),
+    taktik: t("criterionTaktik"),
+    athletik: t("criterionAthletik"),
+    mentalitaet: t("criterionMentalitaet"),
+  };
+
+  const tinderLabels: Record<TinderCriterion, string> = {
+    trainingssensitivitaet: t("tinderTrainingssensitivitaet"),
+    intelligenz: t("tinderIntelligenz"),
+    naturell: t("tinderNaturell"),
+    dynamik: t("tinderDynamik"),
+    erfolgsmotivation: t("tinderErfolgsmotivation"),
+    resilienz: t("tinderResilienz"),
+  };
 
   const [scores, setScores] = useState<Record<Criterion, number>>({
     technik: 3,
@@ -131,13 +133,13 @@ export function ScoutReportForm({
 
       {reminderId && (
         <p className="mb-4 rounded-lg bg-pitch-dim px-3 py-2 text-xs text-pitch-dark">
-          Dieser Bericht schließt die zugehörige Wiedervorlage automatisch ab.
+          {t("reminderNotice")}
         </p>
       )}
 
       <div className="mb-6 grid grid-cols-2 gap-4">
         <label className="flex flex-col gap-1.5 text-sm text-ink">
-          Spieldatum
+          {t("matchDate")}
           <input
             type="date"
             name="matchDate"
@@ -146,18 +148,18 @@ export function ScoutReportForm({
           />
         </label>
         <label className="flex flex-col gap-1.5 text-sm text-ink">
-          Gegner
+          {t("opponent")}
           <input
             type="text"
             name="opponent"
-            placeholder="z. B. SC Nachbarort"
+            placeholder={t("opponentPlaceholder")}
             className="field"
           />
         </label>
       </div>
 <div className="mb-2">
   <p className="text-xs text-muted">
-    Hauptbewertungsskala 1–5: 1 = sehr schwach, 5 = sehr stark.
+    {t("mainScaleHint")}
   </p>
 </div>
       <div className="mb-6 flex flex-col gap-4">
@@ -188,12 +190,9 @@ export function ScoutReportForm({
 
       <div className="mb-6 rounded-lg border border-line bg-paper p-4">
         <div className="mb-3">
-          <p className="text-sm font-semibold text-ink">TINDER-Kriterien</p>
+          <p className="text-sm font-semibold text-ink">{t("tinderCriteriaTitle")}</p>
           <p className="text-xs text-muted">
-  Zusätzliche Einschätzungsskalen von 1 bis 4: 1 = kaum ausgeprägt, 4 = stark ausgeprägt.
-  Beeinflussen nicht das Gesamtrating (das bleibt der Schnitt aus Technik/Taktik/Athletik/
-  Mentalität), fließen aber — zusammen mit Potenzial und Reifegrad — in die automatische
-  Risikobewertung ein, z. B. als zusätzliches Hidden-Gem-Signal.
+  {t("tinderCriteriaHint")}
 </p>
         </div>
 
@@ -226,37 +225,37 @@ export function ScoutReportForm({
 
       <div className="mb-6 grid grid-cols-2 gap-4">
         <label className="flex flex-col gap-1.5 text-sm text-ink">
-          Potenzial
+          {t("potenzial")}
           <select
             value={potenzial}
             onChange={(e) => setPotenzial(Number(e.target.value))}
             className="select-field"
           >
-            <option value={1}>1 – hoch</option>
-            <option value={2}>2 – überdurchschnittlich</option>
-            <option value={3}>3 – durchschnittlich</option>
-            <option value={4}>4 – unterdurchschnittlich</option>
+            <option value={1}>{t("potenzial1")}</option>
+            <option value={2}>{t("potenzial2")}</option>
+            <option value={3}>{t("potenzial3")}</option>
+            <option value={4}>{t("potenzial4")}</option>
           </select>
           <span className="text-xs text-muted">
-            Allgemeine Potenzial-Skala, getrennt von der aktuellen Leistungsbewertung.
+            {t("potenzialHint")}
           </span>
         </label>
 
         <label className="flex flex-col gap-1.5 text-sm text-ink">
-          Reifegrad
+          {t("reifegrad")}
           <select
             value={reifegrad}
             onChange={(e) => setReifegrad(Number(e.target.value))}
             className="select-field"
           >
-            <option value={-2}>-2 – Spätentwickler</option>
-            <option value={-1}>-1 – eher spät entwickelt</option>
-            <option value={0}>0 – altersgerecht</option>
-            <option value={1}>+1 – eher früh entwickelt</option>
-            <option value={2}>+2 – früh entwickelt</option>
+            <option value={-2}>{t("reifegradMinus2")}</option>
+            <option value={-1}>{t("reifegradMinus1")}</option>
+            <option value={0}>{t("reifegrad0")}</option>
+            <option value={1}>{t("reifegradPlus1")}</option>
+            <option value={2}>{t("reifegradPlus2")}</option>
           </select>
           <span className="text-xs text-muted">
-            Biologischer Reifegrad relativ zum kalendarischen Alter.
+            {t("reifegradHint")}
           </span>
         </label>
       </div>
@@ -264,7 +263,7 @@ export function ScoutReportForm({
       <div className="mb-6 flex items-center justify-between rounded-lg bg-paper px-4 py-3">
         <div>
           <p className="text-xs uppercase tracking-wide text-muted">
-            Gesamtrating {overrideActive ? "(manuell)" : "(wird bei Speichern berechnet)"}
+            {overrideActive ? t("overallRatingManual") : t("overallRatingCalculated")}
           </p>
           <p className="font-mono text-2xl text-ink">{displayedRating.toFixed(1)}</p>
         </div>
@@ -274,14 +273,14 @@ export function ScoutReportForm({
             checked={overrideActive}
             onChange={(e) => setOverrideActive(e.target.checked)}
           />
-          Manuell überschreiben
+          {t("overrideManually")}
         </label>
       </div>
 
       {overrideActive && (
         <div className="mb-6 grid grid-cols-2 gap-4">
           <label className="flex flex-col gap-1.5 text-sm text-ink">
-            Manueller Wert
+            {t("manualValue")}
             <input
               type="number"
               min={1}
@@ -293,12 +292,12 @@ export function ScoutReportForm({
             />
           </label>
           <label className="flex flex-col gap-1.5 text-sm text-ink">
-            Begründung (Pflichtfeld)
+            {t("overrideReason")}
             <input
               type="text"
               value={overrideReason}
               onChange={(e) => setOverrideReason(e.target.value)}
-              placeholder="z. B. Einzelaktion überstrahlt Gesamtleistung"
+              placeholder={t("overrideReasonPlaceholder")}
               className="field"
             />
           </label>
@@ -306,11 +305,11 @@ export function ScoutReportForm({
       )}
 
       <label className="mb-6 flex flex-col gap-1.5 text-sm text-ink">
-        Kommentar
+        {t("comment")}
         <textarea
           name="comment"
           rows={4}
-          placeholder="Freitext-Beobachtung..."
+          placeholder={t("commentPlaceholder")}
           className="field"
         />
       </label>
@@ -324,9 +323,10 @@ export function ScoutReportForm({
 
 function SubmitButton() {
   const { pending } = useFormStatus();
+  const t = useTranslations("scoutReportForm");
   return (
     <Button type="submit" disabled={pending}>
-      {pending ? "Speichert..." : "Bericht speichern"}
+      {pending ? t("saving") : t("save")}
     </Button>
   );
 }

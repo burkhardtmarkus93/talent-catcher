@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/Button";
 import { RiskDot } from "@/components/ui/RiskDot";
 import { HiddenGemBadge } from "@/components/ui/HiddenGemBadge";
@@ -38,26 +39,14 @@ function age(birthDate: string): number {
   return Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
 }
 
-function formatFileSize(bytes: number | null): string {
-  if (!bytes) return "—";
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-}
-
-function formatDuration(seconds: number | null): string {
-  if (!seconds) return "";
-  const m = Math.floor(seconds / 60);
-  const s = Math.round(seconds % 60);
-  return ` · ${m}:${s.toString().padStart(2, "0")} min`;
-}
-
-const TINDER_LABELS: Record<string, string> = {
-  tinderTrainingssensitivitaet: "Trainingssensitivität",
-  tinderIntelligenz: "Intelligenz im Spiel",
-  tinderNaturell: "Naturell",
-  tinderDynamik: "Dynamik",
-  tinderErfolgsmotivation: "Erfolgsmotivation",
-  tinderResilienz: "Resilienz",
-};
+const TINDER_KEYS = [
+  "tinderTrainingssensitivitaet",
+  "tinderIntelligenz",
+  "tinderNaturell",
+  "tinderDynamik",
+  "tinderErfolgsmotivation",
+  "tinderResilienz",
+] as const;
 
 export default async function TalentDetailPage({
   params,
@@ -78,6 +67,7 @@ export default async function TalentDetailPage({
     siblings,
     injuries,
     guardianInvites,
+    t,
   ] = await Promise.all([
     getScoutReportsForTalent(talent.id),
     getOpenRemindersForTalent(talent.id, fullName),
@@ -90,7 +80,24 @@ export default async function TalentDetailPage({
     getSiblingsForTalent(talent.id),
     getInjuriesForTalent(talent.id),
     getGuardianInvitesForTalent(talent.id),
+    getTranslations("talentDetailPage"),
   ]);
+
+  function formatFileSize(bytes: number | null): string {
+    if (!bytes) return "—";
+    return t("fileSizeMb", { size: (bytes / (1024 * 1024)).toFixed(1) });
+  }
+
+  function formatDuration(seconds: number | null): string {
+    if (!seconds) return "";
+    const m = Math.floor(seconds / 60);
+    const s = Math.round(seconds % 60);
+    return ` · ${m}:${s.toString().padStart(2, "0")} min`;
+  }
+
+  const TINDER_LABELS: Record<string, string> = Object.fromEntries(
+    TINDER_KEYS.map((key) => [key, t(key)])
+  );
 
   const canSeeBodyData = !talent.isMinor || Boolean(appUser?.hasYouthAccess);
   const canUploadVideo = talent.isMinor
@@ -105,7 +112,7 @@ export default async function TalentDetailPage({
   return (
     <div>
       <Link href="/talents" className="text-sm text-muted hover:underline">
-        ← Zurück zur Talentliste
+        {t("backToList")}
       </Link>
 
       {activityStatus.isInactive && (
@@ -122,8 +129,8 @@ export default async function TalentDetailPage({
             <path d="m12 5 7 7-7 7" />
           </svg>
           <div className="text-sm text-amber-dark">
-            <span className="font-medium">Bevorstehender Wechsel: </span>
-            zu {talent.upcomingTransferClubText}
+            <span className="font-medium">{t("upcomingTransferLabel")} </span>
+            {t("upcomingTransferTo", { club: talent.upcomingTransferClubText })}
             {talent.upcomingTransferNote && ` — ${talent.upcomingTransferNote}`}
           </div>
         </div>
@@ -137,10 +144,10 @@ export default async function TalentDetailPage({
             <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L14.71 3.86a2 2 0 0 0-3.42 0Z" />
           </svg>
           <div className="text-sm text-brick">
-            <span className="font-medium">Aktuell verletzt: </span>
+            <span className="font-medium">{t("activeInjuryLabel")} </span>
             {activeInjury.injuryType}
             {activeInjury.expectedReturnDate &&
-              ` — Rückkehr voraussichtlich ${activeInjury.expectedReturnDate}`}
+              ` — ${t("expectedReturn", { date: activeInjury.expectedReturnDate })}`}
           </div>
         </div>
       )}
@@ -163,7 +170,7 @@ export default async function TalentDetailPage({
                 {fullName}
               </h1>
               <p className="mt-1 text-sm text-muted">
-                {talent.primaryPosition} · {age(talent.birthDate)} Jahre ·{" "}
+                {talent.primaryPosition} · {t("ageYears", { age: age(talent.birthDate) })} ·{" "}
                 {talent.clubNameText}
                 {talent.teamNameText ? ` ${talent.teamNameText}` : ""}
               </p>
@@ -178,15 +185,14 @@ export default async function TalentDetailPage({
 
           {talent.currentAlert && talent.currentAlert.triggeredReasons.length > 0 && (
             <div className="mt-4 rounded-lg bg-paper px-4 py-3 text-sm text-ink">
-              <span className="font-medium">Begründung: </span>
+              <span className="font-medium">{t("reasoningLabel")} </span>
               {talent.currentAlert.triggeredReasons.join(" · ")}
             </div>
           )}
 
           {!talent.currentAlert && (
             <p className="mt-4 text-sm text-muted">
-              Noch keine Risikobewertung vorhanden (wird nach der ersten
-              Neuberechnung angezeigt).
+              {t("noRiskAssessment")}
             </p>
           )}
         </div>
@@ -196,46 +202,46 @@ export default async function TalentDetailPage({
         <div className="col-span-2">
           <section className="rounded-xl border border-line bg-surface p-5">
             <h2 className="mb-4 font-display text-lg font-medium text-ink">
-              Übersicht
+              {t("overview")}
             </h2>
             <form action={updateTalentOverview} className="flex flex-col gap-4 text-sm">
               <input type="hidden" name="talentId" value={talent.id} />
               <div className="grid grid-cols-2 gap-4">
                 <label className="flex flex-col gap-1.5 text-ink">
-                  Status
+                  {t("status")}
                   <select name="status" defaultValue={talent.status} className="select-field">
-                    <option value="in_beobachtung">In Beobachtung</option>
-                    <option value="empfehlung">Empfehlung</option>
-                    <option value="abgeschlossen">Abgeschlossen</option>
-                    <option value="verloren">Verloren</option>
+                    <option value="in_beobachtung">{t("statusInBeobachtung")}</option>
+                    <option value="empfehlung">{t("statusEmpfehlung")}</option>
+                    <option value="abgeschlossen">{t("statusAbgeschlossen")}</option>
+                    <option value="verloren">{t("statusVerloren")}</option>
                   </select>
                 </label>
                 <label className="flex flex-col gap-1.5 text-ink">
-                  Sichtbarkeit
+                  {t("visibility")}
                   <select
                     name="visibilityStatus"
                     defaultValue={talent.visibilityStatus}
                     className="select-field"
                   >
-                    <option value="privat">Privat</option>
-                    <option value="freigegeben">Freigegeben</option>
+                    <option value="privat">{t("visibilityPrivat")}</option>
+                    <option value="freigegeben">{t("visibilityFreigegeben")}</option>
                   </select>
                 </label>
                 <label className="flex flex-col gap-1.5 text-ink">
-                  Vertragsstatus
+                  {t("contractStatus")}
                   <select
                     name="contractStatus"
                     defaultValue={talent.contractStatus}
                     className="select-field"
                   >
-                    <option value="unbekannt">Unbekannt</option>
-                    <option value="aktiv">Aktiv</option>
-                    <option value="auslaufend">Auslaufend</option>
-                    <option value="vereinslos">Vereinslos</option>
+                    <option value="unbekannt">{t("contractUnbekannt")}</option>
+                    <option value="aktiv">{t("contractAktiv")}</option>
+                    <option value="auslaufend">{t("contractAuslaufend")}</option>
+                    <option value="vereinslos">{t("contractVereinslos")}</option>
                   </select>
                 </label>
                 <label className="flex flex-col gap-1.5 text-ink">
-                  Vertragsende
+                  {t("contractEndDate")}
                   <input
                     type="date"
                     name="contractEndDate"
@@ -244,7 +250,7 @@ export default async function TalentDetailPage({
                   />
                 </label>
                 <label className="flex flex-col gap-1.5 text-ink">
-                  Liga
+                  {t("league")}
                   <input
                     type="text"
                     name="leagueText"
@@ -253,7 +259,7 @@ export default async function TalentDetailPage({
                   />
                 </label>
                 <label className="flex flex-col gap-1.5 text-ink">
-                  Land
+                  {t("country")}
                   <input
                     type="text"
                     name="countryText"
@@ -264,7 +270,7 @@ export default async function TalentDetailPage({
                 {canSeeBodyData && (
                   <>
                     <label className="flex flex-col gap-1.5 text-ink">
-                      Größe (cm)
+                      {t("heightCm")}
                       <input
                         type="number"
                         name="heightCm"
@@ -273,7 +279,7 @@ export default async function TalentDetailPage({
                       />
                     </label>
                     <label className="flex flex-col gap-1.5 text-ink">
-                      Gewicht (kg)
+                      {t("weightKg")}
                       <input
                         type="number"
                         name="weightKg"
@@ -285,18 +291,18 @@ export default async function TalentDetailPage({
                 )}
                 <div>
                   <p className="text-xs uppercase tracking-wide text-muted">
-                    Minderjährig
+                    {t("isMinor")}
                   </p>
-                  <p className="mt-2 text-ink">{talent.isMinor ? "Ja" : "Nein"}</p>
+                  <p className="mt-2 text-ink">{talent.isMinor ? t("yes") : t("no")}</p>
                   <p className="mt-0.5 text-xs text-muted">
-                    Ergibt sich automatisch aus dem Geburtsdatum.
+                    {t("isMinorHint")}
                   </p>
                 </div>
               </div>
 
               <div>
                 <p className="mb-2 text-xs uppercase tracking-wide text-muted">
-                  Auswahl / Förderung
+                  {t("selectionFunding")}
                 </p>
                 <div className="flex flex-wrap gap-x-6 gap-y-2">
                   <label className="flex items-center gap-2 text-ink">
@@ -305,7 +311,7 @@ export default async function TalentDetailPage({
                       name="dfbStuetzpunkt"
                       defaultChecked={talent.dfbStuetzpunkt}
                     />
-                    DFB-Stützpunkt
+                    {t("dfbStuetzpunkt")}
                   </label>
                   <label className="flex items-center gap-2 text-ink">
                     <input
@@ -313,7 +319,7 @@ export default async function TalentDetailPage({
                       name="verbandsauswahl"
                       defaultChecked={talent.verbandsauswahl}
                     />
-                    Verbandsauswahl
+                    {t("verbandsauswahl")}
                   </label>
                   <label className="flex items-center gap-2 text-ink">
                     <input
@@ -321,37 +327,34 @@ export default async function TalentDetailPage({
                       name="nationalmannschaft"
                       defaultChecked={talent.nationalmannschaft}
                     />
-                    Nationalmannschaft
+                    {t("nationalmannschaft")}
                   </label>
                   <label className="flex items-center gap-2 text-ink">
                     <input type="checkbox" name="nlz" defaultChecked={talent.nlz} />
-                    NLZ
+                    {t("nlz")}
                   </label>
                 </div>
               </div>
 
               <div>
                 <Button type="submit" variant="secondary">
-                  Speichern
+                  {t("save")}
                 </Button>
               </div>
             </form>
           </section>
 
           <CollapsibleSection
-            title="Talentierte Geschwister"
+            title={t("siblingsTitle")}
             meta={siblings.length > 0 ? `${siblings.length}` : undefined}
           >
             <p className="mb-4 text-xs text-muted">
-              Reine Notiz für dich — z. B. wenn beim Scouting auffällt, dass
-              es noch ein(e) talentierte(n) Bruder/Schwester gibt. Legt kein
-              eigenes Talent-Profil an; dafür gibt es unten den Link „Als
-              Talent erfassen".
+              {t("siblingsHint")}
             </p>
 
             {siblings.length === 0 ? (
               <p className="mb-4 text-sm text-muted">
-                Noch keine Geschwister vermerkt.
+                {t("siblingsEmpty")}
               </p>
             ) : (
               <ul className="mb-4 divide-y divide-line">
@@ -362,7 +365,7 @@ export default async function TalentDetailPage({
                         {s.firstName} {s.lastName}
                         {s.birthDate && (
                           <span className="ml-2 font-normal text-muted">
-                            {age(s.birthDate)} Jahre
+                            {t("ageYears", { age: age(s.birthDate) })}
                           </span>
                         )}
                       </p>
@@ -377,7 +380,7 @@ export default async function TalentDetailPage({
                         }`}
                         className="text-sm text-pitch hover:underline"
                       >
-                        Als Talent erfassen →
+                        {t("registerAsTalent")}
                       </Link>
                       <form action={deleteSibling}>
                         <input type="hidden" name="talentId" value={talent.id} />
@@ -385,9 +388,9 @@ export default async function TalentDetailPage({
                         <button
                           type="submit"
                           className="text-sm text-muted hover:text-brick"
-                          aria-label="Geschwister-Eintrag entfernen"
+                          aria-label={t("removeSiblingAria")}
                         >
-                          Entfernen
+                          {t("remove")}
                         </button>
                       </form>
                     </div>
@@ -399,39 +402,39 @@ export default async function TalentDetailPage({
             <form action={addSibling} className="grid grid-cols-1 gap-3 sm:grid-cols-4">
               <input type="hidden" name="talentId" value={talent.id} />
               <label className="flex flex-col gap-1.5 text-sm text-ink">
-                Vorname
+                {t("firstName")}
                 <input type="text" name="firstName" required className="field" />
               </label>
               <label className="flex flex-col gap-1.5 text-sm text-ink">
-                Nachname
+                {t("lastName")}
                 <input type="text" name="lastName" required className="field" />
               </label>
               <label className="flex flex-col gap-1.5 text-sm text-ink">
-                Geburtsdatum
+                {t("birthDate")}
                 <input type="date" name="birthDate" className="field" />
               </label>
               <label className="flex flex-col gap-1.5 text-sm text-ink">
-                Notiz
+                {t("note")}
                 <input
                   type="text"
                   name="note"
-                  placeholder="z. B. spielt auch bei uns in der U15"
+                  placeholder={t("siblingNotePlaceholder")}
                   className="field"
                 />
               </label>
               <div className="sm:col-span-4">
                 <Button type="submit" variant="secondary">
-                  Geschwister hinzufügen
+                  {t("addSibling")}
                 </Button>
               </div>
             </form>
           </CollapsibleSection>
 
           <CollapsibleSection
-            title="Verein & Wechsel"
+            title={t("clubAndTransfer")}
             meta={
               talent.upcomingTransferClubText
-                ? "Wechsel vermerkt"
+                ? t("transferNoted")
                 : talent.clubNameText
             }
           >
@@ -439,7 +442,7 @@ export default async function TalentDetailPage({
               <input type="hidden" name="talentId" value={talent.id} />
               <div className="grid grid-cols-2 gap-4">
                 <label className="flex flex-col gap-1.5 text-ink">
-                  Aktueller Verein
+                  {t("currentClub")}
                   <input
                     type="text"
                     name="clubNameText"
@@ -449,12 +452,12 @@ export default async function TalentDetailPage({
                   />
                 </label>
                 <label className="flex flex-col gap-1.5 text-ink">
-                  Team/Jahrgang
+                  {t("team")}
                   <input
                     type="text"
                     name="teamNameText"
                     defaultValue={talent.teamNameText ?? ""}
-                    placeholder="z. B. U17"
+                    placeholder={t("teamPlaceholder")}
                     className="field"
                   />
                 </label>
@@ -462,31 +465,29 @@ export default async function TalentDetailPage({
 
               <div>
                 <p className="mb-1 text-xs uppercase tracking-wide text-muted">
-                  Bevorstehender Wechsel (optional)
+                  {t("upcomingTransferOptional")}
                 </p>
                 <p className="mb-3 text-xs text-muted">
-                  Reine Notiz für dich selbst — z. B. um zu wissen, dass sich
-                  eine Kontaktaufnahme aktuell nicht lohnt. Keine Vermittlung,
-                  kein Kontakt zu Dritten.
+                  {t("upcomingTransferHint")}
                 </p>
                 <div className="grid grid-cols-2 gap-4">
                   <label className="flex flex-col gap-1.5 text-ink">
-                    Wechselt voraussichtlich zu
+                    {t("transfersToLabel")}
                     <input
                       type="text"
                       name="upcomingTransferClubText"
                       defaultValue={talent.upcomingTransferClubText ?? ""}
-                      placeholder="z. B. FC Beispiel U19"
+                      placeholder={t("transfersToPlaceholder")}
                       className="field"
                     />
                   </label>
                   <label className="flex flex-col gap-1.5 text-ink">
-                    Notiz
+                    {t("note")}
                     <input
                       type="text"
                       name="upcomingTransferNote"
                       defaultValue={talent.upcomingTransferNote ?? ""}
-                      placeholder="z. B. wohl ab Sommer 2027, laut Trainer bereits einig"
+                      placeholder={t("transferNotePlaceholder")}
                       className="field"
                     />
                   </label>
@@ -495,7 +496,7 @@ export default async function TalentDetailPage({
 
               <div>
                 <Button type="submit" variant="secondary">
-                  Speichern
+                  {t("save")}
                 </Button>
               </div>
             </form>
@@ -503,24 +504,23 @@ export default async function TalentDetailPage({
 
           {appUser?.hasYouthAccess && (
             <CollapsibleSection
-              title="Eltern-Zugang"
+              title={t("guardianAccessTitle")}
               meta={
                 guardianInvites.length > 0
-                  ? `${guardianInvites.filter((g) => g.claimedAt).length}/${guardianInvites.length} aktiv`
+                  ? t("guardianActiveMeta", {
+                      claimed: guardianInvites.filter((g) => g.claimedAt).length,
+                      total: guardianInvites.length,
+                    })
                   : undefined
               }
             >
               <p className="mb-4 text-xs text-muted">
-                Lädt die/den Erziehungsberechtigte(n) zu einem eigenen,
-                eingeschränkten Zugang ein: Verein/Team pflegen (z. B. bei
-                einem Wechsel, von dem du sonst nichts mitbekommst) und
-                Videos hochladen/ansehen. Kein Zugriff auf Berichte, Tags
-                oder die Risikobewertung.
+                {t("guardianAccessHint")}
               </p>
 
               {guardianInvites.length === 0 ? (
                 <p className="mb-4 text-sm text-muted">
-                  Noch keine Einladung verschickt.
+                  {t("guardianNoInvites")}
                 </p>
               ) : (
                 <ul className="mb-4 divide-y divide-line">
@@ -532,7 +532,7 @@ export default async function TalentDetailPage({
                           g.claimedAt ? "text-pitch" : "text-muted"
                         }`}
                       >
-                        {g.claimedAt ? "Aktiv" : "Einladung ausstehend"}
+                        {g.claimedAt ? t("guardianActive") : t("guardianPending")}
                       </span>
                     </li>
                   ))}
@@ -542,7 +542,7 @@ export default async function TalentDetailPage({
               <form action={inviteGuardian} className="flex flex-wrap items-end gap-3">
                 <input type="hidden" name="talentId" value={talent.id} />
                 <label className="flex min-w-[240px] flex-1 flex-col gap-1.5 text-sm text-ink">
-                  E-Mail der/des Erziehungsberechtigten
+                  {t("guardianEmailLabel")}
                   <input
                     type="email"
                     name="email"
@@ -552,23 +552,24 @@ export default async function TalentDetailPage({
                   />
                 </label>
                 <Button type="submit" variant="secondary">
-                  Einladen
+                  {t("invite")}
                 </Button>
               </form>
             </CollapsibleSection>
           )}
 
           <CollapsibleSection
-            title="Externe Profile"
+            title={t("externalProfiles")}
             meta={
               [talent.transfermarktUrl, talent.fupaUrl].filter(Boolean).length > 0
-                ? `${[talent.transfermarktUrl, talent.fupaUrl].filter(Boolean).length} verknüpft`
-                : "keins verknüpft"
+                ? t("externalProfilesLinkedCount", {
+                    count: [talent.transfermarktUrl, talent.fupaUrl].filter(Boolean).length,
+                  })
+                : t("externalProfilesNoneLinked")
             }
           >
             <p className="mb-4 text-xs text-muted">
-              Nur ein Link zum jeweiligen Profil — aus rechtlichen Gründen
-              (Nutzungsbedingungen der Anbieter) keine eingebetteten Daten.
+              {t("externalProfilesHint")}
             </p>
             <div className="mb-4 flex flex-wrap gap-2">
               {talent.transfermarktUrl && (
@@ -578,7 +579,7 @@ export default async function TalentDetailPage({
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-paper px-3 py-1.5 text-sm text-ink transition-colors hover:border-pitch"
                 >
-                  Transfermarkt-Profil öffnen
+                  {t("openTransfermarkt")}
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
                     <path d="M15 3h6v6" />
@@ -593,7 +594,7 @@ export default async function TalentDetailPage({
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-paper px-3 py-1.5 text-sm text-ink transition-colors hover:border-pitch"
                 >
-                  FuPa-Profil öffnen
+                  {t("openFupa")}
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
                     <path d="M15 3h6v6" />
@@ -602,13 +603,13 @@ export default async function TalentDetailPage({
                 </a>
               )}
               {!talent.transfermarktUrl && !talent.fupaUrl && (
-                <p className="text-sm text-muted">Noch kein externes Profil verknüpft.</p>
+                <p className="text-sm text-muted">{t("noExternalProfile")}</p>
               )}
             </div>
             <form action={updateExternalProfiles} className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <input type="hidden" name="talentId" value={talent.id} />
               <label className="flex flex-col gap-1.5 text-sm text-ink">
-                Transfermarkt-URL
+                {t("transfermarktUrl")}
                 <input
                   type="url"
                   name="transfermarktUrl"
@@ -618,7 +619,7 @@ export default async function TalentDetailPage({
                 />
               </label>
               <label className="flex flex-col gap-1.5 text-sm text-ink">
-                FuPa-URL
+                {t("fupaUrl")}
                 <input
                   type="url"
                   name="fupaUrl"
@@ -629,14 +630,14 @@ export default async function TalentDetailPage({
               </label>
               <div className="sm:col-span-2">
                 <Button type="submit" variant="secondary">
-                  Speichern
+                  {t("save")}
                 </Button>
               </div>
             </form>
           </CollapsibleSection>
 
           <CollapsibleSection
-            title="Tags"
+            title={t("tags")}
             meta={talent.tags && talent.tags.length > 0 ? `${talent.tags.length}` : undefined}
           >
             <TalentTags talentId={talent.id} tags={talent.tags ?? []} />
@@ -644,12 +645,11 @@ export default async function TalentDetailPage({
 
           <section className="mt-6 rounded-xl border border-line bg-surface p-5">
             <h2 className="mb-4 font-display text-lg font-medium text-ink">
-              Berichtsverlauf
+              {t("reportHistory")}
             </h2>
             {reports.length === 0 ? (
               <p className="text-sm text-muted">
-                Noch keine Berichte vorhanden — der erste Bericht legt die
-                Ausgangsbewertung fest.
+                {t("noReports")}
               </p>
             ) : (
               <ul className="divide-y divide-line">
@@ -668,12 +668,12 @@ export default async function TalentDetailPage({
                     <li key={r.id} className="py-3">
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium text-ink">
-                          {r.matchDate} {r.opponent ? `vs. ${r.opponent}` : ""}
+                          {r.matchDate} {r.opponent ? t("vsOpponent", { opponent: r.opponent }) : ""}
                         </span>
                         <span className="font-mono text-sm text-ink">
                           {r.overallRating.toFixed(1)}
                           {r.overallRatingSource === "manual_override" && (
-                            <span className="ml-1 text-xs text-muted">(manuell)</span>
+                            <span className="ml-1 text-xs text-muted">{t("manual")}</span>
                           )}
                         </span>
                       </div>
@@ -693,12 +693,12 @@ export default async function TalentDetailPage({
                           ))}
                           {r.potenzial != null && (
                             <span className="inline-flex items-center gap-1 rounded-full bg-paper px-2.5 py-0.5 text-xs text-ink">
-                              Potenzial: {r.potenzial}/4
+                              {t("potenzialEntry", { value: r.potenzial })}
                             </span>
                           )}
                           {r.reifegrad != null && (
                             <span className="inline-flex items-center gap-1 rounded-full bg-paper px-2.5 py-0.5 text-xs text-ink">
-                              Reifegrad: {r.reifegrad > 0 ? "+" : ""}
+                              {t("reifegradLabel")}: {r.reifegrad > 0 ? "+" : ""}
                               {r.reifegrad}
                             </span>
                           )}
@@ -714,12 +714,12 @@ export default async function TalentDetailPage({
           </section>
 
           <CollapsibleSection
-            title="Video-Highlights"
+            title={t("videoHighlights")}
             meta={videos.length > 0 ? `${videos.length}` : undefined}
           >
             {videos.length === 0 ? (
               <p className="mb-4 text-sm text-muted">
-                Noch keine Videos hochgeladen.
+                {t("noVideos")}
               </p>
             ) : (
               <div className="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -731,7 +731,7 @@ export default async function TalentDetailPage({
                       </video>
                     ) : (
                       <div className="flex aspect-video w-full items-center justify-center bg-ink/5 text-xs text-muted">
-                        Video nicht verfügbar
+                        {t("videoUnavailable")}
                       </div>
                     )}
                     <div className="px-3 py-2 text-xs text-muted">
@@ -749,9 +749,7 @@ export default async function TalentDetailPage({
             ) : (
               <div className="flex flex-col gap-4">
                 <p className="rounded-lg bg-amber-dim px-4 py-3 text-sm text-amber-dark">
-                  Für dieses minderjährige Talent liegt noch keine dokumentierte
-                  Einwilligung für Videomaterial vor — Upload ist deshalb
-                  gesperrt.
+                  {t("noConsentUpload")}
                 </p>
 
                 {appUser?.hasYouthAccess ? (
@@ -761,44 +759,39 @@ export default async function TalentDetailPage({
                   >
                     <input type="hidden" name="talentId" value={talent.id} />
                     <p className="text-sm font-medium text-ink">
-                      Einwilligung erteilen
+                      {t("grantConsentTitle")}
                     </p>
                     <p className="text-xs text-muted">
-                      Erst eintragen, wenn eine wirksame Einwilligung der/des
-                      Erziehungsberechtigten tatsächlich vorliegt (z. B.
-                      unterschriebenes Formular). Diese App speichert nur den
-                      Nachweis-Vermerk, kein Dokument.
+                      {t("grantConsentHint")}
                     </p>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                       <label className="flex flex-col gap-1.5 text-sm text-ink">
-                        Gültig bis (optional)
+                        {t("validUntil")}
                         <input type="date" name="validUntil" className="field" />
                       </label>
                       <label className="flex flex-col gap-1.5 text-sm text-ink">
-                        Notiz
+                        {t("note")}
                         <input
                           type="text"
                           name="notes"
-                          placeholder="z. B. schriftliches Formular liegt im Vereinsbüro vor"
+                          placeholder={t("consentNotePlaceholder")}
                           className="field"
                         />
                       </label>
                     </div>
                     <label className="flex items-start gap-2 text-sm text-ink">
                       <input type="checkbox" name="confirmed" required className="mt-0.5" />
-                      Ich bestätige, dass eine wirksame Einwilligung der/des
-                      Erziehungsberechtigten für Videomaterial vorliegt.
+                      {t("consentConfirm")}
                     </label>
                     <div>
                       <Button type="submit" variant="secondary">
-                        Einwilligung erteilen
+                        {t("grantConsentTitle")}
                       </Button>
                     </div>
                   </form>
                 ) : (
                   <p className="text-xs text-muted">
-                    Eine Einwilligung kann nur ein Teammitglied mit
-                    Jugendschutz-Zugriff erteilen.
+                    {t("consentNeedsAccess")}
                   </p>
                 )}
               </div>
@@ -807,23 +800,22 @@ export default async function TalentDetailPage({
 
           {canSeeBodyData && (
             <CollapsibleSection
-              title="Verletzungen"
+              title={t("injuriesTitle")}
               meta={
                 activeInjury
-                  ? "aktuell verletzt"
+                  ? t("currentlyInjured")
                   : injuries.length > 0
                   ? `${injuries.length}`
                   : undefined
               }
             >
               <p className="mb-4 text-xs text-muted">
-                Verletzungshistorie als Beobachtungsnotiz — fließt bewusst
-                nicht automatisch in die Risikobewertung ein.
+                {t("injuriesHint")}
               </p>
 
               {injuries.length === 0 ? (
                 <p className="mb-4 text-sm text-muted">
-                  Noch keine Verletzung vermerkt.
+                  {t("noInjuries")}
                 </p>
               ) : (
                 <ul className="mb-4 divide-y divide-line">
@@ -838,7 +830,7 @@ export default async function TalentDetailPage({
                         </p>
                         {i.expectedReturnDate && (
                           <p className="mt-0.5 text-sm text-muted">
-                            Rückkehr voraussichtlich {i.expectedReturnDate}
+                            {t("expectedReturn", { date: i.expectedReturnDate })}
                           </p>
                         )}
                         {i.note && <p className="mt-0.5 text-sm text-muted">{i.note}</p>}
@@ -849,9 +841,9 @@ export default async function TalentDetailPage({
                         <button
                           type="submit"
                           className="flex-none text-sm text-muted hover:text-brick"
-                          aria-label="Verletzungs-Eintrag entfernen"
+                          aria-label={t("removeInjuryAria")}
                         >
-                          Entfernen
+                          {t("remove")}
                         </button>
                       </form>
                     </li>
@@ -862,35 +854,35 @@ export default async function TalentDetailPage({
               <form action={addInjury} className="grid grid-cols-1 gap-3 sm:grid-cols-4">
                 <input type="hidden" name="talentId" value={talent.id} />
                 <label className="flex flex-col gap-1.5 text-sm text-ink">
-                  Art der Verletzung
+                  {t("injuryType")}
                   <input
                     type="text"
                     name="injuryType"
-                    placeholder="z. B. Muskelfaserriss"
+                    placeholder={t("injuryTypePlaceholder")}
                     required
                     className="field"
                   />
                 </label>
                 <label className="flex flex-col gap-1.5 text-sm text-ink">
-                  Datum
+                  {t("date")}
                   <input type="date" name="injuryDate" required className="field" />
                 </label>
                 <label className="flex flex-col gap-1.5 text-sm text-ink">
-                  Rückkehr voraussichtlich
+                  {t("expectedReturnLabel")}
                   <input type="date" name="expectedReturnDate" className="field" />
                 </label>
                 <label className="flex flex-col gap-1.5 text-sm text-ink">
-                  Notiz
+                  {t("note")}
                   <input
                     type="text"
                     name="note"
-                    placeholder="z. B. laut Trainer noch im Aufbautraining"
+                    placeholder={t("injuryNotePlaceholder")}
                     className="field"
                   />
                 </label>
                 <div className="sm:col-span-4">
                   <Button type="submit" variant="secondary">
-                    Verletzung hinzufügen
+                    {t("addInjury")}
                   </Button>
                 </div>
               </form>
@@ -899,7 +891,7 @@ export default async function TalentDetailPage({
 
           {talent.primaryPosition === "TW" && (
             <CollapsibleSection
-              title="Koordinationstest (Torhüter)"
+              title={t("gkTestTitle")}
               meta={gkTests.length > 0 ? `${gkTests.length}` : undefined}
             >
               <div className="mb-3 flex justify-end">
@@ -907,23 +899,23 @@ export default async function TalentDetailPage({
                   href={`/talents/${talent.id}/gk-tests/new`}
                   className="text-sm text-pitch hover:underline"
                 >
-                  + Neuer Test
+                  {t("newGkTest")}
                 </Link>
               </div>
               {gkTests.length === 0 ? (
                 <p className="text-sm text-muted">
-                  Noch kein Koordinationstest erfasst.
+                  {t("noGkTests")}
                 </p>
               ) : (
                 <ul className="divide-y divide-line">
-                  {gkTests.map((t) => (
-                    <li key={t.id} className="py-3">
+                  {gkTests.map((test) => (
+                    <li key={test.id} className="py-3">
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium text-ink">
-                          {t.testDate} {t.ageCategory ? `· ${t.ageCategory}` : ""}
+                          {test.testDate} {test.ageCategory ? `· ${test.ageCategory}` : ""}
                         </span>
                         <span className="font-mono text-sm text-ink">
-                          {t.totalScore ?? "—"} Pkt.
+                          {t("pointsSuffix", { score: test.totalScore ?? "—" })}
                         </span>
                       </div>
                     </li>
@@ -937,7 +929,7 @@ export default async function TalentDetailPage({
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-3">
             <Link href={`/talents/${talent.id}/reports/new`}>
-              <Button className="w-full">+ Neuer Bericht</Button>
+              <Button className="w-full">{t("newReport")}</Button>
             </Link>
 
             {talent.archivedAt ? (
@@ -947,7 +939,7 @@ export default async function TalentDetailPage({
                   type="submit"
                   className="w-full rounded-md border border-pitch bg-emerald-50 px-4 py-2 text-sm font-medium text-pitch hover:bg-emerald-100"
                 >
-                  Talent wiederherstellen
+                  {t("restoreTalentBtn")}
                 </button>
               </form>
             ) : (
@@ -957,7 +949,7 @@ export default async function TalentDetailPage({
                   type="submit"
                   className="w-full rounded-md border border-amber-500 bg-amber-50 px-4 py-2 text-sm font-medium text-amber-700 hover:bg-amber-100"
                 >
-                  Talent archivieren
+                  {t("archiveTalentBtn")}
                 </button>
               </form>
             )}
@@ -969,10 +961,10 @@ export default async function TalentDetailPage({
 
           <section className="rounded-xl border border-line bg-surface p-4">
             <h2 className="mb-3 font-display text-base font-medium text-ink">
-              Offene Wiedervorlagen
+              {t("openRemindersTitle")}
             </h2>
             {openReminders.length === 0 ? (
-              <p className="text-sm text-muted">Keine offenen Wiedervorlagen.</p>
+              <p className="text-sm text-muted">{t("noOpenReminders")}</p>
             ) : (
               <ul className="flex flex-col gap-3">
                 {openReminders.map((reminder) => (
@@ -982,7 +974,7 @@ export default async function TalentDetailPage({
                         reminder.status === "ueberfaellig" ? "text-brick" : "text-muted"
                       }`}
                     >
-                      {reminder.status === "ueberfaellig" ? "Überfällig" : "Offen"} ·{" "}
+                      {reminder.status === "ueberfaellig" ? t("reminderOverdue") : t("reminderOpen")} ·{" "}
                       {reminder.dueDate}
                     </p>
                     {reminder.reason && (
@@ -992,7 +984,7 @@ export default async function TalentDetailPage({
                       href={`/talents/${talent.id}/reports/new?reminderId=${reminder.id}`}
                       className="mt-2 inline-block text-sm text-pitch hover:underline"
                     >
-                      Bericht erfassen →
+                      {t("recordReportArrow")}
                     </Link>
                   </li>
                 ))}

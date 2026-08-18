@@ -1,28 +1,32 @@
+import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Button } from "@/components/ui/Button";
 import { getMyProfile } from "@/lib/queries/profile";
 import { updateProfile, changeMyPassword } from "@/lib/actions/profile";
 import type { Role } from "@/lib/types";
 
-const roleLabels: Record<Role, string> = {
-  scout: "Scout",
-  club_admin: "Vereinsleitung",
-  admin: "Admin",
-  parent: "Eltern",
-};
-
 export default async function ProfilePage({
   searchParams,
 }: {
   searchParams: { error?: string; success?: string };
 }) {
-  const profile = await getMyProfile();
+  const [profile, t] = await Promise.all([
+    getMyProfile(),
+    getTranslations("profilePage"),
+  ]);
+
+  const roleLabels: Record<Role, string> = {
+    scout: t("roleScout"),
+    club_admin: t("roleClubAdmin"),
+    admin: t("roleAdmin"),
+    parent: t("roleParent"),
+  };
 
   return (
     <div>
       <PageHeader
-        title="Mein Profil"
-        subtitle="Kontodaten einsehen und bearbeiten"
+        title={t("title")}
+        subtitle={t("subtitle")}
         icon={
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -44,32 +48,32 @@ export default async function ProfilePage({
 
       <section className="animate-fade-in-up mb-8 rounded-xl border border-line bg-surface p-5">
         <h2 className="mb-4 font-display text-lg font-medium text-ink">
-          Kontoinformationen
+          {t("accountInfo")}
         </h2>
         <dl className="grid grid-cols-1 gap-4 text-sm sm:grid-cols-3">
           <div>
-            <dt className="text-xs uppercase tracking-wide text-muted">E-Mail</dt>
+            <dt className="text-xs uppercase tracking-wide text-muted">{t("email")}</dt>
             <dd className="mt-0.5 text-ink">{profile?.email ?? "—"}</dd>
           </div>
           <div>
-            <dt className="text-xs uppercase tracking-wide text-muted">Rolle</dt>
+            <dt className="text-xs uppercase tracking-wide text-muted">{t("role")}</dt>
             <dd className="mt-0.5 text-ink">
               {profile ? roleLabels[profile.role] : "—"}
             </dd>
           </div>
           <div>
-            <dt className="text-xs uppercase tracking-wide text-muted">Verein</dt>
+            <dt className="text-xs uppercase tracking-wide text-muted">{t("club")}</dt>
             <dd className="mt-0.5 text-ink">{profile?.clubName ?? "—"}</dd>
           </div>
         </dl>
         {profile?.hasYouthAccess && (
           <span className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-pitch-dim px-2.5 py-1 text-xs font-semibold text-pitch-dark">
             <span className="h-1.5 w-1.5 rounded-full bg-current" aria-hidden />
-            Jugendschutz-Zugriff
+            {t("youthAccess")}
           </span>
         )}
         <p className="mt-4 text-xs text-muted">
-          Eine Änderung der E-Mail-Adresse ist aktuell nicht selbst möglich.
+          {t("emailChangeHint")}
         </p>
       </section>
 
@@ -78,21 +82,21 @@ export default async function ProfilePage({
         style={{ animationDelay: "80ms" }}
       >
         <h2 className="mb-4 font-display text-lg font-medium text-ink">
-          Profil bearbeiten
+          {t("editProfile")}
         </h2>
         <form action={updateProfile} className="flex flex-wrap items-end gap-3">
           <label className="flex flex-1 min-w-[220px] flex-col gap-1.5 text-sm text-ink">
-            Anzeigename
+            {t("displayName")}
             <input
               type="text"
               name="fullName"
               defaultValue={profile?.fullName ?? ""}
-              placeholder="Wie du in Talent Catcher heißen möchtest"
+              placeholder={t("displayNamePlaceholder")}
               className="field"
             />
           </label>
           <Button type="submit" variant="secondary">
-            Speichern
+            {t("save")}
           </Button>
         </form>
       </section>
@@ -102,14 +106,14 @@ export default async function ProfilePage({
         style={{ animationDelay: "140ms" }}
       >
         <h2 className="mb-1 font-display text-lg font-medium text-ink">
-          Passwort ändern
+          {t("changePassword")}
         </h2>
         <p className="mb-4 text-xs text-muted">
-          Du wirst nach dem Speichern zur Anmeldung weitergeleitet.
+          {t("changePasswordHint")}
         </p>
         <form action={changeMyPassword} className="flex flex-col gap-3 sm:max-w-sm">
           <label className="flex flex-col gap-1.5 text-sm text-ink">
-            Neues Passwort
+            {t("newPassword")}
             <input
               type="password"
               name="password"
@@ -119,7 +123,7 @@ export default async function ProfilePage({
             />
           </label>
           <label className="flex flex-col gap-1.5 text-sm text-ink">
-            Passwort bestätigen
+            {t("confirmPassword")}
             <input
               type="password"
               name="confirmPassword"
@@ -129,7 +133,7 @@ export default async function ProfilePage({
             />
           </label>
           <Button type="submit" variant="secondary" className="self-start">
-            Passwort speichern
+            {t("savePassword")}
           </Button>
         </form>
       </section>

@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { PLANS, formatEuro, type PlanKey, type BillingInterval } from "@/lib/plans";
 
 const SELF_SERVICE_PLANS: PlanKey[] = ["start", "verein"];
 
 export function PlanSelector() {
+  const t = useTranslations("planSelector");
   const [plan, setPlan] = useState<PlanKey>("start");
   const [billingInterval, setBillingInterval] = useState<BillingInterval>("monatlich");
 
@@ -18,7 +20,7 @@ export function PlanSelector() {
         <span
           className={`text-sm ${billingInterval === "monatlich" ? "text-ink" : "text-muted"}`}
         >
-          Monatlich
+          {t("monthly")}
         </span>
         <button
           type="button"
@@ -40,7 +42,7 @@ export function PlanSelector() {
         <span
           className={`text-sm ${billingInterval === "jaehrlich" ? "text-ink" : "text-muted"}`}
         >
-          Jährlich <span className="text-pitch">— 2 Monate gratis</span>
+          {t("yearly")} <span className="text-pitch">— {t("yearlyDiscount")}</span>
         </span>
       </div>
 
@@ -71,11 +73,11 @@ export function PlanSelector() {
               <span className="text-xs text-muted">{p.tagline}</span>
               <span className="mt-1 font-mono text-xl text-ink">
                 {displayPrice !== null ? formatEuro(displayPrice) : "—"}
-                <span className="text-xs font-sans text-muted"> / Monat</span>
+                <span className="text-xs font-sans text-muted"> {t("perMonth")}</span>
               </span>
               {billingInterval === "jaehrlich" && p.priceYearly !== null && (
                 <span className="text-xs text-muted">
-                  {formatEuro(p.priceYearly)} pro Jahr abgerechnet
+                  {t("billedYearly", { amount: formatEuro(p.priceYearly) })}
                 </span>
               )}
               <ul className="mt-1 flex flex-col gap-1 text-xs text-muted">
@@ -92,7 +94,7 @@ export function PlanSelector() {
             {PLANS.verband.name}
           </span>
           <span className="text-xs text-muted">{PLANS.verband.tagline}</span>
-          <span className="mt-1 text-sm text-ink">Preis auf Anfrage</span>
+          <span className="mt-1 text-sm text-ink">{t("priceOnRequest")}</span>
           <ul className="mt-1 flex flex-col gap-1 text-xs text-muted">
             {PLANS.verband.features.map((f) => (
               <li key={f}>· {f}</li>
@@ -102,7 +104,7 @@ export function PlanSelector() {
             href="mailto:burkhardt.markus93@gmail.com?subject=Verband%2FNLZ-Anfrage%20Talent%20Catcher"
             className="mt-1 text-xs text-pitch underline-offset-2 hover:underline"
           >
-            Vertrieb kontaktieren →
+            {t("contactSales")}
           </a>
         </div>
       </div>
