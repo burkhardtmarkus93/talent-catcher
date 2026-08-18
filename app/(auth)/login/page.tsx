@@ -1,21 +1,22 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/Button";
 import { LogoLockup } from "@/components/ui/LogoLockup";
 import { signIn } from "@/lib/actions/auth";
 
-export default function LoginPage({
+export default async function LoginPage({
   searchParams,
 }: {
   searchParams: { error?: string; success?: string };
 }) {
+  const t = await getTranslations("login");
+
   return (
     <main className="flex min-h-screen items-center justify-center bg-paper px-4">
       <div className="w-full max-w-sm rounded-xl border border-line bg-surface p-8 shadow-sm">
         <div className="mb-8 text-center">
           <LogoLockup height={100} className="mb-2" />
-          <p className="mt-1 text-sm text-muted">
-            Anmelden, um mit dem Scouting fortzufahren
-          </p>
+          <p className="mt-1 text-sm text-muted">{t("tagline")}</p>
         </div>
 
         {searchParams.error ? (
@@ -32,18 +33,18 @@ export default function LoginPage({
 
         <form action={signIn} className="flex flex-col gap-4">
           <label className="flex flex-col gap-1.5 text-sm text-ink">
-            E-Mail
+            {t("email")}
             <input
               type="email"
               name="email"
               required
-              placeholder="scout@verein.de"
+              placeholder={t("emailPlaceholder")}
               className="field"
             />
           </label>
 
           <label className="flex flex-col gap-1.5 text-sm text-ink">
-            Passwort
+            {t("password")}
             <input
               type="password"
               name="password"
@@ -58,11 +59,11 @@ export default function LoginPage({
               name="remember"
               className="rounded border-line"
             />
-            Angemeldet bleiben
+            {t("rememberMe")}
           </label>
 
           <Button type="submit" className="mt-2 w-full">
-            Anmelden
+            {t("submit")}
           </Button>
         </form>
 
@@ -71,14 +72,14 @@ export default function LoginPage({
             href="/reset-password"
             className="underline-offset-2 hover:underline"
           >
-            Passwort vergessen?
+            {t("forgotPassword")}
           </Link>
         </p>
 
         <p className="mt-2 text-center text-sm text-muted">
-          Noch kein Konto?{" "}
+          {t("noAccount")}{" "}
           <Link href="/signup" className="text-pitch underline-offset-2 hover:underline">
-            Verein registrieren
+            {t("registerClub")}
           </Link>
         </p>
       </div>

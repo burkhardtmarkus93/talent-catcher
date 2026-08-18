@@ -2,22 +2,24 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import type { Role } from "@/lib/types";
 import { signOut } from "@/lib/actions/auth";
 import { LogoLockup } from "@/components/ui/LogoLockup";
+import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { startIntroTour } from "@/components/tour/ProductTour";
 
 const navItems = [
   {
     href: "/dashboard",
-    label: "Dashboard",
+    labelKey: "dashboard" as const,
     icon: (
       <path d="M4 13h6V4H4v9Zm0 7h6v-5H4v5Zm10 0h6V11h-6v9Zm0-16v5h6V4h-6Z" />
     ),
   },
   {
     href: "/talents",
-    label: "Talente",
+    labelKey: "talents" as const,
     tourId: "tour-nav-talente",
     icon: (
       <>
@@ -30,7 +32,7 @@ const navItems = [
   },
   {
     href: "/alerts-reminders",
-    label: "Alerts & Wiedervorlagen",
+    labelKey: "alerts" as const,
     tourId: "tour-nav-alerts",
     icon: (
       <>
@@ -41,13 +43,13 @@ const navItems = [
   },
   {
     href: "/watchlists",
-    label: "Watchlists",
+    labelKey: "watchlists" as const,
     tourId: "tour-nav-watchlists",
     icon: <path d="M19 21 12 16l-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16Z" />,
   },
   {
     href: "/import",
-    label: "Import",
+    labelKey: "import" as const,
     tourId: "tour-nav-import",
     icon: (
       <>
@@ -59,7 +61,7 @@ const navItems = [
   },
   {
     href: "/billing",
-    label: "Abo",
+    labelKey: "billing" as const,
     tourId: "tour-nav-abo",
     icon: (
       <>
@@ -70,7 +72,7 @@ const navItems = [
   },
   {
     href: "/admin",
-    label: "Verwaltung",
+    labelKey: "admin" as const,
     tourId: "tour-nav-verwaltung",
     adminOnly: true,
     icon: (
@@ -82,15 +84,9 @@ const navItems = [
   },
 ];
 
-const roleLabels: Record<Role, string> = {
-  scout: "Scout",
-  club_admin: "Vereinsleitung",
-  admin: "Admin",
-  parent: "Eltern",
-};
-
 export function Sidebar({ email, role }: { email: string; role: Role }) {
   const pathname = usePathname();
+  const t = useTranslations("sidebar");
   const initials = email.slice(0, 2).toUpperCase();
 
   return (
@@ -137,13 +133,15 @@ export function Sidebar({ email, role }: { email: string; role: Role }) {
               >
                 {item.icon}
               </svg>
-              {item.label}
+              {t(`nav.${item.labelKey}`)}
             </Link>
           );
         })}
       </nav>
 
       <div className="border-t border-line p-3">
+        <LanguageSwitcher className="mb-2" />
+
         <button
           type="button"
           onClick={() => startIntroTour()}
@@ -154,7 +152,7 @@ export function Sidebar({ email, role }: { email: string; role: Role }) {
             <path d="M9.5 9a2.5 2.5 0 0 1 4.9.8c0 1.7-2.4 1.7-2.4 3.2" />
             <path d="M12 17h.01" />
           </svg>
-          Erste-Schritte-Tour
+          {t("introTour")}
         </button>
 
         <Link
@@ -171,7 +169,7 @@ export function Sidebar({ email, role }: { email: string; role: Role }) {
           </span>
           <div className="min-w-0">
             <p className="truncate text-sm font-medium text-ink">
-              {roleLabels[role]}
+              {t(`roles.${role}`)}
             </p>
             <p className="truncate text-xs text-muted">{email}</p>
           </div>
@@ -197,7 +195,7 @@ export function Sidebar({ email, role }: { email: string; role: Role }) {
               <path d="m16 17 5-5-5-5" />
               <path d="M21 12H9" />
             </svg>
-            Logout
+            {t("logout")}
           </button>
         </form>
       </div>

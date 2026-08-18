@@ -1,0 +1,39 @@
+{
+  "common": {
+    "logout": "Sign out",
+    "save": "Save"
+  },
+  "languageSwitcher": {
+    "label": "Language"
+  },
+  "sidebar": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "talents": "Talents",
+      "alerts": "Alerts & Follow-ups",
+      "watchlists": "Watchlists",
+      "import": "Import",
+      "billing": "Subscription",
+      "admin": "Administration"
+    },
+    "introTour": "Getting-Started Tour",
+    "roles": {
+      "scout": "Scout",
+      "club_admin": "Club management",
+      "admin": "Admin",
+      "parent": "Parent"
+    },
+    "logout": "Sign out"
+  },
+  "login": {
+    "tagline": "Sign in to continue scouting",
+    "email": "Email",
+    "emailPlaceholder": "scout@club.com",
+    "password": "Password",
+    "rememberMe": "Stay signed in",
+    "submit": "Sign in",
+    "forgotPassword": "Forgot your password?",
+    "noAccount": "Don't have an account yet?",
+    "registerClub": "Register your club"
+  }
+}
