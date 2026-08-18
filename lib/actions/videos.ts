@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentAppUser } from "@/lib/queries/session";
 import { hasGrantedVideoConsent } from "@/lib/queries/consent";
+import { getGuardianTalent } from "@/lib/queries/guardians";
 
 export interface CreateVideoRecordInput {
   talentId: string;
@@ -18,27 +19,46 @@ export async function createVideoRecord(
   input: CreateVideoRecordInput
 ): Promise<{ success: boolean; error?: string }> {
   const appUser = await getCurrentAppUser();
-  if (!appUser?.clubId) {
+  if (!appUser) {
     return { success: false, error: "Nicht angemeldet." };
   }
 
   const supabase = await createClient();
 
-  const { data: talent, error: talentError } = await supabase
-    .from("talents")
-    .select("id, club_id, is_minor")
-    .eq("id", input.talentId)
-    .maybeSingle();
+  let isMinor: boolean;
 
-  if (talentError || !talent || talent.club_id !== appUser.clubId) {
-    return { success: false, error: "Talent nicht gefunden." };
+  if (appUser.role === "parent") {
+    // Eltern haben keinen club_id und keine RLS-Policy auf public.talents
+    // direkt (siehe Migration 20260816010000) — Zugriff/Existenz laufen
+    // hier über die guardian-gescopte View, die zugleich beweist, dass
+    // der Account wirklich mit genau diesem Talent verknüpft ist.
+    const guardianTalent = await getGuardianTalent(input.talentId);
+    if (!guardianTalent) {
+      return { success: false, error: "Talent nicht gefunden." };
+    }
+    isMinor = guardianTalent.isMinor;
+  } else {
+    if (!appUser.clubId) {
+      return { success: false, error: "Nicht angemeldet." };
+    }
+
+    const { data: talent, error: talentError } = await supabase
+      .from("talents")
+      .select("id, club_id, is_minor")
+      .eq("id", input.talentId)
+      .maybeSingle();
+
+    if (talentError || !talent || talent.club_id !== appUser.clubId) {
+      return { success: false, error: "Talent nicht gefunden." };
+    }
+    isMinor = talent.is_minor;
   }
 
   // Defense-in-depth: die Upload-Form blendet sich für minderjährige
   // Talente ohne Einwilligung zwar bereits aus, aber Client-seitiges
   // Ausblenden allein ist bei sensiblen Jugendschutz-Daten kein
   // verlässlicher Schutz — deshalb hier nochmal serverseitig geprüft.
-  if (talent.is_minor) {
+  if (isMinor) {
     const consented = await hasGrantedVideoConsent(input.talentId);
     if (!consented) {
       return {
@@ -67,5 +87,6 @@ export async function createVideoRecord(
   }
 
   revalidatePath(`/talents/${input.talentId}`);
+  revalidatePath(`/parent/talents/${input.talentId}`);
   return { success: true };
 }
