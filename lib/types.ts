@@ -2,9 +2,11 @@
 // Sobald `supabase gen types typescript` läuft, können sie durch die
 // generierten Typen ersetzt bzw. mit ihnen abgeglichen werden.
 // Technische Rollenwerte — verbindlich seit der Kickoff-Anweisung:
-// nur diese drei Strings, "verein" ist ab jetzt reine Fachsprache,
-// kein Rollenwert mehr im Code.
-export type Role = "scout" | "club_admin" | "admin";
+// "verein" ist reine Fachsprache, kein Rollenwert mehr im Code.
+// "parent" (Eltern-Zugang, siehe talent_guardians) hat bewusst keinen
+// club_id — ein Elternteil gehört zu keinem Verein, sondern ist über
+// talent_guardians an genau die Talente ihrer Kinder gebunden.
+export type Role = "scout" | "club_admin" | "admin" | "parent";
 
 export interface AppUser {
   id: string;
@@ -14,6 +16,32 @@ export interface AppUser {
   hasYouthAccess: boolean;
   clubPlan: "start" | "verein" | "verband" | null;
   hasSeenIntroTour: boolean;
+}
+
+// Eng geschnittene Sicht für Eltern-Accounts — bewusst nur Stammdaten,
+// siehe talent_family_view (Migration 20260816010000). Kein tags/status/
+// visibility_status/upcoming_transfer_*/Risikobewertung.
+export interface GuardianTalent {
+  id: string;
+  clubId: string;
+  firstName: string;
+  lastName: string;
+  birthDate: string;
+  primaryPosition: string;
+  secondaryPosition: string | null;
+  clubNameText: string | null;
+  teamNameText: string | null;
+  leagueText: string | null;
+  countryText: string | null;
+  isMinor: boolean;
+  updatedAt: string;
+}
+
+export interface GuardianInvite {
+  id: string;
+  email: string;
+  invitedAt: string;
+  claimedAt: string | null;
 }
 
 export type RiskLevel = "gruen" | "gelb" | "rot";

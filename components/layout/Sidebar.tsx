@@ -86,6 +86,7 @@ const roleLabels: Record<Role, string> = {
   scout: "Scout",
   club_admin: "Vereinsleitung",
   admin: "Admin",
+  parent: "Eltern",
 };
 
 export function Sidebar({ email, role }: { email: string; role: Role }) {

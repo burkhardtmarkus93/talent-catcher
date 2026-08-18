@@ -30,6 +30,8 @@ import { addSibling, deleteSibling } from "@/lib/actions/siblings";
 import { getInjuriesForTalent } from "@/lib/queries/injuries";
 import { addInjury, deleteInjury } from "@/lib/actions/injuries";
 import { grantVideoConsent } from "@/lib/actions/consent";
+import { getGuardianInvitesForTalent } from "@/lib/queries/guardians";
+import { inviteGuardian } from "@/lib/actions/guardians";
 
 function age(birthDate: string): number {
   const diff = Date.now() - new Date(birthDate).getTime();
@@ -75,6 +77,7 @@ export default async function TalentDetailPage({
     videos,
     siblings,
     injuries,
+    guardianInvites,
   ] = await Promise.all([
     getScoutReportsForTalent(talent.id),
     getOpenRemindersForTalent(talent.id, fullName),
@@ -86,6 +89,7 @@ export default async function TalentDetailPage({
     getVideosForTalent(talent.id),
     getSiblingsForTalent(talent.id),
     getInjuriesForTalent(talent.id),
+    getGuardianInvitesForTalent(talent.id),
   ]);
 
   const canSeeBodyData = !talent.isMinor || Boolean(appUser?.hasYouthAccess);
@@ -496,6 +500,63 @@ export default async function TalentDetailPage({
               </div>
             </form>
           </CollapsibleSection>
+
+          {appUser?.hasYouthAccess && (
+            <CollapsibleSection
+              title="Eltern-Zugang"
+              meta={
+                guardianInvites.length > 0
+                  ? `${guardianInvites.filter((g) => g.claimedAt).length}/${guardianInvites.length} aktiv`
+                  : undefined
+              }
+            >
+              <p className="mb-4 text-xs text-muted">
+                Lädt die/den Erziehungsberechtigte(n) zu einem eigenen,
+                eingeschränkten Zugang ein: Verein/Team pflegen (z. B. bei
+                einem Wechsel, von dem du sonst nichts mitbekommst) und
+                Videos hochladen/ansehen. Kein Zugriff auf Berichte, Tags
+                oder die Risikobewertung.
+              </p>
+
+              {guardianInvites.length === 0 ? (
+                <p className="mb-4 text-sm text-muted">
+                  Noch keine Einladung verschickt.
+                </p>
+              ) : (
+                <ul className="mb-4 divide-y divide-line">
+                  {guardianInvites.map((g) => (
+                    <li key={g.id} className="flex items-center justify-between gap-3 py-3">
+                      <span className="text-sm text-ink">{g.email}</span>
+                      <span
+                        className={`text-xs font-medium ${
+                          g.claimedAt ? "text-pitch" : "text-muted"
+                        }`}
+                      >
+                        {g.claimedAt ? "Aktiv" : "Einladung ausstehend"}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              <form action={inviteGuardian} className="flex flex-wrap items-end gap-3">
+                <input type="hidden" name="talentId" value={talent.id} />
+                <label className="flex min-w-[240px] flex-1 flex-col gap-1.5 text-sm text-ink">
+                  E-Mail der/des Erziehungsberechtigten
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="eltern@beispiel.de"
+                    required
+                    className="field"
+                  />
+                </label>
+                <Button type="submit" variant="secondary">
+                  Einladen
+                </Button>
+              </form>
+            </CollapsibleSection>
+          )}
 
           <CollapsibleSection
             title="Externe Profile"

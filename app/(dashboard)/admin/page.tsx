@@ -17,6 +17,7 @@ const roleLabels: Record<Role, string> = {
   scout: "Scout",
   club_admin: "Vereinsleitung",
   admin: "Admin",
+  parent: "Eltern",
 };
 
 export default async function AdminPage({

@@ -26,6 +26,14 @@ export default async function DashboardLayout({
     redirect("/login");
   }
 
+  // Eltern-Accounts gehören in den eigenen, deutlich kleineren
+  // (parent)-Bereich, nicht in die Scouting-Oberfläche — Zugriff hierauf
+  // ist RLS-seitig ohnehin gesperrt (kein club_id), das hier ist nur die
+  // UX-Weiterleitung, falls jemand direkt eine /dashboard/...-URL aufruft.
+  if (appUser.role === "parent") {
+    redirect("/parent");
+  }
+
   if (appUser.clubId) {
     const billing = await getClubBilling(appUser.clubId);
     if (billing && !hasActiveAccess(billing)) {
