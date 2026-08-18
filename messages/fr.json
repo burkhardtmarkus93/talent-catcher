@@ -1,0 +1,39 @@
+{
+  "common": {
+    "logout": "Déconnexion",
+    "save": "Enregistrer"
+  },
+  "languageSwitcher": {
+    "label": "Langue"
+  },
+  "sidebar": {
+    "nav": {
+      "dashboard": "Tableau de bord",
+      "talents": "Talents",
+      "alerts": "Alertes et relances",
+      "watchlists": "Listes de suivi",
+      "import": "Import",
+      "billing": "Abonnement",
+      "admin": "Administration"
+    },
+    "introTour": "Visite de prise en main",
+    "roles": {
+      "scout": "Recruteur",
+      "club_admin": "Direction du club",
+      "admin": "Administrateur",
+      "parent": "Parent"
+    },
+    "logout": "Déconnexion"
+  },
+  "login": {
+    "tagline": "Connectez-vous pour continuer le scouting",
+    "email": "E-mail",
+    "emailPlaceholder": "recruteur@club.com",
+    "password": "Mot de passe",
+    "rememberMe": "Rester connecté",
+    "submit": "Se connecter",
+    "forgotPassword": "Mot de passe oublié ?",
+    "noAccount": "Pas encore de compte ?",
+    "registerClub": "Inscrire un club"
+  }
+}

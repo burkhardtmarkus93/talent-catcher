@@ -1,0 +1,39 @@
+{
+  "common": {
+    "logout": "Abmelden",
+    "save": "Speichern"
+  },
+  "languageSwitcher": {
+    "label": "Sprache"
+  },
+  "sidebar": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "talents": "Talente",
+      "alerts": "Alerts & Wiedervorlagen",
+      "watchlists": "Watchlists",
+      "import": "Import",
+      "billing": "Abo",
+      "admin": "Verwaltung"
+    },
+    "introTour": "Erste-Schritte-Tour",
+    "roles": {
+      "scout": "Scout",
+      "club_admin": "Vereinsleitung",
+      "admin": "Admin",
+      "parent": "Eltern"
+    },
+    "logout": "Abmelden"
+  },
+  "login": {
+    "tagline": "Anmelden, um mit dem Scouting fortzufahren",
+    "email": "E-Mail",
+    "emailPlaceholder": "scout@verein.de",
+    "password": "Passwort",
+    "rememberMe": "Angemeldet bleiben",
+    "submit": "Anmelden",
+    "forgotPassword": "Passwort vergessen?",
+    "noAccount": "Noch kein Konto?",
+    "registerClub": "Verein registrieren"
+  }
+}

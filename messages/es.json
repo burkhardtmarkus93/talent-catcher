@@ -1,0 +1,39 @@
+{
+  "common": {
+    "logout": "Cerrar sesión",
+    "save": "Guardar"
+  },
+  "languageSwitcher": {
+    "label": "Idioma"
+  },
+  "sidebar": {
+    "nav": {
+      "dashboard": "Panel",
+      "talents": "Talentos",
+      "alerts": "Alertas y seguimientos",
+      "watchlists": "Listas de seguimiento",
+      "import": "Importar",
+      "billing": "Suscripción",
+      "admin": "Administración"
+    },
+    "introTour": "Tour de introducción",
+    "roles": {
+      "scout": "Ojeador",
+      "club_admin": "Dirección del club",
+      "admin": "Administrador",
+      "parent": "Padre/Madre"
+    },
+    "logout": "Cerrar sesión"
+  },
+  "login": {
+    "tagline": "Inicia sesión para continuar con el scouting",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "ojeador@club.com",
+    "password": "Contraseña",
+    "rememberMe": "Mantener sesión iniciada",
+    "submit": "Iniciar sesión",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "noAccount": "¿Aún no tienes cuenta?",
+    "registerClub": "Registrar club"
+  }
+}

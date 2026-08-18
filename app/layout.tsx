@@ -1,5 +1,7 @@
 import "./globals.css";
 import { Fraunces, Inter, IBM_Plex_Mono } from "next/font/google";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
 
 // tailwind.config.ts erwartet diese drei CSS-Variablen (--font-fraunces/
 // -inter/-plex-mono) für das "Scouting-Dossier"-Design-System — bislang
@@ -26,17 +28,24 @@ const plexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
     <html
-      lang="de"
+      lang={locale}
       className={`${fraunces.variable} ${inter.variable} ${plexMono.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          {children}
+        </NextIntlClientProvider>
+      </body>
     </html>
   );
 }
