@@ -252,6 +252,18 @@
   "columnMapper": {
     "title": "Column mapping"
   },
+  "importFields": {
+    "none": "— do not import —",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "birthDate": "Date of birth",
+    "primaryPosition": "Primary position",
+    "clubNameText": "Current club",
+    "teamNameText": "Team/age group",
+    "leagueText": "League",
+    "contractStatus": "Contract status",
+    "contractEndDate": "Contract end date"
+  },
   "downloadErrorReportButton": {
     "csvHeaderRow": "Row",
     "csvHeaderError": "Error",
@@ -420,7 +432,61 @@
     "skip": "Skip",
     "back": "Back",
     "next": "Next",
-    "letsGo": "Let's go"
+    "letsGo": "Let's go",
+    "steps": {
+      "welcome": {
+        "title": "Welcome to Talent Catcher",
+        "body": "A quick tour through the most important areas — you can restart it anytime via \"Getting-Started Tour\" in the bottom left."
+      },
+      "hero": {
+        "title": "Action items at a glance",
+        "body": "Here you can see immediately whether — and how many — talents need attention right now, automatically calculated by the risk engine."
+      },
+      "urgent": {
+        "title": "Most urgent action items",
+        "body": "The talents with the highest risk appear at the top here, including alert status and reasoning."
+      },
+      "watchlists-section": {
+        "title": "My watchlists",
+        "body": "Your own talent groupings, e.g. for a specific scouting day or age group."
+      },
+      "nav-talente": {
+        "title": "Talents",
+        "body": "The complete talent list with filters for position, status, and alert — this is also where you create new talents."
+      },
+      "talents-filters": {
+        "title": "Filter by selection & development programs",
+        "body": "In addition to position, contract status, and alert, you can filter the list by DFB talent center, regional select team, national team, and NLZ status."
+      },
+      "talent-detail": {
+        "title": "On the talent detail page",
+        "body": "Update club and team, link a Transfermarkt/FuPa profile, upload video highlights, document injuries, note talented siblings — and more. To keep things clear with so much detail, the sections below the overview are collapsible: tap to expand or collapse."
+      },
+      "nav-alerts": {
+        "title": "Alerts & Follow-ups",
+        "body": "All open action items in one place — automatic alerts and follow-ups you've set yourself."
+      },
+      "nav-watchlists": {
+        "title": "Watchlists",
+        "body": "An overview of all your watchlists with talent counts."
+      },
+      "nav-import": {
+        "title": "Import",
+        "body": "Import existing scouting lists via CSV or XLSX, including column mapping."
+      },
+      "nav-abo": {
+        "title": "Subscription",
+        "body": "Your current plan and trial period — after the free trial ends, you'll choose a subscription here."
+      },
+      "nav-verwaltung": {
+        "title": "Administration",
+        "body": "Edit the club name, manage team members (role, youth protection access, deactivate) and invite new scouts by email."
+      },
+      "finish": {
+        "title": "Ready to get started",
+        "body": "That's it! You can restart the tour anytime via \"Getting-Started Tour\" in the bottom left of the sidebar."
+      }
+    }
   },
   "scoutReportForm": {
     "criterionTechnik": "Technique",
@@ -601,5 +667,108 @@
   },
   "parentLayout": {
     "logout": "Sign out"
+  },
+  "adminStripeActions": {
+    "notAuthorized": "Not authorized.",
+    "setupFailed": "Stripe setup failed.",
+    "setupComplete": "Stripe setup complete — {summary}"
+  },
+  "authActions": {
+    "fillRequiredFields": "Please fill in all required fields",
+    "passwordTooShort": "The password must be at least 8 characters",
+    "planNotSelfService": "This plan is not available for self-service signup",
+    "invalidBillingInterval": "Invalid billing interval",
+    "signupFailed": "Signup failed.",
+    "signupSuccess": "Almost there — we've sent you a confirmation email. Please click the link and then sign in.",
+    "provideEmailPassword": "Please provide an email and password",
+    "loginFailed": "Sign in failed. Please check your credentials.",
+    "provideEmail": "Please provide an email",
+    "resetLinkFailed": "The reset link could not be sent.",
+    "resetLinkSent": "If an account exists, a reset link has been sent.",
+    "fillBothFields": "Please fill in both fields",
+    "passwordsDontMatch": "The passwords do not match",
+    "passwordUpdateFailed": "The password could not be updated.",
+    "passwordUpdated": "Password updated successfully"
+  },
+  "billingActions": {
+    "noClubAssigned": "No club assigned.",
+    "onlyAdminCanManage": "Only the club admin can manage the subscription.",
+    "planNotSelfService": "This plan is not available for self-service.",
+    "priceNotSetUp": "Price not set up yet. Please run /api/admin/stripe-setup first.",
+    "checkoutFailed": "Checkout could not be started.",
+    "notAuthorized": "Not authorized.",
+    "noActiveSubscription": "No active subscription found yet."
+  },
+  "clubActions": {
+    "adminsOnly": "Club admins only.",
+    "clubNameRequired": "Club name must not be empty.",
+    "clubNameUpdated": "Club name updated."
+  },
+  "gkTestActions": {
+    "invalidTalent": "Invalid talent",
+    "testSaveFailed": "The test could not be saved."
+  },
+  "guardianActions": {
+    "noAccessToTalent": "No access to this talent.",
+    "talentIdMissing": "Talent ID missing.",
+    "clubNameRequired": "Club name is required.",
+    "clubUpdateFailed": "The club could not be updated.",
+    "clubUpdated": "Club updated."
+  },
+  "profileActions": {
+    "profileUpdated": "Profile updated.",
+    "fillBothFields": "Please fill in both fields",
+    "passwordsDontMatch": "The passwords do not match",
+    "passwordTooShort": "The password must be at least 8 characters",
+    "passwordUpdateFailed": "The password could not be updated.",
+    "passwordUpdated": "Password updated successfully — please sign in again."
+  },
+  "teamActions": {
+    "adminsOnly": "Club admins only.",
+    "provideEmail": "Please provide an email address.",
+    "invalidRole": "Invalid role.",
+    "invitationSent": "Invitation sent.",
+    "invalidInput": "Invalid input.",
+    "cannotChangeOwnRole": "You cannot change your own role.",
+    "memberUpdated": "Team member updated.",
+    "cannotDeactivateSelf": "You cannot deactivate your own account.",
+    "cannotDeactivateLastAdmin": "The last active admin cannot be deactivated.",
+    "memberReactivated": "Team member reactivated.",
+    "memberDeactivated": "Team member deactivated."
+  },
+  "plans": {
+    "start": {
+      "name": "Starter",
+      "tagline": "For a first overview at a small club",
+      "features": [
+        "1 scout seat",
+        "Up to 25 active talents",
+        "Talent profiles & scout reports",
+        "Automatic risk-engine alerts",
+        "Dashboard & follow-ups"
+      ]
+    },
+    "verein": {
+      "name": "Club",
+      "tagline": "For clubs with multiple scouts",
+      "features": [
+        "Up to 3 scout seats",
+        "Unlimited active talents",
+        "Everything in Starter",
+        "CSV/XLSX import",
+        "Watchlists",
+        "Goalkeeper coordination tests"
+      ]
+    },
+    "verband": {
+      "name": "Federation / NLZ",
+      "tagline": "Custom access model for multiple clubs or feeder structures",
+      "features": [
+        "Multiple clubs / feeder structures",
+        "Custom role model",
+        "Dedicated point of contact",
+        "Price on request"
+      ]
+    }
   }
 }
