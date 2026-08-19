@@ -713,7 +713,15 @@
     "talentIdMissing": "Talent ID missing.",
     "clubNameRequired": "Club name is required.",
     "clubUpdateFailed": "The club could not be updated.",
-    "clubUpdated": "Club updated."
+    "clubUpdated": "Club updated.",
+    "emailRequired": "Please provide an email address.",
+    "youthAccessRequired": "This requires the \"Youth talent access\" permission.",
+    "talentNotFound": "Talent not found.",
+    "emailAlreadyInvited": "This email address has already been invited for this talent.",
+    "inviteCreateFailed": "The invitation could not be created.",
+    "emailAlreadyRegistered": "This email address is already registered as a scout/admin and cannot also be linked as a parent access.",
+    "linkExistingFailed": "Linking to the existing parent account failed.",
+    "inviteEmailFailed": "The invitation email could not be sent."
   },
   "profileActions": {
     "profileUpdated": "Profile updated.",
@@ -770,5 +778,110 @@
         "Price on request"
       ]
     }
+  },
+  "consentActions": {
+    "talentIdMissing": "Talent ID missing.",
+    "confirmRequired": "Please confirm that valid consent from the parent or guardian exists.",
+    "youthAccessRequired": "This requires the \"Youth talent access\" permission.",
+    "saveFailed": "The consent could not be saved."
+  },
+  "injuryActions": {
+    "talentIdMissing": "Talent ID missing.",
+    "typeAndDateRequired": "Injury type and date are required fields.",
+    "notAuthenticated": "Not signed in.",
+    "saveFailed": "The injury could not be saved.",
+    "invalidRequest": "Invalid request.",
+    "deleteFailed": "The injury could not be removed."
+  },
+  "localeActions": {
+    "invalidLocale": "Invalid language."
+  },
+  "siblingActions": {
+    "talentIdMissing": "Talent ID missing.",
+    "namesRequired": "First and last name are required fields.",
+    "notAuthenticated": "Not signed in.",
+    "saveFailed": "The sibling could not be saved.",
+    "invalidRequest": "Invalid request.",
+    "deleteFailed": "The sibling could not be removed."
+  },
+  "tagActions": {
+    "noClubAssigned": "No club assigned.",
+    "talentNotFoundOrForbidden": "Talent not found or you don't have permission.",
+    "addFailed": "The tag could not be saved.",
+    "removeFailed": "The tag could not be removed."
+  },
+  "reminderActions": {
+    "dueDateRequired": "A due date is required.",
+    "sessionExpired": "Session expired. Please sign in again.",
+    "saveFailed": "The follow-up could not be saved."
+  },
+  "videoActions": {
+    "notAuthenticated": "Not signed in.",
+    "talentNotFound": "Talent not found.",
+    "noConsent": "There is no documented consent for video material for this minor talent yet.",
+    "saveFailed": "The video could not be saved."
+  },
+  "watchlistActions": {
+    "nameRequired": "Name is a required field.",
+    "notAuthenticated": "Not signed in.",
+    "createFailed": "The watchlist could not be created.",
+    "selectTalent": "Please select a talent.",
+    "addFailed": "The talent could not be added.",
+    "invalidRequest": "Invalid request.",
+    "removeFailed": "The talent could not be removed."
+  },
+  "talentActions": {
+    "requiredFields": "First name, last name, date of birth, and primary position are required fields.",
+    "invalidBirthDate": "The date of birth is invalid or lies in the future.",
+    "profileNotFound": "User profile not found. Please sign in again.",
+    "noClubAssigned": "No club is assigned to your user. Creating talents is only possible once a club is assigned.",
+    "youthAccessRequired": "Creating talents who are minors requires the \"Youth talent access\" permission.",
+    "planLimitReached": "Your plan \"{plan}\" is limited to {limit} active talents. Please upgrade or archive a talent.",
+    "createFailedDetailed": "The talent could not be saved. {detail}",
+    "createFailed": "The talent could not be saved.",
+    "talentIdMissing": "Talent ID missing.",
+    "noClubAssignedShort": "No club is assigned to your user.",
+    "talentLoadFailed": "The talent could not be loaded.",
+    "talentNotFound": "Talent not found.",
+    "notAllowedToArchive": "You're not allowed to archive this talent.",
+    "archiveFailed": "The talent could not be archived.",
+    "archiveVerifyFailed": "The archiving could not be verified.",
+    "archiveNotApplied": "The talent was not archived.",
+    "notAllowedToRestore": "You're not allowed to restore this talent.",
+    "restoreFailed": "The talent could not be restored.",
+    "restoreVerifyFailed": "The restoration could not be verified.",
+    "restoreNotApplied": "The talent was not restored.",
+    "invalidUrl": "Please provide a complete URL (starting with http:// or https://).",
+    "notAuthenticated": "Not signed in.",
+    "externalProfilesSaveFailed": "The external profiles could not be saved.",
+    "updateFailed": "The talent could not be updated.",
+    "clubUpdateFailed": "The club could not be updated.",
+    "clubNameRequired": "Current club must not be empty."
+  },
+  "reportActions": {
+    "matchDateRequired": "Match date is a required field.",
+    "criteriaRange": "All four rating criteria must be between 1 and 5.",
+    "tinderRange": "All TINDER criteria must be between 1 and 4.",
+    "potenzialRange": "Potential must be between 1 and 4.",
+    "reifegradRange": "Maturity level must be between -2 and +2.",
+    "overrideReasonRequired": "A reason is required for a manual adjustment of the overall rating.",
+    "overrideValueInvalid": "The manual rating value is invalid.",
+    "sessionExpired": "Session expired. Please sign in again.",
+    "saveFailed": "The report could not be saved. Please try again."
+  },
+  "importActions": {
+    "selectFile": "Please select a file.",
+    "unsupportedFileType": "Only CSV or XLSX files are supported.",
+    "profileNotFound": "User profile not found or not assigned to a club.",
+    "fileReadFailed": "The file could not be read. Is the format correct?",
+    "noColumnsFound": "No columns found in the file.",
+    "missingRequiredFields": "Required fields not mapped: {fields}.",
+    "importStartFailed": "The import could not be started.",
+    "rowPlanLimitReached": "Plan limit reached (max. {limit} active talents). Please upgrade to import more rows.",
+    "rowMissingRequiredFields": "First name, last name, date of birth, or primary position is missing.",
+    "rowBirthDateNotRecognized": "Date of birth \"{value}\" not recognized (expected: YYYY-MM-DD or DD.MM.YYYY).",
+    "rowBirthDateInFuture": "Date of birth is in the future.",
+    "rowMinorNoYouthAccess": "Talent is a minor, but your user does not have the \"Youth talent access\" permission.",
+    "rowUnknownError": "Unknown error while saving."
   }
 }
