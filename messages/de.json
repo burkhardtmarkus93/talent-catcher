@@ -21,7 +21,8 @@
       "scout": "Scout",
       "club_admin": "Vereinsleitung",
       "admin": "Admin",
-      "parent": "Eltern"
+      "parent": "Eltern",
+      "landesverband": "Landesverband"
     },
     "logout": "Abmelden"
   },
@@ -352,6 +353,9 @@
     "subtitle": "Vereinsdaten und Team verwalten",
     "club": "Verein",
     "clubName": "Vereinsname",
+    "landesverband": "Landesverband",
+    "landesverbandNone": "— nicht zugeordnet —",
+    "landesverbandHint": "Ordnet euren Verein einem Landesverband zu — dieser sieht danach eure als „freigegeben\" markierten Talentprofile (Basisdaten, keine Berichte/Bewertungen).",
     "save": "Speichern",
     "team": "Team ({count})",
     "you": "(du)",
@@ -371,7 +375,8 @@
     "roleScout": "Scout",
     "roleClubAdmin": "Vereinsleitung",
     "roleAdmin": "Admin",
-    "roleParent": "Eltern"
+    "roleParent": "Eltern",
+    "roleLandesverband": "Landesverband"
   },
   "parentHomePage": {
     "title": "Meine Kinder",
@@ -415,7 +420,8 @@
     "roleScout": "Scout",
     "roleClubAdmin": "Vereinsleitung",
     "roleAdmin": "Admin",
-    "roleParent": "Eltern"
+    "roleParent": "Eltern",
+    "roleLandesverband": "Landesverband"
   },
   "videoUploadForm": {
     "onlyMp4": "Nur MP4-Dateien werden unterstützt.",
@@ -883,5 +889,22 @@
     "rowBirthDateInFuture": "Geburtsdatum liegt in der Zukunft.",
     "rowMinorNoYouthAccess": "Talent ist minderjährig, aber dein Benutzer hat keine Berechtigung „Zugriff auf Jugendtalente“.",
     "rowUnknownError": "Unbekannter Fehler beim Speichern."
+  },
+  "verbandLayout": {
+    "logout": "Abmelden"
+  },
+  "verbandHomePage": {
+    "title": "Talente eurer Vereine",
+    "subtitle": "Freigegebene Basisprofile der Vereine, die eurem Landesverband zugeordnet sind.",
+    "empty": "Noch keine freigegebenen Talente sichtbar. Vereine müssen sich zunächst eurem Landesverband zuordnen und Talente als „freigegeben\" markieren.",
+    "club": "Verein",
+    "name": "Name",
+    "position": "Position",
+    "age": "Alter",
+    "flags": "Auswahl / Förderung",
+    "dfbStuetzpunkt": "DFB-Stützpunkt",
+    "verbandsauswahl": "Verbandsauswahl",
+    "nationalmannschaft": "Nationalmannschaft",
+    "nlz": "NLZ"
   }
 }

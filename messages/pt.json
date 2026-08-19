@@ -21,7 +21,8 @@
       "scout": "Olheiro",
       "club_admin": "Diretoria do clube",
       "admin": "Administrador",
-      "parent": "Responsável"
+      "parent": "Responsável",
+      "landesverband": "Federação regional"
     },
     "logout": "Sair"
   },
@@ -352,6 +353,9 @@
     "subtitle": "Gerenciar dados do clube e da equipe",
     "club": "Clube",
     "clubName": "Nome do clube",
+    "landesverband": "Federação regional",
+    "landesverbandNone": "— não associado —",
+    "landesverbandHint": "Associa o seu clube a uma federação regional — que passará a ver os perfis de talentos do clube marcados como \"liberados\" (apenas dados básicos, sem relatórios/avaliações).",
     "save": "Salvar",
     "team": "Equipe ({count})",
     "you": "(você)",
@@ -371,7 +375,8 @@
     "roleScout": "Olheiro",
     "roleClubAdmin": "Diretoria do clube",
     "roleAdmin": "Administrador",
-    "roleParent": "Responsável"
+    "roleParent": "Responsável",
+    "roleLandesverband": "Federação regional"
   },
   "parentHomePage": {
     "title": "Meus filhos",
@@ -415,7 +420,8 @@
     "roleScout": "Olheiro",
     "roleClubAdmin": "Diretoria do clube",
     "roleAdmin": "Administrador",
-    "roleParent": "Responsável"
+    "roleParent": "Responsável",
+    "roleLandesverband": "Federação regional"
   },
   "videoUploadForm": {
     "onlyMp4": "Somente arquivos MP4 são suportados.",
@@ -883,5 +889,22 @@
     "rowBirthDateInFuture": "Data de nascimento está no futuro.",
     "rowMinorNoYouthAccess": "O talento é menor de idade, mas seu usuário não tem a permissão \"Acesso à proteção de menores\".",
     "rowUnknownError": "Erro desconhecido ao salvar."
+  },
+  "verbandLayout": {
+    "logout": "Sair"
+  },
+  "verbandHomePage": {
+    "title": "Talentos dos seus clubes",
+    "subtitle": "Perfis básicos liberados dos clubes associados à sua federação regional.",
+    "empty": "Ainda não há talentos liberados visíveis. Os clubes precisam primeiro se associar à sua federação regional e marcar talentos como \"liberados\".",
+    "club": "Clube",
+    "name": "Nome",
+    "position": "Posição",
+    "age": "Idade",
+    "flags": "Seleção / fomento",
+    "dfbStuetzpunkt": "Base do DFB",
+    "verbandsauswahl": "Seleção da federação",
+    "nationalmannschaft": "Seleção nacional",
+    "nlz": "NLZ"
   }
 }

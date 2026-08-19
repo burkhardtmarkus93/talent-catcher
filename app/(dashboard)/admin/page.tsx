@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { getCurrentAppUser } from "@/lib/queries/session";
 import { getClubMembers } from "@/lib/queries/team";
 import { getMyProfile } from "@/lib/queries/profile";
+import { getAllLandesverbaende } from "@/lib/queries/landesverbaende";
 import { updateClubName } from "@/lib/actions/club";
 import {
   inviteTeamMember,
@@ -25,9 +26,10 @@ export default async function AdminPage({
     redirect("/dashboard?error=Nur%20f%C3%BCr%20Vereins-Admins.");
   }
 
-  const [members, profile, t] = await Promise.all([
+  const [members, profile, landesverbaende, t] = await Promise.all([
     getClubMembers(),
     getMyProfile(),
+    getAllLandesverbaende(),
     getTranslations("adminPage"),
   ]);
 
@@ -36,6 +38,7 @@ export default async function AdminPage({
     club_admin: t("roleClubAdmin"),
     admin: t("roleAdmin"),
     parent: t("roleParent"),
+    landesverband: t("roleLandesverband"),
   };
 
   return (
@@ -75,10 +78,26 @@ export default async function AdminPage({
               className="field"
             />
           </label>
+          <label className="flex flex-1 min-w-[220px] flex-col gap-1.5 text-sm text-ink">
+            {t("landesverband")}
+            <select
+              name="landesverbandId"
+              defaultValue={profile?.clubLandesverbandId ?? ""}
+              className="select-field"
+            >
+              <option value="">{t("landesverbandNone")}</option>
+              {landesverbaende.map((lv) => (
+                <option key={lv.id} value={lv.id}>
+                  {lv.name}
+                </option>
+              ))}
+            </select>
+          </label>
           <Button type="submit" variant="secondary">
             {t("save")}
           </Button>
         </form>
+        <p className="mt-2 text-xs text-muted">{t("landesverbandHint")}</p>
       </section>
 
       <section

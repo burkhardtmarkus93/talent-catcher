@@ -21,7 +21,8 @@
       "scout": "Recruteur",
       "club_admin": "Direction du club",
       "admin": "Administrateur",
-      "parent": "Parent"
+      "parent": "Parent",
+      "landesverband": "Landesverband"
     },
     "logout": "Déconnexion"
   },
@@ -352,6 +353,9 @@
     "subtitle": "Gérer les données du club et l'équipe",
     "club": "Club",
     "clubName": "Nom du club",
+    "landesverband": "Landesverband",
+    "landesverbandNone": "— non associé —",
+    "landesverbandHint": "Associe votre club à un Landesverband — celui-ci pourra alors voir les profils de talents de votre club marqués comme « partagés » (données de base uniquement, sans rapports ni évaluations).",
     "save": "Enregistrer",
     "team": "Équipe ({count})",
     "you": "(vous)",
@@ -371,7 +375,8 @@
     "roleScout": "Recruteur",
     "roleClubAdmin": "Direction du club",
     "roleAdmin": "Administrateur",
-    "roleParent": "Parent"
+    "roleParent": "Parent",
+    "roleLandesverband": "Landesverband"
   },
   "parentHomePage": {
     "title": "Mes enfants",
@@ -415,7 +420,8 @@
     "roleScout": "Recruteur",
     "roleClubAdmin": "Direction du club",
     "roleAdmin": "Administrateur",
-    "roleParent": "Parent"
+    "roleParent": "Parent",
+    "roleLandesverband": "Landesverband"
   },
   "videoUploadForm": {
     "onlyMp4": "Seuls les fichiers MP4 sont pris en charge.",
@@ -883,5 +889,22 @@
     "rowBirthDateInFuture": "La date de naissance se situe dans le futur.",
     "rowMinorNoYouthAccess": "Le talent est mineur, mais votre utilisateur ne dispose pas de l'autorisation « Accès aux talents mineurs ».",
     "rowUnknownError": "Erreur inconnue lors de l'enregistrement."
+  },
+  "verbandLayout": {
+    "logout": "Déconnexion"
+  },
+  "verbandHomePage": {
+    "title": "Talents de vos clubs",
+    "subtitle": "Profils de base partagés des clubs associés à votre Landesverband.",
+    "empty": "Aucun talent partagé visible pour le moment. Les clubs doivent d'abord s'associer à votre Landesverband et marquer des talents comme « partagés ».",
+    "club": "Club",
+    "name": "Nom",
+    "position": "Position",
+    "age": "Âge",
+    "flags": "Sélection / Filière",
+    "dfbStuetzpunkt": "Pôle DFB",
+    "verbandsauswahl": "Sélection régionale",
+    "nationalmannschaft": "Équipe nationale",
+    "nlz": "NLZ"
   }
 }

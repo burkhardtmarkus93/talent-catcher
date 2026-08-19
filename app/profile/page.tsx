@@ -20,6 +20,7 @@ export default async function ProfilePage({
     club_admin: t("roleClubAdmin"),
     admin: t("roleAdmin"),
     parent: t("roleParent"),
+    landesverband: t("roleLandesverband"),
   };
 
   return (
