@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { markIntroTourSeen } from "@/lib/actions/tour";
 import type { TourStep } from "@/lib/tour/steps";
 
@@ -25,6 +26,7 @@ export function ProductTour({
 }) {
   const router = useRouter();
   const pathname = usePathname();
+  const t = useTranslations("productTour");
   const [active, setActive] = useState(autoStart);
   const [stepIndex, setStepIndex] = useState(0);
   const [rect, setRect] = useState<DOMRect | null>(null);
@@ -123,16 +125,16 @@ export function ProductTour({
 
       <div
         role="dialog"
-        aria-label="Erste-Schritte-Tour"
+        aria-label={t("dialogLabel")}
         className="fixed inset-x-4 bottom-4 z-50 mx-auto max-w-sm rounded-xl border border-line bg-surface p-5 shadow-lg sm:inset-x-auto sm:bottom-8 sm:right-8"
       >
         <div className="mb-3 flex items-center justify-between">
           <span className="text-xs font-medium uppercase tracking-wide text-muted">
-            Schritt {stepIndex + 1} von {steps.length}
+            {t("stepOf", { current: stepIndex + 1, total: steps.length })}
           </span>
           <button
             onClick={handleClose}
-            aria-label="Tour schließen"
+            aria-label={t("closeTour")}
             className="rounded-md p-1 text-muted transition-colors hover:bg-pitch-dim hover:text-ink"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -150,7 +152,7 @@ export function ProductTour({
             onClick={handleClose}
             className="text-xs text-muted underline-offset-2 hover:underline"
           >
-            Überspringen
+            {t("skip")}
           </button>
           <div className="flex items-center gap-2">
             {!isFirst && (
@@ -158,7 +160,7 @@ export function ProductTour({
                 onClick={() => setStepIndex((i) => Math.max(0, i - 1))}
                 className="rounded-lg border border-line px-3 py-1.5 text-xs font-medium text-ink transition-colors hover:bg-pitch-dim"
               >
-                Zurück
+                {t("back")}
               </button>
             )}
             <button
@@ -168,7 +170,7 @@ export function ProductTour({
               }}
               className="rounded-lg bg-pitch px-3 py-1.5 text-xs font-medium text-white shadow-sm transition-colors hover:bg-pitch-dark"
             >
-              {isLast ? "Los geht's" : "Weiter"}
+              {isLast ? t("letsGo") : t("next")}
             </button>
           </div>
         </div>

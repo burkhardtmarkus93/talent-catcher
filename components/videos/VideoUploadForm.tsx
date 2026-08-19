@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { createVideoRecord } from "@/lib/actions/videos";
 
@@ -19,6 +20,7 @@ export function VideoUploadForm({
   clubId: string;
 }) {
   const router = useRouter();
+  const t = useTranslations("videoUploadForm");
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -29,11 +31,11 @@ export function VideoUploadForm({
     const isMp4 =
       file.type === "video/mp4" || file.name.toLowerCase().endsWith(".mp4");
     if (!isMp4) {
-      setError("Nur MP4-Dateien werden unterstützt.");
+      setError(t("onlyMp4"));
       return;
     }
     if (file.size > MAX_FILE_SIZE_BYTES) {
-      setError("Die Datei ist größer als 150 MB.");
+      setError(t("fileTooLarge"));
       return;
     }
 
@@ -52,7 +54,7 @@ export function VideoUploadForm({
 
     if (uploadError) {
       setUploading(false);
-      setError("Upload fehlgeschlagen: " + uploadError.message);
+      setError(t("uploadFailed", { message: uploadError.message }));
       return;
     }
 
@@ -68,7 +70,7 @@ export function VideoUploadForm({
       // im Bucket bleibt.
       await supabase.storage.from("videos").remove([storageKey]).catch(() => {});
       setUploading(false);
-      setError(result.error ?? "Video konnte nicht gespeichert werden.");
+      setError(result.error ?? t("saveFailed"));
       return;
     }
 
@@ -97,10 +99,10 @@ export function VideoUploadForm({
           className="text-sm text-ink file:mr-3 file:rounded-lg file:border file:border-line file:bg-white file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-ink hover:file:bg-pitch-dim"
         />
         {uploading && (
-          <span className="text-sm text-muted">Wird hochgeladen…</span>
+          <span className="text-sm text-muted">{t("uploading")}</span>
         )}
       </div>
-      <p className="mt-2 text-xs text-muted">MP4, bis zu 150 MB.</p>
+      <p className="mt-2 text-xs text-muted">{t("hint")}</p>
     </div>
   );
 }

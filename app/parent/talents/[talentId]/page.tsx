@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/Button";
 import { VideoUploadForm } from "@/components/videos/VideoUploadForm";
 import { getGuardianTalent } from "@/lib/queries/guardians";
@@ -11,11 +12,6 @@ function age(birthDate: string): number {
   return Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
 }
 
-function formatFileSize(bytes: number | null): string {
-  if (!bytes) return "—";
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-}
-
 export default async function ParentTalentPage({
   params,
   searchParams,
@@ -26,10 +22,16 @@ export default async function ParentTalentPage({
   const talent = await getGuardianTalent(params.talentId);
   if (!talent) notFound();
 
-  const [videos, canUploadVideo] = await Promise.all([
+  const [videos, canUploadVideo, t] = await Promise.all([
     getVideosForTalent(talent.id),
     talent.isMinor ? hasGrantedVideoConsent(talent.id) : Promise.resolve(true),
+    getTranslations("parentTalentPage"),
   ]);
+
+  function formatFileSize(bytes: number | null): string {
+    if (!bytes) return "—";
+    return t("fileSizeMb", { size: (bytes / (1024 * 1024)).toFixed(1) });
+  }
 
   const fullName = `${talent.firstName} ${talent.lastName}`;
 
@@ -37,7 +39,7 @@ export default async function ParentTalentPage({
     <div>
       <h1 className="font-display text-2xl font-medium text-ink">{fullName}</h1>
       <p className="mt-1 text-sm text-muted">
-        {talent.primaryPosition} · {age(talent.birthDate)} Jahre
+        {t("positionAge", { position: talent.primaryPosition, age: age(talent.birthDate) })}
       </p>
 
       {searchParams.success && (
@@ -53,13 +55,10 @@ export default async function ParentTalentPage({
 
       <section className="mt-6 rounded-xl border border-line bg-surface p-5">
         <h2 className="mb-1 font-display text-lg font-medium text-ink">
-          Verein &amp; Team
+          {t("clubAndTeam")}
         </h2>
         <p className="mb-4 text-xs text-muted">
-          Wenn euer Verein wechselt, könnt ihr das hier direkt aktualisieren —
-          der Scout, der {talent.firstName} beobachtet, sieht das dann
-          automatisch. Alle anderen Angaben (Position, Bewertungen) pflegt
-          weiterhin ausschließlich der Verein.
+          {t("clubAndTeamHint", { firstName: talent.firstName })}
         </p>
         <form
           action={updateGuardianTalentClub}
@@ -67,7 +66,7 @@ export default async function ParentTalentPage({
         >
           <input type="hidden" name="talentId" value={talent.id} />
           <label className="flex flex-col gap-1.5 text-sm text-ink">
-            Aktueller Verein *
+            {t("currentClub")}
             <input
               type="text"
               name="clubNameText"
@@ -77,18 +76,18 @@ export default async function ParentTalentPage({
             />
           </label>
           <label className="flex flex-col gap-1.5 text-sm text-ink">
-            Team/Jahrgang
+            {t("team")}
             <input
               type="text"
               name="teamNameText"
               defaultValue={talent.teamNameText ?? ""}
-              placeholder="z. B. U17"
+              placeholder={t("teamPlaceholder")}
               className="field"
             />
           </label>
           <div className="sm:col-span-2">
             <Button type="submit" variant="secondary">
-              Speichern
+              {t("save")}
             </Button>
           </div>
         </form>
@@ -96,11 +95,11 @@ export default async function ParentTalentPage({
 
       <section className="mt-6 rounded-xl border border-line bg-surface p-5">
         <h2 className="mb-4 font-display text-lg font-medium text-ink">
-          Videos
+          {t("videos")}
         </h2>
 
         {videos.length === 0 ? (
-          <p className="mb-4 text-sm text-muted">Noch keine Videos hochgeladen.</p>
+          <p className="mb-4 text-sm text-muted">{t("noVideos")}</p>
         ) : (
           <div className="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
             {videos.map((v) => (
@@ -111,7 +110,7 @@ export default async function ParentTalentPage({
                   </video>
                 ) : (
                   <div className="flex aspect-video w-full items-center justify-center bg-ink/5 text-xs text-muted">
-                    Video nicht verfügbar
+                    {t("videoUnavailable")}
                   </div>
                 )}
                 <div className="px-3 py-2 text-xs text-muted">
@@ -126,9 +125,7 @@ export default async function ParentTalentPage({
           <VideoUploadForm talentId={talent.id} clubId={talent.clubId} />
         ) : (
           <p className="rounded-lg bg-amber-dim px-4 py-3 text-sm text-amber-dark">
-            Für den Video-Upload braucht es zuerst eine im Verein
-            dokumentierte Einwilligung — bitte dafür kurz den Scout
-            ansprechen, der {talent.firstName} betreut.
+            {t("noConsent", { firstName: talent.firstName })}
           </p>
         )}
       </section>

@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { getCurrentAppUser } from "@/lib/queries/session";
 import { signOut } from "@/lib/actions/auth";
 import { LogoLockup } from "@/components/ui/LogoLockup";
@@ -21,6 +22,8 @@ export default async function ParentLayout({
     redirect("/dashboard");
   }
 
+  const t = await getTranslations("parentLayout");
+
   return (
     <div className="min-h-screen bg-paper">
       <header className="border-b border-line bg-surface px-6 py-4">
@@ -31,7 +34,7 @@ export default async function ParentLayout({
               type="submit"
               className="text-sm text-muted hover:text-ink hover:underline"
             >
-              Abmelden
+              {t("logout")}
             </button>
           </form>
         </div>

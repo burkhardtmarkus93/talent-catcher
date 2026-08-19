@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { IMPORT_SYSTEM_FIELDS, type ImportFieldKey } from "@/lib/import/fields";
 
 interface ColumnMapperProps {
@@ -9,10 +10,11 @@ interface ColumnMapperProps {
 }
 
 export function ColumnMapper({ headers, mapping, onChange }: ColumnMapperProps) {
+  const t = useTranslations("columnMapper");
   return (
     <div className="rounded-xl border border-line bg-surface p-5">
       <h2 className="mb-4 font-display text-lg font-medium text-ink">
-        Spalten-Zuordnung
+        {t("title")}
       </h2>
       <div className="flex flex-col gap-3">
         {headers.map((column) => (

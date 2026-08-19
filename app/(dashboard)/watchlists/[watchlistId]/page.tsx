@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Button } from "@/components/ui/Button";
 import { TalentTable } from "@/components/talents/TalentTable";
@@ -24,11 +25,12 @@ export default async function WatchlistDetailPage({
 
   const talentIdsInList = new Set(talents.map((t) => t.id));
   const availableTalents = allTalents.filter((t) => !talentIdsInList.has(t.id));
+  const t = await getTranslations("watchlistDetailPage");
 
   return (
     <div>
       <Link href="/watchlists" className="text-sm text-muted hover:underline">
-        ← Zurück zu Watchlists
+        {t("backToWatchlists")}
       </Link>
       <PageHeader
         title={watchlist.name}
@@ -46,40 +48,40 @@ export default async function WatchlistDetailPage({
       >
         <input type="hidden" name="watchlistId" value={watchlist.id} />
         <label className="flex min-w-[240px] flex-1 flex-col gap-1.5 text-sm text-ink">
-          Talent hinzufügen
+          {t("addTalent")}
           <select name="talentId" required defaultValue="" className="select-field">
             <option value="" disabled>
               {availableTalents.length === 0
-                ? "Keine weiteren Talente verfügbar"
-                : "Talent auswählen…"}
+                ? t("noneAvailable")
+                : t("selectTalent")}
             </option>
-            {availableTalents.map((t) => (
-              <option key={t.id} value={t.id}>
-                {t.firstName} {t.lastName} · {t.primaryPosition}
+            {availableTalents.map((opt) => (
+              <option key={opt.id} value={opt.id}>
+                {opt.firstName} {opt.lastName} · {opt.primaryPosition}
               </option>
             ))}
           </select>
         </label>
         <Button type="submit" variant="secondary" disabled={availableTalents.length === 0}>
-          + Talent hinzufügen
+          {t("addTalentButton")}
         </Button>
       </form>
 
       {talents.length === 0 ? (
         <p className="animate-fade-in-up text-sm text-muted">
-          Noch keine Talente in dieser Watchlist.
+          {t("empty")}
         </p>
       ) : (
         <div className="animate-fade-in-up">
           <TalentTable
             talents={talents}
             currentUserHasYouthAccess={appUser?.hasYouthAccess ?? false}
-            renderActions={(t) => (
+            renderActions={(talent) => (
               <form action={removeTalentFromWatchlist}>
                 <input type="hidden" name="watchlistId" value={watchlist.id} />
-                <input type="hidden" name="talentId" value={t.id} />
+                <input type="hidden" name="talentId" value={talent.id} />
                 <button type="submit" className="text-sm text-muted hover:text-brick">
-                  Entfernen
+                  {t("remove")}
                 </button>
               </form>
             )}

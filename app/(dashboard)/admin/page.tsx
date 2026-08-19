@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Button } from "@/components/ui/Button";
 import { getCurrentAppUser } from "@/lib/queries/session";
@@ -13,13 +14,6 @@ import {
 import { triggerStripeSetup } from "@/lib/actions/adminStripe";
 import type { Role } from "@/lib/types";
 
-const roleLabels: Record<Role, string> = {
-  scout: "Scout",
-  club_admin: "Vereinsleitung",
-  admin: "Admin",
-  parent: "Eltern",
-};
-
 export default async function AdminPage({
   searchParams,
 }: {
@@ -31,16 +25,24 @@ export default async function AdminPage({
     redirect("/dashboard?error=Nur%20f%C3%BCr%20Vereins-Admins.");
   }
 
-  const [members, profile] = await Promise.all([
+  const [members, profile, t] = await Promise.all([
     getClubMembers(),
     getMyProfile(),
+    getTranslations("adminPage"),
   ]);
+
+  const roleLabels: Record<Role, string> = {
+    scout: t("roleScout"),
+    club_admin: t("roleClubAdmin"),
+    admin: t("roleAdmin"),
+    parent: t("roleParent"),
+  };
 
   return (
     <div>
       <PageHeader
-        title="Verwaltung"
-        subtitle="Vereinsdaten und Team verwalten"
+        title={t("title")}
+        subtitle={t("subtitle")}
         icon={
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
             <path d="M12 20h9" />
@@ -61,10 +63,10 @@ export default async function AdminPage({
       ) : null}
 
       <section className="animate-fade-in-up mb-8 rounded-xl border border-line bg-surface p-5">
-        <h2 className="mb-4 font-display text-lg font-medium text-ink">Verein</h2>
+        <h2 className="mb-4 font-display text-lg font-medium text-ink">{t("club")}</h2>
         <form action={updateClubName} className="flex flex-wrap items-end gap-3">
           <label className="flex flex-1 min-w-[220px] flex-col gap-1.5 text-sm text-ink">
-            Vereinsname
+            {t("clubName")}
             <input
               type="text"
               name="name"
@@ -74,7 +76,7 @@ export default async function AdminPage({
             />
           </label>
           <Button type="submit" variant="secondary">
-            Speichern
+            {t("save")}
           </Button>
         </form>
       </section>
@@ -84,7 +86,7 @@ export default async function AdminPage({
         style={{ animationDelay: "80ms" }}
       >
         <h2 className="mb-4 font-display text-lg font-medium text-ink">
-          Team ({members.length})
+          {t("team", { count: members.length })}
         </h2>
         <ul className="flex flex-col gap-3">
           {members.map((m) => {
@@ -102,7 +104,7 @@ export default async function AdminPage({
                   <div>
                     <p className="text-sm font-medium text-ink">
                       {m.fullName || m.email}
-                      {isSelf && <span className="ml-1.5 text-xs text-muted">(du)</span>}
+                      {isSelf && <span className="ml-1.5 text-xs text-muted">{t("you")}</span>}
                     </p>
                     <p className="text-xs text-muted">{m.email}</p>
                   </div>
@@ -112,14 +114,14 @@ export default async function AdminPage({
                     }`}
                   >
                     <span className="h-1.5 w-1.5 rounded-full bg-current" aria-hidden />
-                    {m.isActive ? "Aktiv" : "Deaktiviert"}
+                    {m.isActive ? t("active") : t("deactivated")}
                   </span>
                 </div>
 
                 {isSelf ? (
                   <span className="text-xs text-muted">
                     {roleLabels[m.role]}
-                    {m.hasYouthAccess && " · Jugendschutz-Zugriff"}
+                    {m.hasYouthAccess && ` · ${t("youthAccess")}`}
                   </span>
                 ) : (
                   <div className="flex flex-wrap items-center gap-2">
@@ -133,8 +135,8 @@ export default async function AdminPage({
                         defaultValue={m.role === "admin" ? "admin" : "scout"}
                         className="select-field w-auto py-1"
                       >
-                        <option value="scout">Scout</option>
-                        <option value="admin">Admin</option>
+                        <option value="scout">{t("roleScout")}</option>
+                        <option value="admin">{t("roleAdmin")}</option>
                       </select>
                       <label className="flex items-center gap-1.5 text-xs text-muted">
                         <input
@@ -142,10 +144,10 @@ export default async function AdminPage({
                           name="hasYouthAccess"
                           defaultChecked={m.hasYouthAccess}
                         />
-                        Jugendschutz-Zugriff
+                        {t("youthAccess")}
                       </label>
                       <Button type="submit" variant="secondary">
-                        Speichern
+                        {t("save")}
                       </Button>
                     </form>
                     <form action={setTeamMemberActive}>
@@ -156,7 +158,7 @@ export default async function AdminPage({
                         value={m.isActive ? "false" : "true"}
                       />
                       <Button type="submit" variant="ghost">
-                        {m.isActive ? "Deaktivieren" : "Reaktivieren"}
+                        {m.isActive ? t("deactivate") : t("reactivate")}
                       </Button>
                     </form>
                   </div>
@@ -172,14 +174,14 @@ export default async function AdminPage({
         style={{ animationDelay: "140ms" }}
       >
         <h2 className="mb-1 font-display text-lg font-medium text-ink">
-          Neues Mitglied einladen
+          {t("inviteMember")}
         </h2>
         <p className="mb-4 text-xs text-muted">
-          Verschickt eine Einladungs-E-Mail mit Link zur Kontoeinrichtung.
+          {t("inviteMemberHint")}
         </p>
         <form action={inviteTeamMember} className="flex flex-wrap items-end gap-3">
           <label className="flex flex-1 min-w-[220px] flex-col gap-1.5 text-sm text-ink">
-            E-Mail
+            {t("email")}
             <input
               type="email"
               name="email"
@@ -189,13 +191,13 @@ export default async function AdminPage({
             />
           </label>
           <label className="flex flex-col gap-1.5 text-sm text-ink">
-            Rolle
+            {t("role")}
             <select name="role" defaultValue="scout" className="select-field">
-              <option value="scout">Scout</option>
-              <option value="admin">Admin</option>
+              <option value="scout">{t("roleScout")}</option>
+              <option value="admin">{t("roleAdmin")}</option>
             </select>
           </label>
-          <Button type="submit">Einladen</Button>
+          <Button type="submit">{t("invite")}</Button>
         </form>
       </section>
 
@@ -204,16 +206,14 @@ export default async function AdminPage({
         style={{ animationDelay: "200ms" }}
       >
         <h2 className="mb-1 font-display text-lg font-medium text-ink">
-          Abrechnung einrichten
+          {t("billingSetup")}
         </h2>
         <p className="mb-4 text-xs text-muted">
-          Legt die Stripe-Produkte/-Preise für alle Selfservice-Pläne an
-          (Start, Verein) — einmalig nötig, bevor ein Verein ein Abo
-          abschließen kann. Mehrfacher Klick legt nichts doppelt an.
+          {t("billingSetupHint")}
         </p>
         <form action={triggerStripeSetup}>
           <Button type="submit" variant="secondary">
-            Stripe-Einrichtung ausführen
+            {t("runBillingSetup")}
           </Button>
         </form>
       </section>

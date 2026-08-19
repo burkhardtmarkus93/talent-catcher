@@ -1,16 +1,18 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Button } from "@/components/ui/Button";
 import { getWatchlists } from "@/lib/queries/watchlists";
 
 export default async function WatchlistsPage() {
   const watchlists = await getWatchlists();
+  const t = await getTranslations("watchlists");
 
   return (
     <div>
       <PageHeader
-        title="Watchlists"
-        subtitle="Frei definierte Talent-Gruppierungen"
+        title={t("title")}
+        subtitle={t("subtitle")}
         icon={
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
             <path d="M19 21 12 16l-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16Z" />
@@ -18,14 +20,14 @@ export default async function WatchlistsPage() {
         }
         action={
           <Link href="/watchlists/new">
-            <Button>+ Neue Watchlist</Button>
+            <Button>{t("newWatchlist")}</Button>
           </Link>
         }
       />
 
       {watchlists.length === 0 ? (
         <p className="animate-fade-in-up text-sm text-muted">
-          Noch keine Watchlist angelegt.
+          {t("empty")}
         </p>
       ) : (
         <ul className="animate-fade-in-up flex flex-col gap-2">
@@ -49,8 +51,8 @@ export default async function WatchlistsPage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-sm text-muted">{w.talentCount} Talente</span>
-                  <span className="text-sm text-pitch">Öffnen →</span>
+                  <span className="text-sm text-muted">{t("talentCount", { count: w.talentCount })}</span>
+                  <span className="text-sm text-pitch">{t("open")}</span>
                 </div>
               </Link>
             </li>

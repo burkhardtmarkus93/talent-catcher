@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 type FilterBarProps = {
   q?: string;
@@ -18,17 +19,18 @@ type FilterBarProps = {
 export function FilterBar({
   q = "",
   showArchived = false,
-  position = "Alle",
-  status = "Alle",
-  alert = "Alle",
-  hiddenGem = "Alle",
-  dfbStuetzpunkt = "Alle",
-  verbandsauswahl = "Alle",
-  nationalmannschaft = "Alle",
-  nlz = "Alle",
+  position = "alle",
+  status = "alle",
+  alert = "alle",
+  hiddenGem = "alle",
+  dfbStuetzpunkt = "alle",
+  verbandsauswahl = "alle",
+  nationalmannschaft = "alle",
+  nlz = "alle",
 }: FilterBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const t = useTranslations("filterBar");
 
   function updateParams(next: Record<string, string | boolean>) {
     const params = new URLSearchParams(searchParams.toString());
@@ -41,13 +43,19 @@ export function FilterBar({
       }
 
       const trimmed = value.trim();
-      if (trimmed && trimmed !== "Alle") params.set(key, trimmed);
+      if (trimmed && trimmed !== "alle") params.set(key, trimmed);
       else params.delete(key);
     }
 
     const queryString = params.toString();
     router.push(queryString ? `/talents?${queryString}` : "/talents");
   }
+
+  const yesNoOptions = [
+    { value: "alle", label: t("all") },
+    { value: "true", label: t("yes") },
+    { value: "false", label: t("no") },
+  ];
 
   return (
     <div
@@ -56,11 +64,11 @@ export function FilterBar({
     >
       <div className="flex flex-wrap items-center gap-3">
         <label className="flex min-w-[260px] flex-1 items-center gap-2 text-sm text-muted">
-          Suche
+          {t("search")}
           <input
             type="text"
             defaultValue={q}
-            placeholder="Name oder Verein"
+            placeholder={t("searchPlaceholder")}
             className="field"
             onKeyDown={(e) => {
               if (e.key === "Enter") {
@@ -81,71 +89,92 @@ export function FilterBar({
               updateParams({ q, showArchived: e.currentTarget.checked })
             }
           />
-          Archivierte Talente anzeigen
+          {t("showArchived")}
         </label>
       </div>
 
       <div className="mt-3 flex flex-wrap gap-3">
         <Select
-          label="Position"
+          label={t("position")}
           value={position}
-          options={["Alle", "TW", "IV", "DM", "ST", "RM"]}
+          options={[
+            { value: "alle", label: t("all") },
+            { value: "TW", label: "TW" },
+            { value: "IV", label: "IV" },
+            { value: "DM", label: "DM" },
+            { value: "ST", label: "ST" },
+            { value: "RM", label: "RM" },
+          ]}
           onChange={(value) =>
             updateParams({ q, showArchived, position: value })
           }
         />
         <Select
-          label="Status"
+          label={t("status")}
           value={status}
-          options={["Alle", "In Beobachtung", "Empfehlung", "Abgeschlossen", "Verloren"]}
+          options={[
+            { value: "alle", label: t("all") },
+            { value: "in_beobachtung", label: t("statusInBeobachtung") },
+            { value: "empfehlung", label: t("statusEmpfehlung") },
+            { value: "abgeschlossen", label: t("statusAbgeschlossen") },
+            { value: "verloren", label: t("statusVerloren") },
+          ]}
           onChange={(value) =>
             updateParams({ q, showArchived, status: value })
           }
         />
         <Select
-          label="Ampel"
+          label={t("alertLabel")}
           value={alert}
-          options={["Alle", "Rot", "Gelb", "Grün"]}
+          options={[
+            { value: "alle", label: t("all") },
+            { value: "rot", label: t("alertRot") },
+            { value: "gelb", label: t("alertGelb") },
+            { value: "gruen", label: t("alertGruen") },
+          ]}
           onChange={(value) =>
             updateParams({ q, showArchived, alert: value })
           }
         />
         <Select
-          label="Hidden Gem"
+          label={t("hiddenGem")}
           value={hiddenGem}
-          options={["Alle", "Nur Hidden Gems"]}
+          options={[
+            { value: "alle", label: t("all") },
+            { value: "only", label: t("onlyHiddenGems") },
+          ]}
           onChange={(value) =>
             updateParams({ q, showArchived, hiddenGem: value })
           }
         />
         <Select
-          label="DFB-Stützpunkt"
+          label={t("dfbStuetzpunkt")}
           value={dfbStuetzpunkt}
-          options={["Alle", "Ja", "Nein"]}
+          options={yesNoOptions}
           onChange={(value) =>
             updateParams({ q, showArchived, dfbStuetzpunkt: value })
           }
         />
         <Select
-          label="Verbandsauswahl"
+          label={t("verbandsauswahl")}
           value={verbandsauswahl}
-          options={["Alle", "Ja", "Nein"]}
+          options={yesNoOptions}
           onChange={(value) =>
             updateParams({ q, showArchived, verbandsauswahl: value })
           }
         />
         <Select
-          label="Nationalmannschaft"
+          label={t("nationalmannschaft")}
           value={nationalmannschaft}
-          options={["Alle", "Ja", "Nein"]}
+          options={yesNoOptions}
           onChange={(value) =>
             updateParams({ q, showArchived, nationalmannschaft: value })
           }
         />
         <Select
-          label="NLZ"
+          label={t("nlz")}
           value={nlz}
-          options={["Alle", "Ja", "Nein"]}
+          options={yesNoOptions}
           onChange={(value) => updateParams({ q, showArchived, nlz: value })}
         />
       </div>
@@ -161,7 +190,7 @@ function Select({
 }: {
   label: string;
   value: string;
-  options: string[];
+  options: { value: string; label: string }[];
   onChange: (value: string) => void;
 }) {
   return (
@@ -173,7 +202,9 @@ function Select({
         className="select-field w-auto py-1"
       >
         {options.map((o) => (
-          <option key={o}>{o}</option>
+          <option key={o.value} value={o.value}>
+            {o.label}
+          </option>
         ))}
       </select>
     </label>

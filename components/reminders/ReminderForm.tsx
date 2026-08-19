@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { createReminder, type ReminderActionState } from "@/lib/actions/reminders";
 
@@ -13,11 +14,12 @@ const initialState: ReminderActionState = { success: false };
 export function ReminderForm({ talentId }: { talentId: string }) {
   const [state, formAction] = useFormState(createReminder, initialState);
   const [open, setOpen] = useState(false);
+  const t = useTranslations("reminderForm");
 
   if (state.success) {
     return (
       <p className="rounded-lg bg-pitch-dim px-3 py-2 text-sm text-pitch-dark">
-        Wiedervorlage gespeichert.
+        {t("saved")}
       </p>
     );
   }
@@ -25,7 +27,7 @@ export function ReminderForm({ talentId }: { talentId: string }) {
   if (!open) {
     return (
       <Button variant="secondary" className="w-full" onClick={() => setOpen(true)}>
-        Wiedervorlage setzen
+        {t("setReminder")}
       </Button>
     );
   }
@@ -35,7 +37,7 @@ export function ReminderForm({ talentId }: { talentId: string }) {
       <input type="hidden" name="talentId" value={talentId} />
       {state.error && <p className="text-xs text-brick">{state.error}</p>}
       <label className="flex flex-col gap-1 text-xs text-muted">
-        Fällig am
+        {t("dueDate")}
         <input
           type="date"
           name="dueDate"
@@ -44,7 +46,7 @@ export function ReminderForm({ talentId }: { talentId: string }) {
         />
       </label>
       <label className="flex flex-col gap-1 text-xs text-muted">
-        Grund (optional)
+        {t("reason")}
         <input
           type="text"
           name="reason"
@@ -58,9 +60,10 @@ export function ReminderForm({ talentId }: { talentId: string }) {
 
 function SubmitButton() {
   const { pending } = useFormStatus();
+  const t = useTranslations("reminderForm");
   return (
     <Button type="submit" disabled={pending} className="mt-1">
-      {pending ? "Speichert..." : "Speichern"}
+      {pending ? t("saving") : t("save")}
     </Button>
   );
 }

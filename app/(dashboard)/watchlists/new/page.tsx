@@ -1,17 +1,19 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Button } from "@/components/ui/Button";
 import { createWatchlist } from "@/lib/actions/watchlists";
 
-export default function NewWatchlistPage() {
+export default async function NewWatchlistPage() {
+  const t = await getTranslations("newWatchlistPage");
   return (
     <div>
       <Link href="/watchlists" className="text-sm text-muted hover:underline">
-        ← Zurück zu Watchlists
+        {t("backToWatchlists")}
       </Link>
       <PageHeader
-        title="Neue Watchlist"
-        subtitle="Eigene Talent-Gruppierung anlegen"
+        title={t("title")}
+        subtitle={t("subtitle")}
         icon={
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
             <path d="M19 21 12 16l-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16Z" />
@@ -25,27 +27,27 @@ export default function NewWatchlistPage() {
       >
         <div className="flex flex-col gap-4">
           <label className="flex flex-col gap-1.5 text-sm text-ink">
-            Name *
+            {t("name")}
             <input
               type="text"
               name="name"
-              placeholder="z. B. U17-Kader Sommer-Turnier"
+              placeholder={t("namePlaceholder")}
               required
               className="field"
             />
           </label>
           <label className="flex flex-col gap-1.5 text-sm text-ink">
-            Beschreibung
+            {t("description")}
             <input
               type="text"
               name="description"
-              placeholder="z. B. Kandidaten für das Einladungsturnier im August"
+              placeholder={t("descriptionPlaceholder")}
               className="field"
             />
           </label>
         </div>
         <div className="mt-6">
-          <Button type="submit">Watchlist anlegen</Button>
+          <Button type="submit">{t("submit")}</Button>
         </div>
       </form>
     </div>

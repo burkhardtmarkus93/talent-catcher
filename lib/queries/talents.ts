@@ -164,23 +164,21 @@ export async function getTalents(filters: TalentFilters = {}): Promise<Talent[]>
     });
   }
 
-  if (position && position !== "Alle") {
+  if (position && position !== "alle") {
     talents = talents.filter((talent) => talent.primaryPosition === position);
   }
 
-  if (status && status !== "Alle") {
-    const normalizedStatus = status.toLowerCase().replace(/\s+/g, "_") as TalentStatus;
-    talents = talents.filter((talent) => talent.status === normalizedStatus);
+  if (status && status !== "alle") {
+    talents = talents.filter((talent) => talent.status === (status as TalentStatus));
   }
 
-  if (alert && alert !== "Alle") {
-    const normalizedAlert = alert.toLowerCase() as RiskLevel;
+  if (alert && alert !== "alle") {
     talents = talents.filter(
-      (talent) => talent.currentAlert?.riskLevel === normalizedAlert
+      (talent) => talent.currentAlert?.riskLevel === (alert as RiskLevel)
     );
   }
 
-  if (hiddenGem && hiddenGem !== "Alle") {
+  if (hiddenGem && hiddenGem !== "alle") {
     talents = talents.filter((talent) => Boolean(talent.currentAlert?.isHiddenGem));
   }
 
@@ -192,8 +190,8 @@ export async function getTalents(filters: TalentFilters = {}): Promise<Talent[]>
   ];
 
   for (const [value, key] of flagFilters) {
-    if (value && value !== "Alle") {
-      const wanted = value === "Ja";
+    if (value && value !== "alle") {
+      const wanted = value === "true";
       talents = talents.filter((talent) => Boolean(talent[key]) === wanted);
     }
   }

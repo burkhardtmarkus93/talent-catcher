@@ -2,6 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { useFormState, useFormStatus } from "react-dom";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { createTalent, type TalentActionState } from "@/lib/actions/talents";
 
@@ -13,6 +14,7 @@ export function NewTalentForm() {
   const prefillFirstName = searchParams.get("firstName") ?? "";
   const prefillLastName = searchParams.get("lastName") ?? "";
   const prefillBirthDate = searchParams.get("birthDate") ?? "";
+  const t = useTranslations("newTalentForm");
 
   return (
     <form action={formAction} className="rounded-xl border border-line bg-surface p-6">
@@ -23,55 +25,55 @@ export function NewTalentForm() {
       )}
       {prefillFirstName && (
         <div className="mb-4 rounded-lg border border-pitch/30 bg-pitch/5 px-3 py-2 text-sm text-pitch">
-          Vorausgefüllt aus einem Geschwister-Eintrag — bitte restliche Felder ergänzen.
+          {t("prefillNotice")}
         </div>
       )}
       <div className="mb-4 grid grid-cols-2 gap-4">
-        <Field label="Vorname *" name="firstName" required defaultValue={prefillFirstName} />
-        <Field label="Nachname *" name="lastName" required defaultValue={prefillLastName} />
+        <Field label={t("firstName")} name="firstName" required defaultValue={prefillFirstName} />
+        <Field label={t("lastName")} name="lastName" required defaultValue={prefillLastName} />
       </div>
       <div className="mb-4 grid grid-cols-2 gap-4">
         <Field
-          label="Geburtsdatum *"
+          label={t("birthDate")}
           name="birthDate"
           type="date"
           required
           defaultValue={prefillBirthDate}
         />
-        <Field label="Hauptposition *" name="primaryPosition" placeholder="z. B. IV, TW, ST" required />
+        <Field label={t("primaryPosition")} name="primaryPosition" placeholder={t("primaryPositionPlaceholder")} required />
       </div>
       <div className="mb-4 grid grid-cols-2 gap-4">
-        <Field label="Nebenposition" name="secondaryPosition" />
+        <Field label={t("secondaryPosition")} name="secondaryPosition" />
         <div>
           <label className="flex flex-col gap-1.5 text-sm text-ink">
-            Vertragsstatus
+            {t("contractStatus")}
             <select
               name="contractStatus"
               defaultValue="unbekannt"
               className="select-field"
             >
-              <option value="unbekannt">Unbekannt</option>
-              <option value="aktiv">Aktiv</option>
-              <option value="auslaufend">Auslaufend</option>
-              <option value="vereinslos">Vereinslos</option>
+              <option value="unbekannt">{t("contractStatusUnbekannt")}</option>
+              <option value="aktiv">{t("contractStatusAktiv")}</option>
+              <option value="auslaufend">{t("contractStatusAuslaufend")}</option>
+              <option value="vereinslos">{t("contractStatusVereinslos")}</option>
             </select>
           </label>
         </div>
       </div>
       <div className="mb-4 grid grid-cols-2 gap-4">
-        <Field label="Aktueller Verein" name="clubNameText" />
-        <Field label="Team/Jahrgang" name="teamNameText" placeholder="z. B. U17" />
+        <Field label={t("clubNameText")} name="clubNameText" />
+        <Field label={t("teamNameText")} name="teamNameText" placeholder={t("teamNameTextPlaceholder")} />
       </div>
       <div className="mb-4 grid grid-cols-2 gap-4">
-        <Field label="Liga" name="leagueText" />
-        <Field label="Land" name="countryText" />
+        <Field label={t("leagueText")} name="leagueText" />
+        <Field label={t("countryText")} name="countryText" />
       </div>
       <div className="mb-4 grid grid-cols-2 gap-4">
-        <Field label="Körpergröße (cm)" name="heightCm" type="number" />
-        <Field label="Gewicht (kg)" name="weightKg" type="number" />
+        <Field label={t("heightCm")} name="heightCm" type="number" />
+        <Field label={t("weightKg")} name="weightKg" type="number" />
       </div>
       <div className="mb-6">
-        <Field label="Vertragsende (falls bekannt)" name="contractEndDate" type="date" />
+        <Field label={t("contractEndDate")} name="contractEndDate" type="date" />
       </div>
       <div className="flex justify-end">
         <SubmitButton />
@@ -112,9 +114,10 @@ function Field({
 
 function SubmitButton() {
   const { pending } = useFormStatus();
+  const t = useTranslations("newTalentForm");
   return (
     <Button type="submit" disabled={pending}>
-      {pending ? "Speichert..." : "Talent anlegen"}
+      {pending ? t("saving") : t("submit")}
     </Button>
   );
 }
