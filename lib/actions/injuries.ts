@@ -1,10 +1,12 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentAppUser } from "@/lib/queries/session";
 
 export async function addInjury(formData: FormData): Promise<void> {
+  const t = await getTranslations("injuryActions");
   const talentId = String(formData.get("talentId") ?? "");
   const injuryType = String(formData.get("injuryType") ?? "").trim();
   const injuryDate = String(formData.get("injuryDate") ?? "").trim();
@@ -13,15 +15,15 @@ export async function addInjury(formData: FormData): Promise<void> {
   const note = String(formData.get("note") ?? "").trim() || null;
 
   if (!talentId) {
-    throw new Error("Talent-ID fehlt.");
+    throw new Error(t("talentIdMissing"));
   }
   if (!injuryType || !injuryDate) {
-    throw new Error("Art und Datum der Verletzung sind Pflichtfelder.");
+    throw new Error(t("typeAndDateRequired"));
   }
 
   const appUser = await getCurrentAppUser();
   if (!appUser?.clubId) {
-    throw new Error("Nicht angemeldet.");
+    throw new Error(t("notAuthenticated"));
   }
 
   const supabase = await createClient();
@@ -41,18 +43,19 @@ export async function addInjury(formData: FormData): Promise<void> {
       details: error.details,
       hint: error.hint,
     });
-    throw new Error("Verletzung konnte nicht gespeichert werden.");
+    throw new Error(t("saveFailed"));
   }
 
   revalidatePath(`/talents/${talentId}`);
 }
 
 export async function deleteInjury(formData: FormData): Promise<void> {
+  const t = await getTranslations("injuryActions");
   const injuryId = String(formData.get("injuryId") ?? "");
   const talentId = String(formData.get("talentId") ?? "");
 
   if (!injuryId || !talentId) {
-    throw new Error("Ungültige Anfrage.");
+    throw new Error(t("invalidRequest"));
   }
 
   const supabase = await createClient();
@@ -68,7 +71,7 @@ export async function deleteInjury(formData: FormData): Promise<void> {
       details: error.details,
       hint: error.hint,
     });
-    throw new Error("Verletzung konnte nicht entfernt werden.");
+    throw new Error(t("deleteFailed"));
   }
 
   revalidatePath(`/talents/${talentId}`);

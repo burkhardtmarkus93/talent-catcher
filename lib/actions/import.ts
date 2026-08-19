@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentAppUser } from "@/lib/queries/session";
 import { parseSpreadsheet, parseDateValue } from "@/lib/import/parse";
@@ -29,10 +30,11 @@ export interface ParseImportFileResult {
 export async function parseImportFile(
   formData: FormData
 ): Promise<ParseImportFileResult> {
+  const t = await getTranslations("importActions");
   const file = formData.get("file");
 
   if (!(file instanceof File) || file.size === 0) {
-    return { success: false, error: "Bitte eine Datei auswählen." };
+    return { success: false, error: t("selectFile") };
   }
 
   const extension = file.name.split(".").pop()?.toLowerCase();
@@ -41,7 +43,7 @@ export async function parseImportFile(
   if (!fileType) {
     return {
       success: false,
-      error: "Nur CSV- oder XLSX-Dateien werden unterstützt.",
+      error: t("unsupportedFileType"),
     };
   }
 
@@ -49,7 +51,7 @@ export async function parseImportFile(
   if (!appUser?.clubId) {
     return {
       success: false,
-      error: "Benutzerprofil nicht gefunden oder keinem Verein zugeordnet.",
+      error: t("profileNotFound"),
     };
   }
 
@@ -62,12 +64,12 @@ export async function parseImportFile(
     console.error("parseImportFile() Parsing fehlgeschlagen:", err);
     return {
       success: false,
-      error: "Datei konnte nicht gelesen werden. Ist das Format korrekt?",
+      error: t("fileReadFailed"),
     };
   }
 
   if (parsed.headers.length === 0) {
-    return { success: false, error: "Keine Spalten in der Datei gefunden." };
+    return { success: false, error: t("noColumnsFound") };
   }
 
   return {
@@ -102,12 +104,14 @@ function calculateAge(birthDate: string): number {
 }
 
 export async function runImport(input: RunImportInput): Promise<RunImportResult> {
+  const t = await getTranslations("importActions");
+  const tFields = await getTranslations("importFields");
   const appUser = await getCurrentAppUser();
 
   if (!appUser?.clubId) {
     return {
       success: false,
-      error: "Benutzerprofil nicht gefunden oder keinem Verein zugeordnet.",
+      error: t("profileNotFound"),
     };
   }
 
@@ -124,7 +128,9 @@ export async function runImport(input: RunImportInput): Promise<RunImportResult>
   if (missingRequired.length > 0) {
     return {
       success: false,
-      error: `Pflichtfelder nicht zugeordnet: ${missingRequired.join(", ")}.`,
+      error: t("missingRequiredFields", {
+        fields: missingRequired.map((field) => tFields(field)).join(", "),
+      }),
     };
   }
 
@@ -146,7 +152,7 @@ export async function runImport(input: RunImportInput): Promise<RunImportResult>
 
   if (jobError || !job) {
     console.error("runImport(): import_jobs-Anlage fehlgeschlagen:", jobError);
-    return { success: false, error: "Import konnte nicht gestartet werden." };
+    return { success: false, error: t("importStartFailed") };
   }
 
   const errors: RowError[] = [];
@@ -170,7 +176,7 @@ export async function runImport(input: RunImportInput): Promise<RunImportResult>
     if (planLimit !== null && planLimit !== undefined && activeTalentCount >= planLimit) {
       errors.push({
         row: spreadsheetRow,
-        reason: `Plan-Limit erreicht (max. ${planLimit} aktive Talente). Bitte upgraden, um weitere Zeilen zu importieren.`,
+        reason: t("rowPlanLimitReached", { limit: planLimit }),
       });
       continue;
     }
@@ -183,7 +189,7 @@ export async function runImport(input: RunImportInput): Promise<RunImportResult>
     if (!firstName || !lastName || !birthDateRaw || !primaryPosition) {
       errors.push({
         row: spreadsheetRow,
-        reason: "Vorname, Nachname, Geburtsdatum oder Primäre Position fehlt.",
+        reason: t("rowMissingRequiredFields"),
       });
       continue;
     }
@@ -192,13 +198,13 @@ export async function runImport(input: RunImportInput): Promise<RunImportResult>
     if (!birthDate) {
       errors.push({
         row: spreadsheetRow,
-        reason: `Geburtsdatum „${birthDateRaw}“ nicht erkannt (erwartet: JJJJ-MM-TT oder TT.MM.JJJJ).`,
+        reason: t("rowBirthDateNotRecognized", { value: birthDateRaw }),
       });
       continue;
     }
 
     if (new Date(birthDate).getTime() > Date.now()) {
-      errors.push({ row: spreadsheetRow, reason: "Geburtsdatum liegt in der Zukunft." });
+      errors.push({ row: spreadsheetRow, reason: t("rowBirthDateInFuture") });
       continue;
     }
 
@@ -206,8 +212,7 @@ export async function runImport(input: RunImportInput): Promise<RunImportResult>
     if (isMinor && !appUser.hasYouthAccess) {
       errors.push({
         row: spreadsheetRow,
-        reason:
-          "Talent ist minderjährig, aber dein Benutzer hat keine Berechtigung „Zugriff auf Jugendtalente“.",
+        reason: t("rowMinorNoYouthAccess"),
       });
       continue;
     }
@@ -243,7 +248,7 @@ export async function runImport(input: RunImportInput): Promise<RunImportResult>
     if (insertError || !inserted) {
       errors.push({
         row: spreadsheetRow,
-        reason: insertError?.message ?? "Unbekannter Fehler beim Speichern.",
+        reason: insertError?.message ?? t("rowUnknownError"),
       });
       continue;
     }

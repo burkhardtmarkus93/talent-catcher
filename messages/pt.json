@@ -713,7 +713,15 @@
     "talentIdMissing": "ID do talento ausente.",
     "clubNameRequired": "O nome do clube é obrigatório.",
     "clubUpdateFailed": "Não foi possível atualizar o clube.",
-    "clubUpdated": "Clube atualizado."
+    "clubUpdated": "Clube atualizado.",
+    "emailRequired": "Por favor, informe o endereço de e-mail.",
+    "youthAccessRequired": "Para isso, é necessária a permissão \"Acesso à proteção de menores\".",
+    "talentNotFound": "Talento não encontrado.",
+    "emailAlreadyInvited": "Este endereço de e-mail já foi convidado para este talento.",
+    "inviteCreateFailed": "Não foi possível criar o convite.",
+    "emailAlreadyRegistered": "Este endereço de e-mail já está registrado como olheiro/administrador e não pode ser vinculado também como acesso de responsável.",
+    "linkExistingFailed": "Não foi possível vincular à conta de responsável existente.",
+    "inviteEmailFailed": "Não foi possível enviar o e-mail de convite."
   },
   "profileActions": {
     "profileUpdated": "Perfil atualizado.",
@@ -770,5 +778,110 @@
         "Preço sob consulta"
       ]
     }
+  },
+  "consentActions": {
+    "talentIdMissing": "ID do talento ausente.",
+    "confirmRequired": "Por favor, confirme que há um consentimento válido do(a) responsável legal.",
+    "youthAccessRequired": "Para isso, é necessária a permissão \"Acesso à proteção de menores\".",
+    "saveFailed": "Não foi possível salvar o consentimento."
+  },
+  "injuryActions": {
+    "talentIdMissing": "ID do talento ausente.",
+    "typeAndDateRequired": "Tipo e data da lesão são campos obrigatórios.",
+    "notAuthenticated": "Não está conectado.",
+    "saveFailed": "Não foi possível salvar a lesão.",
+    "invalidRequest": "Solicitação inválida.",
+    "deleteFailed": "Não foi possível remover a lesão."
+  },
+  "localeActions": {
+    "invalidLocale": "Idioma inválido."
+  },
+  "siblingActions": {
+    "talentIdMissing": "ID do talento ausente.",
+    "namesRequired": "Nome e sobrenome são campos obrigatórios.",
+    "notAuthenticated": "Não está conectado.",
+    "saveFailed": "Não foi possível salvar o irmão/irmã.",
+    "invalidRequest": "Solicitação inválida.",
+    "deleteFailed": "Não foi possível remover o irmão/irmã."
+  },
+  "tagActions": {
+    "noClubAssigned": "Nenhum clube associado.",
+    "talentNotFoundOrForbidden": "Talento não encontrado ou sem permissão.",
+    "addFailed": "Não foi possível salvar a tag.",
+    "removeFailed": "Não foi possível remover a tag."
+  },
+  "reminderActions": {
+    "dueDateRequired": "É necessária uma data de vencimento.",
+    "sessionExpired": "Sessão expirada. Por favor, faça login novamente.",
+    "saveFailed": "Não foi possível salvar o retorno."
+  },
+  "videoActions": {
+    "notAuthenticated": "Não está conectado.",
+    "talentNotFound": "Talento não encontrado.",
+    "noConsent": "Para este talento menor de idade, ainda não há consentimento documentado para material em vídeo.",
+    "saveFailed": "Não foi possível salvar o vídeo."
+  },
+  "watchlistActions": {
+    "nameRequired": "Nome é um campo obrigatório.",
+    "notAuthenticated": "Não está conectado.",
+    "createFailed": "Não foi possível criar a lista de observação.",
+    "selectTalent": "Por favor, selecione um talento.",
+    "addFailed": "Não foi possível adicionar o talento.",
+    "invalidRequest": "Solicitação inválida.",
+    "removeFailed": "Não foi possível remover o talento."
+  },
+  "talentActions": {
+    "requiredFields": "Nome, sobrenome, data de nascimento e posição principal são campos obrigatórios.",
+    "invalidBirthDate": "A data de nascimento é inválida ou está no futuro.",
+    "profileNotFound": "Perfil de usuário não encontrado. Por favor, faça login novamente.",
+    "noClubAssigned": "Seu usuário não está associado a nenhum clube. O cadastro de talentos só é possível após a associação a um clube.",
+    "youthAccessRequired": "Para cadastrar talentos menores de idade, é necessária a permissão \"Acesso à proteção de menores\".",
+    "planLimitReached": "Seu plano \"{plan}\" está limitado a {limit} talentos ativos. Faça upgrade ou arquive um talento.",
+    "createFailedDetailed": "Não foi possível salvar o talento. {detail}",
+    "createFailed": "Não foi possível salvar o talento.",
+    "talentIdMissing": "ID do talento ausente.",
+    "noClubAssignedShort": "Seu usuário não está associado a nenhum clube.",
+    "talentLoadFailed": "Não foi possível carregar o talento.",
+    "talentNotFound": "Talento não encontrado.",
+    "notAllowedToArchive": "Você não tem permissão para arquivar este talento.",
+    "archiveFailed": "Não foi possível arquivar o talento.",
+    "archiveVerifyFailed": "Não foi possível verificar o arquivamento.",
+    "archiveNotApplied": "O talento não foi arquivado.",
+    "notAllowedToRestore": "Você não tem permissão para restaurar este talento.",
+    "restoreFailed": "Não foi possível restaurar o talento.",
+    "restoreVerifyFailed": "Não foi possível verificar a restauração.",
+    "restoreNotApplied": "O talento não foi restaurado.",
+    "invalidUrl": "Por favor, informe uma URL completa (começando com http:// ou https://).",
+    "notAuthenticated": "Não está conectado.",
+    "externalProfilesSaveFailed": "Não foi possível salvar os perfis externos.",
+    "updateFailed": "Não foi possível atualizar o talento.",
+    "clubUpdateFailed": "Não foi possível atualizar o clube.",
+    "clubNameRequired": "O clube atual não pode estar vazio."
+  },
+  "reportActions": {
+    "matchDateRequired": "Data do jogo é um campo obrigatório.",
+    "criteriaRange": "Todos os quatro critérios de avaliação devem estar entre 1 e 5.",
+    "tinderRange": "Todos os critérios TINDER devem estar entre 1 e 4.",
+    "potenzialRange": "O potencial deve estar entre 1 e 4.",
+    "reifegradRange": "O grau de maturidade deve estar entre -2 e +2.",
+    "overrideReasonRequired": "Para um ajuste manual da avaliação geral, é necessária uma justificativa.",
+    "overrideValueInvalid": "O valor manual da avaliação é inválido.",
+    "sessionExpired": "Sessão expirada. Por favor, faça login novamente.",
+    "saveFailed": "Não foi possível salvar o relatório. Por favor, tente novamente."
+  },
+  "importActions": {
+    "selectFile": "Por favor, selecione um arquivo.",
+    "unsupportedFileType": "Somente arquivos CSV ou XLSX são suportados.",
+    "profileNotFound": "Perfil de usuário não encontrado ou não associado a nenhum clube.",
+    "fileReadFailed": "Não foi possível ler o arquivo. O formato está correto?",
+    "noColumnsFound": "Nenhuma coluna encontrada no arquivo.",
+    "missingRequiredFields": "Campos obrigatórios não mapeados: {fields}.",
+    "importStartFailed": "Não foi possível iniciar a importação.",
+    "rowPlanLimitReached": "Limite do plano atingido (máx. {limit} talentos ativos). Faça upgrade para importar mais linhas.",
+    "rowMissingRequiredFields": "Nome, sobrenome, data de nascimento ou posição principal ausente.",
+    "rowBirthDateNotRecognized": "Data de nascimento \"{value}\" não reconhecida (esperado: AAAA-MM-DD ou DD.MM.AAAA).",
+    "rowBirthDateInFuture": "Data de nascimento está no futuro.",
+    "rowMinorNoYouthAccess": "O talento é menor de idade, mas seu usuário não tem a permissão \"Acesso à proteção de menores\".",
+    "rowUnknownError": "Erro desconhecido ao salvar."
   }
 }

@@ -2,13 +2,15 @@
 
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
+import { getTranslations } from "next-intl/server";
 import { locales, type Locale } from "@/i18n/config";
 
 export async function setLocale(formData: FormData): Promise<void> {
   const locale = String(formData.get("locale") ?? "");
 
   if (!(locales as readonly string[]).includes(locale)) {
-    throw new Error("Ungültige Sprache.");
+    const t = await getTranslations("localeActions");
+    throw new Error(t("invalidLocale"));
   }
 
   // 1 Jahr — reine UI-Präferenz, kein Auth-/Sessioncookie, deshalb

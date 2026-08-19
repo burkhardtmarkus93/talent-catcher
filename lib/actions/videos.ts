@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentAppUser } from "@/lib/queries/session";
 import { hasGrantedVideoConsent } from "@/lib/queries/consent";
@@ -18,9 +19,10 @@ export interface CreateVideoRecordInput {
 export async function createVideoRecord(
   input: CreateVideoRecordInput
 ): Promise<{ success: boolean; error?: string }> {
+  const t = await getTranslations("videoActions");
   const appUser = await getCurrentAppUser();
   if (!appUser) {
-    return { success: false, error: "Nicht angemeldet." };
+    return { success: false, error: t("notAuthenticated") };
   }
 
   const supabase = await createClient();
@@ -34,12 +36,12 @@ export async function createVideoRecord(
     // der Account wirklich mit genau diesem Talent verknüpft ist.
     const guardianTalent = await getGuardianTalent(input.talentId);
     if (!guardianTalent) {
-      return { success: false, error: "Talent nicht gefunden." };
+      return { success: false, error: t("talentNotFound") };
     }
     isMinor = guardianTalent.isMinor;
   } else {
     if (!appUser.clubId) {
-      return { success: false, error: "Nicht angemeldet." };
+      return { success: false, error: t("notAuthenticated") };
     }
 
     const { data: talent, error: talentError } = await supabase
@@ -49,7 +51,7 @@ export async function createVideoRecord(
       .maybeSingle();
 
     if (talentError || !talent || talent.club_id !== appUser.clubId) {
-      return { success: false, error: "Talent nicht gefunden." };
+      return { success: false, error: t("talentNotFound") };
     }
     isMinor = talent.is_minor;
   }
@@ -63,8 +65,7 @@ export async function createVideoRecord(
     if (!consented) {
       return {
         success: false,
-        error:
-          "Für dieses minderjährige Talent liegt noch keine dokumentierte Einwilligung für Videomaterial vor.",
+        error: t("noConsent"),
       };
     }
   }
@@ -83,7 +84,7 @@ export async function createVideoRecord(
       details: error.details,
       hint: error.hint,
     });
-    return { success: false, error: "Video konnte nicht gespeichert werden." };
+    return { success: false, error: t("saveFailed") };
   }
 
   revalidatePath(`/talents/${input.talentId}`);

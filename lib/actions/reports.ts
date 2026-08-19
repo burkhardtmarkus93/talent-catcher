@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { recalculateAlertForTalent } from "@/lib/alerts/riskEngine";
 
@@ -20,6 +21,7 @@ export async function createScoutReport(
   _prevState: ScoutReportActionState,
   formData: FormData
 ): Promise<ScoutReportActionState> {
+  const t = await getTranslations("reportActions");
   const talentId = String(formData.get("talentId") ?? "");
   const reminderId = formData.get("reminderId")
     ? String(formData.get("reminderId"))
@@ -53,14 +55,14 @@ export async function createScoutReport(
   // --- Serverseitige Validierung (Client-Validierung ist nur UX,
   // dies hier ist die eigentliche Absicherung) ---
   if (!talentId || !matchDate) {
-    return { success: false, error: "Spieldatum ist ein Pflichtfeld." };
+    return { success: false, error: t("matchDateRequired") };
   }
 
   const scores = [scoreTechnik, scoreTaktik, scoreAthletik, scoreMentalitaet];
   if (scores.some((s) => !Number.isInteger(s) || s < 1 || s > 5)) {
     return {
       success: false,
-      error: "Alle vier Bewertungskriterien müssen zwischen 1 und 5 liegen.",
+      error: t("criteriaRange"),
     };
   }
 
@@ -76,34 +78,34 @@ export async function createScoutReport(
   if (tinderScores.some((s) => !Number.isInteger(s) || s < 1 || s > 4)) {
     return {
       success: false,
-      error: "Alle TINDER-Kriterien müssen zwischen 1 und 4 liegen.",
+      error: t("tinderRange"),
     };
   }
 
   if (!Number.isInteger(potenzial) || potenzial < 1 || potenzial > 4) {
     return {
       success: false,
-      error: "Potenzial muss zwischen 1 und 4 liegen.",
+      error: t("potenzialRange"),
     };
   }
 
   if (!Number.isInteger(reifegrad) || reifegrad < -2 || reifegrad > 2) {
     return {
       success: false,
-      error: "Reifegrad muss zwischen -2 und +2 liegen.",
+      error: t("reifegradRange"),
     };
   }
 
   if (overrideActive && overrideReason.length === 0) {
     return {
       success: false,
-      error: "Für eine manuelle Anpassung des Gesamtratings ist eine Begründung erforderlich.",
+      error: t("overrideReasonRequired"),
     };
   }
 
   const overrideValue = overrideValueRaw ? Number(overrideValueRaw) : null;
   if (overrideActive && (overrideValue === null || Number.isNaN(overrideValue))) {
-    return { success: false, error: "Der manuelle Rating-Wert ist ungültig." };
+    return { success: false, error: t("overrideValueInvalid") };
   }
 
   const supabase = await createClient();
@@ -115,7 +117,7 @@ export async function createScoutReport(
   if (!user) {
     // Sollte durch Middleware/Layout bereits verhindert sein —
     // zweite Schutzschicht, kein Rohfehler an die UI.
-    return { success: false, error: "Sitzung abgelaufen. Bitte erneut anmelden." };
+    return { success: false, error: t("sessionExpired") };
   }
 
   const insertPayload: Record<string, unknown> = {
@@ -152,7 +154,7 @@ export async function createScoutReport(
     console.error("createScoutReport() fehlgeschlagen:", insertError.message);
     return {
       success: false,
-      error: "Bericht konnte nicht gespeichert werden. Bitte erneut versuchen.",
+      error: t("saveFailed"),
     };
   }
 

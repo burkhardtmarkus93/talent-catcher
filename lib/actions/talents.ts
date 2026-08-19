@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentAppUser } from "@/lib/queries/session";
 import { getActiveTalentCount } from "@/lib/queries/talents";
@@ -21,6 +22,7 @@ export async function createTalent(
   _prevState: TalentActionState,
   formData: FormData
 ): Promise<TalentActionState> {
+  const t = await getTranslations("talentActions");
   const firstName = String(formData.get("firstName") ?? "").trim();
   const lastName = String(formData.get("lastName") ?? "").trim();
   const birthDate = String(formData.get("birthDate") ?? "");
@@ -43,8 +45,7 @@ export async function createTalent(
   if (!firstName || !lastName || !birthDate || !primaryPosition) {
     return {
       success: false,
-      error:
-        "Vorname, Nachname, Geburtsdatum und Hauptposition sind Pflichtfelder.",
+      error: t("requiredFields"),
     };
   }
 
@@ -52,7 +53,7 @@ export async function createTalent(
   if (Number.isNaN(birthDateObj.getTime()) || birthDateObj.getTime() > Date.now()) {
     return {
       success: false,
-      error: "Das Geburtsdatum ist ungültig oder liegt in der Zukunft.",
+      error: t("invalidBirthDate"),
     };
   }
 
@@ -63,23 +64,21 @@ export async function createTalent(
   if (!appUser) {
     return {
       success: false,
-      error: "Benutzerprofil nicht gefunden. Bitte erneut anmelden.",
+      error: t("profileNotFound"),
     };
   }
 
   if (!appUser.clubId) {
     return {
       success: false,
-      error:
-        "Deinem Benutzer ist kein Verein zugeordnet. Talentanlage ist erst nach Vereinszuordnung möglich.",
+      error: t("noClubAssigned"),
     };
   }
 
   if (isMinor && !appUser.hasYouthAccess) {
     return {
       success: false,
-      error:
-        "Für die Anlage minderjähriger Talente ist die Berechtigung „Zugriff auf Jugendtalente“ erforderlich.",
+      error: t("youthAccessRequired"),
     };
   }
 
@@ -89,7 +88,10 @@ export async function createTalent(
     if (activeCount >= planLimit) {
       return {
         success: false,
-        error: `Dein Plan „${planNameDe(appUser.clubPlan!)}“ ist auf ${planLimit} aktive Talente begrenzt. Bitte upgraden oder ein Talent archivieren.`,
+        error: t("planLimitReached", {
+          plan: planNameDe(appUser.clubPlan!),
+          limit: planLimit,
+        }),
       };
     }
   }
@@ -129,8 +131,8 @@ export async function createTalent(
     return {
       success: false,
       error: insertError?.message
-        ? `Talent konnte nicht gespeichert werden. ${insertError.message}`
-        : "Talent konnte nicht gespeichert werden.",
+        ? t("createFailedDetailed", { detail: insertError.message })
+        : t("createFailed"),
     };
   }
 
@@ -158,20 +160,21 @@ export async function createTalent(
 }
 
 export async function archiveTalent(formData: FormData): Promise<void> {
+  const t = await getTranslations("talentActions");
   const talentId = String(formData.get("talentId") ?? "");
 
   if (!talentId) {
-    throw new Error("Talent-ID fehlt.");
+    throw new Error(t("talentIdMissing"));
   }
 
   const appUser = await getCurrentAppUser();
 
   if (!appUser) {
-    throw new Error("Benutzerprofil nicht gefunden. Bitte erneut anmelden.");
+    throw new Error(t("profileNotFound"));
   }
 
   if (!appUser.clubId) {
-    throw new Error("Deinem Benutzer ist kein Verein zugeordnet.");
+    throw new Error(t("noClubAssignedShort"));
   }
 
   const supabase = await createClient();
@@ -189,15 +192,15 @@ export async function archiveTalent(formData: FormData): Promise<void> {
       details: talentError.details,
       hint: talentError.hint,
     });
-    throw new Error("Talent konnte nicht geladen werden.");
+    throw new Error(t("talentLoadFailed"));
   }
 
   if (!talent) {
-    throw new Error("Talent nicht gefunden.");
+    throw new Error(t("talentNotFound"));
   }
 
   if (talent.club_id !== appUser.clubId) {
-    throw new Error("Du darfst dieses Talent nicht archivieren.");
+    throw new Error(t("notAllowedToArchive"));
   }
 
   const archivedAt = new Date().toISOString();
@@ -216,7 +219,7 @@ export async function archiveTalent(formData: FormData): Promise<void> {
       details: error.details,
       hint: error.hint,
     });
-    throw new Error("Talent konnte nicht archiviert werden.");
+    throw new Error(t("archiveFailed"));
   }
 
   const { data: verify, error: verifyError } = await supabase
@@ -232,11 +235,11 @@ export async function archiveTalent(formData: FormData): Promise<void> {
       details: verifyError.details,
       hint: verifyError.hint,
     });
-    throw new Error("Archivierung konnte nicht verifiziert werden.");
+    throw new Error(t("archiveVerifyFailed"));
   }
 
   if (!verify || !verify.archived_at) {
-    throw new Error("Talent wurde nicht archiviert.");
+    throw new Error(t("archiveNotApplied"));
   }
 
   revalidatePath("/talents");
@@ -245,20 +248,21 @@ export async function archiveTalent(formData: FormData): Promise<void> {
 }
 
 export async function restoreTalent(formData: FormData): Promise<void> {
+  const t = await getTranslations("talentActions");
   const talentId = String(formData.get("talentId") ?? "");
 
   if (!talentId) {
-    throw new Error("Talent-ID fehlt.");
+    throw new Error(t("talentIdMissing"));
   }
 
   const appUser = await getCurrentAppUser();
 
   if (!appUser) {
-    throw new Error("Benutzerprofil nicht gefunden. Bitte erneut anmelden.");
+    throw new Error(t("profileNotFound"));
   }
 
   if (!appUser.clubId) {
-    throw new Error("Deinem Benutzer ist kein Verein zugeordnet.");
+    throw new Error(t("noClubAssignedShort"));
   }
 
   const supabase = await createClient();
@@ -276,15 +280,15 @@ export async function restoreTalent(formData: FormData): Promise<void> {
       details: talentError.details,
       hint: talentError.hint,
     });
-    throw new Error("Talent konnte nicht geladen werden.");
+    throw new Error(t("talentLoadFailed"));
   }
 
   if (!talent) {
-    throw new Error("Talent nicht gefunden.");
+    throw new Error(t("talentNotFound"));
   }
 
   if (talent.club_id !== appUser.clubId) {
-    throw new Error("Du darfst dieses Talent nicht wiederherstellen.");
+    throw new Error(t("notAllowedToRestore"));
   }
 
   const { error } = await supabase
@@ -301,7 +305,7 @@ export async function restoreTalent(formData: FormData): Promise<void> {
       details: error.details,
       hint: error.hint,
     });
-    throw new Error("Talent konnte nicht wiederhergestellt werden.");
+    throw new Error(t("restoreFailed"));
   }
 
   const { data: verify, error: verifyError } = await supabase
@@ -317,11 +321,11 @@ export async function restoreTalent(formData: FormData): Promise<void> {
       details: verifyError.details,
       hint: verifyError.hint,
     });
-    throw new Error("Wiederherstellung konnte nicht verifiziert werden.");
+    throw new Error(t("restoreVerifyFailed"));
   }
 
   if (!verify || verify.archived_at) {
-    throw new Error("Talent wurde nicht wiederhergestellt.");
+    throw new Error(t("restoreNotApplied"));
   }
 
   revalidatePath("/talents");
@@ -330,25 +334,24 @@ export async function restoreTalent(formData: FormData): Promise<void> {
 }
 
 export async function updateExternalProfiles(formData: FormData): Promise<void> {
+  const t = await getTranslations("talentActions");
   const talentId = String(formData.get("talentId") ?? "");
   const transfermarktUrl = String(formData.get("transfermarktUrl") ?? "").trim();
   const fupaUrl = String(formData.get("fupaUrl") ?? "").trim();
 
   if (!talentId) {
-    throw new Error("Talent-ID fehlt.");
+    throw new Error(t("talentIdMissing"));
   }
 
   for (const url of [transfermarktUrl, fupaUrl]) {
     if (url && !/^https?:\/\//i.test(url)) {
-      throw new Error(
-        "Bitte eine vollständige URL angeben (beginnend mit http:// oder https://)."
-      );
+      throw new Error(t("invalidUrl"));
     }
   }
 
   const appUser = await getCurrentAppUser();
   if (!appUser?.clubId) {
-    throw new Error("Nicht angemeldet.");
+    throw new Error(t("notAuthenticated"));
   }
 
   const supabase = await createClient();
@@ -368,21 +371,22 @@ export async function updateExternalProfiles(formData: FormData): Promise<void> 
       details: error.details,
       hint: error.hint,
     });
-    throw new Error("Externe Profile konnten nicht gespeichert werden.");
+    throw new Error(t("externalProfilesSaveFailed"));
   }
 
   revalidatePath(`/talents/${talentId}`);
 }
 
 export async function updateTalentOverview(formData: FormData): Promise<void> {
+  const t = await getTranslations("talentActions");
   const talentId = String(formData.get("talentId") ?? "");
   if (!talentId) {
-    throw new Error("Talent-ID fehlt.");
+    throw new Error(t("talentIdMissing"));
   }
 
   const appUser = await getCurrentAppUser();
   if (!appUser?.clubId) {
-    throw new Error("Nicht angemeldet.");
+    throw new Error(t("notAuthenticated"));
   }
 
   const status = String(formData.get("status") ?? "in_beobachtung");
@@ -434,7 +438,7 @@ export async function updateTalentOverview(formData: FormData): Promise<void> {
       details: error.details,
       hint: error.hint,
     });
-    throw new Error("Talent konnte nicht aktualisiert werden.");
+    throw new Error(t("updateFailed"));
   }
 
   revalidatePath(`/talents/${talentId}`);
@@ -442,14 +446,15 @@ export async function updateTalentOverview(formData: FormData): Promise<void> {
 }
 
 export async function updateTalentClub(formData: FormData): Promise<void> {
+  const t = await getTranslations("talentActions");
   const talentId = String(formData.get("talentId") ?? "");
   if (!talentId) {
-    throw new Error("Talent-ID fehlt.");
+    throw new Error(t("talentIdMissing"));
   }
 
   const appUser = await getCurrentAppUser();
   if (!appUser?.clubId) {
-    throw new Error("Nicht angemeldet.");
+    throw new Error(t("notAuthenticated"));
   }
 
   const clubNameText = String(formData.get("clubNameText") ?? "").trim();
@@ -460,7 +465,7 @@ export async function updateTalentClub(formData: FormData): Promise<void> {
     String(formData.get("upcomingTransferNote") ?? "").trim() || null;
 
   if (!clubNameText) {
-    throw new Error("Aktueller Verein darf nicht leer sein.");
+    throw new Error(t("clubNameRequired"));
   }
 
   const supabase = await createClient();
@@ -482,7 +487,7 @@ export async function updateTalentClub(formData: FormData): Promise<void> {
       details: error.details,
       hint: error.hint,
     });
-    throw new Error("Verein konnte nicht aktualisiert werden.");
+    throw new Error(t("clubUpdateFailed"));
   }
 
   revalidatePath(`/talents/${talentId}`);
