@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { createClient, createAdminClient } from "@/lib/supabase/server";
 import { getCurrentAppUser } from "@/lib/queries/session";
 
@@ -121,6 +122,7 @@ export async function inviteGuardian(formData: FormData): Promise<void> {
 }
 
 async function requireGuardianTalent(talentId: string) {
+  const t = await getTranslations("guardianActions");
   const appUser = await getCurrentAppUser();
   if (!appUser || appUser.role !== "parent") {
     redirect("/login");
@@ -136,7 +138,7 @@ async function requireGuardianTalent(talentId: string) {
     .maybeSingle();
 
   if (!link) {
-    redirect("/parent?error=" + encodeURIComponent("Kein Zugriff auf dieses Talent."));
+    redirect("/parent?error=" + encodeURIComponent(t("noAccessToTalent")));
   }
 
   return appUser;
@@ -146,17 +148,18 @@ async function requireGuardianTalent(talentId: string) {
 // zusätzlich per Datenbank-Trigger erzwungen (guard_guardian_talent_update,
 // Migration 20260816010000), diese Action ist die "gutartige" Seite davon.
 export async function updateGuardianTalentClub(formData: FormData): Promise<void> {
+  const t = await getTranslations("guardianActions");
   const talentId = String(formData.get("talentId") ?? "");
   const clubNameText = String(formData.get("clubNameText") ?? "").trim();
   const teamNameText = String(formData.get("teamNameText") ?? "").trim() || null;
 
   if (!talentId) {
-    redirect("/parent?error=" + encodeURIComponent("Talent-ID fehlt."));
+    redirect("/parent?error=" + encodeURIComponent(t("talentIdMissing")));
   }
   if (!clubNameText) {
     redirect(
       `/parent/talents/${talentId}?error=` +
-        encodeURIComponent("Vereinsname ist ein Pflichtfeld.")
+        encodeURIComponent(t("clubNameRequired"))
     );
   }
 
@@ -177,13 +180,13 @@ export async function updateGuardianTalentClub(formData: FormData): Promise<void
     });
     redirect(
       `/parent/talents/${talentId}?error=` +
-        encodeURIComponent("Verein konnte nicht aktualisiert werden.")
+        encodeURIComponent(t("clubUpdateFailed"))
     );
   }
 
   revalidatePath(`/parent/talents/${talentId}`);
   redirect(
     `/parent/talents/${talentId}?success=` +
-      encodeURIComponent("Verein aktualisiert.")
+      encodeURIComponent(t("clubUpdated"))
   );
 }

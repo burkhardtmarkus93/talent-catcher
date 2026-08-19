@@ -2,28 +2,31 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { getTranslations } from "next-intl/server";
 import { createClient, createAdminClient } from "@/lib/supabase/server";
 import { getCurrentAppUser } from "@/lib/queries/session";
 
 async function requireClubAdmin() {
+  const t = await getTranslations("teamActions");
   const appUser = await getCurrentAppUser();
   if (!appUser?.clubId || appUser.role !== "admin") {
-    redirect("/dashboard?error=Nur%20f%C3%BCr%20Vereins-Admins.");
+    redirect(`/dashboard?error=${encodeURIComponent(t("adminsOnly"))}`);
   }
   return appUser;
 }
 
 export async function inviteTeamMember(formData: FormData) {
+  const t = await getTranslations("teamActions");
   const appUser = await requireClubAdmin();
 
   const email = String(formData.get("email") ?? "").trim();
   const role = String(formData.get("role") ?? "scout");
 
   if (!email) {
-    redirect("/admin?error=Bitte%20E-Mail-Adresse%20angeben.");
+    redirect(`/admin?error=${encodeURIComponent(t("provideEmail"))}`);
   }
   if (role !== "scout" && role !== "admin") {
-    redirect("/admin?error=Ung%C3%BCltige%20Rolle.");
+    redirect(`/admin?error=${encodeURIComponent(t("invalidRole"))}`);
   }
 
   const admin = createAdminClient();
@@ -42,10 +45,11 @@ export async function inviteTeamMember(formData: FormData) {
   }
 
   revalidatePath("/admin");
-  redirect("/admin?success=Einladung%20verschickt.");
+  redirect(`/admin?success=${encodeURIComponent(t("invitationSent"))}`);
 }
 
 export async function updateTeamMemberRole(formData: FormData) {
+  const t = await getTranslations("teamActions");
   const appUser = await requireClubAdmin();
 
   const userId = String(formData.get("userId") ?? "");
@@ -53,12 +57,12 @@ export async function updateTeamMemberRole(formData: FormData) {
   const hasYouthAccess = formData.get("hasYouthAccess") === "on";
 
   if (!userId || (role !== "scout" && role !== "admin")) {
-    redirect("/admin?error=Ung%C3%BCltige%20Eingabe.");
+    redirect(`/admin?error=${encodeURIComponent(t("invalidInput"))}`);
   }
 
   if (userId === appUser.id) {
     redirect(
-      "/admin?error=Die%20eigene%20Rolle%20kann%20nicht%20selbst%20ge%C3%A4ndert%20werden."
+      `/admin?error=${encodeURIComponent(t("cannotChangeOwnRole"))}`
     );
   }
 
@@ -74,22 +78,23 @@ export async function updateTeamMemberRole(formData: FormData) {
   }
 
   revalidatePath("/admin");
-  redirect("/admin?success=Teammitglied%20aktualisiert.");
+  redirect(`/admin?success=${encodeURIComponent(t("memberUpdated"))}`);
 }
 
 export async function setTeamMemberActive(formData: FormData) {
+  const t = await getTranslations("teamActions");
   const appUser = await requireClubAdmin();
 
   const userId = String(formData.get("userId") ?? "");
   const isActive = formData.get("isActive") === "true";
 
   if (!userId) {
-    redirect("/admin?error=Ung%C3%BCltige%20Eingabe.");
+    redirect(`/admin?error=${encodeURIComponent(t("invalidInput"))}`);
   }
 
   if (userId === appUser.id) {
     redirect(
-      "/admin?error=Das%20eigene%20Konto%20kann%20nicht%20deaktiviert%20werden."
+      `/admin?error=${encodeURIComponent(t("cannotDeactivateSelf"))}`
     );
   }
 
@@ -112,7 +117,7 @@ export async function setTeamMemberActive(formData: FormData) {
 
     if (target?.role === "admin" && (count ?? 0) <= 1) {
       redirect(
-        "/admin?error=Der%20letzte%20aktive%20Admin%20kann%20nicht%20deaktiviert%20werden."
+        `/admin?error=${encodeURIComponent(t("cannotDeactivateLastAdmin"))}`
       );
     }
   }
@@ -130,7 +135,7 @@ export async function setTeamMemberActive(formData: FormData) {
   revalidatePath("/admin");
   redirect(
     isActive
-      ? "/admin?success=Teammitglied%20reaktiviert."
-      : "/admin?success=Teammitglied%20deaktiviert."
+      ? `/admin?success=${encodeURIComponent(t("memberReactivated"))}`
+      : `/admin?success=${encodeURIComponent(t("memberDeactivated"))}`
   );
 }

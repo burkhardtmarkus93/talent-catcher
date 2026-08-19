@@ -1,7 +1,20 @@
+export type TourStepId =
+  | "welcome"
+  | "hero"
+  | "urgent"
+  | "watchlists-section"
+  | "nav-talente"
+  | "talents-filters"
+  | "talent-detail"
+  | "nav-alerts"
+  | "nav-watchlists"
+  | "nav-import"
+  | "nav-abo"
+  | "nav-verwaltung"
+  | "finish";
+
 export interface TourStep {
-  id: string;
-  title: string;
-  body: string;
+  id: TourStepId;
   /** data-tour-id of the element to spotlight; omit for a centered slide. */
   targetId?: string;
   /** Route to navigate to before spotlighting targetId, if not already there. */
@@ -10,89 +23,60 @@ export interface TourStep {
   adminOnly?: boolean;
 }
 
+// Titel/Text je Schritt liegen übersetzt in messages/*.json unter
+// productTour.steps.<id> (title/body) — ProductTour.tsx löst sie anhand
+// der id auf. Hier nur die sprachunabhängige Struktur/Navigation.
 export const INTRO_TOUR_STEPS: TourStep[] = [
-  {
-    id: "welcome",
-    title: "Willkommen bei Talent Catcher",
-    body: "Ein kurzer Rundgang durch die wichtigsten Bereiche — jederzeit unten links über \"Erste-Schritte-Tour\" erneut startbar.",
-  },
+  { id: "welcome" },
   {
     id: "hero",
-    title: "Handlungsbedarf auf einen Blick",
-    body: "Hier siehst du sofort, ob und wie viele Talente gerade Aufmerksamkeit brauchen — automatisch berechnet von der Risk-Engine.",
     targetId: "tour-dashboard-hero",
     path: "/dashboard",
   },
   {
     id: "urgent",
-    title: "Dringendster Handlungsbedarf",
-    body: "Die Talente mit dem höchsten Risiko stehen hier oben, inklusive Ampel-Status und Begründung.",
     targetId: "tour-dashboard-urgent",
     path: "/dashboard",
   },
   {
     id: "watchlists-section",
-    title: "Meine Watchlists",
-    body: "Eigene Talent-Gruppierungen, z. B. für einen bestimmten Sichtungstag oder eine Altersklasse.",
     targetId: "tour-dashboard-watchlists",
     path: "/dashboard",
   },
   {
     id: "nav-talente",
-    title: "Talente",
-    body: "Die vollständige Talentliste mit Filtern nach Position, Status und Ampel — hier legst du auch neue Talente an.",
     targetId: "tour-nav-talente",
     path: "/talents",
   },
   {
     id: "talents-filters",
-    title: "Auswahl & Förderung filtern",
-    body: "Zusätzlich zu Position, Vertragsstatus und Ampel lässt sich die Liste nach DFB-Stützpunkt, Verbandsauswahl, Nationalmannschaft und NLZ-Status filtern.",
     targetId: "tour-talents-filters",
     path: "/talents",
   },
-  {
-    id: "talent-detail",
-    title: "Auf der Talent-Detailseite",
-    body: "Verein und Team aktualisieren, Transfermarkt-/FuPa-Profil verknüpfen, Video-Highlights hochladen, Verletzungen dokumentieren, talentierte Geschwister vermerken — und mehr. Damit das bei so vielen Details übersichtlich bleibt, sind die Bereiche unterhalb der Übersicht aufklappbar: antippen zum Auf- und Zuklappen.",
-  },
+  { id: "talent-detail" },
   {
     id: "nav-alerts",
-    title: "Alerts & Wiedervorlagen",
-    body: "Alle offenen Handlungsaufforderungen an einem Ort — automatische Alerts und von dir gesetzte Wiedervorlagen.",
     targetId: "tour-nav-alerts",
     path: "/alerts-reminders",
   },
   {
     id: "nav-watchlists",
-    title: "Watchlists",
-    body: "Übersicht über alle deine Watchlists mit Talentanzahl.",
     targetId: "tour-nav-watchlists",
     path: "/watchlists",
   },
   {
     id: "nav-import",
-    title: "Import",
-    body: "Bestehende Scouting-Listen per CSV oder XLSX übernehmen, inklusive Spalten-Zuordnung.",
     targetId: "tour-nav-import",
     path: "/import",
   },
   {
     id: "nav-abo",
-    title: "Abo",
-    body: "Dein aktueller Plan und deine Testphase — nach der kostenlosen Testphase wählst du hier ein Abo.",
     targetId: "tour-nav-abo",
   },
   {
     id: "nav-verwaltung",
-    title: "Verwaltung",
-    body: "Vereinsname bearbeiten, Teammitglieder verwalten (Rolle, Jugendschutz-Zugriff, deaktivieren) und neue Scouts per E-Mail einladen.",
     targetId: "tour-nav-verwaltung",
     adminOnly: true,
   },
-  {
-    id: "finish",
-    title: "Bereit zum Loslegen",
-    body: "Das war's! Du kannst die Tour jederzeit über \"Erste-Schritte-Tour\" unten links in der Sidebar erneut starten.",
-  },
+  { id: "finish" },
 ];

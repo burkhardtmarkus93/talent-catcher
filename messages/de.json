@@ -252,6 +252,18 @@
   "columnMapper": {
     "title": "Spalten-Zuordnung"
   },
+  "importFields": {
+    "none": "— nicht importieren —",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "birthDate": "Geburtsdatum",
+    "primaryPosition": "Primäre Position",
+    "clubNameText": "Aktueller Verein",
+    "teamNameText": "Team/Jahrgang",
+    "leagueText": "Liga",
+    "contractStatus": "Vertragsstatus",
+    "contractEndDate": "Vertragsende"
+  },
   "downloadErrorReportButton": {
     "csvHeaderRow": "Zeile",
     "csvHeaderError": "Fehler",
@@ -420,7 +432,61 @@
     "skip": "Überspringen",
     "back": "Zurück",
     "next": "Weiter",
-    "letsGo": "Los geht's"
+    "letsGo": "Los geht's",
+    "steps": {
+      "welcome": {
+        "title": "Willkommen bei Talent Catcher",
+        "body": "Ein kurzer Rundgang durch die wichtigsten Bereiche — jederzeit unten links über \"Erste-Schritte-Tour\" erneut startbar."
+      },
+      "hero": {
+        "title": "Handlungsbedarf auf einen Blick",
+        "body": "Hier siehst du sofort, ob und wie viele Talente gerade Aufmerksamkeit brauchen — automatisch berechnet von der Risk-Engine."
+      },
+      "urgent": {
+        "title": "Dringendster Handlungsbedarf",
+        "body": "Die Talente mit dem höchsten Risiko stehen hier oben, inklusive Ampel-Status und Begründung."
+      },
+      "watchlists-section": {
+        "title": "Meine Watchlists",
+        "body": "Eigene Talent-Gruppierungen, z. B. für einen bestimmten Sichtungstag oder eine Altersklasse."
+      },
+      "nav-talente": {
+        "title": "Talente",
+        "body": "Die vollständige Talentliste mit Filtern nach Position, Status und Ampel — hier legst du auch neue Talente an."
+      },
+      "talents-filters": {
+        "title": "Auswahl & Förderung filtern",
+        "body": "Zusätzlich zu Position, Vertragsstatus und Ampel lässt sich die Liste nach DFB-Stützpunkt, Verbandsauswahl, Nationalmannschaft und NLZ-Status filtern."
+      },
+      "talent-detail": {
+        "title": "Auf der Talent-Detailseite",
+        "body": "Verein und Team aktualisieren, Transfermarkt-/FuPa-Profil verknüpfen, Video-Highlights hochladen, Verletzungen dokumentieren, talentierte Geschwister vermerken — und mehr. Damit das bei so vielen Details übersichtlich bleibt, sind die Bereiche unterhalb der Übersicht aufklappbar: antippen zum Auf- und Zuklappen."
+      },
+      "nav-alerts": {
+        "title": "Alerts & Wiedervorlagen",
+        "body": "Alle offenen Handlungsaufforderungen an einem Ort — automatische Alerts und von dir gesetzte Wiedervorlagen."
+      },
+      "nav-watchlists": {
+        "title": "Watchlists",
+        "body": "Übersicht über alle deine Watchlists mit Talentanzahl."
+      },
+      "nav-import": {
+        "title": "Import",
+        "body": "Bestehende Scouting-Listen per CSV oder XLSX übernehmen, inklusive Spalten-Zuordnung."
+      },
+      "nav-abo": {
+        "title": "Abo",
+        "body": "Dein aktueller Plan und deine Testphase — nach der kostenlosen Testphase wählst du hier ein Abo."
+      },
+      "nav-verwaltung": {
+        "title": "Verwaltung",
+        "body": "Vereinsname bearbeiten, Teammitglieder verwalten (Rolle, Jugendschutz-Zugriff, deaktivieren) und neue Scouts per E-Mail einladen."
+      },
+      "finish": {
+        "title": "Bereit zum Loslegen",
+        "body": "Das war's! Du kannst die Tour jederzeit über \"Erste-Schritte-Tour\" unten links in der Sidebar erneut starten."
+      }
+    }
   },
   "scoutReportForm": {
     "criterionTechnik": "Technik",
@@ -601,5 +667,108 @@
   },
   "parentLayout": {
     "logout": "Abmelden"
+  },
+  "adminStripeActions": {
+    "notAuthorized": "Nicht berechtigt.",
+    "setupFailed": "Stripe-Einrichtung fehlgeschlagen.",
+    "setupComplete": "Stripe-Einrichtung abgeschlossen — {summary}"
+  },
+  "authActions": {
+    "fillRequiredFields": "Bitte alle Pflichtfelder ausfüllen",
+    "passwordTooShort": "Das Passwort muss mindestens 8 Zeichen haben",
+    "planNotSelfService": "Dieser Plan ist nicht per Selbstregistrierung verfügbar",
+    "invalidBillingInterval": "Ungültiger Abrechnungszeitraum",
+    "signupFailed": "Registrierung fehlgeschlagen.",
+    "signupSuccess": "Fast geschafft — wir haben dir eine Bestätigungs-E-Mail geschickt. Bitte Link anklicken und anschließend anmelden.",
+    "provideEmailPassword": "Bitte E-Mail und Passwort angeben",
+    "loginFailed": "Anmeldung fehlgeschlagen. Bitte Zugangsdaten prüfen.",
+    "provideEmail": "Bitte E-Mail angeben",
+    "resetLinkFailed": "Reset-Link konnte nicht gesendet werden.",
+    "resetLinkSent": "Wenn ein Konto existiert, wurde ein Reset-Link gesendet.",
+    "fillBothFields": "Bitte beide Felder ausfüllen",
+    "passwordsDontMatch": "Die Passwörter stimmen nicht überein",
+    "passwordUpdateFailed": "Passwort konnte nicht aktualisiert werden.",
+    "passwordUpdated": "Passwort erfolgreich aktualisiert"
+  },
+  "billingActions": {
+    "noClubAssigned": "Kein Verein zugeordnet.",
+    "onlyAdminCanManage": "Nur der Vereins-Admin kann das Abo verwalten.",
+    "planNotSelfService": "Dieser Plan ist nicht per Selfservice verfügbar.",
+    "priceNotSetUp": "Preis noch nicht eingerichtet. Bitte zuerst /api/admin/stripe-setup aufrufen.",
+    "checkoutFailed": "Checkout konnte nicht gestartet werden.",
+    "notAuthorized": "Nicht berechtigt.",
+    "noActiveSubscription": "Noch kein aktives Abo gefunden."
+  },
+  "clubActions": {
+    "adminsOnly": "Nur für Vereins-Admins.",
+    "clubNameRequired": "Vereinsname darf nicht leer sein.",
+    "clubNameUpdated": "Vereinsname aktualisiert."
+  },
+  "gkTestActions": {
+    "invalidTalent": "Ungültiges Talent",
+    "testSaveFailed": "Test konnte nicht gespeichert werden."
+  },
+  "guardianActions": {
+    "noAccessToTalent": "Kein Zugriff auf dieses Talent.",
+    "talentIdMissing": "Talent-ID fehlt.",
+    "clubNameRequired": "Vereinsname ist ein Pflichtfeld.",
+    "clubUpdateFailed": "Verein konnte nicht aktualisiert werden.",
+    "clubUpdated": "Verein aktualisiert."
+  },
+  "profileActions": {
+    "profileUpdated": "Profil aktualisiert.",
+    "fillBothFields": "Bitte beide Felder ausfüllen",
+    "passwordsDontMatch": "Die Passwörter stimmen nicht überein",
+    "passwordTooShort": "Das Passwort muss mindestens 8 Zeichen haben",
+    "passwordUpdateFailed": "Passwort konnte nicht aktualisiert werden.",
+    "passwordUpdated": "Passwort erfolgreich aktualisiert — bitte erneut anmelden."
+  },
+  "teamActions": {
+    "adminsOnly": "Nur für Vereins-Admins.",
+    "provideEmail": "Bitte E-Mail-Adresse angeben.",
+    "invalidRole": "Ungültige Rolle.",
+    "invitationSent": "Einladung verschickt.",
+    "invalidInput": "Ungültige Eingabe.",
+    "cannotChangeOwnRole": "Die eigene Rolle kann nicht selbst geändert werden.",
+    "memberUpdated": "Teammitglied aktualisiert.",
+    "cannotDeactivateSelf": "Das eigene Konto kann nicht deaktiviert werden.",
+    "cannotDeactivateLastAdmin": "Der letzte aktive Admin kann nicht deaktiviert werden.",
+    "memberReactivated": "Teammitglied reaktiviert.",
+    "memberDeactivated": "Teammitglied deaktiviert."
+  },
+  "plans": {
+    "start": {
+      "name": "Start",
+      "tagline": "Für den ersten Überblick in einem kleinen Verein",
+      "features": [
+        "1 Scout-Zugang",
+        "Bis zu 25 aktive Talente",
+        "Talent-Profile & Scout-Reports",
+        "Automatische Risk-Engine-Alerts",
+        "Dashboard & Wiedervorlagen"
+      ]
+    },
+    "verein": {
+      "name": "Verein",
+      "tagline": "Für Vereine mit mehreren Scouts",
+      "features": [
+        "Bis zu 3 Scout-Zugänge",
+        "Unbegrenzte aktive Talente",
+        "Alles aus Start",
+        "CSV/XLSX-Import",
+        "Watchlists",
+        "Torwart-Koordinationstests"
+      ]
+    },
+    "verband": {
+      "name": "Verband / NLZ",
+      "tagline": "Individuelles Zugriffsmodell für mehrere Vereine oder Zubringerstrukturen",
+      "features": [
+        "Mehrere Vereine / Zubringerstrukturen",
+        "Individuelles Rollenmodell",
+        "Dedizierter Ansprechpartner",
+        "Preis auf Anfrage"
+      ]
+    }
   }
 }

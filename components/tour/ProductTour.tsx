@@ -144,8 +144,8 @@ export function ProductTour({
           </button>
         </div>
 
-        <h3 className="font-display text-lg font-medium text-ink">{step.title}</h3>
-        <p className="mt-1.5 text-sm text-muted">{step.body}</p>
+        <h3 className="font-display text-lg font-medium text-ink">{t(`steps.${step.id}.title`)}</h3>
+        <p className="mt-1.5 text-sm text-muted">{t(`steps.${step.id}.body`)}</p>
 
         <div className="mt-4 flex items-center justify-between">
           <button

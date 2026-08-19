@@ -14,74 +14,63 @@
 // professionelle NLZ sind bei dedizierten Scouting-Stellen oft knapper
 // besetzt — 5 Zugänge für einen Amateurverein wäre am Markt vorbei.
 
+import deMessages from "@/messages/de.json";
+
 export type PlanKey = "start" | "verein" | "verband";
 export type BillingInterval = "monatlich" | "jaehrlich";
 
 export interface Plan {
   key: PlanKey;
-  name: string;
-  tagline: string;
   priceMonthly: number | null; // null = kein Selfservice-Preis (Verband/NLZ)
   priceYearly: number | null; // Gesamtpreis pro Jahr, nicht pro Monat
   maxScouts: number | null; // null = unbegrenzt
   maxActiveTalents: number | null; // null = unbegrenzt
-  features: string[];
   selfService: boolean;
 }
 
+// Name/Tagline/Features sind übersetzbarer UI-Text und liegen in
+// messages/*.json (Namespace "plans"), nicht hier — siehe planNameDe()/
+// planTaglineDe() unten für die wenigen Stellen außerhalb der UI
+// (Stripe-Produktnamen, serverseitige Limit-Fehlermeldung), die bewusst
+// immer die deutsche Fassung als feste Kennung verwenden.
 export const PLANS: Record<PlanKey, Plan> = {
   start: {
     key: "start",
-    name: "Start",
-    tagline: "Für den ersten Überblick in einem kleinen Verein",
     priceMonthly: 19,
     priceYearly: 190, // entspricht ~15,83€/Monat, 2 Monate gratis
     maxScouts: 1,
     maxActiveTalents: 25,
-    features: [
-      "1 Scout-Zugang",
-      "Bis zu 25 aktive Talente",
-      "Talent-Profile & Scout-Reports",
-      "Automatische Risk-Engine-Alerts",
-      "Dashboard & Wiedervorlagen",
-    ],
     selfService: true,
   },
   verein: {
     key: "verein",
-    name: "Verein",
-    tagline: "Für Vereine mit mehreren Scouts",
     priceMonthly: 49,
     priceYearly: 490, // entspricht ~40,83€/Monat, 2 Monate gratis
     maxScouts: 3,
     maxActiveTalents: null,
-    features: [
-      "Bis zu 3 Scout-Zugänge",
-      "Unbegrenzte aktive Talente",
-      "Alles aus Start",
-      "CSV/XLSX-Import",
-      "Watchlists",
-      "Torwart-Koordinationstests",
-    ],
     selfService: true,
   },
   verband: {
     key: "verband",
-    name: "Verband / NLZ",
-    tagline: "Individuelles Zugriffsmodell für mehrere Vereine oder Zubringerstrukturen",
     priceMonthly: null,
     priceYearly: null,
     maxScouts: null,
     maxActiveTalents: null,
-    features: [
-      "Mehrere Vereine / Zubringerstrukturen",
-      "Individuelles Rollenmodell",
-      "Dedizierter Ansprechpartner",
-      "Preis auf Anfrage",
-    ],
     selfService: false,
   },
 };
+
+// Feste deutsche Kennung für Kontexte außerhalb der lokalisierten UI:
+// Stripe-Produktnamen (lib/stripeSetup.ts) und die serverseitige
+// Plan-Limit-Fehlermeldung (lib/actions/talents.ts) — beide bewusst
+// nicht lokalisiert, siehe dortige Kommentare.
+export function planNameDe(key: PlanKey): string {
+  return deMessages.plans[key].name;
+}
+
+export function planTaglineDe(key: PlanKey): string {
+  return deMessages.plans[key].tagline;
+}
 
 export function formatEuro(amount: number): string {
   return new Intl.NumberFormat("de-DE", {

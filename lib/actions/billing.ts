@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { getStripe } from "@/lib/stripe";
 import { createAdminClient } from "@/lib/supabase/server";
 import { getCurrentAppUser } from "@/lib/queries/session";
@@ -12,6 +13,7 @@ import {
 } from "@/lib/plans";
 
 export async function createCheckoutSession(formData: FormData) {
+  const t = await getTranslations("billingActions");
   const plan = String(formData.get("plan") ?? "") as PlanKey;
   const billingInterval = String(
     formData.get("billingInterval") ?? "monatlich"
@@ -21,16 +23,16 @@ export async function createCheckoutSession(formData: FormData) {
   const appUser = await getCurrentAppUser();
 
   if (!appUser?.clubId) {
-    redirect("/billing?error=Kein%20Verein%20zugeordnet.");
+    redirect(`/billing?error=${encodeURIComponent(t("noClubAssigned"))}`);
   }
 
   if (appUser.role !== "admin") {
-    redirect("/billing?error=Nur%20der%20Vereins-Admin%20kann%20das%20Abo%20verwalten.");
+    redirect(`/billing?error=${encodeURIComponent(t("onlyAdminCanManage"))}`);
   }
 
   const selectedPlan = PLANS[plan];
   if (!selectedPlan?.selfService) {
-    redirect("/billing?error=Dieser%20Plan%20ist%20nicht%20per%20Selfservice%20verf%C3%BCgbar.");
+    redirect(`/billing?error=${encodeURIComponent(t("planNotSelfService"))}`);
   }
 
   const lookupKey = stripeLookupKey(plan, billingInterval);
@@ -43,7 +45,7 @@ export async function createCheckoutSession(formData: FormData) {
   const price = prices.data[0];
   if (!price) {
     redirect(
-      "/billing?error=Preis%20noch%20nicht%20eingerichtet.%20Bitte%20zuerst%20/api/admin/stripe-setup%20aufrufen."
+      `/billing?error=${encodeURIComponent(t("priceNotSetUp"))}`
     );
   }
 
@@ -61,17 +63,18 @@ export async function createCheckoutSession(formData: FormData) {
   });
 
   if (!session.url) {
-    redirect("/billing?error=Checkout%20konnte%20nicht%20gestartet%20werden.");
+    redirect(`/billing?error=${encodeURIComponent(t("checkoutFailed"))}`);
   }
 
   redirect(session.url!);
 }
 
 export async function createBillingPortalSession() {
+  const t = await getTranslations("billingActions");
   const appUser = await getCurrentAppUser();
 
   if (!appUser?.clubId || appUser.role !== "admin") {
-    redirect("/billing?error=Nicht%20berechtigt.");
+    redirect(`/billing?error=${encodeURIComponent(t("notAuthorized"))}`);
   }
 
   const admin = createAdminClient();
@@ -82,7 +85,7 @@ export async function createBillingPortalSession() {
     .maybeSingle();
 
   if (!club?.stripe_customer_id) {
-    redirect("/billing?error=Noch%20kein%20aktives%20Abo%20gefunden.");
+    redirect(`/billing?error=${encodeURIComponent(t("noActiveSubscription"))}`);
   }
 
   const stripe = getStripe();
