@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentAppUser } from "@/lib/queries/session";
 
@@ -11,25 +12,22 @@ import { getCurrentAppUser } from "@/lib/queries/session";
 // (lib/queries/consent.ts) sucht ohnehin die jüngste 'erteilt'-Zeile,
 // eine frühere 'angefragt'-Zeile bleibt als Historie unangetastet stehen.
 export async function grantVideoConsent(formData: FormData): Promise<void> {
+  const t = await getTranslations("consentActions");
   const talentId = String(formData.get("talentId") ?? "");
   const confirmed = formData.get("confirmed") === "on";
   const notes = String(formData.get("notes") ?? "").trim() || null;
   const validUntil = String(formData.get("validUntil") ?? "").trim() || null;
 
   if (!talentId) {
-    throw new Error("Talent-ID fehlt.");
+    throw new Error(t("talentIdMissing"));
   }
   if (!confirmed) {
-    throw new Error(
-      "Bitte bestätige, dass eine wirksame Einwilligung der/des Erziehungsberechtigten vorliegt."
-    );
+    throw new Error(t("confirmRequired"));
   }
 
   const appUser = await getCurrentAppUser();
   if (!appUser?.clubId || !appUser.hasYouthAccess) {
-    throw new Error(
-      "Dafür ist die Berechtigung „Zugriff auf Jugendtalente“ erforderlich."
-    );
+    throw new Error(t("youthAccessRequired"));
   }
 
   const supabase = await createClient();
@@ -50,7 +48,7 @@ export async function grantVideoConsent(formData: FormData): Promise<void> {
       details: error.details,
       hint: error.hint,
     });
-    throw new Error("Einwilligung konnte nicht gespeichert werden.");
+    throw new Error(t("saveFailed"));
   }
 
   revalidatePath(`/talents/${talentId}`);

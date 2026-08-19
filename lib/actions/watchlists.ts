@@ -2,20 +2,22 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentAppUser } from "@/lib/queries/session";
 
 export async function createWatchlist(formData: FormData): Promise<void> {
+  const t = await getTranslations("watchlistActions");
   const name = String(formData.get("name") ?? "").trim();
   const description = String(formData.get("description") ?? "").trim() || null;
 
   if (!name) {
-    throw new Error("Name ist ein Pflichtfeld.");
+    throw new Error(t("nameRequired"));
   }
 
   const appUser = await getCurrentAppUser();
   if (!appUser?.clubId) {
-    throw new Error("Nicht angemeldet.");
+    throw new Error(t("notAuthenticated"));
   }
 
   const supabase = await createClient();
@@ -37,7 +39,7 @@ export async function createWatchlist(formData: FormData): Promise<void> {
       details: error?.details,
       hint: error?.hint,
     });
-    throw new Error("Watchlist konnte nicht angelegt werden.");
+    throw new Error(t("createFailed"));
   }
 
   revalidatePath("/watchlists");
@@ -45,16 +47,17 @@ export async function createWatchlist(formData: FormData): Promise<void> {
 }
 
 export async function addTalentToWatchlist(formData: FormData): Promise<void> {
+  const t = await getTranslations("watchlistActions");
   const watchlistId = String(formData.get("watchlistId") ?? "");
   const talentId = String(formData.get("talentId") ?? "");
 
   if (!watchlistId || !talentId) {
-    throw new Error("Bitte ein Talent auswählen.");
+    throw new Error(t("selectTalent"));
   }
 
   const appUser = await getCurrentAppUser();
   if (!appUser?.clubId) {
-    throw new Error("Nicht angemeldet.");
+    throw new Error(t("notAuthenticated"));
   }
 
   const supabase = await createClient();
@@ -71,18 +74,19 @@ export async function addTalentToWatchlist(formData: FormData): Promise<void> {
       details: error.details,
       hint: error.hint,
     });
-    throw new Error("Talent konnte nicht hinzugefügt werden.");
+    throw new Error(t("addFailed"));
   }
 
   revalidatePath(`/watchlists/${watchlistId}`);
 }
 
 export async function removeTalentFromWatchlist(formData: FormData): Promise<void> {
+  const t = await getTranslations("watchlistActions");
   const watchlistId = String(formData.get("watchlistId") ?? "");
   const talentId = String(formData.get("talentId") ?? "");
 
   if (!watchlistId || !talentId) {
-    throw new Error("Ungültige Anfrage.");
+    throw new Error(t("invalidRequest"));
   }
 
   const supabase = await createClient();
@@ -99,7 +103,7 @@ export async function removeTalentFromWatchlist(formData: FormData): Promise<voi
       details: error.details,
       hint: error.hint,
     });
-    throw new Error("Talent konnte nicht entfernt werden.");
+    throw new Error(t("removeFailed"));
   }
 
   revalidatePath(`/watchlists/${watchlistId}`);

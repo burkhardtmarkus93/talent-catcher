@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 
 export interface ReminderActionState {
@@ -15,12 +16,13 @@ export async function createReminder(
   _prevState: ReminderActionState,
   formData: FormData
 ): Promise<ReminderActionState> {
+  const t = await getTranslations("reminderActions");
   const talentId = String(formData.get("talentId") ?? "");
   const dueDate = String(formData.get("dueDate") ?? "");
   const reason = String(formData.get("reason") ?? "").trim() || null;
 
   if (!talentId || !dueDate) {
-    return { success: false, error: "Ein Fälligkeitsdatum ist erforderlich." };
+    return { success: false, error: t("dueDateRequired") };
   }
 
   const supabase = await createClient();
@@ -29,7 +31,7 @@ export async function createReminder(
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return { success: false, error: "Sitzung abgelaufen. Bitte erneut anmelden." };
+    return { success: false, error: t("sessionExpired") };
   }
 
   const { error } = await supabase.from("reminders").insert({
@@ -43,7 +45,7 @@ export async function createReminder(
 
   if (error) {
     console.error("createReminder() fehlgeschlagen:", error.message);
-    return { success: false, error: "Wiedervorlage konnte nicht gespeichert werden." };
+    return { success: false, error: t("saveFailed") };
   }
 
   revalidatePath(`/talents/${talentId}`);

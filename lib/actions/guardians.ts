@@ -13,21 +13,20 @@ import { getCurrentAppUser } from "@/lib/queries/session";
 // Person direkten Zugriff auf Daten (potenziell) eines minderjährigen
 // Talents.
 export async function inviteGuardian(formData: FormData): Promise<void> {
+  const t = await getTranslations("guardianActions");
   const talentId = String(formData.get("talentId") ?? "");
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
 
   if (!talentId) {
-    throw new Error("Talent-ID fehlt.");
+    throw new Error(t("talentIdMissing"));
   }
   if (!email) {
-    throw new Error("Bitte E-Mail-Adresse angeben.");
+    throw new Error(t("emailRequired"));
   }
 
   const appUser = await getCurrentAppUser();
   if (!appUser?.clubId || !appUser.hasYouthAccess) {
-    throw new Error(
-      "Dafür ist die Berechtigung „Zugriff auf Jugendtalente“ erforderlich."
-    );
+    throw new Error(t("youthAccessRequired"));
   }
 
   const supabase = await createClient();
@@ -39,7 +38,7 @@ export async function inviteGuardian(formData: FormData): Promise<void> {
     .maybeSingle();
 
   if (talentError || !talent || talent.club_id !== appUser.clubId) {
-    throw new Error("Talent nicht gefunden.");
+    throw new Error(t("talentNotFound"));
   }
 
   const admin = createAdminClient();
@@ -77,16 +76,14 @@ export async function inviteGuardian(formData: FormData): Promise<void> {
       hint: insertError?.hint,
     });
     if (insertError?.code === "23505") {
-      throw new Error("Diese E-Mail-Adresse ist für dieses Talent bereits eingeladen.");
+      throw new Error(t("emailAlreadyInvited"));
     }
-    throw new Error("Einladung konnte nicht angelegt werden.");
+    throw new Error(t("inviteCreateFailed"));
   }
 
   if (existingUser) {
     if (existingUser.role !== "parent") {
-      throw new Error(
-        "Diese E-Mail-Adresse ist bereits als Scout/Admin registriert und kann nicht zusätzlich als Eltern-Zugang verknüpft werden."
-      );
+      throw new Error(t("emailAlreadyRegistered"));
     }
 
     // Admin-Client, weil dafür keine eigene UPDATE-RLS-Policy auf
@@ -100,7 +97,7 @@ export async function inviteGuardian(formData: FormData): Promise<void> {
 
     if (linkError) {
       console.error("inviteGuardian() fehlgeschlagen (direkte Verknüpfung):", linkError.message);
-      throw new Error("Verknüpfung mit bestehendem Eltern-Konto fehlgeschlagen.");
+      throw new Error(t("linkExistingFailed"));
     }
 
     revalidatePath(`/talents/${talentId}`);
@@ -115,7 +112,7 @@ export async function inviteGuardian(formData: FormData): Promise<void> {
 
   if (inviteError) {
     console.error("inviteGuardian() fehlgeschlagen (E-Mail-Einladung):", inviteError.message);
-    throw new Error("Einladungs-E-Mail konnte nicht verschickt werden.");
+    throw new Error(t("inviteEmailFailed"));
   }
 
   revalidatePath(`/talents/${talentId}`);

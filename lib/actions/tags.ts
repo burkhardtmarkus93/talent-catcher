@@ -1,15 +1,17 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentAppUser } from "@/lib/queries/session";
 
 export async function addTalentTag(talentId: string, tag: string) {
+  const t = await getTranslations("tagActions");
   const cleanTag = tag.trim();
   if (!cleanTag) return;
 
   const appUser = await getCurrentAppUser();
-  if (!appUser?.clubId) throw new Error("Kein Verein zugeordnet.");
+  if (!appUser?.clubId) throw new Error(t("noClubAssigned"));
 
   const supabase = await createClient();
 
@@ -20,7 +22,7 @@ export async function addTalentTag(talentId: string, tag: string) {
     .maybeSingle();
 
   if (!talent || talent.club_id !== appUser.clubId) {
-    throw new Error("Talent nicht gefunden oder keine Berechtigung.");
+    throw new Error(t("talentNotFoundOrForbidden"));
   }
 
   const currentTags: string[] = Array.isArray(talent.tags) ? talent.tags : [];
@@ -31,14 +33,15 @@ export async function addTalentTag(talentId: string, tag: string) {
     .update({ tags: [...currentTags, cleanTag] })
     .eq("id", talentId);
 
-  if (error) throw new Error("Tag konnte nicht gespeichert werden.");
+  if (error) throw new Error(t("addFailed"));
 
   revalidatePath(`/talents/${talentId}`);
 }
 
 export async function removeTalentTag(talentId: string, tag: string) {
+  const t = await getTranslations("tagActions");
   const appUser = await getCurrentAppUser();
-  if (!appUser?.clubId) throw new Error("Kein Verein zugeordnet.");
+  if (!appUser?.clubId) throw new Error(t("noClubAssigned"));
 
   const supabase = await createClient();
 
@@ -49,16 +52,16 @@ export async function removeTalentTag(talentId: string, tag: string) {
     .maybeSingle();
 
   if (!talent || talent.club_id !== appUser.clubId) {
-    throw new Error("Talent nicht gefunden oder keine Berechtigung.");
+    throw new Error(t("talentNotFoundOrForbidden"));
   }
 
   const currentTags: string[] = Array.isArray(talent.tags) ? talent.tags : [];
   const { error } = await supabase
     .from("talents")
-    .update({ tags: currentTags.filter((t) => t !== tag) })
+    .update({ tags: currentTags.filter((tagValue) => tagValue !== tag) })
     .eq("id", talentId);
 
-  if (error) throw new Error("Tag konnte nicht entfernt werden.");
+  if (error) throw new Error(t("removeFailed"));
 
   revalidatePath(`/talents/${talentId}`);
 }

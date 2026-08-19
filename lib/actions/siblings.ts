@@ -1,10 +1,12 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentAppUser } from "@/lib/queries/session";
 
 export async function addSibling(formData: FormData): Promise<void> {
+  const t = await getTranslations("siblingActions");
   const talentId = String(formData.get("talentId") ?? "");
   const firstName = String(formData.get("firstName") ?? "").trim();
   const lastName = String(formData.get("lastName") ?? "").trim();
@@ -12,15 +14,15 @@ export async function addSibling(formData: FormData): Promise<void> {
   const note = String(formData.get("note") ?? "").trim() || null;
 
   if (!talentId) {
-    throw new Error("Talent-ID fehlt.");
+    throw new Error(t("talentIdMissing"));
   }
   if (!firstName || !lastName) {
-    throw new Error("Vor- und Nachname sind Pflichtfelder.");
+    throw new Error(t("namesRequired"));
   }
 
   const appUser = await getCurrentAppUser();
   if (!appUser?.clubId) {
-    throw new Error("Nicht angemeldet.");
+    throw new Error(t("notAuthenticated"));
   }
 
   const supabase = await createClient();
@@ -40,18 +42,19 @@ export async function addSibling(formData: FormData): Promise<void> {
       details: error.details,
       hint: error.hint,
     });
-    throw new Error("Geschwister konnte nicht gespeichert werden.");
+    throw new Error(t("saveFailed"));
   }
 
   revalidatePath(`/talents/${talentId}`);
 }
 
 export async function deleteSibling(formData: FormData): Promise<void> {
+  const t = await getTranslations("siblingActions");
   const siblingId = String(formData.get("siblingId") ?? "");
   const talentId = String(formData.get("talentId") ?? "");
 
   if (!siblingId || !talentId) {
-    throw new Error("Ungültige Anfrage.");
+    throw new Error(t("invalidRequest"));
   }
 
   const supabase = await createClient();
@@ -67,7 +70,7 @@ export async function deleteSibling(formData: FormData): Promise<void> {
       details: error.details,
       hint: error.hint,
     });
-    throw new Error("Geschwister konnte nicht entfernt werden.");
+    throw new Error(t("deleteFailed"));
   }
 
   revalidatePath(`/talents/${talentId}`);
