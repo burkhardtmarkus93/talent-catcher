@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentAppUser } from "@/lib/queries/session";
 import { getActiveTalentCount } from "@/lib/queries/talents";
-import { PLANS } from "@/lib/plans";
+import { PLANS, planNameDe } from "@/lib/plans";
 
 export interface TalentActionState {
   success: boolean;
@@ -89,7 +89,7 @@ export async function createTalent(
     if (activeCount >= planLimit) {
       return {
         success: false,
-        error: `Dein Plan „${PLANS[appUser.clubPlan!].name}“ ist auf ${planLimit} aktive Talente begrenzt. Bitte upgraden oder ein Talent archivieren.`,
+        error: `Dein Plan „${planNameDe(appUser.clubPlan!)}“ ist auf ${planLimit} aktive Talente begrenzt. Bitte upgraden oder ein Talent archivieren.`,
       };
     }
   }

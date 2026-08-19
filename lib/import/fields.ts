@@ -13,17 +13,20 @@ export type ImportFieldKey =
   | "contractStatus"
   | "contractEndDate";
 
-export const IMPORT_SYSTEM_FIELDS: { label: string; key: ImportFieldKey | "" }[] = [
-  { label: "— nicht importieren —", key: "" },
-  { label: "Vorname", key: "firstName" },
-  { label: "Nachname", key: "lastName" },
-  { label: "Geburtsdatum", key: "birthDate" },
-  { label: "Primäre Position", key: "primaryPosition" },
-  { label: "Aktueller Verein", key: "clubNameText" },
-  { label: "Team/Jahrgang", key: "teamNameText" },
-  { label: "Liga", key: "leagueText" },
-  { label: "Vertragsstatus", key: "contractStatus" },
-  { label: "Vertragsende", key: "contractEndDate" },
+// Labels sind übersetzbarer UI-Text und liegen in messages/*.json unter
+// dem Namespace "importFields" (key "" -> Übersetzungsschlüssel "none") —
+// ColumnMapper.tsx löst sie anhand von `key` auf.
+export const IMPORT_SYSTEM_FIELDS: { key: ImportFieldKey | "" }[] = [
+  { key: "" },
+  { key: "firstName" },
+  { key: "lastName" },
+  { key: "birthDate" },
+  { key: "primaryPosition" },
+  { key: "clubNameText" },
+  { key: "teamNameText" },
+  { key: "leagueText" },
+  { key: "contractStatus" },
+  { key: "contractEndDate" },
 ];
 
 export const REQUIRED_IMPORT_FIELDS: ImportFieldKey[] = [

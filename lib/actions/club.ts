@@ -2,18 +2,20 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentAppUser } from "@/lib/queries/session";
 
 export async function updateClubName(formData: FormData) {
+  const t = await getTranslations("clubActions");
   const appUser = await getCurrentAppUser();
   if (!appUser?.clubId || appUser.role !== "admin") {
-    redirect("/dashboard?error=Nur%20f%C3%BCr%20Vereins-Admins.");
+    redirect(`/dashboard?error=${encodeURIComponent(t("adminsOnly"))}`);
   }
 
   const name = String(formData.get("name") ?? "").trim();
   if (!name) {
-    redirect("/admin?error=Vereinsname%20darf%20nicht%20leer%20sein.");
+    redirect(`/admin?error=${encodeURIComponent(t("clubNameRequired"))}`);
   }
 
   const supabase = await createClient();
@@ -27,5 +29,5 @@ export async function updateClubName(formData: FormData) {
   }
 
   revalidatePath("/admin");
-  redirect("/admin?success=Vereinsname%20aktualisiert.");
+  redirect(`/admin?success=${encodeURIComponent(t("clubNameUpdated"))}`);
 }

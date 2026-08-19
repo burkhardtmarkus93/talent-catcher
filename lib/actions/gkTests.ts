@@ -2,14 +2,16 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 
 export async function createGkCoordinationTest(formData: FormData) {
+  const t = await getTranslations("gkTestActions");
   const talentId = String(formData.get("talentId") ?? "");
   const testDateRaw = String(formData.get("testDate") ?? "");
 
   if (!talentId) {
-    redirect("/talents?error=Ung%C3%BCltiges%20Talent");
+    redirect(`/talents?error=${encodeURIComponent(t("invalidTalent"))}`);
   }
 
   const toScore = (name: string) => {
@@ -38,7 +40,7 @@ export async function createGkCoordinationTest(formData: FormData) {
 
   if (error) {
     redirect(
-      `/talents/${talentId}/gk-tests/new?error=Test%20konnte%20nicht%20gespeichert%20werden.`
+      `/talents/${talentId}/gk-tests/new?error=${encodeURIComponent(t("testSaveFailed"))}`
     );
   }
 

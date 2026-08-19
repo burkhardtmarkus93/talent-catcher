@@ -2,6 +2,8 @@ import { getStripe } from "@/lib/stripe";
 import {
   PLANS,
   stripeLookupKey,
+  planNameDe,
+  planTaglineDe,
   type PlanKey,
   type BillingInterval,
 } from "@/lib/plans";
@@ -30,7 +32,7 @@ export async function runStripeProductSetup(): Promise<StripeSetupResult[]> {
       continue;
     }
 
-    const product = await getOrCreateProduct(plan.key, plan.name, plan.tagline);
+    const product = await getOrCreateProduct(plan.key, planNameDe(plan.key), planTaglineDe(plan.key));
 
     for (const billingInterval of ["monatlich", "jaehrlich"] as BillingInterval[]) {
       const lookupKey = stripeLookupKey(plan.key, billingInterval);
@@ -54,7 +56,7 @@ export async function runStripeProductSetup(): Promise<StripeSetupResult[]> {
         unit_amount: amount * 100,
         recurring: { interval },
         lookup_key: lookupKey,
-        nickname: `${plan.name} (${billingInterval})`,
+        nickname: `${planNameDe(plan.key)} (${billingInterval})`,
       });
 
       results.push({ lookupKey, status: "erstellt", priceId: price.id });

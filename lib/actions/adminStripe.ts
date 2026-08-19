@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { getCurrentAppUser } from "@/lib/queries/session";
 import { runStripeProductSetup } from "@/lib/stripeSetup";
 
@@ -11,9 +12,10 @@ import { runStripeProductSetup } from "@/lib/stripeSetup";
 // idempotente Logik (lib/stripeSetup.ts) jetzt zusätzlich über einen
 // Button in der Verwaltung erreichbar.
 export async function triggerStripeSetup(): Promise<void> {
+  const t = await getTranslations("adminStripeActions");
   const appUser = await getCurrentAppUser();
   if (!appUser || appUser.role !== "admin") {
-    redirect("/admin?error=" + encodeURIComponent("Nicht berechtigt."));
+    redirect("/admin?error=" + encodeURIComponent(t("notAuthorized")));
   }
 
   let results;
@@ -22,13 +24,13 @@ export async function triggerStripeSetup(): Promise<void> {
   } catch (error) {
     console.error("triggerStripeSetup() fehlgeschlagen:", error);
     redirect(
-      "/admin?error=" + encodeURIComponent("Stripe-Einrichtung fehlgeschlagen.")
+      "/admin?error=" + encodeURIComponent(t("setupFailed"))
     );
   }
 
   const summary = results.map((r) => `${r.lookupKey}: ${r.status}`).join(", ");
   redirect(
     "/admin?success=" +
-      encodeURIComponent(`Stripe-Einrichtung abgeschlossen — ${summary}`)
+      encodeURIComponent(t("setupComplete", { summary }))
   );
 }

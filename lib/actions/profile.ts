@@ -2,9 +2,11 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 
 export async function updateProfile(formData: FormData) {
+  const t = await getTranslations("profileActions");
   const supabase = await createClient();
   const {
     data: { user },
@@ -26,7 +28,7 @@ export async function updateProfile(formData: FormData) {
   }
 
   revalidatePath("/profile");
-  redirect("/profile?success=Profil%20aktualisiert.");
+  redirect(`/profile?success=${encodeURIComponent(t("profileUpdated"))}`);
 }
 
 // Eigenständig statt lib/actions/auth.ts::updatePassword() wiederverwendet:
@@ -34,25 +36,26 @@ export async function updateProfile(formData: FormData) {
 // für den Recovery-Link-Flow, aus dem sie stammt) — hier soll ein Fehler
 // zurück auf /profile führen, nicht auf eine andere Seite springen.
 export async function changeMyPassword(formData: FormData) {
+  const t = await getTranslations("profileActions");
   const password = String(formData.get("password") ?? "");
   const confirmPassword = String(formData.get("confirmPassword") ?? "");
 
   if (!password || !confirmPassword) {
-    redirect("/profile?error=Bitte%20beide%20Felder%20ausf%C3%BCllen");
+    redirect(`/profile?error=${encodeURIComponent(t("fillBothFields"))}`);
   }
   if (password !== confirmPassword) {
-    redirect("/profile?error=Die%20Passw%C3%B6rter%20stimmen%20nicht%20%C3%BCberein");
+    redirect(`/profile?error=${encodeURIComponent(t("passwordsDontMatch"))}`);
   }
   if (password.length < 8) {
-    redirect("/profile?error=Das%20Passwort%20muss%20mindestens%208%20Zeichen%20haben");
+    redirect(`/profile?error=${encodeURIComponent(t("passwordTooShort"))}`);
   }
 
   const supabase = await createClient();
   const { error } = await supabase.auth.updateUser({ password });
 
   if (error) {
-    redirect("/profile?error=Passwort%20konnte%20nicht%20aktualisiert%20werden.");
+    redirect(`/profile?error=${encodeURIComponent(t("passwordUpdateFailed"))}`);
   }
 
-  redirect("/login?success=Passwort%20erfolgreich%20aktualisiert%20%E2%80%94%20bitte%20erneut%20anmelden.");
+  redirect(`/login?success=${encodeURIComponent(t("passwordUpdated"))}`);
 }

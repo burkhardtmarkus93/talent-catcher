@@ -11,6 +11,7 @@ interface ColumnMapperProps {
 
 export function ColumnMapper({ headers, mapping, onChange }: ColumnMapperProps) {
   const t = useTranslations("columnMapper");
+  const tFields = useTranslations("importFields");
   return (
     <div className="rounded-xl border border-line bg-surface p-5">
       <h2 className="mb-4 font-display text-lg font-medium text-ink">
@@ -31,8 +32,8 @@ export function ColumnMapper({ headers, mapping, onChange }: ColumnMapperProps) 
               className="select-field"
             >
               {IMPORT_SYSTEM_FIELDS.map((f) => (
-                <option key={f.label} value={f.key}>
-                  {f.label}
+                <option key={f.key} value={f.key}>
+                  {tFields(f.key || "none")}
                 </option>
               ))}
             </select>

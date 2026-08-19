@@ -252,6 +252,18 @@
   "columnMapper": {
     "title": "Asignación de columnas"
   },
+  "importFields": {
+    "none": "— no importar —",
+    "firstName": "Nombre",
+    "lastName": "Apellidos",
+    "birthDate": "Fecha de nacimiento",
+    "primaryPosition": "Posición principal",
+    "clubNameText": "Club actual",
+    "teamNameText": "Equipo/Categoría",
+    "leagueText": "Liga",
+    "contractStatus": "Estado contractual",
+    "contractEndDate": "Fin de contrato"
+  },
   "downloadErrorReportButton": {
     "csvHeaderRow": "Fila",
     "csvHeaderError": "Error",
@@ -420,7 +432,61 @@
     "skip": "Omitir",
     "back": "Atrás",
     "next": "Siguiente",
-    "letsGo": "¡Empecemos!"
+    "letsGo": "¡Empecemos!",
+    "steps": {
+      "welcome": {
+        "title": "Bienvenido a Talent Catcher",
+        "body": "Un breve recorrido por las áreas más importantes — puedes volver a iniciarlo en cualquier momento abajo a la izquierda con \"Tour de introducción\"."
+      },
+      "hero": {
+        "title": "Las acciones necesarias, de un vistazo",
+        "body": "Aquí ves de inmediato si hay talentos que necesitan atención ahora mismo y cuántos son — calculado automáticamente por el motor de riesgo."
+      },
+      "urgent": {
+        "title": "La acción más urgente",
+        "body": "Los talentos con mayor riesgo aparecen arriba, junto con su estado de semáforo y la justificación."
+      },
+      "watchlists-section": {
+        "title": "Mis listas de seguimiento",
+        "body": "Agrupaciones de talentos propias, por ejemplo para un día de observación concreto o una categoría de edad."
+      },
+      "nav-talente": {
+        "title": "Talentos",
+        "body": "La lista completa de talentos con filtros por posición, estado y semáforo — aquí también puedes registrar nuevos talentos."
+      },
+      "talents-filters": {
+        "title": "Filtrar por selección y promoción",
+        "body": "Además de por posición, estado contractual y semáforo, la lista se puede filtrar por centro de tecnificación DFB, selección regional, selección nacional y estado NLZ."
+      },
+      "talent-detail": {
+        "title": "En la página de detalle del talento",
+        "body": "Actualiza el club y el equipo, vincula el perfil de Transfermarkt/FuPa, sube vídeos destacados, documenta lesiones, registra hermanos/as con talento — y mucho más. Para que todo esto se mantenga claro pese a tantos detalles, las secciones debajo del resumen son desplegables: toca para expandir o contraer."
+      },
+      "nav-alerts": {
+        "title": "Alertas y seguimientos",
+        "body": "Todas las acciones pendientes en un solo lugar — alertas automáticas y seguimientos programados por ti."
+      },
+      "nav-watchlists": {
+        "title": "Listas de seguimiento",
+        "body": "Resumen de todas tus listas de seguimiento con el número de talentos."
+      },
+      "nav-import": {
+        "title": "Importar",
+        "body": "Importa listas de scouting existentes mediante CSV o XLSX, incluida la asignación de columnas."
+      },
+      "nav-abo": {
+        "title": "Suscripción",
+        "body": "Tu plan actual y tu periodo de prueba — después del periodo de prueba gratuito, aquí eliges una suscripción."
+      },
+      "nav-verwaltung": {
+        "title": "Administración",
+        "body": "Edita el nombre del club, gestiona a los miembros del equipo (rol, acceso a protección de menores, desactivación) e invita a nuevos ojeadores por correo electrónico."
+      },
+      "finish": {
+        "title": "Listo para empezar",
+        "body": "¡Eso es todo! Puedes volver a iniciar el tour en cualquier momento con \"Tour de introducción\" abajo a la izquierda en la barra lateral."
+      }
+    }
   },
   "scoutReportForm": {
     "criterionTechnik": "Técnica",
@@ -601,5 +667,108 @@
   },
   "parentLayout": {
     "logout": "Cerrar sesión"
+  },
+  "adminStripeActions": {
+    "notAuthorized": "No autorizado.",
+    "setupFailed": "Error en la configuración de Stripe.",
+    "setupComplete": "Configuración de Stripe completada — {summary}"
+  },
+  "authActions": {
+    "fillRequiredFields": "Por favor completa todos los campos obligatorios",
+    "passwordTooShort": "La contraseña debe tener al menos 8 caracteres",
+    "planNotSelfService": "Este plan no está disponible mediante autorregistro",
+    "invalidBillingInterval": "Periodo de facturación no válido",
+    "signupFailed": "Error en el registro.",
+    "signupSuccess": "Ya casi está — te hemos enviado un correo de confirmación. Haz clic en el enlace y a continuación inicia sesión.",
+    "provideEmailPassword": "Por favor indica el correo electrónico y la contraseña",
+    "loginFailed": "Error al iniciar sesión. Comprueba tus datos de acceso.",
+    "provideEmail": "Por favor indica el correo electrónico",
+    "resetLinkFailed": "No se pudo enviar el enlace de restablecimiento.",
+    "resetLinkSent": "Si existe una cuenta, se ha enviado un enlace de restablecimiento.",
+    "fillBothFields": "Por favor completa ambos campos",
+    "passwordsDontMatch": "Las contraseñas no coinciden",
+    "passwordUpdateFailed": "No se pudo actualizar la contraseña.",
+    "passwordUpdated": "Contraseña actualizada correctamente"
+  },
+  "billingActions": {
+    "noClubAssigned": "No hay ningún club asignado.",
+    "onlyAdminCanManage": "Solo el administrador del club puede gestionar la suscripción.",
+    "planNotSelfService": "Este plan no está disponible mediante autoservicio.",
+    "priceNotSetUp": "El precio aún no está configurado. Por favor, llama primero a /api/admin/stripe-setup.",
+    "checkoutFailed": "No se pudo iniciar el proceso de pago.",
+    "notAuthorized": "No autorizado.",
+    "noActiveSubscription": "Aún no se ha encontrado ninguna suscripción activa."
+  },
+  "clubActions": {
+    "adminsOnly": "Solo para administradores del club.",
+    "clubNameRequired": "El nombre del club no puede estar vacío.",
+    "clubNameUpdated": "Nombre del club actualizado."
+  },
+  "gkTestActions": {
+    "invalidTalent": "Talento no válido",
+    "testSaveFailed": "No se pudo guardar el test."
+  },
+  "guardianActions": {
+    "noAccessToTalent": "Sin acceso a este talento.",
+    "talentIdMissing": "Falta el ID del talento.",
+    "clubNameRequired": "El nombre del club es un campo obligatorio.",
+    "clubUpdateFailed": "No se pudo actualizar el club.",
+    "clubUpdated": "Club actualizado."
+  },
+  "profileActions": {
+    "profileUpdated": "Perfil actualizado.",
+    "fillBothFields": "Por favor completa ambos campos",
+    "passwordsDontMatch": "Las contraseñas no coinciden",
+    "passwordTooShort": "La contraseña debe tener al menos 8 caracteres",
+    "passwordUpdateFailed": "No se pudo actualizar la contraseña.",
+    "passwordUpdated": "Contraseña actualizada correctamente — por favor, vuelve a iniciar sesión."
+  },
+  "teamActions": {
+    "adminsOnly": "Solo para administradores del club.",
+    "provideEmail": "Por favor indica la dirección de correo electrónico.",
+    "invalidRole": "Rol no válido.",
+    "invitationSent": "Invitación enviada.",
+    "invalidInput": "Entrada no válida.",
+    "cannotChangeOwnRole": "No puedes cambiar tu propio rol.",
+    "memberUpdated": "Miembro del equipo actualizado.",
+    "cannotDeactivateSelf": "No puedes desactivar tu propia cuenta.",
+    "cannotDeactivateLastAdmin": "No se puede desactivar al último administrador activo.",
+    "memberReactivated": "Miembro del equipo reactivado.",
+    "memberDeactivated": "Miembro del equipo desactivado."
+  },
+  "plans": {
+    "start": {
+      "name": "Start",
+      "tagline": "Para tener una primera visión en un club pequeño",
+      "features": [
+        "1 acceso de ojeador",
+        "Hasta 25 talentos activos",
+        "Perfiles de talento e informes de scouting",
+        "Alertas automáticas del motor de riesgo",
+        "Panel y seguimientos"
+      ]
+    },
+    "verein": {
+      "name": "Club",
+      "tagline": "Para clubes con varios ojeadores",
+      "features": [
+        "Hasta 3 accesos de ojeador",
+        "Talentos activos ilimitados",
+        "Todo lo del plan Start",
+        "Importación CSV/XLSX",
+        "Listas de seguimiento",
+        "Tests de coordinación para porteros"
+      ]
+    },
+    "verband": {
+      "name": "Federación / NLZ",
+      "tagline": "Modelo de acceso individualizado para varios clubes o estructuras de captación",
+      "features": [
+        "Varios clubes / estructuras de captación",
+        "Modelo de roles individualizado",
+        "Persona de contacto dedicada",
+        "Precio bajo consulta"
+      ]
+    }
   }
 }

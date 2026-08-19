@@ -8,6 +8,7 @@ const SELF_SERVICE_PLANS: PlanKey[] = ["start", "verein"];
 
 export function PlanSelector() {
   const t = useTranslations("planSelector");
+  const tPlans = useTranslations("plans");
   const [plan, setPlan] = useState<PlanKey>("start");
   const [billingInterval, setBillingInterval] = useState<BillingInterval>("monatlich");
 
@@ -69,8 +70,8 @@ export function PlanSelector() {
                   : "border-line bg-surface hover:border-pitch/50"
               }`}
             >
-              <span className="font-display text-base font-medium text-ink">{p.name}</span>
-              <span className="text-xs text-muted">{p.tagline}</span>
+              <span className="font-display text-base font-medium text-ink">{tPlans(`${key}.name`)}</span>
+              <span className="text-xs text-muted">{tPlans(`${key}.tagline`)}</span>
               <span className="mt-1 font-mono text-xl text-ink">
                 {displayPrice !== null ? formatEuro(displayPrice) : "—"}
                 <span className="text-xs font-sans text-muted"> {t("perMonth")}</span>
@@ -81,7 +82,7 @@ export function PlanSelector() {
                 </span>
               )}
               <ul className="mt-1 flex flex-col gap-1 text-xs text-muted">
-                {p.features.map((f) => (
+                {tPlans.raw(`${key}.features`).map((f: string) => (
                   <li key={f}>· {f}</li>
                 ))}
               </ul>
@@ -91,12 +92,12 @@ export function PlanSelector() {
 
         <div className="flex flex-col items-start gap-2 rounded-xl border border-dashed border-line bg-paper p-4 text-left">
           <span className="font-display text-base font-medium text-ink">
-            {PLANS.verband.name}
+            {tPlans("verband.name")}
           </span>
-          <span className="text-xs text-muted">{PLANS.verband.tagline}</span>
+          <span className="text-xs text-muted">{tPlans("verband.tagline")}</span>
           <span className="mt-1 text-sm text-ink">{t("priceOnRequest")}</span>
           <ul className="mt-1 flex flex-col gap-1 text-xs text-muted">
-            {PLANS.verband.features.map((f) => (
+            {tPlans.raw("verband.features").map((f: string) => (
               <li key={f}>· {f}</li>
             ))}
           </ul>

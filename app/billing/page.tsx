@@ -24,9 +24,9 @@ export default async function BillingPage({
 }) {
   const appUser = await getCurrentAppUser();
   const billing = appUser?.clubId ? await getClubBilling(appUser.clubId) : null;
-  const currentPlan = billing ? PLANS[billing.plan] : null;
   const isAdmin = appUser?.role === "admin";
   const t = await getTranslations("billingPage");
+  const tPlans = await getTranslations("plans");
 
   const statusLabels: Record<string, string> = {
     active: t("statusActive"),
@@ -93,7 +93,7 @@ export default async function BillingPage({
             <div>
               <p className="text-xs uppercase tracking-wide text-muted">{t("currentPlan")}</p>
               <p className="mt-1 font-display text-2xl font-medium text-ink">
-                {currentPlan?.name ?? "—"}
+                {billing ? tPlans(`${billing.plan}.name`) : "—"}
               </p>
               {billing?.subscriptionStatus && (
                 <span
@@ -176,12 +176,12 @@ export default async function BillingPage({
                       </svg>
                     </span>
                     <div>
-                      <p className="font-display text-lg font-medium text-ink">{plan.name}</p>
-                      <p className="text-xs text-muted">{plan.tagline}</p>
+                      <p className="font-display text-lg font-medium text-ink">{tPlans(`${key}.name`)}</p>
+                      <p className="text-xs text-muted">{tPlans(`${key}.tagline`)}</p>
                     </div>
                   </div>
                   <ul className="flex flex-col gap-1.5 text-xs text-muted">
-                    {plan.features.map((f) => (
+                    {tPlans.raw(`${key}.features`).map((f: string) => (
                       <li key={f} className="flex items-center gap-1.5">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="flex-none text-pitch" aria-hidden>
                           <path d="M20 6 9 17l-5-5" />
