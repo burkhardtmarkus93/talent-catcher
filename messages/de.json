@@ -10,6 +10,7 @@
     "nav": {
       "dashboard": "Dashboard",
       "talents": "Talente",
+      "candidates": "Kandidaten",
       "alerts": "Alerts & Wiedervorlagen",
       "watchlists": "Watchlists",
       "import": "Import",
@@ -35,7 +36,40 @@
     "submit": "Anmelden",
     "forgotPassword": "Passwort vergessen?",
     "noAccount": "Noch kein Konto?",
-    "registerClub": "Verein registrieren"
+    "registerClub": "Verein registrieren",
+    "playerQuestion": "Bist du Spieler/in und noch kein Talent bei einem Verein hier?",
+    "playerRegister": "Jetzt bewerben"
+  },
+  "candidateRegistrationPage": {
+    "title": "Bei einem Verein bewerben",
+    "tagline": "Noch nicht als Talent bei einem Verein erfasst? Schlag dich hier direkt einem Verein vor.",
+    "club": "Verein",
+    "clubPlaceholder": "Verein auswählen",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "birthDate": "Geburtsdatum",
+    "primaryPosition": "Hauptposition",
+    "primaryPositionPlaceholder": "z. B. IV, TW, ST",
+    "contactEmail": "Deine E-Mail-Adresse",
+    "contactEmailPlaceholder": "damit der Verein dich erreichen kann",
+    "guardianHint": "Du bist laut Geburtsdatum noch minderjährig. Deine Bewerbung wird dem Verein erst vorgeschlagen, nachdem eine/e Erziehungsberechtigte/r über die unten angegebene E-Mail-Adresse zugestimmt hat.",
+    "guardianEmail": "E-Mail-Adresse Erziehungsberechtigte/r",
+    "dataConsent": "Ich bin damit einverstanden, dass meine hier angegebenen Daten an den gewählten Verein zur Prüfung meiner Bewerbung übermittelt werden.",
+    "submitting": "Wird übermittelt...",
+    "submit": "Bewerbung absenden",
+    "successTitle": "Bewerbung eingegangen.",
+    "successBodyAdult": "Der Verein prüft deine Angaben jetzt und meldet sich bei dir, wenn er dich als Talent aufnimmt.",
+    "successBodyMinor": "Wir haben eine Bestätigungs-E-Mail an die angegebene Erziehungsberechtigten-Adresse geschickt. Erst nach deren Zustimmung wird deine Bewerbung dem Verein vorgeschlagen.",
+    "backToLogin": "Zurück zum Login"
+  },
+  "candidatesPage": {
+    "title": "Kandidaten",
+    "subtitle": "Spieler, die sich direkt bei eurem Verein beworben haben.",
+    "empty": "Aktuell keine offenen Bewerbungen.",
+    "minorBadge": "Minderjährig",
+    "candidateMeta": "{position} · {age} Jahre",
+    "decline": "Ablehnen",
+    "accept": "Als Talent annehmen"
   },
   "newTalentPage": {
     "backToList": "← Zurück zur Talentliste",
@@ -469,6 +503,10 @@
         "title": "Auf der Talent-Detailseite",
         "body": "Verein und Team aktualisieren, Transfermarkt-/FuPa-Profil verknüpfen, Video-Highlights hochladen, Verletzungen dokumentieren, talentierte Geschwister vermerken — und mehr. Damit das bei so vielen Details übersichtlich bleibt, sind die Bereiche unterhalb der Übersicht aufklappbar: antippen zum Auf- und Zuklappen."
       },
+      "nav-candidates": {
+        "title": "Kandidaten",
+        "body": "Spieler können sich über ein öffentliches Formular direkt bei eurem Verein bewerben. Hier prüfst du eingegangene Bewerbungen und legst sie per Annehmen als reguläres Talent an — oder lehnst sie ab. Bei Minderjährigen erscheint eine Bewerbung erst, nachdem die Erziehungsberechtigten zugestimmt haben."
+      },
       "nav-alerts": {
         "title": "Alerts & Wiedervorlagen",
         "body": "Alle offenen Handlungsaufforderungen an einem Ort — automatische Alerts und von dir gesetzte Wiedervorlagen."
@@ -865,6 +903,20 @@
     "updateFailed": "Talent konnte nicht aktualisiert werden.",
     "clubUpdateFailed": "Verein konnte nicht aktualisiert werden.",
     "clubNameRequired": "Aktueller Verein darf nicht leer sein."
+  },
+  "candidateActions": {
+    "requiredFields": "Bitte alle Pflichtfelder ausfüllen.",
+    "invalidBirthDate": "Das Geburtsdatum ist ungültig oder liegt in der Zukunft.",
+    "consentRequired": "Bitte der Datenverarbeitung zustimmen.",
+    "guardianEmailRequired": "Bei minderjährigen Bewerber:innen ist die E-Mail-Adresse einer/eines Erziehungsberechtigten Pflicht.",
+    "submitFailed": "Bewerbung konnte nicht übermittelt werden. Bitte erneut versuchen.",
+    "noClubAssigned": "Deinem Benutzer ist kein Verein zugeordnet.",
+    "candidateIdMissing": "Kandidat-ID fehlt.",
+    "candidateNotFound": "Kandidatur nicht gefunden oder bereits bearbeitet.",
+    "youthAccessRequired": "Für die Annahme minderjähriger Kandidaturen ist die Berechtigung „Zugriff auf Jugendtalente“ erforderlich.",
+    "planLimitReached": "Dein Plan „{plan}“ ist auf {limit} aktive Talente begrenzt. Bitte upgraden oder ein Talent archivieren.",
+    "acceptFailed": "Kandidatur konnte nicht angenommen werden.",
+    "declineFailed": "Kandidatur konnte nicht abgelehnt werden."
   },
   "reportActions": {
     "matchDateRequired": "Spieldatum ist ein Pflichtfeld.",

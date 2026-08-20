@@ -31,6 +31,19 @@ const navItems = [
     ),
   },
   {
+    href: "/candidates",
+    labelKey: "candidates" as const,
+    tourId: "tour-nav-candidates",
+    icon: (
+      <>
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M19 8v6" />
+        <path d="M22 11h-6" />
+      </>
+    ),
+  },
+  {
     href: "/alerts-reminders",
     labelKey: "alerts" as const,
     tourId: "tour-nav-alerts",

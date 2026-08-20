@@ -10,6 +10,7 @@
     "nav": {
       "dashboard": "Tableau de bord",
       "talents": "Talents",
+      "candidates": "Candidats",
       "alerts": "Alertes et relances",
       "watchlists": "Listes de suivi",
       "import": "Import",
@@ -35,7 +36,40 @@
     "submit": "Se connecter",
     "forgotPassword": "Mot de passe oublié ?",
     "noAccount": "Pas encore de compte ?",
-    "registerClub": "Inscrire un club"
+    "registerClub": "Inscrire un club",
+    "playerQuestion": "Êtes-vous joueur/joueuse et pas encore enregistré(e) comme talent auprès d'un club ici ?",
+    "playerRegister": "Postuler maintenant"
+  },
+  "candidateRegistrationPage": {
+    "title": "Postuler auprès d'un club",
+    "tagline": "Pas encore enregistré(e) comme talent auprès d'un club ? Proposez-vous directement à un club ici.",
+    "club": "Club",
+    "clubPlaceholder": "Sélectionner un club",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "birthDate": "Date de naissance",
+    "primaryPosition": "Position principale",
+    "primaryPositionPlaceholder": "p. ex. IV, TW, ST",
+    "contactEmail": "Votre adresse e-mail",
+    "contactEmailPlaceholder": "pour que le club puisse vous contacter",
+    "guardianHint": "D'après votre date de naissance, vous êtes encore mineur(e). Votre candidature ne sera proposée au club qu'après l'accord d'un(e) représentant(e) légal(e) via l'adresse e-mail indiquée ci-dessous.",
+    "guardianEmail": "Adresse e-mail du/de la représentant(e) légal(e)",
+    "dataConsent": "J'accepte que les données indiquées ici soient transmises au club sélectionné afin d'examiner ma candidature.",
+    "submitting": "Envoi en cours...",
+    "submit": "Envoyer la candidature",
+    "successTitle": "Candidature reçue.",
+    "successBodyAdult": "Le club examine maintenant vos informations et vous contactera s'il vous accepte comme talent.",
+    "successBodyMinor": "Nous avons envoyé un e-mail de confirmation à l'adresse du/de la représentant(e) légal(e) indiquée. Votre candidature ne sera proposée au club qu'après son accord.",
+    "backToLogin": "Retour à la connexion"
+  },
+  "candidatesPage": {
+    "title": "Candidats",
+    "subtitle": "Joueurs ayant postulé directement auprès de votre club.",
+    "empty": "Aucune candidature en attente actuellement.",
+    "minorBadge": "Mineur(e)",
+    "candidateMeta": "{position} · {age} ans",
+    "decline": "Refuser",
+    "accept": "Accepter comme talent"
   },
   "newTalentPage": {
     "backToList": "← Retour à la liste des talents",
@@ -469,6 +503,10 @@
         "title": "Sur la fiche détaillée du talent",
         "body": "Mettez à jour le club et l'équipe, associez un profil Transfermarkt/FuPa, mettez en ligne des temps forts vidéo, documentez les blessures, notez les frères et sœurs talentueux — et bien plus encore. Pour que cela reste lisible malgré tant de détails, les sections situées sous l'aperçu sont repliables : touchez pour les ouvrir ou les refermer."
       },
+      "nav-candidates": {
+        "title": "Candidats",
+        "body": "Les joueurs peuvent postuler directement auprès de votre club via un formulaire public. Ici, vous examinez les candidatures reçues et les transformez en talent régulier via Accepter — ou vous les refusez. Pour les mineurs, une candidature n'apparaît qu'après l'accord des représentants légaux."
+      },
       "nav-alerts": {
         "title": "Alertes et relances",
         "body": "Toutes les actions en attente réunies au même endroit — alertes automatiques et relances que vous avez définies."
@@ -865,6 +903,20 @@
     "updateFailed": "Impossible de mettre à jour le talent.",
     "clubUpdateFailed": "Impossible de mettre à jour le club.",
     "clubNameRequired": "Le club actuel ne peut pas être vide."
+  },
+  "candidateActions": {
+    "requiredFields": "Veuillez remplir tous les champs obligatoires.",
+    "invalidBirthDate": "La date de naissance est invalide ou se situe dans le futur.",
+    "consentRequired": "Veuillez accepter le traitement des données.",
+    "guardianEmailRequired": "Pour les candidat(e)s mineur(e)s, l'adresse e-mail d'un(e) représentant(e) légal(e) est obligatoire.",
+    "submitFailed": "Impossible d'envoyer la candidature. Veuillez réessayer.",
+    "noClubAssigned": "Aucun club n'est associé à votre utilisateur.",
+    "candidateIdMissing": "Identifiant de candidat manquant.",
+    "candidateNotFound": "Candidature introuvable ou déjà traitée.",
+    "youthAccessRequired": "L'acceptation de candidatures de mineurs nécessite l'autorisation « Accès aux talents mineurs ».",
+    "planLimitReached": "Votre plan « {plan} » est limité à {limit} talents actifs. Veuillez passer à un plan supérieur ou archiver un talent.",
+    "acceptFailed": "Impossible d'accepter la candidature.",
+    "declineFailed": "Impossible de refuser la candidature."
   },
   "reportActions": {
     "matchDateRequired": "La date du match est un champ obligatoire.",
