@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/Button";
 import { LogoLockup } from "@/components/ui/LogoLockup";
+import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { requestPasswordReset } from "@/lib/actions/auth";
 
 export default async function ResetPasswordPage({
@@ -11,7 +12,10 @@ export default async function ResetPasswordPage({
 }) {
   const t = await getTranslations("resetPassword");
   return (
-    <main className="flex min-h-screen items-center justify-center bg-paper px-4">
+    <main className="flex min-h-screen flex-col items-center justify-center gap-3 bg-paper px-4">
+      <div className="flex w-full max-w-sm justify-end">
+        <LanguageSwitcher />
+      </div>
       <div className="w-full max-w-sm rounded-xl border border-line bg-surface p-8 shadow-sm">
         <div className="mb-8 text-center">
           <LogoLockup height={90} className="mb-2" />

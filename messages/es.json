@@ -158,6 +158,7 @@
     "verbandsauswahl": "Selección regional",
     "nationalmannschaft": "Selección nacional",
     "nlz": "NLZ",
+    "euPassport": "Pasaporte UE",
     "all": "Todos",
     "yes": "Sí",
     "no": "No",
@@ -462,7 +463,7 @@
       },
       "talents-filters": {
         "title": "Filtrar por selección y promoción",
-        "body": "Además de por posición, estado contractual y semáforo, la lista se puede filtrar por centro de tecnificación DFB, selección regional, selección nacional y estado NLZ."
+        "body": "Además de por posición, estado contractual y semáforo, la lista se puede filtrar por centro de tecnificación DFB, selección regional, selección nacional, estado NLZ y pasaporte UE."
       },
       "talent-detail": {
         "title": "En la página de detalle del talento",
@@ -486,7 +487,7 @@
       },
       "nav-verwaltung": {
         "title": "Administración",
-        "body": "Edita el nombre del club, gestiona a los miembros del equipo (rol, acceso a protección de menores, desactivación) e invita a nuevos ojeadores por correo electrónico."
+        "body": "Edita el nombre del club, asigna el club a una federación regional, gestiona a los miembros del equipo (rol, acceso a protección de menores, desactivación) e invita a nuevos ojeadores por correo electrónico."
       },
       "finish": {
         "title": "Listo para empezar",
@@ -573,6 +574,7 @@
     "verbandsauswahl": "Selección regional",
     "nationalmannschaft": "Selección nacional",
     "nlz": "NLZ",
+    "euPassport": "Pasaporte UE",
     "save": "Guardar",
     "siblingsTitle": "Hermanos/as con talento",
     "siblingsHint": "Solo una nota para ti — por ejemplo, si durante el scouting adviertes que hay un hermano o una hermana con talento. No crea un perfil de talento propio; para eso está el enlace «Registrar como talento» más abajo.",
@@ -905,6 +907,7 @@
     "dfbStuetzpunkt": "Centro de tecnificación DFB",
     "verbandsauswahl": "Selección regional",
     "nationalmannschaft": "Selección nacional",
-    "nlz": "NLZ"
+    "nlz": "NLZ",
+    "euPassport": "Pasaporte UE"
   }
 }

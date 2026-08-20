@@ -18,6 +18,7 @@ function mapLandesverbandTalent(row: any): LandesverbandTalent {
     verbandsauswahl: Boolean(row.verbandsauswahl),
     nationalmannschaft: Boolean(row.nationalmannschaft),
     nlz: Boolean(row.nlz),
+    euPassport: Boolean(row.eu_passport),
     updatedAt: row.updated_at,
   };
 }

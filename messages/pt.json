@@ -158,6 +158,7 @@
     "verbandsauswahl": "Seleção da federação",
     "nationalmannschaft": "Seleção nacional",
     "nlz": "NLZ",
+    "euPassport": "Passaporte UE",
     "all": "Todos",
     "yes": "Sim",
     "no": "Não",
@@ -462,7 +463,7 @@
       },
       "talents-filters": {
         "title": "Filtrar por seleção e fomento",
-        "body": "Além de posição, situação contratual e sinalização, a lista também pode ser filtrada por Base do DFB, Seleção da federação, Seleção nacional e status de NLZ."
+        "body": "Além de posição, situação contratual e sinalização, a lista também pode ser filtrada por Base do DFB, Seleção da federação, Seleção nacional, status de NLZ e passaporte UE."
       },
       "talent-detail": {
         "title": "Na página de detalhes do talento",
@@ -486,7 +487,7 @@
       },
       "nav-verwaltung": {
         "title": "Administração",
-        "body": "Editar o nome do clube, gerenciar membros da equipe (função, acesso à proteção de menores, desativação) e convidar novos olheiros por e-mail."
+        "body": "Editar o nome do clube, associar o clube a uma federação regional, gerenciar membros da equipe (função, acesso à proteção de menores, desativação) e convidar novos olheiros por e-mail."
       },
       "finish": {
         "title": "Pronto para começar",
@@ -573,6 +574,7 @@
     "verbandsauswahl": "Seleção da federação",
     "nationalmannschaft": "Seleção nacional",
     "nlz": "NLZ",
+    "euPassport": "Passaporte UE",
     "save": "Salvar",
     "siblingsTitle": "Irmãos talentosos",
     "siblingsHint": "Apenas uma anotação para você — por exemplo, quando durante o scouting você percebe que há um(a) irmão/irmã também talentoso(a). Não cria um perfil de talento próprio; para isso existe o link \"Registrar como talento\" abaixo.",
@@ -905,6 +907,7 @@
     "dfbStuetzpunkt": "Base do DFB",
     "verbandsauswahl": "Seleção da federação",
     "nationalmannschaft": "Seleção nacional",
-    "nlz": "NLZ"
+    "nlz": "NLZ",
+    "euPassport": "Passaporte UE"
   }
 }

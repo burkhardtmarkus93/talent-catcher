@@ -158,6 +158,7 @@
     "verbandsauswahl": "Regional select team",
     "nationalmannschaft": "National team",
     "nlz": "NLZ",
+    "euPassport": "EU passport",
     "all": "All",
     "yes": "Yes",
     "no": "No",
@@ -462,7 +463,7 @@
       },
       "talents-filters": {
         "title": "Filter by selection & development programs",
-        "body": "In addition to position, contract status, and alert, you can filter the list by DFB talent center, regional select team, national team, and NLZ status."
+        "body": "In addition to position, contract status, and alert, you can filter the list by DFB talent center, regional select team, national team, NLZ status, and EU passport."
       },
       "talent-detail": {
         "title": "On the talent detail page",
@@ -486,7 +487,7 @@
       },
       "nav-verwaltung": {
         "title": "Administration",
-        "body": "Edit the club name, manage team members (role, youth protection access, deactivate) and invite new scouts by email."
+        "body": "Edit the club name, assign the club to a regional football association, manage team members (role, youth protection access, deactivate) and invite new scouts by email."
       },
       "finish": {
         "title": "Ready to get started",
@@ -573,6 +574,7 @@
     "verbandsauswahl": "Regional select team",
     "nationalmannschaft": "National team",
     "nlz": "NLZ",
+    "euPassport": "EU passport",
     "save": "Save",
     "siblingsTitle": "Talented siblings",
     "siblingsHint": "A private note for yourself — e.g. when scouting reveals that there's a talented brother or sister as well. This does not create a separate talent profile; use the \"Register as talent\" link below for that.",
@@ -905,6 +907,7 @@
     "dfbStuetzpunkt": "DFB talent center",
     "verbandsauswahl": "Regional select team",
     "nationalmannschaft": "National team",
-    "nlz": "NLZ"
+    "nlz": "NLZ",
+    "euPassport": "EU passport"
   }
 }

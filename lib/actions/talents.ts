@@ -408,6 +408,7 @@ export async function updateTalentOverview(formData: FormData): Promise<void> {
     verbandsauswahl: formData.get("verbandsauswahl") === "on",
     nationalmannschaft: formData.get("nationalmannschaft") === "on",
     nlz: formData.get("nlz") === "on",
+    eu_passport: formData.get("euPassport") === "on",
   };
 
   // Größe/Gewicht nur übernehmen, wenn das Formular sie überhaupt enthält

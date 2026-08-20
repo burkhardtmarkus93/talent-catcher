@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/Button";
 import { LogoLockup } from "@/components/ui/LogoLockup";
+import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { PlanSelector } from "@/components/auth/PlanSelector";
 import { signUp } from "@/lib/actions/auth";
 
@@ -12,7 +13,10 @@ export default async function SignupPage({
 }) {
   const t = await getTranslations("signup");
   return (
-    <main className="flex min-h-screen items-center justify-center bg-paper px-4 py-12">
+    <main className="flex min-h-screen flex-col items-center justify-center gap-3 bg-paper px-4 py-12">
+      <div className="flex w-full max-w-3xl justify-end">
+        <LanguageSwitcher />
+      </div>
       <div className="w-full max-w-3xl rounded-xl border border-line bg-surface p-8 shadow-sm">
         <div className="mb-8 text-center">
           <LogoLockup height={90} className="mb-2" />
