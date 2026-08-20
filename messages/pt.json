@@ -52,6 +52,8 @@
     "birthDate": "Data de nascimento",
     "primaryPosition": "Posição principal",
     "primaryPositionPlaceholder": "ex.: IV, TW, ST",
+    "goalkeeperHint": "Existe um projeto próprio e especializado para talentos de goleiro — vale a pena conferir também (relevante também para responsáveis de talentos de goleiro). Você pode enviar sua candidatura aqui normalmente, independente disso.",
+    "goalkeeperLink": "Ir para a Academia de Goleiros →",
     "contactEmail": "Seu endereço de e-mail",
     "contactEmailPlaceholder": "para que o clube possa entrar em contato com você",
     "guardianHint": "De acordo com a data de nascimento, você ainda é menor de idade. Sua candidatura só será encaminhada ao clube depois que um(a) responsável legal confirmar o consentimento através do endereço de e-mail informado abaixo.",

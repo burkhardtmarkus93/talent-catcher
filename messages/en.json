@@ -52,6 +52,8 @@
     "birthDate": "Date of birth",
     "primaryPosition": "Primary position",
     "primaryPositionPlaceholder": "e.g. IV, TW, ST",
+    "goalkeeperHint": "There's a dedicated, specialized project for goalkeeper talents — feel free to check it out too (also relevant for parents of goalkeeper talents). You can still submit your application here independently of that.",
+    "goalkeeperLink": "Go to Goalkeeper Academy →",
     "contactEmail": "Your email address",
     "contactEmailPlaceholder": "so the club can reach you",
     "guardianHint": "Based on your date of birth, you're still a minor. Your application will only be forwarded to the club after a parent or guardian has given consent via the email address provided below.",

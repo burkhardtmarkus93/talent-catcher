@@ -52,6 +52,8 @@
     "birthDate": "Date de naissance",
     "primaryPosition": "Position principale",
     "primaryPositionPlaceholder": "p. ex. IV, TW, ST",
+    "goalkeeperHint": "Il existe un projet dédié et spécialisé pour les talents gardiens de but — n'hésitez pas à y jeter un œil également (pertinent aussi pour les parents de talents gardiens de but). Vous pouvez tout de même envoyer votre candidature ici, indépendamment de cela.",
+    "goalkeeperLink": "Vers l'Académie des Gardiens →",
     "contactEmail": "Votre adresse e-mail",
     "contactEmailPlaceholder": "pour que le club puisse vous contacter",
     "guardianHint": "D'après votre date de naissance, vous êtes encore mineur(e). Votre candidature ne sera proposée au club qu'après l'accord d'un(e) représentant(e) légal(e) via l'adresse e-mail indiquée ci-dessous.",

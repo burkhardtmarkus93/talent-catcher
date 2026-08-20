@@ -20,13 +20,22 @@ function calculateAge(birthDate: string): number | null {
   return Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
 }
 
+// Torwart-Akademie (https://torwart-akademie.vercel.app/) ist ein
+// eigenständiges, separates Projekt für TW-Talente — nur ein
+// informativer Hinweis, keine Einschränkung der Bewerbung hier (mit
+// dem Projektverantwortlichen abgestimmt).
+const GOALKEEPER_PATTERN = /\b(tw|gk|torwart|torh[üu]ter|goalkeeper|keeper)\b/i;
+const TORWART_AKADEMIE_URL = "https://torwart-akademie.vercel.app/";
+
 export function CandidateRegistrationForm({ clubs }: { clubs: PublicClubOption[] }) {
   const [state, formAction] = useFormState(submitTalentCandidate, initialState);
   const [birthDate, setBirthDate] = useState("");
+  const [primaryPosition, setPrimaryPosition] = useState("");
   const t = useTranslations("candidateRegistrationPage");
 
   const age = useMemo(() => calculateAge(birthDate), [birthDate]);
   const isMinor = age !== null && age < 18;
+  const isGoalkeeper = GOALKEEPER_PATTERN.test(primaryPosition.trim());
 
   if (state.success) {
     return (
@@ -80,13 +89,33 @@ export function CandidateRegistrationForm({ clubs }: { clubs: PublicClubOption[]
             className="field"
           />
         </label>
-        <Field
-          label={t("primaryPosition")}
-          name="primaryPosition"
-          placeholder={t("primaryPositionPlaceholder")}
-          required
-        />
+        <label className="flex flex-col gap-1.5 text-sm text-ink">
+          {t("primaryPosition")}
+          <input
+            type="text"
+            name="primaryPosition"
+            required
+            placeholder={t("primaryPositionPlaceholder")}
+            value={primaryPosition}
+            onChange={(e) => setPrimaryPosition(e.currentTarget.value)}
+            className="field"
+          />
+        </label>
       </div>
+
+      {isGoalkeeper && (
+        <div className="mb-4 rounded-lg border border-line bg-paper p-3">
+          <p className="text-sm text-ink">{t("goalkeeperHint")}</p>
+          <a
+            href={TORWART_AKADEMIE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-1 inline-block text-sm text-pitch underline-offset-2 hover:underline"
+          >
+            {t("goalkeeperLink")}
+          </a>
+        </div>
+      )}
 
       <div className="mb-4">
         <Field

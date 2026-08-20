@@ -52,6 +52,8 @@
     "birthDate": "Fecha de nacimiento",
     "primaryPosition": "Posición principal",
     "primaryPositionPlaceholder": "p. ej. IV, TW, ST",
+    "goalkeeperHint": "Existe un proyecto propio y especializado para talentos de portero — échale un vistazo también (relevante también para madres, padres o tutores de talentos de portero). Puedes enviar tu solicitud aquí de todos modos, independientemente de eso.",
+    "goalkeeperLink": "Ir a la Academia de Porteros →",
     "contactEmail": "Tu dirección de correo electrónico",
     "contactEmailPlaceholder": "para que el club pueda contactarte",
     "guardianHint": "Según tu fecha de nacimiento, todavía eres menor de edad. Tu solicitud solo se propondrá al club después de que la madre, el padre o el tutor legal haya dado su consentimiento a través de la dirección de correo electrónico indicada abajo.",
