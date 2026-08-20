@@ -463,7 +463,7 @@
       },
       "talents-filters": {
         "title": "Auswahl & Förderung filtern",
-        "body": "Zusätzlich zu Position, Vertragsstatus und Ampel lässt sich die Liste nach DFB-Stützpunkt, Verbandsauswahl, Nationalmannschaft und NLZ-Status filtern."
+        "body": "Zusätzlich zu Position, Vertragsstatus und Ampel lässt sich die Liste nach DFB-Stützpunkt, Verbandsauswahl, Nationalmannschaft, NLZ-Status und EU-Pass filtern."
       },
       "talent-detail": {
         "title": "Auf der Talent-Detailseite",
@@ -487,7 +487,7 @@
       },
       "nav-verwaltung": {
         "title": "Verwaltung",
-        "body": "Vereinsname bearbeiten, Teammitglieder verwalten (Rolle, Jugendschutz-Zugriff, deaktivieren) und neue Scouts per E-Mail einladen."
+        "body": "Vereinsname bearbeiten, Verein einem Landesverband zuordnen, Teammitglieder verwalten (Rolle, Jugendschutz-Zugriff, deaktivieren) und neue Scouts per E-Mail einladen."
       },
       "finish": {
         "title": "Bereit zum Loslegen",

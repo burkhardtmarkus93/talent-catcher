@@ -463,7 +463,7 @@
       },
       "talents-filters": {
         "title": "Filtrar por selección y promoción",
-        "body": "Además de por posición, estado contractual y semáforo, la lista se puede filtrar por centro de tecnificación DFB, selección regional, selección nacional y estado NLZ."
+        "body": "Además de por posición, estado contractual y semáforo, la lista se puede filtrar por centro de tecnificación DFB, selección regional, selección nacional, estado NLZ y pasaporte UE."
       },
       "talent-detail": {
         "title": "En la página de detalle del talento",
@@ -487,7 +487,7 @@
       },
       "nav-verwaltung": {
         "title": "Administración",
-        "body": "Edita el nombre del club, gestiona a los miembros del equipo (rol, acceso a protección de menores, desactivación) e invita a nuevos ojeadores por correo electrónico."
+        "body": "Edita el nombre del club, asigna el club a una federación regional, gestiona a los miembros del equipo (rol, acceso a protección de menores, desactivación) e invita a nuevos ojeadores por correo electrónico."
       },
       "finish": {
         "title": "Listo para empezar",

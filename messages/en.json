@@ -463,7 +463,7 @@
       },
       "talents-filters": {
         "title": "Filter by selection & development programs",
-        "body": "In addition to position, contract status, and alert, you can filter the list by DFB talent center, regional select team, national team, and NLZ status."
+        "body": "In addition to position, contract status, and alert, you can filter the list by DFB talent center, regional select team, national team, NLZ status, and EU passport."
       },
       "talent-detail": {
         "title": "On the talent detail page",
@@ -487,7 +487,7 @@
       },
       "nav-verwaltung": {
         "title": "Administration",
-        "body": "Edit the club name, manage team members (role, youth protection access, deactivate) and invite new scouts by email."
+        "body": "Edit the club name, assign the club to a regional football association, manage team members (role, youth protection access, deactivate) and invite new scouts by email."
       },
       "finish": {
         "title": "Ready to get started",

@@ -463,7 +463,7 @@
       },
       "talents-filters": {
         "title": "Filtrar por seleção e fomento",
-        "body": "Além de posição, situação contratual e sinalização, a lista também pode ser filtrada por Base do DFB, Seleção da federação, Seleção nacional e status de NLZ."
+        "body": "Além de posição, situação contratual e sinalização, a lista também pode ser filtrada por Base do DFB, Seleção da federação, Seleção nacional, status de NLZ e passaporte UE."
       },
       "talent-detail": {
         "title": "Na página de detalhes do talento",
@@ -487,7 +487,7 @@
       },
       "nav-verwaltung": {
         "title": "Administração",
-        "body": "Editar o nome do clube, gerenciar membros da equipe (função, acesso à proteção de menores, desativação) e convidar novos olheiros por e-mail."
+        "body": "Editar o nome do clube, associar o clube a uma federação regional, gerenciar membros da equipe (função, acesso à proteção de menores, desativação) e convidar novos olheiros por e-mail."
       },
       "finish": {
         "title": "Pronto para começar",

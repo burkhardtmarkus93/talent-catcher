@@ -463,7 +463,7 @@
       },
       "talents-filters": {
         "title": "Filtrer par sélection et filière",
-        "body": "En plus de la position, du statut contractuel et du feu, la liste peut être filtrée par pôle DFB, sélection régionale, équipe nationale et statut NLZ."
+        "body": "En plus de la position, du statut contractuel et du feu, la liste peut être filtrée par pôle DFB, sélection régionale, équipe nationale, statut NLZ et passeport UE."
       },
       "talent-detail": {
         "title": "Sur la fiche détaillée du talent",
@@ -487,7 +487,7 @@
       },
       "nav-verwaltung": {
         "title": "Administration",
-        "body": "Modifiez le nom du club, gérez les membres de l'équipe (rôle, accès protection des mineurs, désactivation) et invitez de nouveaux recruteurs par e-mail."
+        "body": "Modifiez le nom du club, associez le club à une ligue régionale, gérez les membres de l'équipe (rôle, accès protection des mineurs, désactivation) et invitez de nouveaux recruteurs par e-mail."
       },
       "finish": {
         "title": "Prêt à commencer",
