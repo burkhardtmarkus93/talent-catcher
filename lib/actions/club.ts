@@ -18,10 +18,13 @@ export async function updateClubName(formData: FormData) {
     redirect(`/admin?error=${encodeURIComponent(t("clubNameRequired"))}`);
   }
 
+  const landesverbandIdRaw = String(formData.get("landesverbandId") ?? "").trim();
+  const landesverbandId = landesverbandIdRaw || null;
+
   const supabase = await createClient();
   const { error } = await supabase
     .from("clubs")
-    .update({ name })
+    .update({ name, landesverband_id: landesverbandId })
     .eq("id", appUser.clubId);
 
   if (error) {

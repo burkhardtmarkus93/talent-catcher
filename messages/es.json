@@ -21,7 +21,8 @@
       "scout": "Ojeador",
       "club_admin": "Dirección del club",
       "admin": "Administrador",
-      "parent": "Padre/Madre"
+      "parent": "Padre/Madre",
+      "landesverband": "Landesverband"
     },
     "logout": "Cerrar sesión"
   },
@@ -352,6 +353,9 @@
     "subtitle": "Gestiona los datos del club y el equipo",
     "club": "Club",
     "clubName": "Nombre del club",
+    "landesverband": "Landesverband",
+    "landesverbandNone": "— no asignado —",
+    "landesverbandHint": "Asigna vuestro club a un Landesverband — este podrá ver después vuestros perfiles de talento marcados como «compartidos» (solo datos básicos, sin informes ni evaluaciones).",
     "save": "Guardar",
     "team": "Equipo ({count})",
     "you": "(tú)",
@@ -371,7 +375,8 @@
     "roleScout": "Ojeador",
     "roleClubAdmin": "Dirección del club",
     "roleAdmin": "Administrador",
-    "roleParent": "Padre/Madre"
+    "roleParent": "Padre/Madre",
+    "roleLandesverband": "Landesverband"
   },
   "parentHomePage": {
     "title": "Mis hijos",
@@ -415,7 +420,8 @@
     "roleScout": "Ojeador",
     "roleClubAdmin": "Dirección del club",
     "roleAdmin": "Administrador",
-    "roleParent": "Padre/Madre"
+    "roleParent": "Padre/Madre",
+    "roleLandesverband": "Landesverband"
   },
   "videoUploadForm": {
     "onlyMp4": "Solo se admiten archivos MP4.",
@@ -883,5 +889,22 @@
     "rowBirthDateInFuture": "La fecha de nacimiento está en el futuro.",
     "rowMinorNoYouthAccess": "El talento es menor de edad, pero tu usuario no tiene el permiso «Acceso a protección de menores».",
     "rowUnknownError": "Error desconocido al guardar."
+  },
+  "verbandLayout": {
+    "logout": "Cerrar sesión"
+  },
+  "verbandHomePage": {
+    "title": "Talentos de vuestros clubes",
+    "subtitle": "Perfiles básicos compartidos de los clubes asignados a vuestro Landesverband.",
+    "empty": "Aún no hay talentos compartidos visibles. Los clubes primero deben asignarse a vuestro Landesverband y marcar talentos como «compartidos».",
+    "club": "Club",
+    "name": "Nombre",
+    "position": "Posición",
+    "age": "Edad",
+    "flags": "Selección / Promoción",
+    "dfbStuetzpunkt": "Centro de tecnificación DFB",
+    "verbandsauswahl": "Selección regional",
+    "nationalmannschaft": "Selección nacional",
+    "nlz": "NLZ"
   }
 }

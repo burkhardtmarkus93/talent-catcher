@@ -6,7 +6,7 @@ Diese Datei gibt Claude (über Claude Code / die GitHub-App) verbindliche Regeln
 
 Talent Catcher ist ein Scouting- und Frühwarnsystem für Talentförderung im Nachwuchs- und Profifußball. Kernidee: automatisierte Risiko-/Chancen-Erkennung auf Basis gesammelter Bewertungsdaten (nicht nur Berichtsverwaltung).
 
-**Aktuelle Ausbaustufe:** Stufe 1 (MVP) — Scouting-Frühwarnsystem für Vereine/Scouts. Rollen für Trainer, Eltern, Landesverbände und NLZ sind geplante Erweiterungen, aber noch nicht implementiert.
+**Aktuelle Ausbaustufe:** Stufe 1 (MVP) — Scouting-Frühwarnsystem für Vereine/Scouts. Eltern-Zugang (verifiziert, Profilpflege) und Landesverband-Zugang (Betrachter, nur freigegebene Basisprofile der zugeordneten Vereine) sind implementiert. Rollen für Trainer und NLZ (über den bestehenden Verband/NLZ-Plan hinaus) sind weiterhin geplante Erweiterungen, aber noch nicht implementiert.
 
 **Zielgruppen (Reihenfolge der Priorität, Stand 15.08.2026 aktualisiert):** 1. Profivereine/NLZ, 2. Landesverbände, 3. Amateurvereine/Scouts (die meisten Amateurvereine haben keinen dedizierten Scout, daher nachrangig), 4. Trainer (Trainerbörse), 5. Eltern. Konsequenz für fachliche Tiefe: Bewertungsraster, die für hauptamtliches Scouting-/NLZ-Personal ausgelegt sind (viele Bewertungsachsen pro Bericht, spezialisierte Testmodule wie der Torwart-Koordinationstest), sind für diese Zielgruppe angemessen und nicht per se "zu viel" — anders als bei ehrenamtlichen Amateur-Scouts mit wenig Zeit pro Sichtung.
 

@@ -6,16 +6,48 @@
 // "parent" (Eltern-Zugang, siehe talent_guardians) hat bewusst keinen
 // club_id — ein Elternteil gehört zu keinem Verein, sondern ist über
 // talent_guardians an genau die Talente ihrer Kinder gebunden.
-export type Role = "scout" | "club_admin" | "admin" | "parent";
+// "landesverband" (siehe Migration 20260819100000) hat ebenfalls keinen
+// club_id, sondern landesverbandId — gebunden an alle Vereine, die sich
+// diesem Landesverband zugeordnet haben (clubs.landesverband_id).
+export type Role = "scout" | "club_admin" | "admin" | "parent" | "landesverband";
 
 export interface AppUser {
   id: string;
   email: string;
   clubId: string | null;
+  landesverbandId: string | null;
   role: Role;
   hasYouthAccess: boolean;
   clubPlan: "start" | "verein" | "verband" | null;
   hasSeenIntroTour: boolean;
+}
+
+// Eng geschnittene Sicht für Landesverbands-Accounts — bewusst nur
+// unkritische Kern-Stammdaten freigegebener Talente, siehe
+// landesverband_talents_view (Migration 20260819100000). Kein tags/
+// status/Körpermaße/Scout-Berichte/Risikobewertung.
+export interface LandesverbandTalent {
+  id: string;
+  clubId: string;
+  clubRegisteredName: string;
+  clubNameText: string | null;
+  teamNameText: string | null;
+  firstName: string;
+  lastName: string;
+  birthDate: string;
+  primaryPosition: string;
+  secondaryPosition: string | null;
+  isMinor: boolean;
+  dfbStuetzpunkt: boolean;
+  verbandsauswahl: boolean;
+  nationalmannschaft: boolean;
+  nlz: boolean;
+  updatedAt: string;
+}
+
+export interface Landesverband {
+  id: string;
+  name: string;
 }
 
 // Eng geschnittene Sicht für Eltern-Accounts — bewusst nur Stammdaten,

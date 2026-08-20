@@ -34,6 +34,13 @@ export default async function DashboardLayout({
     redirect("/parent");
   }
 
+  // Landesverbands-Accounts gehören analog in den eigenen (verband)-
+  // Bereich — kein club_id, RLS-seitig ohnehin ohne Zugriff auf die
+  // vereins-gescopte Scouting-Oberfläche.
+  if (appUser.role === "landesverband") {
+    redirect("/verband");
+  }
+
   if (appUser.clubId) {
     const billing = await getClubBilling(appUser.clubId);
     if (billing && !hasActiveAccess(billing)) {

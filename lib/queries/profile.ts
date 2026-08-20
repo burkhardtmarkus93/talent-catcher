@@ -8,6 +8,7 @@ export interface MyProfile {
   role: Role;
   hasYouthAccess: boolean;
   clubName: string | null;
+  clubLandesverbandId: string | null;
 }
 
 export async function getMyProfile(): Promise<MyProfile | null> {
@@ -20,7 +21,7 @@ export async function getMyProfile(): Promise<MyProfile | null> {
 
   const { data, error } = await supabase
     .from("users")
-    .select("id, email, full_name, role, has_youth_access, clubs(name)")
+    .select("id, email, full_name, role, has_youth_access, clubs(name, landesverband_id)")
     .eq("id", authUser.id)
     .maybeSingle();
 
@@ -35,5 +36,6 @@ export async function getMyProfile(): Promise<MyProfile | null> {
     role: data.role,
     hasYouthAccess: data.has_youth_access,
     clubName: club?.name ?? null,
+    clubLandesverbandId: club?.landesverband_id ?? null,
   };
 }

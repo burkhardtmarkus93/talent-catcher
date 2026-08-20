@@ -21,7 +21,8 @@
       "scout": "Scout",
       "club_admin": "Club management",
       "admin": "Admin",
-      "parent": "Parent"
+      "parent": "Parent",
+      "landesverband": "Landesverband"
     },
     "logout": "Sign out"
   },
@@ -352,6 +353,9 @@
     "subtitle": "Manage club data and team",
     "club": "Club",
     "clubName": "Club name",
+    "landesverband": "Landesverband",
+    "landesverbandNone": "— not assigned —",
+    "landesverbandHint": "Assigns your club to a Landesverband — it will then be able to see your talent profiles marked as \"Shared\" (basic data only, no reports or ratings).",
     "save": "Save",
     "team": "Team ({count})",
     "you": "(you)",
@@ -371,7 +375,8 @@
     "roleScout": "Scout",
     "roleClubAdmin": "Club management",
     "roleAdmin": "Admin",
-    "roleParent": "Parent"
+    "roleParent": "Parent",
+    "roleLandesverband": "Landesverband"
   },
   "parentHomePage": {
     "title": "My children",
@@ -415,7 +420,8 @@
     "roleScout": "Scout",
     "roleClubAdmin": "Club management",
     "roleAdmin": "Admin",
-    "roleParent": "Parent"
+    "roleParent": "Parent",
+    "roleLandesverband": "Landesverband"
   },
   "videoUploadForm": {
     "onlyMp4": "Only MP4 files are supported.",
@@ -883,5 +889,22 @@
     "rowBirthDateInFuture": "Date of birth is in the future.",
     "rowMinorNoYouthAccess": "Talent is a minor, but your user does not have the \"Youth talent access\" permission.",
     "rowUnknownError": "Unknown error while saving."
+  },
+  "verbandLayout": {
+    "logout": "Sign out"
+  },
+  "verbandHomePage": {
+    "title": "Your clubs' talents",
+    "subtitle": "Shared base profiles of the clubs affiliated with your Landesverband.",
+    "empty": "No shared talents visible yet. Clubs must first affiliate with your Landesverband and mark talents as \"Shared\".",
+    "club": "Club",
+    "name": "Name",
+    "position": "Position",
+    "age": "Age",
+    "flags": "Selection / development",
+    "dfbStuetzpunkt": "DFB talent center",
+    "verbandsauswahl": "Regional select team",
+    "nationalmannschaft": "National team",
+    "nlz": "NLZ"
   }
 }
