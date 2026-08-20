@@ -18,6 +18,7 @@
       "admin": "Verwaltung"
     },
     "introTour": "Erste-Schritte-Tour",
+    "help": "Hilfe & Kontakt",
     "roles": {
       "scout": "Scout",
       "club_admin": "Vereinsleitung",
@@ -38,7 +39,8 @@
     "noAccount": "Noch kein Konto?",
     "registerClub": "Verein registrieren",
     "playerQuestion": "Bist du Spieler/in und noch kein Talent bei einem Verein hier?",
-    "playerRegister": "Jetzt bewerben"
+    "playerRegister": "Jetzt bewerben",
+    "helpLink": "Hilfe & Kontakt"
   },
   "candidateRegistrationPage": {
     "title": "Bei einem Verein bewerben",
@@ -60,7 +62,8 @@
     "successTitle": "Bewerbung eingegangen.",
     "successBodyAdult": "Der Verein prüft deine Angaben jetzt und meldet sich bei dir, wenn er dich als Talent aufnimmt.",
     "successBodyMinor": "Wir haben eine Bestätigungs-E-Mail an die angegebene Erziehungsberechtigten-Adresse geschickt. Erst nach deren Zustimmung wird deine Bewerbung dem Verein vorgeschlagen.",
-    "backToLogin": "Zurück zum Login"
+    "backToLogin": "Zurück zum Login",
+    "helpLink": "Hilfe & Kontakt"
   },
   "candidatesPage": {
     "title": "Kandidaten",
@@ -70,6 +73,45 @@
     "candidateMeta": "{position} · {age} Jahre",
     "decline": "Ablehnen",
     "accept": "Als Talent annehmen"
+  },
+  "helpPage": {
+    "title": "Hilfe & Kontakt",
+    "tagline": "Häufige Fragen und wie du uns erreichst.",
+    "faqHeading": "Häufige Fragen",
+    "faq": [
+      {
+        "q": "Was ist Talent Catcher?",
+        "a": "Ein Scouting- und Frühwarnsystem für die Talentförderung im Nachwuchs- und Profifußball. Vereine, Landesverbände, Trainer und Eltern dokumentieren Beobachtungen zu Talenten — eine automatisierte Risk-Engine zeigt Handlungsbedarf frühzeitig an."
+      },
+      {
+        "q": "Wer kann sich registrieren?",
+        "a": "Vereine können sich selbst mit kostenloser Testphase registrieren. Landesverbands- und Eltern-Zugänge werden von einem Verein bzw. auf Anfrage eingerichtet. Spieler, die noch bei keinem Verein als Talent erfasst sind, können sich über ein öffentliches Formular direkt bei einem Verein bewerben."
+      },
+      {
+        "q": "Ich bin Spieler und noch bei keinem Verein erfasst — wie bewerbe ich mich?",
+        "a": "Über das Registrierungsformular für Spieler wählst du einen Verein aus und gibst deine Daten an. Der Verein prüft deine Bewerbung und entscheidet, ob du als Talent aufgenommen wirst."
+      },
+      {
+        "q": "Ich bin minderjährig — was bedeutet das für meine Bewerbung?",
+        "a": "Bei minderjährigen Bewerber:innen ist die E-Mail-Adresse einer/eines Erziehungsberechtigten Pflicht. Die Bewerbung wird dem Verein erst vorgeschlagen, nachdem diese Person die Einladung tatsächlich bestätigt hat."
+      },
+      {
+        "q": "Wie werden meine Daten geschützt?",
+        "a": "Jeder Verein sieht ausschließlich die Talente, die ihm zugeordnet sind. Daten Minderjähriger sind zusätzlich durch eine eigene Jugendschutz-Berechtigung gesperrt, über die nicht jede Person im Verein automatisch verfügt."
+      },
+      {
+        "q": "Was kostet Talent Catcher für Vereine?",
+        "a": "Es gibt gestaffelte Pläne mit kostenloser 3-tägiger Testphase — Details dazu findest du bei der Registrierung bzw. auf der Abo-Seite deines Vereins."
+      },
+      {
+        "q": "Wie kann ich meine Daten löschen lassen?",
+        "a": "Melde dich über das Kontaktformular unten bei uns, wir kümmern uns dann um die Löschung."
+      }
+    ],
+    "contactHeading": "Kontakt",
+    "contactBody": "Frage nicht dabei oder ein technisches Problem? Schreib uns direkt.",
+    "contactButton": "E-Mail schreiben",
+    "backToLogin": "Zurück zum Login"
   },
   "newTalentPage": {
     "backToList": "← Zurück zur Talentliste",

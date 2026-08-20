@@ -29,6 +29,10 @@ export default async function PlayerRegistrationPage() {
           <Link href="/login" className="underline-offset-2 hover:underline">
             {t("backToLogin")}
           </Link>
+          {" · "}
+          <Link href="/help" className="underline-offset-2 hover:underline">
+            {t("helpLink")}
+          </Link>
         </p>
       </div>
     </main>

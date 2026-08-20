@@ -18,6 +18,7 @@
       "admin": "Administration"
     },
     "introTour": "Getting-Started Tour",
+    "help": "Help & Contact",
     "roles": {
       "scout": "Scout",
       "club_admin": "Club management",
@@ -38,7 +39,8 @@
     "noAccount": "Don't have an account yet?",
     "registerClub": "Register your club",
     "playerQuestion": "Are you a player and not yet a talent at a club here?",
-    "playerRegister": "Apply now"
+    "playerRegister": "Apply now",
+    "helpLink": "Help & Contact"
   },
   "candidateRegistrationPage": {
     "title": "Apply to a club",
@@ -60,7 +62,8 @@
     "successTitle": "Application received.",
     "successBodyAdult": "The club is now reviewing your details and will get in touch if they add you as a talent.",
     "successBodyMinor": "We've sent a confirmation email to the parent/guardian address you provided. Your application will only be forwarded to the club after their consent.",
-    "backToLogin": "Back to sign in"
+    "backToLogin": "Back to sign in",
+    "helpLink": "Help & Contact"
   },
   "candidatesPage": {
     "title": "Candidates",
@@ -70,6 +73,45 @@
     "candidateMeta": "{position} · {age} years",
     "decline": "Decline",
     "accept": "Accept as talent"
+  },
+  "helpPage": {
+    "title": "Help & Contact",
+    "tagline": "Frequently asked questions and how to reach us.",
+    "faqHeading": "Frequently Asked Questions",
+    "faq": [
+      {
+        "q": "What is Talent Catcher?",
+        "a": "A scouting and early-warning system for talent development in youth and professional football. Clubs, state associations, coaches, and parents document observations about talents — an automated risk engine flags when action may be needed, early on."
+      },
+      {
+        "q": "Who can register?",
+        "a": "Clubs can register themselves with a free trial period. Landesverband and parent access is set up by a club or on request. Players not yet registered as a talent at any club can apply directly to a club via a public form."
+      },
+      {
+        "q": "I'm a player and not yet registered at any club — how do I apply?",
+        "a": "Using the player registration form, you select a club and provide your details. The club reviews your application and decides whether to add you as a talent."
+      },
+      {
+        "q": "I'm a minor — what does that mean for my application?",
+        "a": "For applicants who are minors, a parent or guardian's email address is required. The application is only forwarded to the club after that person has actually confirmed the invitation."
+      },
+      {
+        "q": "How is my data protected?",
+        "a": "Each club only sees the talents assigned to it. Data about minors is additionally locked behind a separate youth-protection permission that not every person at the club automatically has."
+      },
+      {
+        "q": "What does Talent Catcher cost for clubs?",
+        "a": "There are tiered plans with a free 3-day trial period — details can be found during registration or on your club's subscription page."
+      },
+      {
+        "q": "How can I have my data deleted?",
+        "a": "Get in touch with us via the contact form below, and we'll take care of the deletion."
+      }
+    ],
+    "contactHeading": "Contact",
+    "contactBody": "Question not covered here, or a technical issue? Write to us directly.",
+    "contactButton": "Send an email",
+    "backToLogin": "Back to sign in"
   },
   "newTalentPage": {
     "backToList": "← Back to talent list",

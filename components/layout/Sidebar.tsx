@@ -169,6 +169,18 @@ export function Sidebar({ email, role }: { email: string; role: Role }) {
         </button>
 
         <Link
+          href="/help"
+          className="mb-2 flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs font-medium text-muted transition-colors hover:bg-pitch-dim hover:text-pitch-dark"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <circle cx="12" cy="12" r="10" />
+            <path d="M9.5 9a2.5 2.5 0 0 1 4.9.8c0 1.7-2.4 1.7-2.4 3.2" />
+            <path d="M12 17h.01" />
+          </svg>
+          {t("help")}
+        </Link>
+
+        <Link
           href="/profile"
           className="flex items-center gap-3 rounded-xl px-2.5 py-2 transition-colors hover:bg-pitch-dim/50"
         >

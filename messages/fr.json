@@ -18,6 +18,7 @@
       "admin": "Administration"
     },
     "introTour": "Visite de prise en main",
+    "help": "Aide et contact",
     "roles": {
       "scout": "Recruteur",
       "club_admin": "Direction du club",
@@ -38,7 +39,8 @@
     "noAccount": "Pas encore de compte ?",
     "registerClub": "Inscrire un club",
     "playerQuestion": "Êtes-vous joueur/joueuse et pas encore enregistré(e) comme talent auprès d'un club ici ?",
-    "playerRegister": "Postuler maintenant"
+    "playerRegister": "Postuler maintenant",
+    "helpLink": "Aide et contact"
   },
   "candidateRegistrationPage": {
     "title": "Postuler auprès d'un club",
@@ -60,7 +62,8 @@
     "successTitle": "Candidature reçue.",
     "successBodyAdult": "Le club examine maintenant vos informations et vous contactera s'il vous accepte comme talent.",
     "successBodyMinor": "Nous avons envoyé un e-mail de confirmation à l'adresse du/de la représentant(e) légal(e) indiquée. Votre candidature ne sera proposée au club qu'après son accord.",
-    "backToLogin": "Retour à la connexion"
+    "backToLogin": "Retour à la connexion",
+    "helpLink": "Aide et contact"
   },
   "candidatesPage": {
     "title": "Candidats",
@@ -70,6 +73,45 @@
     "candidateMeta": "{position} · {age} ans",
     "decline": "Refuser",
     "accept": "Accepter comme talent"
+  },
+  "helpPage": {
+    "title": "Aide et contact",
+    "tagline": "Questions fréquentes et comment nous joindre.",
+    "faqHeading": "Questions fréquentes",
+    "faq": [
+      {
+        "q": "Qu'est-ce que Talent Catcher ?",
+        "a": "Un système de scouting et d'alerte précoce pour le développement des talents dans le football amateur et professionnel. Clubs, fédérations régionales, entraîneurs et parents documentent des observations sur les talents — un moteur de risque automatisé signale précocement les besoins d'action."
+      },
+      {
+        "q": "Qui peut s'inscrire ?",
+        "a": "Les clubs peuvent s'inscrire eux-mêmes avec une période d'essai gratuite. Les accès pour les fédérations régionales et les parents sont créés par un club ou sur demande. Les joueurs qui ne sont encore enregistrés comme talent dans aucun club peuvent postuler directement auprès d'un club via un formulaire public."
+      },
+      {
+        "q": "Je suis joueur/joueuse et pas encore enregistré(e) dans un club — comment postuler ?",
+        "a": "Via le formulaire d'inscription pour joueurs, vous choisissez un club et indiquez vos données. Le club examine votre candidature et décide de vous accepter ou non comme talent."
+      },
+      {
+        "q": "Je suis mineur(e) — qu'est-ce que cela signifie pour ma candidature ?",
+        "a": "Pour les candidat(e)s mineur(e)s, l'adresse e-mail d'un(e) représentant(e) légal(e) est obligatoire. La candidature n'est proposée au club qu'après que cette personne a effectivement confirmé l'invitation."
+      },
+      {
+        "q": "Comment mes données sont-elles protégées ?",
+        "a": "Chaque club ne voit que les talents qui lui sont rattachés. Les données des mineurs sont en outre verrouillées par une autorisation de protection de la jeunesse distincte, dont ne dispose pas automatiquement chaque personne du club."
+      },
+      {
+        "q": "Combien coûte Talent Catcher pour les clubs ?",
+        "a": "Il existe des formules échelonnées avec une période d'essai gratuite de 3 jours — les détails se trouvent lors de l'inscription ou sur la page d'abonnement de votre club."
+      },
+      {
+        "q": "Comment puis-je faire supprimer mes données ?",
+        "a": "Contactez-nous via le formulaire de contact ci-dessous, nous nous chargerons de la suppression."
+      }
+    ],
+    "contactHeading": "Contact",
+    "contactBody": "Votre question n'y figure pas, ou vous rencontrez un problème technique ? Écrivez-nous directement.",
+    "contactButton": "Envoyer un e-mail",
+    "backToLogin": "Retour à la connexion"
   },
   "newTalentPage": {
     "backToList": "← Retour à la liste des talents",

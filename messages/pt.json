@@ -18,6 +18,7 @@
       "admin": "Administração"
     },
     "introTour": "Tour de introdução",
+    "help": "Ajuda e contato",
     "roles": {
       "scout": "Olheiro",
       "club_admin": "Diretoria do clube",
@@ -38,7 +39,8 @@
     "noAccount": "Ainda não tem conta?",
     "registerClub": "Cadastrar clube",
     "playerQuestion": "Você é jogador(a) e ainda não é talento cadastrado em nenhum clube aqui?",
-    "playerRegister": "Candidatar-se agora"
+    "playerRegister": "Candidatar-se agora",
+    "helpLink": "Ajuda e contato"
   },
   "candidateRegistrationPage": {
     "title": "Candidatar-se a um clube",
@@ -60,7 +62,8 @@
     "successTitle": "Candidatura recebida.",
     "successBodyAdult": "O clube está analisando seus dados agora e entrará em contato caso decida cadastrá-lo(a) como talento.",
     "successBodyMinor": "Enviamos um e-mail de confirmação para o endereço do(a) responsável legal informado. Sua candidatura só será encaminhada ao clube após a confirmação do consentimento.",
-    "backToLogin": "Voltar ao login"
+    "backToLogin": "Voltar ao login",
+    "helpLink": "Ajuda e contato"
   },
   "candidatesPage": {
     "title": "Candidatos",
@@ -70,6 +73,45 @@
     "candidateMeta": "{position} · {age} anos",
     "decline": "Recusar",
     "accept": "Aceitar como talento"
+  },
+  "helpPage": {
+    "title": "Ajuda e contato",
+    "tagline": "Perguntas frequentes e como falar conosco.",
+    "faqHeading": "Perguntas frequentes",
+    "faq": [
+      {
+        "q": "O que é o Talent Catcher?",
+        "a": "Um sistema de scouting e alerta precoce para o desenvolvimento de talentos no futebol de base e profissional. Clubes, federações estaduais, treinadores e responsáveis documentam observações sobre talentos — um motor de risco automatizado sinaliza precocemente a necessidade de ação."
+      },
+      {
+        "q": "Quem pode se cadastrar?",
+        "a": "Clubes podem se cadastrar por conta própria com um período de teste gratuito. Acessos de federação estadual e de responsáveis são configurados por um clube ou mediante solicitação. Jogadores que ainda não estão cadastrados como talento em nenhum clube podem se candidatar diretamente a um clube por meio de um formulário público."
+      },
+      {
+        "q": "Sou jogador e ainda não estou cadastrado em nenhum clube — como me candidato?",
+        "a": "No formulário de cadastro para jogadores, você seleciona um clube e informa seus dados. O clube analisa sua candidatura e decide se você será cadastrado como talento."
+      },
+      {
+        "q": "Sou menor de idade — o que isso significa para minha candidatura?",
+        "a": "Para candidatos(as) menores de idade, o e-mail de um(a) responsável legal é obrigatório. A candidatura só é encaminhada ao clube depois que essa pessoa confirmar efetivamente o convite."
+      },
+      {
+        "q": "Como meus dados são protegidos?",
+        "a": "Cada clube vê exclusivamente os talentos a ele associados. Os dados de menores de idade são adicionalmente bloqueados por uma permissão específica de proteção de menores, que nem toda pessoa no clube possui automaticamente."
+      },
+      {
+        "q": "Quanto custa o Talent Catcher para clubes?",
+        "a": "Há planos escalonados com um período de teste gratuito de 3 dias — os detalhes estão disponíveis no cadastro ou na página de assinatura do seu clube."
+      },
+      {
+        "q": "Como posso solicitar a exclusão dos meus dados?",
+        "a": "Entre em contato conosco pelo formulário de contato abaixo e cuidaremos da exclusão."
+      }
+    ],
+    "contactHeading": "Contato",
+    "contactBody": "Tem uma pergunta que não foi respondida ou um problema técnico? Escreva diretamente para nós.",
+    "contactButton": "Enviar e-mail",
+    "backToLogin": "Voltar ao login"
   },
   "newTalentPage": {
     "backToList": "← Voltar para a lista de talentos",
