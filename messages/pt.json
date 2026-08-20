@@ -22,7 +22,7 @@
       "club_admin": "Diretoria do clube",
       "admin": "Administrador",
       "parent": "Responsável",
-      "landesverband": "Federação regional"
+      "landesverband": "Landesverband"
     },
     "logout": "Sair"
   },
@@ -353,9 +353,9 @@
     "subtitle": "Gerenciar dados do clube e da equipe",
     "club": "Clube",
     "clubName": "Nome do clube",
-    "landesverband": "Federação regional",
+    "landesverband": "Landesverband",
     "landesverbandNone": "— não associado —",
-    "landesverbandHint": "Associa o seu clube a uma federação regional — que passará a ver os perfis de talentos do clube marcados como \"liberados\" (apenas dados básicos, sem relatórios/avaliações).",
+    "landesverbandHint": "Associa o seu clube a um Landesverband — que passará a ver os perfis de talentos do clube marcados como \"liberados\" (apenas dados básicos, sem relatórios/avaliações).",
     "save": "Salvar",
     "team": "Equipe ({count})",
     "you": "(você)",
@@ -376,7 +376,7 @@
     "roleClubAdmin": "Diretoria do clube",
     "roleAdmin": "Administrador",
     "roleParent": "Responsável",
-    "roleLandesverband": "Federação regional"
+    "roleLandesverband": "Landesverband"
   },
   "parentHomePage": {
     "title": "Meus filhos",
@@ -421,7 +421,7 @@
     "roleClubAdmin": "Diretoria do clube",
     "roleAdmin": "Administrador",
     "roleParent": "Responsável",
-    "roleLandesverband": "Federação regional"
+    "roleLandesverband": "Landesverband"
   },
   "videoUploadForm": {
     "onlyMp4": "Somente arquivos MP4 são suportados.",
@@ -895,8 +895,8 @@
   },
   "verbandHomePage": {
     "title": "Talentos dos seus clubes",
-    "subtitle": "Perfis básicos liberados dos clubes associados à sua federação regional.",
-    "empty": "Ainda não há talentos liberados visíveis. Os clubes precisam primeiro se associar à sua federação regional e marcar talentos como \"liberados\".",
+    "subtitle": "Perfis básicos liberados dos clubes associados ao seu Landesverband.",
+    "empty": "Ainda não há talentos liberados visíveis. Os clubes precisam primeiro se associar ao seu Landesverband e marcar talentos como \"liberados\".",
     "club": "Clube",
     "name": "Nome",
     "position": "Posição",
