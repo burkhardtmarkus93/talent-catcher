@@ -158,6 +158,7 @@
     "verbandsauswahl": "Regional select team",
     "nationalmannschaft": "National team",
     "nlz": "NLZ",
+    "euPassport": "EU passport",
     "all": "All",
     "yes": "Yes",
     "no": "No",
@@ -573,6 +574,7 @@
     "verbandsauswahl": "Regional select team",
     "nationalmannschaft": "National team",
     "nlz": "NLZ",
+    "euPassport": "EU passport",
     "save": "Save",
     "siblingsTitle": "Talented siblings",
     "siblingsHint": "A private note for yourself — e.g. when scouting reveals that there's a talented brother or sister as well. This does not create a separate talent profile; use the \"Register as talent\" link below for that.",
@@ -905,6 +907,7 @@
     "dfbStuetzpunkt": "DFB talent center",
     "verbandsauswahl": "Regional select team",
     "nationalmannschaft": "National team",
-    "nlz": "NLZ"
+    "nlz": "NLZ",
+    "euPassport": "EU passport"
   }
 }

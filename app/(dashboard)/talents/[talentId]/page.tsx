@@ -333,6 +333,14 @@ export default async function TalentDetailPage({
                     <input type="checkbox" name="nlz" defaultChecked={talent.nlz} />
                     {t("nlz")}
                   </label>
+                  <label className="flex items-center gap-2 text-ink">
+                    <input
+                      type="checkbox"
+                      name="euPassport"
+                      defaultChecked={talent.euPassport}
+                    />
+                    {t("euPassport")}
+                  </label>
                 </div>
               </div>
 

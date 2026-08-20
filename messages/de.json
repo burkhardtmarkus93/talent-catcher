@@ -158,6 +158,7 @@
     "verbandsauswahl": "Verbandsauswahl",
     "nationalmannschaft": "Nationalmannschaft",
     "nlz": "NLZ",
+    "euPassport": "EU-Pass",
     "all": "Alle",
     "yes": "Ja",
     "no": "Nein",
@@ -573,6 +574,7 @@
     "verbandsauswahl": "Verbandsauswahl",
     "nationalmannschaft": "Nationalmannschaft",
     "nlz": "NLZ",
+    "euPassport": "EU-Pass",
     "save": "Speichern",
     "siblingsTitle": "Talentierte Geschwister",
     "siblingsHint": "Reine Notiz für dich — z. B. wenn beim Scouting auffällt, dass es noch ein(e) talentierte(n) Bruder/Schwester gibt. Legt kein eigenes Talent-Profil an; dafür gibt es unten den Link „Als Talent erfassen\".",
@@ -905,6 +907,7 @@
     "dfbStuetzpunkt": "DFB-Stützpunkt",
     "verbandsauswahl": "Verbandsauswahl",
     "nationalmannschaft": "Nationalmannschaft",
-    "nlz": "NLZ"
+    "nlz": "NLZ",
+    "euPassport": "EU-Pass"
   }
 }

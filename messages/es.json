@@ -158,6 +158,7 @@
     "verbandsauswahl": "Selección regional",
     "nationalmannschaft": "Selección nacional",
     "nlz": "NLZ",
+    "euPassport": "Pasaporte UE",
     "all": "Todos",
     "yes": "Sí",
     "no": "No",
@@ -573,6 +574,7 @@
     "verbandsauswahl": "Selección regional",
     "nationalmannschaft": "Selección nacional",
     "nlz": "NLZ",
+    "euPassport": "Pasaporte UE",
     "save": "Guardar",
     "siblingsTitle": "Hermanos/as con talento",
     "siblingsHint": "Solo una nota para ti — por ejemplo, si durante el scouting adviertes que hay un hermano o una hermana con talento. No crea un perfil de talento propio; para eso está el enlace «Registrar como talento» más abajo.",
@@ -905,6 +907,7 @@
     "dfbStuetzpunkt": "Centro de tecnificación DFB",
     "verbandsauswahl": "Selección regional",
     "nationalmannschaft": "Selección nacional",
-    "nlz": "NLZ"
+    "nlz": "NLZ",
+    "euPassport": "Pasaporte UE"
   }
 }

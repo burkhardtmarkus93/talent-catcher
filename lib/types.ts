@@ -42,6 +42,7 @@ export interface LandesverbandTalent {
   verbandsauswahl: boolean;
   nationalmannschaft: boolean;
   nlz: boolean;
+  euPassport: boolean;
   updatedAt: string;
 }
 
@@ -115,6 +116,7 @@ export interface Talent {
   verbandsauswahl: boolean;
   nationalmannschaft: boolean;
   nlz: boolean;
+  euPassport: boolean;
   upcomingTransferClubText?: string | null;
   upcomingTransferNote?: string | null;
 }
