@@ -17,19 +17,20 @@ export default function ImpressumPage() {
 
         <div className="mb-6 rounded-lg border border-brick/30 bg-brick/5 px-4 py-3 text-sm text-brick">
           <p className="font-medium">
-            ENTWURF — noch nicht vollständig und nicht anwaltlich geprüft.
+            ENTWURF — noch nicht anwaltlich geprüft.
           </p>
           <p className="mt-1">
-            Mit „[PLATZHALTER]“ gekennzeichnete Angaben fehlen noch und
-            müssen vor Live-Schaltung ergänzt werden — ein Impressum ohne
-            diese Pflichtangaben ist nicht gesetzeskonform. Der Text ist
-            zusätzlich vor Veröffentlichung anwaltlich zu prüfen.
+            Die Betreiberangaben sind ausgefüllt. Mit „[PLATZHALTER]“
+            gekennzeichnete Angaben betreffen offene Geschäfts-/
+            Steuerfragen (siehe Registereintrag/Umsatzsteuer) und fehlen
+            noch — der Text ist zusätzlich vor Veröffentlichung anwaltlich
+            zu prüfen.
           </p>
           <p className="mt-1 text-xs text-brick/80">
-            DRAFT — incomplete and not yet reviewed by a lawyer. Fields
-            marked „[PLATZHALTER]“ are still missing and must be filled in;
-            an imprint without these mandatory details is not legally
-            compliant.
+            DRAFT — operator details filled in; fields marked
+            „[PLATZHALTER]“ mark open tax/business-registration questions
+            still to be confirmed. Must still be reviewed by a lawyer
+            before publication.
           </p>
         </div>
 
@@ -39,14 +40,11 @@ export default function ImpressumPage() {
               Angaben gemäß § 5 DDG
             </h2>
             <p>
-              [PLATZHALTER: vollständiger Name/Firmierung des Betreibers,
-              ggf. Rechtsform]
+              Markus Burkhardt
               <br />
-              [PLATZHALTER: ladungsfähige Anschrift — Straße, Hausnummer,
-              PLZ, Ort]
+              Gartenstraße 9
               <br />
-              [PLATZHALTER: falls juristische Person — vertretungsberechtigte
-              Person(en)]
+              72280 Dornstetten
             </p>
           </section>
 
@@ -57,8 +55,11 @@ export default function ImpressumPage() {
             <p>
               E-Mail: burkhardt.markus93@gmail.com
               <br />
-              [PLATZHALTER: Telefonnummer, sofern für schnelle elektronische
-              Kontaktaufnahme erforderlich]
+              Instagram (ergänzender, nicht verpflichtender Kontaktweg):
+              @markusbkdt
+              <br />
+              Eine Telefonnummer wird nicht angeboten; die elektronische
+              Kontaktaufnahme erfolgt per E-Mail.
             </p>
           </section>
 
@@ -67,12 +68,15 @@ export default function ImpressumPage() {
               Registereintrag / Umsatzsteuer
             </h2>
             <p>
-              [PLATZHALTER: Handelsregister, Registergericht und
-              Registernummer, falls vorhanden]
+              Einzelunternehmer, kein Handelsregistereintrag.
               <br />
               [PLATZHALTER: Umsatzsteuer-Identifikationsnummer gemäß § 27a
-              UStG bzw. Hinweis auf Kleinunternehmerregelung § 19 UStG,
-              falls zutreffend]
+              UStG bzw. Hinweis auf Kleinunternehmerregelung § 19 UStG —
+              abhängig davon, ob der Betrieb von Talent Catcher unter
+              dieselbe steuerliche Einordnung fällt wie die separate
+              freiberufliche Sporttrainer-/Videocoaching-Tätigkeit oder
+              eigenständig zu behandeln ist; mit Finanzamt/Steuerberater zu
+              klären.]
             </p>
           </section>
 
@@ -81,11 +85,9 @@ export default function ImpressumPage() {
               Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV
             </h2>
             <p>
-              [PLATZHALTER: nur erforderlich, falls journalistisch-
-              redaktionelle Inhalte mit Meinungsbildungsrelevanz angeboten
-              werden — bei einer reinen Scouting-/Verwaltungssoftware wie
-              Talent Catcher im Regelfall nicht einschlägig; anwaltlich zu
-              bestätigen.]
+              Nicht einschlägig — Talent Catcher ist eine reine Scouting-
+              und Verwaltungssoftware ohne journalistisch-redaktionelle
+              Inhalte mit Meinungsbildungsrelevanz.
             </p>
           </section>
 
@@ -94,13 +96,9 @@ export default function ImpressumPage() {
               Streitschlichtung
             </h2>
             <p>
-              [PLATZHALTER: Angabe, ob Bereitschaft zur Teilnahme an einem
-              Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle
-              besteht, ggf. mit Name und Anschrift der zuständigen Stelle
-              gemäß § 36 VSBG. Hinweis: Die frühere EU-Online-Streitbeilegungs
-              (OS)-Plattform der EU-Kommission wurde zum 20. Juli 2025
-              eingestellt — ein Verweis darauf ist nicht mehr aktuell und
-              sollte nicht mehr verwendet werden.]
+              Wir sind nicht bereit und nicht verpflichtet, an einem
+              Streitbeilegungsverfahren vor einer
+              Verbraucherschlichtungsstelle nach § 36 VSBG teilzunehmen.
             </p>
           </section>
 
