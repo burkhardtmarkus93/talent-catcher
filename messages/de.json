@@ -55,15 +55,19 @@
     "goalkeeperHint": "Für Torwart-Talente gibt es ein eigenes, spezialisiertes Projekt — schau es dir gerne zusätzlich an (auch für Eltern von Torwart-Talenten relevant). Deine Bewerbung hier kannst du unabhängig davon trotzdem absenden.",
     "goalkeeperLink": "Zur Torwart-Akademie →",
     "contactEmail": "Deine E-Mail-Adresse",
+    "contactEmailGuardian": "E-Mail-Adresse (Erziehungsberechtigte/r)",
     "contactEmailPlaceholder": "damit der Verein dich erreichen kann",
-    "guardianHint": "Du bist laut Geburtsdatum noch minderjährig. Deine Bewerbung wird dem Verein erst vorgeschlagen, nachdem eine/e Erziehungsberechtigte/r über die unten angegebene E-Mail-Adresse zugestimmt hat.",
-    "guardianEmail": "E-Mail-Adresse Erziehungsberechtigte/r",
+    "guardianHint": "Dieser Spieler ist laut Geburtsdatum noch minderjährig. Für minderjährige Spieler registriert ausschließlich eine erziehungsberechtigte Person direkt — bitte trage unten deine eigenen Kontaktdaten ein. Es fällt eine einmalige Gebühr von {price} an, fällig im nächsten Schritt bei der Zahlung.",
     "dataConsent": "Ich bin damit einverstanden, dass meine hier angegebenen Daten an den gewählten Verein zur Prüfung meiner Bewerbung übermittelt werden.",
+    "dataConsentGuardian": "Ich bin als Erziehungsberechtigte/r damit einverstanden, dass die hier angegebenen Daten meines Kindes an den gewählten Verein zur Prüfung der Bewerbung übermittelt werden.",
     "submitting": "Wird übermittelt...",
     "submit": "Bewerbung absenden",
+    "submitToPayment": "Weiter zur Zahlung",
     "successTitle": "Bewerbung eingegangen.",
     "successBodyAdult": "Der Verein prüft deine Angaben jetzt und meldet sich bei dir, wenn er dich als Talent aufnimmt.",
-    "successBodyMinor": "Wir haben eine Bestätigungs-E-Mail an die angegebene Erziehungsberechtigten-Adresse geschickt. Erst nach deren Zustimmung wird deine Bewerbung dem Verein vorgeschlagen.",
+    "paidSuccessTitle": "Zahlung erfolgreich.",
+    "paidSuccessBody": "Die Bewerbung ist eingegangen. Der Verein prüft die Angaben jetzt.",
+    "paymentCanceled": "Zahlung abgebrochen. Du kannst es jederzeit erneut versuchen.",
     "backToLogin": "Zurück zum Login",
     "helpLink": "Hilfe & Kontakt"
   },
@@ -94,8 +98,8 @@
         "a": "Über das Registrierungsformular für Spieler wählst du einen Verein aus und gibst deine Daten an. Der Verein prüft deine Bewerbung und entscheidet, ob du als Talent aufgenommen wirst."
       },
       {
-        "q": "Ich bin minderjährig — was bedeutet das für meine Bewerbung?",
-        "a": "Bei minderjährigen Bewerber:innen ist die E-Mail-Adresse einer/eines Erziehungsberechtigten Pflicht. Die Bewerbung wird dem Verein erst vorgeschlagen, nachdem diese Person die Einladung tatsächlich bestätigt hat."
+        "q": "Ich bin minderjährig — kann ich mich selbst bewerben?",
+        "a": "Nein. Minderjährige Spieler können sich nicht selbst registrieren — das übernimmt ausschließlich eine erziehungsberechtigte Person direkt, verbunden mit einer einmaligen Gebühr. Die Bewerbung wird dem Verein nach erfolgreicher Zahlung zur Prüfung vorgelegt."
       },
       {
         "q": "Wie werden meine Daten geschützt?",
@@ -952,8 +956,9 @@
     "requiredFields": "Bitte alle Pflichtfelder ausfüllen.",
     "invalidBirthDate": "Das Geburtsdatum ist ungültig oder liegt in der Zukunft.",
     "consentRequired": "Bitte der Datenverarbeitung zustimmen.",
-    "guardianEmailRequired": "Bei minderjährigen Bewerber:innen ist die E-Mail-Adresse einer/eines Erziehungsberechtigten Pflicht.",
     "submitFailed": "Bewerbung konnte nicht übermittelt werden. Bitte erneut versuchen.",
+    "paymentNotSetUp": "Zahlung ist aktuell nicht verfügbar. Bitte später erneut versuchen.",
+    "paymentSetupFailed": "Weiterleitung zur Zahlung fehlgeschlagen. Bitte erneut versuchen.",
     "noClubAssigned": "Deinem Benutzer ist kein Verein zugeordnet.",
     "candidateIdMissing": "Kandidat-ID fehlt.",
     "candidateNotFound": "Kandidatur nicht gefunden oder bereits bearbeitet.",

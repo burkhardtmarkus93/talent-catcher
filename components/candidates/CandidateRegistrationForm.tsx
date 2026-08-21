@@ -8,6 +8,8 @@ import {
   submitTalentCandidate,
   type CandidateActionState,
 } from "@/lib/actions/candidates";
+import { CANDIDATE_REGISTRATION_PRICE_EUR } from "@/lib/candidatePricing";
+import { formatEuro } from "@/lib/plans";
 import type { PublicClubOption } from "@/lib/types";
 
 const initialState: CandidateActionState = { success: false };
@@ -37,13 +39,14 @@ export function CandidateRegistrationForm({ clubs }: { clubs: PublicClubOption[]
   const isMinor = age !== null && age < 18;
   const isGoalkeeper = GOALKEEPER_PATTERN.test(primaryPosition.trim());
 
+  // Minderjährige verlassen die Seite bei erfolgreicher Übermittlung
+  // sofort Richtung Stripe Checkout (redirect() in submitTalentCandidate)
+  // — state.success wird für sie nie erreicht, nur für Volljährige.
   if (state.success) {
     return (
       <div className="rounded-xl border border-pitch/30 bg-pitch/5 p-6 text-sm text-pitch-dark">
         <p className="font-medium">{t("successTitle")}</p>
-        <p className="mt-1.5 text-pitch-dark/80">
-          {isMinor ? t("successBodyMinor") : t("successBodyAdult")}
-        </p>
+        <p className="mt-1.5 text-pitch-dark/80">{t("successBodyAdult")}</p>
       </div>
     );
   }
@@ -117,9 +120,15 @@ export function CandidateRegistrationForm({ clubs }: { clubs: PublicClubOption[]
         </div>
       )}
 
+      {isMinor && (
+        <div className="mb-4 rounded-lg border border-line bg-paper p-3">
+          <p className="text-sm text-ink">{t("guardianHint", { price: formatEuro(CANDIDATE_REGISTRATION_PRICE_EUR) })}</p>
+        </div>
+      )}
+
       <div className="mb-4">
         <Field
-          label={t("contactEmail")}
+          label={isMinor ? t("contactEmailGuardian") : t("contactEmail")}
           name="contactEmail"
           type="email"
           placeholder={t("contactEmailPlaceholder")}
@@ -127,25 +136,13 @@ export function CandidateRegistrationForm({ clubs }: { clubs: PublicClubOption[]
         />
       </div>
 
-      {isMinor && (
-        <div className="mb-4 rounded-lg border border-line bg-paper p-3">
-          <p className="mb-2 text-xs text-muted">{t("guardianHint")}</p>
-          <Field
-            label={t("guardianEmail")}
-            name="guardianEmail"
-            type="email"
-            required
-          />
-        </div>
-      )}
-
       <label className="mb-6 flex items-start gap-2 text-sm text-ink">
         <input type="checkbox" name="dataConsent" required className="mt-0.5" />
-        {t("dataConsent")}
+        {isMinor ? t("dataConsentGuardian") : t("dataConsent")}
       </label>
 
       <div className="flex justify-end">
-        <SubmitButton />
+        <SubmitButton isMinor={isMinor} />
       </div>
     </form>
   );
@@ -178,12 +175,12 @@ function Field({
   );
 }
 
-function SubmitButton() {
+function SubmitButton({ isMinor }: { isMinor: boolean }) {
   const { pending } = useFormStatus();
   const t = useTranslations("candidateRegistrationPage");
   return (
     <Button type="submit" disabled={pending}>
-      {pending ? t("submitting") : t("submit")}
+      {pending ? t("submitting") : isMinor ? t("submitToPayment") : t("submit")}
     </Button>
   );
 }

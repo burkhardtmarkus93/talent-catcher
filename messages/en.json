@@ -55,15 +55,19 @@
     "goalkeeperHint": "There's a dedicated, specialized project for goalkeeper talents — feel free to check it out too (also relevant for parents of goalkeeper talents). You can still submit your application here independently of that.",
     "goalkeeperLink": "Go to Goalkeeper Academy →",
     "contactEmail": "Your email address",
+    "contactEmailGuardian": "Email address (parent/guardian)",
     "contactEmailPlaceholder": "so the club can reach you",
-    "guardianHint": "Based on your date of birth, you're still a minor. Your application will only be forwarded to the club after a parent or guardian has given consent via the email address provided below.",
-    "guardianEmail": "Parent/guardian email",
+    "guardianHint": "Based on the date of birth, this player is still a minor. For minor players, only a parent or guardian can register directly — please enter your own contact details below. A one-time fee of {price} applies, due in the next step during payment.",
     "dataConsent": "I agree that the data I provide here will be shared with the selected club to review my application.",
+    "dataConsentGuardian": "As parent/guardian, I agree that the data I provide here about my child will be shared with the selected club to review the application.",
     "submitting": "Submitting...",
     "submit": "Submit application",
+    "submitToPayment": "Continue to payment",
     "successTitle": "Application received.",
     "successBodyAdult": "The club is now reviewing your details and will get in touch if they add you as a talent.",
-    "successBodyMinor": "We've sent a confirmation email to the parent/guardian address you provided. Your application will only be forwarded to the club after their consent.",
+    "paidSuccessTitle": "Payment successful.",
+    "paidSuccessBody": "The application has been received. The club is now reviewing the details.",
+    "paymentCanceled": "Payment canceled. You can try again at any time.",
     "backToLogin": "Back to sign in",
     "helpLink": "Help & Contact"
   },
@@ -94,8 +98,8 @@
         "a": "Using the player registration form, you select a club and provide your details. The club reviews your application and decides whether to add you as a talent."
       },
       {
-        "q": "I'm a minor — what does that mean for my application?",
-        "a": "For applicants who are minors, a parent or guardian's email address is required. The application is only forwarded to the club after that person has actually confirmed the invitation."
+        "q": "I'm a minor — can I apply myself?",
+        "a": "No. Minor players cannot register themselves — only a parent or guardian can register them directly, together with a one-time fee. The application is submitted to the club for review after successful payment."
       },
       {
         "q": "How is my data protected?",
@@ -952,8 +956,9 @@
     "requiredFields": "Please fill in all required fields.",
     "invalidBirthDate": "The date of birth is invalid or lies in the future.",
     "consentRequired": "Please agree to the data processing.",
-    "guardianEmailRequired": "For minor applicants, the email address of a parent or guardian is required.",
     "submitFailed": "The application could not be submitted. Please try again.",
+    "paymentNotSetUp": "Payment is currently unavailable. Please try again later.",
+    "paymentSetupFailed": "Redirect to payment failed. Please try again.",
     "noClubAssigned": "No club is assigned to your user.",
     "candidateIdMissing": "Candidate ID missing.",
     "candidateNotFound": "Application not found or already processed.",

@@ -55,15 +55,19 @@
     "goalkeeperHint": "Existe um projeto próprio e especializado para talentos de goleiro — vale a pena conferir também (relevante também para responsáveis de talentos de goleiro). Você pode enviar sua candidatura aqui normalmente, independente disso.",
     "goalkeeperLink": "Ir para a Academia de Goleiros →",
     "contactEmail": "Seu endereço de e-mail",
+    "contactEmailGuardian": "Endereço de e-mail (responsável legal)",
     "contactEmailPlaceholder": "para que o clube possa entrar em contato com você",
-    "guardianHint": "De acordo com a data de nascimento, você ainda é menor de idade. Sua candidatura só será encaminhada ao clube depois que um(a) responsável legal confirmar o consentimento através do endereço de e-mail informado abaixo.",
-    "guardianEmail": "E-mail do(a) responsável legal",
+    "guardianHint": "De acordo com a data de nascimento, este jogador ainda é menor de idade. Para jogadores menores de idade, o cadastro é feito exclusivamente por um(a) responsável legal diretamente — informe abaixo seus próprios dados de contato. Será cobrada uma taxa única de {price}, devida na próxima etapa, no pagamento.",
     "dataConsent": "Concordo que os dados aqui informados sejam transmitidos ao clube selecionado para análise da minha candidatura.",
+    "dataConsentGuardian": "Na qualidade de responsável legal, concordo que os dados aqui informados do meu filho(a) sejam transmitidos ao clube selecionado para análise da candidatura.",
     "submitting": "Enviando...",
     "submit": "Enviar candidatura",
+    "submitToPayment": "Continuar para o pagamento",
     "successTitle": "Candidatura recebida.",
     "successBodyAdult": "O clube está analisando seus dados agora e entrará em contato caso decida cadastrá-lo(a) como talento.",
-    "successBodyMinor": "Enviamos um e-mail de confirmação para o endereço do(a) responsável legal informado. Sua candidatura só será encaminhada ao clube após a confirmação do consentimento.",
+    "paidSuccessTitle": "Pagamento realizado com sucesso.",
+    "paidSuccessBody": "A candidatura foi recebida. O clube está analisando os dados agora.",
+    "paymentCanceled": "Pagamento cancelado. Você pode tentar novamente a qualquer momento.",
     "backToLogin": "Voltar ao login",
     "helpLink": "Ajuda e contato"
   },
@@ -94,8 +98,8 @@
         "a": "No formulário de cadastro para jogadores, você seleciona um clube e informa seus dados. O clube analisa sua candidatura e decide se você será cadastrado como talento."
       },
       {
-        "q": "Sou menor de idade — o que isso significa para minha candidatura?",
-        "a": "Para candidatos(as) menores de idade, o e-mail de um(a) responsável legal é obrigatório. A candidatura só é encaminhada ao clube depois que essa pessoa confirmar efetivamente o convite."
+        "q": "Sou menor de idade — posso me candidatar sozinho(a)?",
+        "a": "Não. Jogadores menores de idade não podem se cadastrar sozinhos — o cadastro é feito exclusivamente por um(a) responsável legal diretamente, junto com uma taxa única. A candidatura é encaminhada ao clube para análise após o pagamento ser concluído com sucesso."
       },
       {
         "q": "Como meus dados são protegidos?",
@@ -952,8 +956,9 @@
     "requiredFields": "Por favor, preencha todos os campos obrigatórios.",
     "invalidBirthDate": "A data de nascimento é inválida ou está no futuro.",
     "consentRequired": "Por favor, concorde com o processamento dos dados.",
-    "guardianEmailRequired": "Para candidatos(as) menores de idade, o e-mail de um(a) responsável legal é obrigatório.",
     "submitFailed": "Não foi possível enviar a candidatura. Por favor, tente novamente.",
+    "paymentNotSetUp": "O pagamento não está disponível no momento. Por favor, tente novamente mais tarde.",
+    "paymentSetupFailed": "Não foi possível redirecionar para o pagamento. Por favor, tente novamente.",
     "noClubAssigned": "Seu usuário não está associado a nenhum clube.",
     "candidateIdMissing": "ID do candidato ausente.",
     "candidateNotFound": "Candidatura não encontrada ou já processada.",

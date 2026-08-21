@@ -55,15 +55,19 @@
     "goalkeeperHint": "Il existe un projet dédié et spécialisé pour les talents gardiens de but — n'hésitez pas à y jeter un œil également (pertinent aussi pour les parents de talents gardiens de but). Vous pouvez tout de même envoyer votre candidature ici, indépendamment de cela.",
     "goalkeeperLink": "Vers l'Académie des Gardiens →",
     "contactEmail": "Votre adresse e-mail",
+    "contactEmailGuardian": "Adresse e-mail (représentant(e) légal(e))",
     "contactEmailPlaceholder": "pour que le club puisse vous contacter",
-    "guardianHint": "D'après votre date de naissance, vous êtes encore mineur(e). Votre candidature ne sera proposée au club qu'après l'accord d'un(e) représentant(e) légal(e) via l'adresse e-mail indiquée ci-dessous.",
-    "guardianEmail": "Adresse e-mail du/de la représentant(e) légal(e)",
+    "guardianHint": "D'après la date de naissance, ce joueur est encore mineur(e). Pour les joueurs mineurs, seul(e) un(e) représentant(e) légal(e) peut effectuer l'inscription directement — veuillez indiquer ci-dessous vos propres coordonnées. Des frais uniques de {price} s'appliquent, à régler à l'étape suivante lors du paiement.",
     "dataConsent": "J'accepte que les données indiquées ici soient transmises au club sélectionné afin d'examiner ma candidature.",
+    "dataConsentGuardian": "En tant que représentant(e) légal(e), j'accepte que les données de mon enfant indiquées ici soient transmises au club sélectionné afin d'examiner la candidature.",
     "submitting": "Envoi en cours...",
     "submit": "Envoyer la candidature",
+    "submitToPayment": "Continuer vers le paiement",
     "successTitle": "Candidature reçue.",
     "successBodyAdult": "Le club examine maintenant vos informations et vous contactera s'il vous accepte comme talent.",
-    "successBodyMinor": "Nous avons envoyé un e-mail de confirmation à l'adresse du/de la représentant(e) légal(e) indiquée. Votre candidature ne sera proposée au club qu'après son accord.",
+    "paidSuccessTitle": "Paiement réussi.",
+    "paidSuccessBody": "La candidature a été reçue. Le club examine maintenant les informations.",
+    "paymentCanceled": "Paiement annulé. Vous pouvez réessayer à tout moment.",
     "backToLogin": "Retour à la connexion",
     "helpLink": "Aide et contact"
   },
@@ -94,8 +98,8 @@
         "a": "Via le formulaire d'inscription pour joueurs, vous choisissez un club et indiquez vos données. Le club examine votre candidature et décide de vous accepter ou non comme talent."
       },
       {
-        "q": "Je suis mineur(e) — qu'est-ce que cela signifie pour ma candidature ?",
-        "a": "Pour les candidat(e)s mineur(e)s, l'adresse e-mail d'un(e) représentant(e) légal(e) est obligatoire. La candidature n'est proposée au club qu'après que cette personne a effectivement confirmé l'invitation."
+        "q": "Je suis mineur(e) — puis-je postuler moi-même ?",
+        "a": "Non. Les joueurs mineurs ne peuvent pas s'inscrire eux-mêmes — seul(e) un(e) représentant(e) légal(e) peut les inscrire directement, moyennant des frais uniques. La candidature est soumise au club pour examen après le paiement réussi."
       },
       {
         "q": "Comment mes données sont-elles protégées ?",
@@ -952,8 +956,9 @@
     "requiredFields": "Veuillez remplir tous les champs obligatoires.",
     "invalidBirthDate": "La date de naissance est invalide ou se situe dans le futur.",
     "consentRequired": "Veuillez accepter le traitement des données.",
-    "guardianEmailRequired": "Pour les candidat(e)s mineur(e)s, l'adresse e-mail d'un(e) représentant(e) légal(e) est obligatoire.",
     "submitFailed": "Impossible d'envoyer la candidature. Veuillez réessayer.",
+    "paymentNotSetUp": "Le paiement n'est actuellement pas disponible. Veuillez réessayer plus tard.",
+    "paymentSetupFailed": "La redirection vers le paiement a échoué. Veuillez réessayer.",
     "noClubAssigned": "Aucun club n'est associé à votre utilisateur.",
     "candidateIdMissing": "Identifiant de candidat manquant.",
     "candidateNotFound": "Candidature introuvable ou déjà traitée.",

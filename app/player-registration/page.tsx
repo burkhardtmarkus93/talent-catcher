@@ -5,7 +5,11 @@ import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { CandidateRegistrationForm } from "@/components/candidates/CandidateRegistrationForm";
 import { getPublicClubOptions } from "@/lib/queries/candidates";
 
-export default async function PlayerRegistrationPage() {
+export default async function PlayerRegistrationPage({
+  searchParams,
+}: {
+  searchParams?: { paid?: string; canceled?: string };
+}) {
   const [t, clubs] = await Promise.all([
     getTranslations("candidateRegistrationPage"),
     getPublicClubOptions(),
@@ -23,7 +27,21 @@ export default async function PlayerRegistrationPage() {
           <p className="mt-1 text-sm text-muted">{t("tagline")}</p>
         </div>
 
-        <CandidateRegistrationForm clubs={clubs} />
+        {searchParams?.paid === "1" ? (
+          <div className="rounded-xl border border-pitch/30 bg-pitch/5 p-6 text-sm text-pitch-dark">
+            <p className="font-medium">{t("paidSuccessTitle")}</p>
+            <p className="mt-1.5 text-pitch-dark/80">{t("paidSuccessBody")}</p>
+          </div>
+        ) : (
+          <>
+            {searchParams?.canceled === "1" && (
+              <div className="mb-4 rounded-lg border border-line bg-paper px-3 py-2 text-sm text-muted">
+                {t("paymentCanceled")}
+              </div>
+            )}
+            <CandidateRegistrationForm clubs={clubs} />
+          </>
+        )}
 
         <p className="mt-6 text-center text-sm text-muted">
           <Link href="/login" className="underline-offset-2 hover:underline">

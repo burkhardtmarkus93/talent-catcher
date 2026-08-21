@@ -1,11 +1,14 @@
 "use server";
 
+import { randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { createClient, createAdminClient } from "@/lib/supabase/server";
 import { getCurrentAppUser } from "@/lib/queries/session";
 import { getActiveTalentCount } from "@/lib/queries/talents";
+import { getStripe } from "@/lib/stripe";
+import { CANDIDATE_REGISTRATION_LOOKUP_KEY } from "@/lib/candidatePricing";
 import { PLANS, planNameDe } from "@/lib/plans";
 
 export interface CandidateActionState {
@@ -19,12 +22,18 @@ function calculateAge(birthDate: string): number {
 }
 
 // Öffentliches Formular, kein Login nötig — siehe
-// talent_candidates_insert_public (Migration 20260821100000). Bei
-// minderjährigen Registrierenden wird zusätzlich eine Bestätigungs-
-// Einladung an die/den angegebene(n) Erziehungsberechtigte(n)
-// verschickt; die Kandidatur wird für den Verein erst nach deren
-// tatsächlicher Bestätigung sichtbar (nicht schon jetzt beim Versenden
-// — siehe confirm_candidate_guardian_consent() im Migrationskommentar).
+// talent_candidates_insert_public (Migration 20260821100000).
+//
+// Zwei getrennte Abläufe je nach Alter (siehe Migration
+// 20260821120000): Volljährige registrieren sich weiterhin direkt und
+// kostenlos selbst. Minderjährige NICHT mehr selbst — hier trägt eine/n
+// Erziehungsberechtigte/n die eigenen Kontaktdaten ein (contactEmail
+// wird dabei zu guardian_email) und wird zu einer einmaligen Zahlung
+// (Stripe Checkout, mode "payment") weitergeleitet. Die Kandidatur wird
+// für den Verein erst nach bestätigter Zahlung sichtbar — siehe
+// app/api/stripe/webhook/route.ts, das den Status von 'pending_payment'
+// auf 'pending_review' hebt und danach den Eltern-Portal-Zugang einlädt
+// (lib/candidateGuardianAccess.ts).
 export async function submitTalentCandidate(
   _prevState: CandidateActionState,
   formData: FormData
@@ -37,8 +46,6 @@ export async function submitTalentCandidate(
   const birthDate = String(formData.get("birthDate") ?? "");
   const primaryPosition = String(formData.get("primaryPosition") ?? "").trim();
   const contactEmail = String(formData.get("contactEmail") ?? "").trim().toLowerCase();
-  const guardianEmail =
-    String(formData.get("guardianEmail") ?? "").trim().toLowerCase() || null;
   const consentGiven = formData.get("dataConsent") === "on";
 
   if (!clubId || !firstName || !lastName || !birthDate || !primaryPosition || !contactEmail) {
@@ -55,26 +62,27 @@ export async function submitTalentCandidate(
   }
 
   const isMinor = calculateAge(birthDate) < 18;
-  if (isMinor && !guardianEmail) {
-    return { success: false, error: t("guardianEmailRequired") };
-  }
 
-  // Kein .select() nach dem Insert: talent_candidates_select_same_club
-  // gilt nur für "authenticated" (Scouts/Admins des Vereins), eine
-  // öffentliche, nicht angemeldete Registrierung hat also gar keine
-  // SELECT-Policy, die die eingefügte Zeile zurückgeben könnte —
-  // .select() würde hier mit einem RLS-Fehler scheitern, obwohl der
-  // Insert selbst erlaubt ist. isMinor ist oben bereits serverseitig
-  // berechnet, muss also nicht zurückgelesen werden.
+  // id selbst erzeugen statt per .select() zurückzulesen: die
+  // SELECT-Policy talent_candidates_select_same_club gilt nur für
+  // "authenticated" (Scouts/Admins), eine öffentliche, nicht
+  // angemeldete Registrierung hat also gar keine Policy, die die
+  // eingefügte Zeile zurückgeben könnte — .select() würde hier mit
+  // einem RLS-Fehler scheitern, obwohl der Insert selbst erlaubt ist.
+  // Für den Minderjährigen-Ablauf brauchen wir die id trotzdem sofort
+  // (client_reference_id für Stripe), daher explizit vorgeben.
+  const candidateId = randomUUID();
+
   const supabase = await createClient();
   const { error: insertError } = await supabase.from("talent_candidates").insert({
+    id: candidateId,
     club_id: clubId,
     first_name: firstName,
     last_name: lastName,
     birth_date: birthDate,
     primary_position: primaryPosition,
     contact_email: contactEmail,
-    guardian_email: guardianEmail,
+    guardian_email: isMinor ? contactEmail : null,
   });
 
   if (insertError) {
@@ -87,45 +95,46 @@ export async function submitTalentCandidate(
     return { success: false, error: t("submitFailed") };
   }
 
-  if (isMinor && guardianEmail) {
-    const admin = createAdminClient();
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
-
-    const { data: existingUser } = await admin
-      .from("users")
-      .select("id")
-      .eq("email", guardianEmail)
-      .maybeSingle();
-
-    if (existingUser) {
-      // Bereits ein bestehendes Konto (z. B. schon Eltern-Zugang für ein
-      // Geschwisterkind) — inviteUserByEmail schlägt für registrierte
-      // Adressen fehl, daher stattdessen ein Passwort-Reset-Link
-      // (öffentlich auslösbar, identisch zur bestehenden
-      // /reset-password-Seite). Das erneute Durchlaufen von
-      // app/auth/confirm/route.ts beweist genauso den E-Mail-Zugriff und
-      // löst darüber confirm_candidate_guardian_consent() aus.
-      await supabase.auth.resetPasswordForEmail(guardianEmail, {
-        redirectTo: `${siteUrl}/auth/confirm`,
-      });
-    } else {
-      const { error: inviteError } = await admin.auth.admin.inviteUserByEmail(
-        guardianEmail,
-        {
-          redirectTo: `${siteUrl}/auth/confirm`,
-          data: { pending_role: "candidate_guardian" },
-        }
-      );
-      if (inviteError) {
-        console.error(
-          "submitTalentCandidate() fehlgeschlagen (Guardian-Einladung):",
-          inviteError.message
-        );
-      }
-    }
+  if (!isMinor) {
+    return { success: true };
   }
 
-  return { success: true };
+  const stripe = getStripe();
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+
+  const prices = await stripe.prices.list({
+    lookup_keys: [CANDIDATE_REGISTRATION_LOOKUP_KEY],
+    active: true,
+    limit: 1,
+  });
+  const price = prices.data[0];
+
+  if (!price) {
+    console.error(
+      "submitTalentCandidate(): Stripe-Preis für Kandidaten-Registrierung nicht eingerichtet."
+    );
+    await createAdminClient().from("talent_candidates").delete().eq("id", candidateId);
+    return { success: false, error: t("paymentNotSetUp") };
+  }
+
+  const session = await stripe.checkout.sessions.create({
+    mode: "payment",
+    line_items: [{ price: price.id, quantity: 1 }],
+    customer_email: contactEmail,
+    client_reference_id: candidateId,
+    payment_method_types: ["card", "paypal", "sepa_debit"],
+    success_url: `${siteUrl}/player-registration?paid=1`,
+    cancel_url: `${siteUrl}/player-registration?canceled=1`,
+    metadata: { candidate_id: candidateId },
+  });
+
+  if (!session.url) {
+    console.error("submitTalentCandidate(): Stripe-Checkout-Session ohne url.");
+    await createAdminClient().from("talent_candidates").delete().eq("id", candidateId);
+    return { success: false, error: t("paymentSetupFailed") };
+  }
+
+  redirect(session.url);
 }
 
 async function requireClubReviewer() {
