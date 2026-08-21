@@ -128,7 +128,9 @@
     "contactHeading": "Contato",
     "contactBody": "Tem uma pergunta que não foi respondida ou um problema técnico? Escreva diretamente para nós.",
     "contactButton": "Enviar e-mail",
-    "backToLogin": "Voltar ao login"
+    "backToLogin": "Voltar ao login",
+    "impressumLink": "Aviso legal",
+    "privacyLink": "Política de privacidade"
   },
   "clubReferralPage": {
     "title": "Indicar clube",
