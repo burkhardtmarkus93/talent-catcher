@@ -8,12 +8,14 @@ import { getPublicClubOptions } from "@/lib/queries/candidates";
 export default async function PlayerRegistrationPage({
   searchParams,
 }: {
-  searchParams?: { paid?: string; canceled?: string };
+  searchParams?: { paid?: string; canceled?: string; type?: string };
 }) {
   const [t, clubs] = await Promise.all([
     getTranslations("candidateRegistrationPage"),
     getPublicClubOptions(),
   ]);
+
+  const isEditAccess = searchParams?.type === "edit_access";
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-3 bg-paper px-4 py-12">
@@ -29,8 +31,12 @@ export default async function PlayerRegistrationPage({
 
         {searchParams?.paid === "1" ? (
           <div className="rounded-xl border border-pitch/30 bg-pitch/5 p-6 text-sm text-pitch-dark">
-            <p className="font-medium">{t("paidSuccessTitle")}</p>
-            <p className="mt-1.5 text-pitch-dark/80">{t("paidSuccessBody")}</p>
+            <p className="font-medium">
+              {isEditAccess ? t("editAccessPaidTitle") : t("paidSuccessTitle")}
+            </p>
+            <p className="mt-1.5 text-pitch-dark/80">
+              {isEditAccess ? t("editAccessPaidBody") : t("paidSuccessBody")}
+            </p>
           </div>
         ) : (
           <>
@@ -50,6 +56,10 @@ export default async function PlayerRegistrationPage({
           {" · "}
           <Link href="/help" className="underline-offset-2 hover:underline">
             {t("helpLink")}
+          </Link>
+          {" · "}
+          <Link href="/refer-club" className="underline-offset-2 hover:underline">
+            {t("referClubLink")}
           </Link>
         </p>
       </div>

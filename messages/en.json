@@ -24,7 +24,8 @@
       "club_admin": "Club management",
       "admin": "Admin",
       "parent": "Parent",
-      "landesverband": "Landesverband"
+      "landesverband": "Landesverband",
+      "player": "Player"
     },
     "logout": "Sign out"
   },
@@ -44,7 +45,7 @@
   },
   "candidateRegistrationPage": {
     "title": "Apply to a club",
-    "tagline": "Not yet registered as a talent at a club? Suggest yourself directly to a club here.",
+    "tagline": "Suggest yourself directly to a club here. If you're already listed as a talent there, you'll get the option to edit your existing profile instead.",
     "club": "Club",
     "clubPlaceholder": "Select club",
     "firstName": "First name",
@@ -66,9 +67,12 @@
     "submitToPayment": "Continue to payment",
     "paidSuccessTitle": "Payment successful.",
     "paidSuccessBody": "The application has been received. The club is now reviewing the details.",
+    "editAccessPaidTitle": "Payment successful.",
+    "editAccessPaidBody": "You're already listed as a talent at this club. We've sent an invitation email so you can set up an account — after that you'll be able to update your club/team and upload videos there.",
     "paymentCanceled": "Payment canceled. You can try again at any time.",
     "backToLogin": "Back to sign in",
-    "helpLink": "Help & Contact"
+    "helpLink": "Help & Contact",
+    "referClubLink": "Suggest your club"
   },
   "candidatesPage": {
     "title": "Candidates",
@@ -101,6 +105,14 @@
         "a": "No. Minor players cannot register themselves — only a parent or guardian can register them directly, together with a one-time fee. The application is submitted to the club for review after successful payment."
       },
       {
+        "q": "I might already be listed as a talent at my club — what happens then?",
+        "a": "The registration form automatically checks this with the selected club. If you're already listed there, after payment you'll get access instead to maintain your existing profile yourself (update club/team, upload videos) — no duplicate profile is created. There's no public search field that would let others check whether you're listed."
+      },
+      {
+        "q": "My amateur club isn't on Talent Catcher yet — what can I do?",
+        "a": "You can suggest your club via a dedicated form — we'll then reach out to the club directly."
+      },
+      {
         "q": "How is my data protected?",
         "a": "Each club only sees the talents assigned to it. Data about minors is additionally locked behind a separate youth-protection permission that not every person at the club automatically has."
       },
@@ -117,6 +129,22 @@
     "contactBody": "Question not covered here, or a technical issue? Write to us directly.",
     "contactButton": "Send an email",
     "backToLogin": "Back to sign in"
+  },
+  "clubReferralPage": {
+    "title": "Suggest a club",
+    "tagline": "Is your amateur club not yet on Talent Catcher? Suggest it here — we'll reach out to the club directly.",
+    "referredClubName": "Club name",
+    "referredClubContactEmail": "Club contact email (if known)",
+    "referredClubContactEmailPlaceholder": "e.g. board@club.com",
+    "referrerName": "Your name",
+    "referrerEmail": "Your email address",
+    "note": "Message (optional)",
+    "notePlaceholder": "e.g. contact person at the club",
+    "submitting": "Submitting...",
+    "submit": "Send suggestion",
+    "successTitle": "Thanks for the suggestion!",
+    "successBody": "We'll get in touch with the suggested club.",
+    "backToRegistration": "Back to player registration"
   },
   "newTalentPage": {
     "backToList": "← Back to talent list",
@@ -458,12 +486,16 @@
     "roleClubAdmin": "Club management",
     "roleAdmin": "Admin",
     "roleParent": "Parent",
-    "roleLandesverband": "Landesverband"
+    "roleLandesverband": "Landesverband",
+    "rolePlayer": "Player"
   },
   "parentHomePage": {
     "title": "My children",
     "subtitle": "Manage club/team and videos.",
     "empty": "No talent is linked to your account yet.",
+    "titleSelf": "My talent profile",
+    "subtitleSelf": "Manage club/team and videos.",
+    "emptySelf": "No talent profile is linked to your account yet.",
     "positionAge": "{position} · {age} years",
     "open": "Open →"
   },
@@ -472,6 +504,7 @@
     "fileSizeMb": "{size} MB",
     "clubAndTeam": "Club & team",
     "clubAndTeamHint": "If your club changes, you can update it here directly — the scout observing {firstName} will then see it automatically. All other details (position, ratings) continue to be maintained exclusively by the club.",
+    "clubAndTeamHintSelf": "If you change clubs, you can update it here directly — the scout observing you will then see it automatically. All other details (position, ratings) continue to be maintained exclusively by the club.",
     "currentClub": "Current club *",
     "team": "Team/age group",
     "teamPlaceholder": "e.g. U17",
@@ -503,7 +536,8 @@
     "roleClubAdmin": "Club management",
     "roleAdmin": "Admin",
     "roleParent": "Parent",
-    "roleLandesverband": "Landesverband"
+    "roleLandesverband": "Landesverband",
+    "rolePlayer": "Player"
   },
   "videoUploadForm": {
     "onlyMp4": "Only MP4 files are supported.",
@@ -966,6 +1000,10 @@
     "planLimitReached": "Your plan \"{plan}\" is limited to {limit} active talents. Please upgrade or archive a talent.",
     "acceptFailed": "The application could not be accepted.",
     "declineFailed": "The application could not be declined."
+  },
+  "clubReferralActions": {
+    "requiredFields": "Please fill in all required fields.",
+    "submitFailed": "The suggestion could not be submitted. Please try again."
   },
   "reportActions": {
     "matchDateRequired": "Match date is a required field.",
