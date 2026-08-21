@@ -3,7 +3,7 @@ import Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
 import { createAdminClient } from "@/lib/supabase/server";
 import { planAndIntervalFromLookupKey } from "@/lib/plans";
-import { inviteCandidateGuardian } from "@/lib/candidateGuardianAccess";
+import { invitePortalAccess } from "@/lib/candidateGuardianAccess";
 
 export async function POST(request: NextRequest) {
   const stripe = getStripe();
@@ -32,14 +32,18 @@ export async function POST(request: NextRequest) {
     case "checkout.session.completed": {
       const session = event.data.object as Stripe.Checkout.Session;
 
-      // Einmalige Kandidaten-Registrierungsgebühr (Eltern-initiierte
-      // Anmeldung eines minderjährigen Spielers, siehe Migration
-      // 20260821120000) — eigener Zweig, unterscheidbar am
-      // "payment"-statt-"subscription"-Modus, da beide Checkout-Arten
-      // über denselben Event-Typ laufen.
+      // Einmalige Bewerbungs-/Bearbeitungsgebühr (siehe Migration
+      // 20260821120000/20260821130000/20260821140000) — eigener Zweig,
+      // unterscheidbar am "payment"-statt-"subscription"-Modus, da beide
+      // Checkout-Arten über denselben Event-Typ laufen. metadata.type
+      // unterscheidet zusätzlich zwischen einer neuen Kandidatur
+      // (talent_candidates) und einem Selbstverwaltungs-Zugang zu einem
+      // bereits bestehenden Talent (talent_edit_access_requests).
       if (session.mode === "payment") {
-        const candidateId = session.client_reference_id;
-        if (!candidateId) {
+        const recordId = session.client_reference_id;
+        const paymentType = session.metadata?.type;
+
+        if (!recordId) {
           console.error(
             "Stripe-Webhook: checkout.session.completed (payment) ohne client_reference_id",
             session.id
@@ -47,16 +51,85 @@ export async function POST(request: NextRequest) {
           break;
         }
 
+        if (paymentType === "edit_access") {
+          const { data: request_, error: fetchError } = await admin
+            .from("talent_edit_access_requests")
+            .select("id, talent_id, status, requester_email, guardian_email, is_minor")
+            .eq("id", recordId)
+            .maybeSingle();
+
+          if (fetchError || !request_) {
+            console.error(
+              "Stripe-Webhook: Edit-Access-Anfrage nicht gefunden (checkout.session.completed/payment)",
+              recordId,
+              fetchError?.message
+            );
+            break;
+          }
+
+          // Idempotenz: siehe Kommentar im talent_candidates-Zweig unten.
+          if (request_.status !== "pending_payment") {
+            break;
+          }
+
+          const { error: updateError } = await admin
+            .from("talent_edit_access_requests")
+            .update({
+              status: "paid",
+              paid_at: new Date().toISOString(),
+              amount_paid_cents: session.amount_total,
+              stripe_checkout_session_id: session.id,
+            })
+            .eq("id", recordId);
+
+          if (updateError) {
+            console.error(
+              "Stripe-Webhook: talent_edit_access_requests-Update fehlgeschlagen:",
+              updateError.message
+            );
+            break;
+          }
+
+          const grantEmail = request_.is_minor ? request_.guardian_email : request_.requester_email;
+          if (!grantEmail) {
+            console.error(
+              "Stripe-Webhook: Edit-Access-Anfrage ohne Zugriffs-E-Mail",
+              recordId
+            );
+            break;
+          }
+
+          // Verknüpfung wird bewusst unclaimed angelegt (user_id/claimed_at
+          // null) — erst confirm_deferred_access_links() nach echter
+          // Bestätigung des Einladungs-Links füllt sie, gleiches Prinzip
+          // wie bei der Kandidaten-Guardian-Einladung unten.
+          const { error: linkError } = await admin.from("talent_guardians").insert({
+            talent_id: request_.talent_id,
+            email: grantEmail,
+            relationship: request_.is_minor ? "guardian" : "self",
+          });
+
+          if (linkError) {
+            console.error(
+              "Stripe-Webhook: talent_guardians-Verknüpfung (Edit-Access) fehlgeschlagen:",
+              linkError.message
+            );
+          }
+
+          await invitePortalAccess(grantEmail, request_.is_minor ? "candidate_guardian" : "player");
+          break;
+        }
+
         const { data: candidate, error: fetchError } = await admin
           .from("talent_candidates")
           .select("id, status, guardian_email")
-          .eq("id", candidateId)
+          .eq("id", recordId)
           .maybeSingle();
 
         if (fetchError || !candidate) {
           console.error(
             "Stripe-Webhook: Kandidatur nicht gefunden (checkout.session.completed/payment)",
-            candidateId,
+            recordId,
             fetchError?.message
           );
           break;
@@ -78,7 +151,7 @@ export async function POST(request: NextRequest) {
             amount_paid_cents: session.amount_total,
             stripe_checkout_session_id: session.id,
           })
-          .eq("id", candidateId);
+          .eq("id", recordId);
 
         if (updateError) {
           console.error(
@@ -89,7 +162,7 @@ export async function POST(request: NextRequest) {
         }
 
         if (candidate.guardian_email) {
-          await inviteCandidateGuardian(candidate.guardian_email);
+          await invitePortalAccess(candidate.guardian_email, "candidate_guardian");
         }
 
         break;

@@ -24,7 +24,8 @@
       "club_admin": "Vereinsleitung",
       "admin": "Admin",
       "parent": "Eltern",
-      "landesverband": "Landesverband"
+      "landesverband": "Landesverband",
+      "player": "Spieler"
     },
     "logout": "Abmelden"
   },
@@ -44,7 +45,7 @@
   },
   "candidateRegistrationPage": {
     "title": "Bei einem Verein bewerben",
-    "tagline": "Noch nicht als Talent bei einem Verein erfasst? Schlag dich hier direkt einem Verein vor.",
+    "tagline": "Schlag dich hier direkt einem Verein vor. Bist du dort schon als Talent gelistet, bekommst du stattdessen die Möglichkeit, dein bestehendes Profil zu bearbeiten.",
     "club": "Verein",
     "clubPlaceholder": "Verein auswählen",
     "firstName": "Vorname",
@@ -66,9 +67,12 @@
     "submitToPayment": "Weiter zur Zahlung",
     "paidSuccessTitle": "Zahlung erfolgreich.",
     "paidSuccessBody": "Die Bewerbung ist eingegangen. Der Verein prüft die Angaben jetzt.",
+    "editAccessPaidTitle": "Zahlung erfolgreich.",
+    "editAccessPaidBody": "Du bist bereits als Talent bei diesem Verein gelistet. Wir haben eine Einladungs-E-Mail verschickt, mit der du ein Konto einrichtest — danach kannst du dort Verein/Team aktualisieren und Videos hochladen.",
     "paymentCanceled": "Zahlung abgebrochen. Du kannst es jederzeit erneut versuchen.",
     "backToLogin": "Zurück zum Login",
-    "helpLink": "Hilfe & Kontakt"
+    "helpLink": "Hilfe & Kontakt",
+    "referClubLink": "Deinen Verein vorschlagen"
   },
   "candidatesPage": {
     "title": "Kandidaten",
@@ -101,6 +105,14 @@
         "a": "Nein. Minderjährige Spieler können sich nicht selbst registrieren — das übernimmt ausschließlich eine erziehungsberechtigte Person direkt, verbunden mit einer einmaligen Gebühr. Die Bewerbung wird dem Verein nach erfolgreicher Zahlung zur Prüfung vorgelegt."
       },
       {
+        "q": "Ich bin bei meinem Verein vielleicht schon als Talent gelistet — was passiert dann?",
+        "a": "Das Registrierungsformular prüft das automatisch beim gewählten Verein mit. Bist du dort schon gelistet, bekommst du nach der Zahlung stattdessen Zugriff, um dein bestehendes Profil selbst zu pflegen (Verein/Team aktualisieren, Videos hochladen) — es entsteht kein doppeltes Profil. Es gibt kein öffentliches Suchfeld, über das andere nachsehen könnten, ob du gelistet bist."
+      },
+      {
+        "q": "Mein Amateurverein ist noch nicht bei Talent Catcher — was kann ich tun?",
+        "a": "Du kannst deinen Verein über ein eigenes Formular vorschlagen — wir melden uns dann direkt beim Verein."
+      },
+      {
         "q": "Wie werden meine Daten geschützt?",
         "a": "Jeder Verein sieht ausschließlich die Talente, die ihm zugeordnet sind. Daten Minderjähriger sind zusätzlich durch eine eigene Jugendschutz-Berechtigung gesperrt, über die nicht jede Person im Verein automatisch verfügt."
       },
@@ -117,6 +129,22 @@
     "contactBody": "Frage nicht dabei oder ein technisches Problem? Schreib uns direkt.",
     "contactButton": "E-Mail schreiben",
     "backToLogin": "Zurück zum Login"
+  },
+  "clubReferralPage": {
+    "title": "Verein vorschlagen",
+    "tagline": "Dein Amateurverein ist noch nicht bei Talent Catcher? Schlag ihn hier vor — wir melden uns direkt beim Verein.",
+    "referredClubName": "Name des Vereins",
+    "referredClubContactEmail": "Kontakt-E-Mail des Vereins (falls bekannt)",
+    "referredClubContactEmailPlaceholder": "z. B. vorstand@verein.de",
+    "referrerName": "Dein Name",
+    "referrerEmail": "Deine E-Mail-Adresse",
+    "note": "Nachricht (optional)",
+    "notePlaceholder": "z. B. Ansprechpartner im Verein",
+    "submitting": "Wird übermittelt...",
+    "submit": "Vorschlag absenden",
+    "successTitle": "Danke für den Vorschlag!",
+    "successBody": "Wir melden uns beim vorgeschlagenen Verein.",
+    "backToRegistration": "Zurück zur Spieler-Registrierung"
   },
   "newTalentPage": {
     "backToList": "← Zurück zur Talentliste",
@@ -458,12 +486,16 @@
     "roleClubAdmin": "Vereinsleitung",
     "roleAdmin": "Admin",
     "roleParent": "Eltern",
-    "roleLandesverband": "Landesverband"
+    "roleLandesverband": "Landesverband",
+    "rolePlayer": "Spieler"
   },
   "parentHomePage": {
     "title": "Meine Kinder",
     "subtitle": "Verein/Team pflegen und Videos verwalten.",
     "empty": "Es ist noch kein Talent mit deinem Konto verknüpft.",
+    "titleSelf": "Mein Talent-Profil",
+    "subtitleSelf": "Verein/Team pflegen und Videos verwalten.",
+    "emptySelf": "Es ist noch kein Talent-Profil mit deinem Konto verknüpft.",
     "positionAge": "{position} · {age} Jahre",
     "open": "Öffnen →"
   },
@@ -472,6 +504,7 @@
     "fileSizeMb": "{size} MB",
     "clubAndTeam": "Verein & Team",
     "clubAndTeamHint": "Wenn euer Verein wechselt, könnt ihr das hier direkt aktualisieren — der Scout, der {firstName} beobachtet, sieht das dann automatisch. Alle anderen Angaben (Position, Bewertungen) pflegt weiterhin ausschließlich der Verein.",
+    "clubAndTeamHintSelf": "Wenn du den Verein wechselst, kannst du das hier direkt aktualisieren — der Scout, der dich beobachtet, sieht das dann automatisch. Alle anderen Angaben (Position, Bewertungen) pflegt weiterhin ausschließlich der Verein.",
     "currentClub": "Aktueller Verein *",
     "team": "Team/Jahrgang",
     "teamPlaceholder": "z. B. U17",
@@ -505,7 +538,8 @@
     "roleClubAdmin": "Vereinsleitung",
     "roleAdmin": "Admin",
     "roleParent": "Eltern",
-    "roleLandesverband": "Landesverband"
+    "roleLandesverband": "Landesverband",
+    "rolePlayer": "Spieler"
   },
   "videoUploadForm": {
     "onlyMp4": "Nur MP4-Dateien werden unterstützt.",
@@ -980,6 +1014,10 @@
     "planLimitReached": "Dein Plan „{plan}“ ist auf {limit} aktive Talente begrenzt. Bitte upgraden oder ein Talent archivieren.",
     "acceptFailed": "Kandidatur konnte nicht angenommen werden.",
     "declineFailed": "Kandidatur konnte nicht abgelehnt werden."
+  },
+  "clubReferralActions": {
+    "requiredFields": "Bitte alle Pflichtfelder ausfüllen.",
+    "submitFailed": "Vorschlag konnte nicht übermittelt werden. Bitte erneut versuchen."
   },
   "reportActions": {
     "matchDateRequired": "Spieldatum ist ein Pflichtfeld.",

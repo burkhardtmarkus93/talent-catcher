@@ -9,7 +9,7 @@
 // "landesverband" (siehe Migration 20260819100000) hat ebenfalls keinen
 // club_id, sondern landesverbandId — gebunden an alle Vereine, die sich
 // diesem Landesverband zugeordnet haben (clubs.landesverband_id).
-export type Role = "scout" | "club_admin" | "admin" | "parent" | "landesverband";
+export type Role = "scout" | "club_admin" | "admin" | "parent" | "landesverband" | "player";
 
 export interface AppUser {
   id: string;

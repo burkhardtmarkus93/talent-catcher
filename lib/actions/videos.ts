@@ -28,14 +28,15 @@ export async function createVideoRecord(
 
   const supabase = await createClient();
 
-  const isGuardian = appUser.role === "parent";
+  const isGuardian = appUser.role === "parent" || appUser.role === "player";
   let isMinor: boolean;
 
   if (isGuardian) {
-    // Eltern haben keinen club_id und keine RLS-Policy auf public.talents
-    // direkt (siehe Migration 20260816010000) — Zugriff/Existenz laufen
-    // hier über die guardian-gescopte View, die zugleich beweist, dass
-    // der Account wirklich mit genau diesem Talent verknüpft ist.
+    // Eltern/Spieler haben keinen club_id und keine RLS-Policy auf
+    // public.talents direkt (siehe Migration 20260816010000) — Zugriff/
+    // Existenz laufen hier über die guardian-gescopte View, die zugleich
+    // beweist, dass der Account wirklich mit genau diesem Talent
+    // verknüpft ist.
     const guardianTalent = await getGuardianTalent(input.talentId);
     if (!guardianTalent) {
       return { success: false, error: t("talentNotFound") };
@@ -72,10 +73,10 @@ export async function createVideoRecord(
     }
   }
 
-  // Uploads von Eltern-Seite nur, solange der Verein aktiv ein Video
-  // angefordert hat — verhindert unaufgeforderte Uploads, mit denen
-  // Scouts sonst zugespamt würden. Der Verein selbst (Scout/Admin) darf
-  // weiterhin jederzeit direkt hochladen, siehe else-Zweig oben.
+  // Uploads von Eltern-/Spieler-Seite nur, solange der Verein aktiv ein
+  // Video angefordert hat — verhindert unaufgeforderte Uploads, mit
+  // denen Scouts sonst zugespamt würden. Der Verein selbst (Scout/Admin)
+  // darf weiterhin jederzeit direkt hochladen, siehe else-Zweig oben.
   if (isGuardian) {
     const openRequest = await getOpenVideoRequest(input.talentId);
     if (!openRequest) {
@@ -105,8 +106,8 @@ export async function createVideoRecord(
   return { success: true };
 }
 
-// Nur Vereinsseite (Scout/Admin) darf Videos anfordern — Eltern sehen
-// die Anfrage nur lesend (video_requests_select_guardian), siehe
+// Nur Vereinsseite (Scout/Admin) darf Videos anfordern — Eltern/Spieler
+// sehen die Anfrage nur lesend (video_requests_select_guardian), siehe
 // Migration 20260821160000.
 export async function requestVideoUpload(formData: FormData): Promise<void> {
   const t = await getTranslations("videoActions");

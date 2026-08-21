@@ -21,6 +21,7 @@ export default async function ProfilePage({
     admin: t("roleAdmin"),
     parent: t("roleParent"),
     landesverband: t("roleLandesverband"),
+    player: t("rolePlayer"),
   };
 
   return (

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { getGuardianTalents } from "@/lib/queries/guardians";
+import { getCurrentAppUser } from "@/lib/queries/session";
 
 function age(birthDate: string): number {
   const diff = Date.now() - new Date(birthDate).getTime();
@@ -13,10 +14,12 @@ export default async function ParentHomePage({
 }: {
   searchParams: { error?: string };
 }) {
-  const talents = await getGuardianTalents();
+  const [talents, appUser] = await Promise.all([getGuardianTalents(), getCurrentAppUser()]);
+  const isSelf = appUser?.role === "player";
 
-  // Der Normalfall ist ein Kind auf der Plattform — direkt weiter zum
-  // Profil, statt eine Liste mit nur einem Eintrag zu zeigen.
+  // Der Normalfall ist ein Kind bzw. das eigene Profil auf der
+  // Plattform — direkt weiter, statt eine Liste mit nur einem Eintrag
+  // zu zeigen.
   if (talents.length === 1) {
     redirect(`/parent/talents/${talents[0].id}`);
   }
@@ -26,10 +29,10 @@ export default async function ParentHomePage({
   return (
     <div>
       <h1 className="font-display text-2xl font-medium text-ink">
-        {t("title")}
+        {isSelf ? t("titleSelf") : t("title")}
       </h1>
       <p className="mt-1 text-sm text-muted">
-        {t("subtitle")}
+        {isSelf ? t("subtitleSelf") : t("subtitle")}
       </p>
 
       {searchParams.error && (
@@ -40,7 +43,7 @@ export default async function ParentHomePage({
 
       {talents.length === 0 ? (
         <p className="mt-6 text-sm text-muted">
-          {t("empty")}
+          {isSelf ? t("emptySelf") : t("empty")}
         </p>
       ) : (
         <ul className="mt-6 flex flex-col gap-2">

@@ -30,7 +30,7 @@ export default async function DashboardLayout({
   // (parent)-Bereich, nicht in die Scouting-Oberfläche — Zugriff hierauf
   // ist RLS-seitig ohnehin gesperrt (kein club_id), das hier ist nur die
   // UX-Weiterleitung, falls jemand direkt eine /dashboard/...-URL aufruft.
-  if (appUser.role === "parent") {
+  if (appUser.role === "parent" || appUser.role === "player") {
     redirect("/parent");
   }
 

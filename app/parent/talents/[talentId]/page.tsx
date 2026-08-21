@@ -7,6 +7,7 @@ import { updateGuardianTalentClub } from "@/lib/actions/guardians";
 import { getVideosForTalent } from "@/lib/queries/videos";
 import { hasGrantedVideoConsent } from "@/lib/queries/consent";
 import { getOpenVideoRequest } from "@/lib/queries/videoRequests";
+import { getCurrentAppUser } from "@/lib/queries/session";
 
 function age(birthDate: string): number {
   const diff = Date.now() - new Date(birthDate).getTime();
@@ -23,13 +24,15 @@ export default async function ParentTalentPage({
   const talent = await getGuardianTalent(params.talentId);
   if (!talent) notFound();
 
-  const [videos, hasConsent, openVideoRequest, t] = await Promise.all([
+  const [videos, hasConsent, openVideoRequest, t, appUser] = await Promise.all([
     getVideosForTalent(talent.id),
     talent.isMinor ? hasGrantedVideoConsent(talent.id) : Promise.resolve(true),
     getOpenVideoRequest(talent.id),
     getTranslations("parentTalentPage"),
+    getCurrentAppUser(),
   ]);
   const canUploadVideo = hasConsent && Boolean(openVideoRequest);
+  const isSelf = appUser?.role === "player";
 
   function formatFileSize(bytes: number | null): string {
     if (!bytes) return "—";
@@ -61,7 +64,9 @@ export default async function ParentTalentPage({
           {t("clubAndTeam")}
         </h2>
         <p className="mb-4 text-xs text-muted">
-          {t("clubAndTeamHint", { firstName: talent.firstName })}
+          {isSelf
+            ? t("clubAndTeamHintSelf")
+            : t("clubAndTeamHint", { firstName: talent.firstName })}
         </p>
         <form
           action={updateGuardianTalentClub}

@@ -4,10 +4,13 @@ import { getCurrentAppUser } from "@/lib/queries/session";
 import { signOut } from "@/lib/actions/auth";
 import { LogoLockup } from "@/components/ui/LogoLockup";
 
-// Eigener, bewusst schlanker Bereich für Eltern-Accounts — keine
-// Sidebar/Talentliste/Risk-Engine-Oberfläche, nur das eigene Kind. Siehe
-// Migration 20260816010000 für die Zugriffsbegründung (kein club_id,
-// stattdessen talent_guardians-gescoped).
+// Eigener, bewusst schlanker Bereich für Eltern- UND Spieler-Accounts —
+// keine Sidebar/Talentliste/Risk-Engine-Oberfläche, nur die eigenen
+// verknüpften Talente. Beide Rollen teilen sich dasselbe
+// talent_guardians-Datenmodell (relationship 'guardian'/'self', siehe
+// Migration 20260816010000/20260821140000) und damit auch denselben
+// Bereich hier — nur die Seiteninhalte innerhalb unterscheiden je nach
+// Rolle leicht in der Ansprache (Eltern vs. Spieler selbst).
 export default async function ParentLayout({
   children,
 }: {
@@ -18,7 +21,7 @@ export default async function ParentLayout({
   if (!appUser) {
     redirect("/login");
   }
-  if (appUser.role !== "parent") {
+  if (appUser.role !== "parent" && appUser.role !== "player") {
     redirect("/dashboard");
   }
 

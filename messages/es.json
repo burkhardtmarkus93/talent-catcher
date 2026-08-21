@@ -24,7 +24,8 @@
       "club_admin": "Dirección del club",
       "admin": "Administrador",
       "parent": "Padre/Madre",
-      "landesverband": "Landesverband"
+      "landesverband": "Landesverband",
+      "player": "Jugador"
     },
     "logout": "Cerrar sesión"
   },
@@ -44,7 +45,7 @@
   },
   "candidateRegistrationPage": {
     "title": "Solicitar ingreso a un club",
-    "tagline": "¿Todavía no estás registrado/a como talento en ningún club? Propónte directamente a un club aquí.",
+    "tagline": "Propónte aquí directamente a un club. Si ya estás registrado/a allí como talento, en su lugar tendrás la posibilidad de editar tu perfil existente.",
     "club": "Club",
     "clubPlaceholder": "Seleccionar club",
     "firstName": "Nombre",
@@ -66,9 +67,12 @@
     "submitToPayment": "Continuar al pago",
     "paidSuccessTitle": "Pago realizado con éxito.",
     "paidSuccessBody": "La solicitud se ha recibido. El club está revisando los datos ahora.",
+    "editAccessPaidTitle": "Pago realizado con éxito.",
+    "editAccessPaidBody": "Ya estás registrado/a como talento en este club. Te hemos enviado un correo de invitación con el que podrás configurar una cuenta — después podrás actualizar el club/equipo y subir vídeos allí.",
     "paymentCanceled": "Pago cancelado. Puedes intentarlo de nuevo en cualquier momento.",
     "backToLogin": "Volver al inicio de sesión",
-    "helpLink": "Ayuda y contacto"
+    "helpLink": "Ayuda y contacto",
+    "referClubLink": "Proponer tu club"
   },
   "candidatesPage": {
     "title": "Candidatos",
@@ -101,6 +105,14 @@
         "a": "No. Los jugadores menores de edad no pueden registrarse por sí mismos — el registro lo realiza directamente la madre, el padre o el tutor legal, junto con una cuota única. La solicitud se presenta al club para su revisión tras completar el pago."
       },
       {
+        "q": "Puede que ya esté registrado/a como talento en mi club — ¿qué pasa entonces?",
+        "a": "El formulario de registro lo comprueba automáticamente con el club seleccionado. Si ya estás registrado/a allí, tras el pago obtienes en su lugar acceso para gestionar tú mismo/a tu perfil existente (actualizar club/equipo, subir vídeos) — no se crea ningún perfil duplicado. No existe ningún campo de búsqueda público a través del cual otras personas puedan comprobar si estás registrado/a."
+      },
+      {
+        "q": "Mi club amateur todavía no está en Talent Catcher — ¿qué puedo hacer?",
+        "a": "Puedes proponer tu club a través de un formulario propio — nos pondremos en contacto directamente con el club."
+      },
+      {
         "q": "¿Cómo se protegen mis datos?",
         "a": "Cada club solo puede ver los talentos que tiene asignados. Los datos de menores de edad están además protegidos por un permiso específico de protección de menores, del que no dispone automáticamente cualquier persona del club."
       },
@@ -117,6 +129,22 @@
     "contactBody": "¿Tu pregunta no está aquí o tienes un problema técnico? Escríbenos directamente.",
     "contactButton": "Escribir un correo electrónico",
     "backToLogin": "Volver al inicio de sesión"
+  },
+  "clubReferralPage": {
+    "title": "Proponer un club",
+    "tagline": "¿Tu club amateur todavía no está en Talent Catcher? Propónlo aquí — nos pondremos en contacto directamente con el club.",
+    "referredClubName": "Nombre del club",
+    "referredClubContactEmail": "Correo electrónico de contacto del club (si lo conoces)",
+    "referredClubContactEmailPlaceholder": "p. ej. directiva@club.com",
+    "referrerName": "Tu nombre",
+    "referrerEmail": "Tu dirección de correo electrónico",
+    "note": "Mensaje (opcional)",
+    "notePlaceholder": "p. ej. persona de contacto en el club",
+    "submitting": "Enviando...",
+    "submit": "Enviar propuesta",
+    "successTitle": "¡Gracias por la propuesta!",
+    "successBody": "Nos pondremos en contacto con el club propuesto.",
+    "backToRegistration": "Volver al registro de jugadores"
   },
   "newTalentPage": {
     "backToList": "← Volver a la lista de talentos",
@@ -458,12 +486,16 @@
     "roleClubAdmin": "Dirección del club",
     "roleAdmin": "Administrador",
     "roleParent": "Padre/Madre",
-    "roleLandesverband": "Landesverband"
+    "roleLandesverband": "Landesverband",
+    "rolePlayer": "Jugador"
   },
   "parentHomePage": {
     "title": "Mis hijos",
     "subtitle": "Gestiona el club/equipo y los vídeos.",
     "empty": "Aún no hay ningún talento vinculado a tu cuenta.",
+    "titleSelf": "Mi perfil de talento",
+    "subtitleSelf": "Gestiona el club/equipo y los vídeos.",
+    "emptySelf": "Aún no hay ningún perfil de talento vinculado a tu cuenta.",
     "positionAge": "{position} · {age} años",
     "open": "Abrir →"
   },
@@ -472,6 +504,7 @@
     "fileSizeMb": "{size} MB",
     "clubAndTeam": "Club y equipo",
     "clubAndTeamHint": "Si cambiáis de club, podéis actualizarlo aquí directamente — el ojeador que observa a {firstName} lo verá automáticamente. El resto de los datos (posición, evaluaciones) siguen siendo gestionados exclusivamente por el club.",
+    "clubAndTeamHintSelf": "Si cambias de club, puedes actualizarlo aquí directamente — el ojeador que te observa lo verá automáticamente. El resto de los datos (posición, evaluaciones) siguen siendo gestionados exclusivamente por el club.",
     "currentClub": "Club actual *",
     "team": "Equipo/Categoría",
     "teamPlaceholder": "p. ej. U17",
@@ -505,7 +538,8 @@
     "roleClubAdmin": "Dirección del club",
     "roleAdmin": "Administrador",
     "roleParent": "Padre/Madre",
-    "roleLandesverband": "Landesverband"
+    "roleLandesverband": "Landesverband",
+    "rolePlayer": "Jugador"
   },
   "videoUploadForm": {
     "onlyMp4": "Solo se admiten archivos MP4.",
@@ -980,6 +1014,10 @@
     "planLimitReached": "Tu plan «{plan}» está limitado a {limit} talentos activos. Por favor, actualiza tu plan o archiva un talento.",
     "acceptFailed": "No se pudo aceptar la candidatura.",
     "declineFailed": "No se pudo rechazar la candidatura."
+  },
+  "clubReferralActions": {
+    "requiredFields": "Por favor, completa todos los campos obligatorios.",
+    "submitFailed": "No se pudo enviar la propuesta. Por favor, inténtalo de nuevo."
   },
   "reportActions": {
     "matchDateRequired": "La fecha del partido es un campo obligatorio.",
