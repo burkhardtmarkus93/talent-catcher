@@ -24,6 +24,13 @@ function calculateAge(birthDate: string): number {
 // Öffentliches Formular, kein Login nötig — siehe
 // talent_candidates_insert_public (Migration 20260821100000).
 //
+// Vor dem Anlegen einer neuen Kandidatur wird geprüft, ob am gewählten
+// Verein (und NUR dort — siehe talent_exists_at_club(), Migration
+// 20260821140000) bereits ein passendes Talent-Profil existiert. Falls
+// ja, wird stattdessen ein bezahlter Selbstverwaltungs-Zugang zu diesem
+// bestehenden Profil angeboten (siehe requestTalentEditAccess unten)
+// statt einer doppelten Neuanlage.
+//
 // Jede Kandidatur (volljährig oder minderjährig, siehe Migration
 // 20260821130000) wird erst nach einer einmaligen Zahlung (Stripe
 // Checkout, mode "payment") für den Verein sichtbar — bei
@@ -66,6 +73,26 @@ export async function submitTalentCandidate(
   }
 
   const isMinor = calculateAge(birthDate) < 18;
+  const supabase = await createClient();
+
+  const { data: alreadyListed, error: existsError } = await supabase.rpc(
+    "talent_exists_at_club",
+    {
+      p_club_id: clubId,
+      p_first_name: firstName,
+      p_last_name: lastName,
+      p_birth_date: birthDate,
+    }
+  );
+
+  if (existsError) {
+    console.error("submitTalentCandidate() fehlgeschlagen (Existenzprüfung):", existsError.message);
+    return { success: false, error: t("submitFailed") };
+  }
+
+  if (alreadyListed) {
+    return requestTalentEditAccess({ clubId, firstName, lastName, birthDate, contactEmail, isMinor });
+  }
 
   // id selbst erzeugen statt per .select() zurückzulesen: die
   // SELECT-Policy talent_candidates_select_same_club gilt nur für
@@ -77,7 +104,6 @@ export async function submitTalentCandidate(
   // (client_reference_id für Stripe), daher explizit vorgeben.
   const candidateId = randomUUID();
 
-  const supabase = await createClient();
   const { error: insertError } = await supabase.from("talent_candidates").insert({
     id: candidateId,
     club_id: clubId,
@@ -125,12 +151,108 @@ export async function submitTalentCandidate(
     payment_method_types: ["card", "paypal", "sepa_debit"],
     success_url: `${siteUrl}/player-registration?paid=1`,
     cancel_url: `${siteUrl}/player-registration?canceled=1`,
-    metadata: { candidate_id: candidateId },
+    metadata: { type: "candidate_registration", candidate_id: candidateId },
   });
 
   if (!session.url) {
     console.error("submitTalentCandidate(): Stripe-Checkout-Session ohne url.");
     await createAdminClient().from("talent_candidates").delete().eq("id", candidateId);
+    return { success: false, error: t("paymentSetupFailed") };
+  }
+
+  redirect(session.url);
+}
+
+// Zweig für ein am gewählten Verein bereits bestehendes Talent-Profil
+// (siehe submitTalentCandidate oben) — Bezahlung für Selbstverwaltungs-
+// Zugang (Verein/Team aktualisieren, Video hochladen) statt einer neuen
+// Kandidatur. Legt talent_id NICHT selbst offen an den Aufrufer zurück
+// (kein .select() nötig/möglich, siehe Kommentar oben) — die
+// RPC-Rückgabe war bereits nur ein boolean, die talent_id wird hier
+// erneut serverseitig über dieselbe enge Übereinstimmung ermittelt.
+async function requestTalentEditAccess({
+  clubId,
+  firstName,
+  lastName,
+  birthDate,
+  contactEmail,
+  isMinor,
+}: {
+  clubId: string;
+  firstName: string;
+  lastName: string;
+  birthDate: string;
+  contactEmail: string;
+  isMinor: boolean;
+}): Promise<CandidateActionState> {
+  const t = await getTranslations("candidateActions");
+  const admin = createAdminClient();
+
+  // Admin-Client nötig: talents ist RLS-seitig vereins-gescoped für
+  // "authenticated", eine öffentliche Anfrage hat dafür keine
+  // SELECT-Policy. Die Übereinstimmungslogik ist bewusst identisch zu
+  // talent_exists_at_club(), damit hier wirklich nur genau das eine
+  // Profil gefunden wird, dessen Existenz gerade bestätigt wurde.
+  const { data: matches, error: lookupError } = await admin
+    .from("talents")
+    .select("id")
+    .eq("club_id", clubId)
+    .ilike("first_name", firstName.trim())
+    .ilike("last_name", lastName.trim())
+    .eq("birth_date", birthDate)
+    .is("archived_at", null)
+    .limit(1);
+
+  const talentId = matches?.[0]?.id;
+  if (lookupError || !talentId) {
+    console.error("requestTalentEditAccess() fehlgeschlagen (Lookup):", lookupError?.message);
+    return { success: false, error: t("submitFailed") };
+  }
+
+  const requestId = randomUUID();
+  const { error: insertError } = await admin.from("talent_edit_access_requests").insert({
+    id: requestId,
+    talent_id: talentId,
+    requester_email: contactEmail,
+    guardian_email: isMinor ? contactEmail : null,
+    is_minor: isMinor,
+  });
+
+  if (insertError) {
+    console.error("requestTalentEditAccess() fehlgeschlagen (Insert):", insertError.message);
+    return { success: false, error: t("submitFailed") };
+  }
+
+  const stripe = getStripe();
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+
+  const prices = await stripe.prices.list({
+    lookup_keys: [CANDIDATE_REGISTRATION_LOOKUP_KEY],
+    active: true,
+    limit: 1,
+  });
+  const price = prices.data[0];
+
+  if (!price) {
+    console.error("requestTalentEditAccess(): Stripe-Preis nicht eingerichtet.");
+    await admin.from("talent_edit_access_requests").delete().eq("id", requestId);
+    return { success: false, error: t("paymentNotSetUp") };
+  }
+
+  const session = await stripe.checkout.sessions.create({
+    mode: "payment",
+    line_items: [{ price: price.id, quantity: 1 }],
+    customer_email: contactEmail,
+    client_reference_id: requestId,
+    payment_method_types: ["card", "paypal", "sepa_debit"],
+    success_url: `${siteUrl}/player-registration?paid=1&type=edit_access`,
+    cancel_url: `${siteUrl}/player-registration?canceled=1`,
+    metadata: { type: "edit_access", request_id: requestId },
+  });
+
+  if (!session.url) {
+    console.error("requestTalentEditAccess(): Stripe-Checkout-Session ohne url.");
+    await admin.from("talent_edit_access_requests").delete().eq("id", requestId);
     return { success: false, error: t("paymentSetupFailed") };
   }
 
@@ -238,6 +360,7 @@ export async function acceptTalentCandidate(formData: FormData): Promise<void> {
         user_id: candidate.guardian_user_id,
         invited_by: appUser.id,
         claimed_at: new Date().toISOString(),
+        relationship: "guardian",
       });
       if (guardianLinkError) {
         console.error(

@@ -29,11 +29,12 @@ export async function createVideoRecord(
 
   let isMinor: boolean;
 
-  if (appUser.role === "parent") {
-    // Eltern haben keinen club_id und keine RLS-Policy auf public.talents
-    // direkt (siehe Migration 20260816010000) — Zugriff/Existenz laufen
-    // hier über die guardian-gescopte View, die zugleich beweist, dass
-    // der Account wirklich mit genau diesem Talent verknüpft ist.
+  if (appUser.role === "parent" || appUser.role === "player") {
+    // Eltern/Spieler haben keinen club_id und keine RLS-Policy auf
+    // public.talents direkt (siehe Migration 20260816010000) — Zugriff/
+    // Existenz laufen hier über die guardian-gescopte View, die zugleich
+    // beweist, dass der Account wirklich mit genau diesem Talent
+    // verknüpft ist.
     const guardianTalent = await getGuardianTalent(input.talentId);
     if (!guardianTalent) {
       return { success: false, error: t("talentNotFound") };

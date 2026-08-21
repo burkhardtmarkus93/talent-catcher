@@ -121,7 +121,7 @@ export async function inviteGuardian(formData: FormData): Promise<void> {
 async function requireGuardianTalent(talentId: string) {
   const t = await getTranslations("guardianActions");
   const appUser = await getCurrentAppUser();
-  if (!appUser || appUser.role !== "parent") {
+  if (!appUser || (appUser.role !== "parent" && appUser.role !== "player")) {
     redirect("/login");
   }
 
@@ -141,9 +141,16 @@ async function requireGuardianTalent(talentId: string) {
   return appUser;
 }
 
-// Eltern dürfen ausschließlich Verein/Team aktualisieren — serverseitig
-// zusätzlich per Datenbank-Trigger erzwungen (guard_guardian_talent_update,
-// Migration 20260816010000), diese Action ist die "gutartige" Seite davon.
+// Eltern/Spieler dürfen ausschließlich Verein/Team aktualisieren.
+// Läuft über eine SECURITY DEFINER-RPC (update_guardian_talent_club,
+// Migration 20260821140000) statt eines direkten .update() auf
+// talents: Postgres benötigt für UPDATE zusätzlich SELECT-Sichtbarkeit
+// auf die Zeile, die es für Eltern/Spieler bewusst nicht gibt (nur die
+// eng geschnittene talent_family_view, siehe deren Kommentar) — ein
+// direktes .update() würde daher RLS-seitig 0 Zeilen treffen, ohne
+// Fehler, die Änderung verpuffte bislang stillschweigend. Die RPC prüft
+// dieselbe Berechtigung (talent_guardians-Verknüpfung, bestätigt)
+// explizit im Funktionskörper.
 export async function updateGuardianTalentClub(formData: FormData): Promise<void> {
   const t = await getTranslations("guardianActions");
   const talentId = String(formData.get("talentId") ?? "");
@@ -163,10 +170,11 @@ export async function updateGuardianTalentClub(formData: FormData): Promise<void
   await requireGuardianTalent(talentId);
 
   const supabase = await createClient();
-  const { error } = await supabase
-    .from("talents")
-    .update({ club_name_text: clubNameText, team_name_text: teamNameText })
-    .eq("id", talentId);
+  const { error } = await supabase.rpc("update_guardian_talent_club", {
+    p_talent_id: talentId,
+    p_club_name_text: clubNameText,
+    p_team_name_text: teamNameText,
+  });
 
   if (error) {
     console.error("updateGuardianTalentClub() fehlgeschlagen:", {

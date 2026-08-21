@@ -39,6 +39,7 @@ export default async function AdminPage({
     admin: t("roleAdmin"),
     parent: t("roleParent"),
     landesverband: t("roleLandesverband"),
+    player: t("rolePlayer"),
   };
 
   return (

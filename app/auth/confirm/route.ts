@@ -15,11 +15,12 @@ export async function GET(request: NextRequest) {
 
     if (!error) {
       // No-op außer für eine gerade bestätigte Erziehungsberechtigten-
-      // Einladung einer Spieler-Selbstregistrierung (siehe
-      // confirm_candidate_guardian_consent(), Migration 20260821100000)
-      // — deshalb hier unbedingt erst NACH erfolgreicher Verifizierung
+      // Einladung einer Spieler-Selbstregistrierung oder einen gerade
+      // bestätigten Selbstverwaltungs-Zugang (siehe
+      // confirm_deferred_access_links(), Migration 20260821140000) —
+      // deshalb hier unbedingt erst NACH erfolgreicher Verifizierung
       // aufgerufen, nie beim bloßen Versenden der Einladung.
-      await supabase.rpc("confirm_candidate_guardian_consent");
+      await supabase.rpc("confirm_deferred_access_links");
       return NextResponse.redirect(`${origin}/update-password`);
     }
   }
@@ -37,7 +38,7 @@ export async function GET(request: NextRequest) {
     });
 
     if (!error) {
-      await supabase.rpc("confirm_candidate_guardian_consent");
+      await supabase.rpc("confirm_deferred_access_links");
       if (type === "signup") {
         return NextResponse.redirect(
           `${origin}/login?success=E-Mail%20best%C3%A4tigt.%20Bitte%20melde%20dich%20an.`
