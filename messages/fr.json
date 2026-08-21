@@ -512,7 +512,9 @@
     "videos": "Vidéos",
     "noVideos": "Aucune vidéo mise en ligne pour le moment.",
     "videoUnavailable": "Vidéo indisponible",
-    "noConsent": "La mise en ligne de vidéos nécessite d'abord une autorisation documentée auprès du club — merci de contacter brièvement le recruteur qui suit {firstName} à ce sujet."
+    "noConsent": "La mise en ligne de vidéos nécessite d'abord une autorisation documentée auprès du club — merci de contacter brièvement le recruteur qui suit {firstName} à ce sujet.",
+    "videoRequestNote": "Remarque du club : {note}",
+    "noRequest": "Aucune demande de vidéo n'est en cours pour le moment. Afin d'éviter que les recruteurs ne soient submergés de vidéos non sollicitées, vous ne pouvez mettre en ligne une vidéo qu'une fois que le club en a fait la demande."
   },
   "profilePage": {
     "title": "Mon profil",
@@ -780,7 +782,13 @@
     "tinderNaturell": "Tempérament",
     "tinderDynamik": "Dynamisme",
     "tinderErfolgsmotivation": "Motivation de réussite",
-    "tinderResilienz": "Résilience"
+    "tinderResilienz": "Résilience",
+    "videoRequestTitle": "Demander une vidéo",
+    "videoRequestHint": "Demandez une vidéo de façon ciblée — les mises en ligne côté parents/joueur ne sont possibles qu'une fois une demande effectuée. Vous évitez ainsi de recevoir des vidéos non sollicitées.",
+    "videoRequestNotePlaceholder": "p. ex. merci d'envoyer une vidéo récente d'actions de jeu (5 à 10 minutes)",
+    "videoRequestSubmit": "Demander une vidéo",
+    "videoRequestOpen": "Vidéo demandée le {date}",
+    "videoRequestCancel": "Retirer la demande"
   },
   "riskDot": {
     "gruen": "Vert",
@@ -946,7 +954,13 @@
     "notAuthenticated": "Non connecté.",
     "talentNotFound": "Talent introuvable.",
     "noConsent": "Aucune autorisation documentée pour le contenu vidéo n'est encore disponible pour ce talent mineur.",
-    "saveFailed": "Impossible d'enregistrer la vidéo."
+    "saveFailed": "Impossible d'enregistrer la vidéo.",
+    "talentIdMissing": "Identifiant du talent manquant.",
+    "youthAccessRequired": "Seul un membre de l'équipe disposant de l'accès protection des mineurs peut faire une demande de vidéo pour un talent mineur.",
+    "requestAlreadyOpen": "Une demande de vidéo est déjà en cours pour ce talent.",
+    "requestCreateFailed": "Impossible d'enregistrer la demande de vidéo.",
+    "requestCancelFailed": "Impossible de retirer la demande de vidéo.",
+    "noRequest": "Le club n'a pas encore fait de demande de vidéo."
   },
   "watchlistActions": {
     "nameRequired": "Le nom est un champ obligatoire.",

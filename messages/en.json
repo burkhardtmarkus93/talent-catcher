@@ -512,7 +512,9 @@
     "videos": "Videos",
     "noVideos": "No videos uploaded yet.",
     "videoUnavailable": "Video unavailable",
-    "noConsent": "Video upload requires consent documented with the club first — please reach out to the scout who supports {firstName} about this."
+    "noConsent": "Video upload requires consent documented with the club first — please reach out to the scout who supports {firstName} about this.",
+    "videoRequestNote": "Note from the club: {note}",
+    "noRequest": "There is currently no video request. To keep scouts from being flooded with unsolicited videos, you can upload only once the club requests one."
   },
   "profilePage": {
     "title": "My profile",
@@ -780,7 +782,13 @@
     "tinderNaturell": "Temperament",
     "tinderDynamik": "Dynamism",
     "tinderErfolgsmotivation": "Achievement motivation",
-    "tinderResilienz": "Resilience"
+    "tinderResilienz": "Resilience",
+    "videoRequestTitle": "Request video",
+    "videoRequestHint": "Request a video specifically — uploads from the parent/player side are only possible once a request has been made. This way you won't receive unsolicited videos.",
+    "videoRequestNotePlaceholder": "e.g. Please provide a recent match-footage video (5–10 minutes)",
+    "videoRequestSubmit": "Request video",
+    "videoRequestOpen": "Video requested on {date}",
+    "videoRequestCancel": "Withdraw request"
   },
   "riskDot": {
     "gruen": "Green",
@@ -946,7 +954,13 @@
     "notAuthenticated": "Not signed in.",
     "talentNotFound": "Talent not found.",
     "noConsent": "There is no documented consent for video material for this minor talent yet.",
-    "saveFailed": "The video could not be saved."
+    "saveFailed": "The video could not be saved.",
+    "talentIdMissing": "Talent ID is missing.",
+    "youthAccessRequired": "Only a team member with youth protection access can request a video for a minor talent.",
+    "requestAlreadyOpen": "There is already an open video request for this talent.",
+    "requestCreateFailed": "The video request could not be saved.",
+    "requestCancelFailed": "The video request could not be withdrawn.",
+    "noRequest": "The club has not requested a video yet."
   },
   "watchlistActions": {
     "nameRequired": "Name is a required field.",

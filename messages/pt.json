@@ -512,7 +512,9 @@
     "videos": "Vídeos",
     "noVideos": "Ainda não há vídeos enviados.",
     "videoUnavailable": "Vídeo indisponível",
-    "noConsent": "Para enviar vídeos, é necessário primeiro um consentimento documentado junto ao clube — fale rapidamente com o olheiro responsável por {firstName}."
+    "noConsent": "Para enviar vídeos, é necessário primeiro um consentimento documentado junto ao clube — fale rapidamente com o olheiro responsável por {firstName}.",
+  "videoRequestNote": "Observação do clube: {note}",
+  "noRequest": "No momento não há pedido de vídeo. Para que os olheiros não sejam inundados com vídeos não solicitados, você só poderá enviar quando o clube fizer um pedido."
   },
   "profilePage": {
     "title": "Meu perfil",
@@ -780,7 +782,13 @@
     "tinderNaturell": "Temperamento",
     "tinderDynamik": "Dinamismo",
     "tinderErfolgsmotivation": "Motivação de conquista",
-    "tinderResilienz": "Resiliência"
+    "tinderResilienz": "Resiliência",
+  "videoRequestTitle": "Solicitar vídeo",
+  "videoRequestHint": "Solicite um vídeo de forma direcionada — o envio pelo(a) responsável ou pelo próprio jogador só é possível depois que um pedido é feito. Assim você não recebe vídeos não solicitados.",
+  "videoRequestNotePlaceholder": "ex.: por favor, um vídeo recente de lances de jogo (5–10 minutos)",
+  "videoRequestSubmit": "Solicitar vídeo",
+  "videoRequestOpen": "Vídeo solicitado em {date}",
+  "videoRequestCancel": "Retirar pedido"
   },
   "riskDot": {
     "gruen": "Verde",
@@ -946,7 +954,13 @@
     "notAuthenticated": "Não está conectado.",
     "talentNotFound": "Talento não encontrado.",
     "noConsent": "Para este talento menor de idade, ainda não há consentimento documentado para material em vídeo.",
-    "saveFailed": "Não foi possível salvar o vídeo."
+    "saveFailed": "Não foi possível salvar o vídeo.",
+  "talentIdMissing": "ID do talento ausente.",
+  "youthAccessRequired": "Somente um membro da equipe com acesso à proteção de menores pode fazer um pedido de vídeo para um talento menor de idade.",
+  "requestAlreadyOpen": "Já existe um pedido de vídeo em aberto para este talento.",
+  "requestCreateFailed": "Não foi possível salvar o pedido de vídeo.",
+  "requestCancelFailed": "Não foi possível retirar o pedido de vídeo.",
+  "noRequest": "O clube ainda não solicitou nenhum vídeo."
   },
   "watchlistActions": {
     "nameRequired": "Nome é um campo obrigatório.",

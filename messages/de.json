@@ -512,7 +512,9 @@
     "videos": "Videos",
     "noVideos": "Noch keine Videos hochgeladen.",
     "videoUnavailable": "Video nicht verfügbar",
-    "noConsent": "Für den Video-Upload braucht es zuerst eine im Verein dokumentierte Einwilligung — bitte dafür kurz den Scout ansprechen, der {firstName} betreut."
+    "noConsent": "Für den Video-Upload braucht es zuerst eine im Verein dokumentierte Einwilligung — bitte dafür kurz den Scout ansprechen, der {firstName} betreut.",
+    "videoRequestNote": "Hinweis vom Verein: {note}",
+    "noRequest": "Aktuell liegt keine Video-Anfrage vor. Damit Scouts nicht mit unaufgeforderten Videos überflutet werden, kannst du erst hochladen, sobald der Verein eines anfordert."
   },
   "profilePage": {
     "title": "Mein Profil",
@@ -780,7 +782,13 @@
     "tinderNaturell": "Naturell",
     "tinderDynamik": "Dynamik",
     "tinderErfolgsmotivation": "Erfolgsmotivation",
-    "tinderResilienz": "Resilienz"
+    "tinderResilienz": "Resilienz",
+    "videoRequestTitle": "Video anfordern",
+    "videoRequestHint": "Fordere gezielt ein Video an — Uploads von Eltern-/Spielerseite sind erst möglich, nachdem eine Anfrage gestellt wurde. So bekommst du keine unaufgeforderten Videos.",
+    "videoRequestNotePlaceholder": "z. B. Bitte ein aktuelles Spielszenen-Video (5–10 Minuten)",
+    "videoRequestSubmit": "Video anfordern",
+    "videoRequestOpen": "Video angefordert am {date}",
+    "videoRequestCancel": "Anfrage zurückziehen"
   },
   "riskDot": {
     "gruen": "Grün",
@@ -946,7 +954,13 @@
     "notAuthenticated": "Nicht angemeldet.",
     "talentNotFound": "Talent nicht gefunden.",
     "noConsent": "Für dieses minderjährige Talent liegt noch keine dokumentierte Einwilligung für Videomaterial vor.",
-    "saveFailed": "Video konnte nicht gespeichert werden."
+    "saveFailed": "Video konnte nicht gespeichert werden.",
+    "talentIdMissing": "Talent-ID fehlt.",
+    "youthAccessRequired": "Eine Video-Anfrage für ein minderjähriges Talent kann nur ein Teammitglied mit Jugendschutz-Zugriff stellen.",
+    "requestAlreadyOpen": "Für dieses Talent liegt bereits eine offene Video-Anfrage vor.",
+    "requestCreateFailed": "Video-Anfrage konnte nicht gespeichert werden.",
+    "requestCancelFailed": "Video-Anfrage konnte nicht zurückgezogen werden.",
+    "noRequest": "Der Verein hat noch kein Video angefordert."
   },
   "watchlistActions": {
     "nameRequired": "Name ist ein Pflichtfeld.",
