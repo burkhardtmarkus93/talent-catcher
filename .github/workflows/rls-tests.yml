@@ -1,0 +1,44 @@
+name: RLS Policy Tests
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'supabase/migrations/**'
+      - 'supabase/tests/**'
+      - '.github/workflows/rls-tests.yml'
+
+jobs:
+  rls-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      # Läuft ausschließlich gegen eine frische, lokale, wegwerfbare
+      # Postgres-Instanz in Docker (kein Zugriff auf ein echtes
+      # Supabase-Projekt) — wendet exakt die Migrationen aus
+      # supabase/migrations/ an, dieselben, die auch in Produktion
+      # laufen (siehe supabase-migrations.yml).
+      - name: Start local Supabase (applies all migrations)
+        run: supabase start --exclude studio,edge-runtime,imgproxy,logflare,vector,pgadmin-schema-diff,migra,inbucket
+
+      - name: Ensure psql is available
+        run: which psql || sudo apt-get update && sudo apt-get install --yes postgresql-client
+
+      - name: Run RLS regression tests
+        env:
+          PGPASSWORD: postgres
+        run: |
+          psql -h 127.0.0.1 -p 54322 -U postgres -d postgres \
+            -v ON_ERROR_STOP=1 \
+            -f supabase/tests/rls_policy_matrix.sql
+
+      - name: Stop local Supabase
+        if: always()
+        run: supabase stop

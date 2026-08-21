@@ -10,6 +10,7 @@ import { getActiveTalentCount } from "@/lib/queries/talents";
 import { getStripe } from "@/lib/stripe";
 import { CANDIDATE_REGISTRATION_LOOKUP_KEY } from "@/lib/candidatePricing";
 import { PLANS, planNameDe } from "@/lib/plans";
+import { checkRateLimit } from "@/lib/rateLimit";
 
 export interface CandidateActionState {
   success: boolean;
@@ -70,6 +71,11 @@ export async function submitTalentCandidate(
 
   if (!termsAccepted) {
     return { success: false, error: t("termsRequired") };
+  }
+
+  const allowed = await checkRateLimit("candidate_registration", 10, 900);
+  if (!allowed) {
+    return { success: false, error: t("rateLimited") };
   }
 
   const isMinor = calculateAge(birthDate) < 18;

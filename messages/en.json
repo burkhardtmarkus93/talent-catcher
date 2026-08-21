@@ -27,7 +27,9 @@
       "landesverband": "Landesverband",
       "player": "Player"
     },
-    "logout": "Sign out"
+    "logout": "Sign out",
+    "impressumLink": "Legal Notice",
+    "privacyLink": "Privacy Policy"
   },
   "login": {
     "tagline": "Sign in to continue scouting",
@@ -803,7 +805,9 @@
     "retry": "Try again"
   },
   "parentLayout": {
-    "logout": "Sign out"
+    "logout": "Sign out",
+    "impressumLink": "Legal Notice",
+    "privacyLink": "Privacy Policy"
   },
   "adminStripeActions": {
     "notAuthorized": "Not authorized.",
@@ -1015,11 +1019,13 @@
     "youthAccessRequired": "Accepting minor applications requires the \"Youth talent access\" permission.",
     "planLimitReached": "Your plan \"{plan}\" is limited to {limit} active talents. Please upgrade or archive a talent.",
     "acceptFailed": "The application could not be accepted.",
-    "declineFailed": "The application could not be declined."
+    "declineFailed": "The application could not be declined.",
+    "rateLimited": "Too many attempts in a short time. Please try again in a few minutes."
   },
   "clubReferralActions": {
     "requiredFields": "Please fill in all required fields.",
-    "submitFailed": "The suggestion could not be submitted. Please try again."
+    "submitFailed": "The suggestion could not be submitted. Please try again.",
+    "rateLimited": "Too many attempts in a short time. Please try again in a few minutes."
   },
   "reportActions": {
     "matchDateRequired": "Match date is a required field.",
@@ -1048,7 +1054,9 @@
     "rowUnknownError": "Unknown error while saving."
   },
   "verbandLayout": {
-    "logout": "Sign out"
+    "logout": "Sign out",
+    "impressumLink": "Legal Notice",
+    "privacyLink": "Privacy Policy"
   },
   "verbandHomePage": {
     "title": "Your clubs' talents",

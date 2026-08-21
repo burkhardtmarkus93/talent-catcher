@@ -27,7 +27,9 @@
       "landesverband": "Landesverband",
       "player": "Joueur"
     },
-    "logout": "Déconnexion"
+    "logout": "Déconnexion",
+    "impressumLink": "Mentions légales",
+    "privacyLink": "Politique de confidentialité"
   },
   "login": {
     "tagline": "Connectez-vous pour continuer le scouting",
@@ -803,7 +805,9 @@
     "retry": "Réessayer"
   },
   "parentLayout": {
-    "logout": "Déconnexion"
+    "logout": "Déconnexion",
+    "impressumLink": "Mentions légales",
+    "privacyLink": "Politique de confidentialité"
   },
   "adminStripeActions": {
     "notAuthorized": "Non autorisé.",
@@ -1015,11 +1019,13 @@
     "youthAccessRequired": "L'acceptation de candidatures de mineurs nécessite l'autorisation « Accès aux talents mineurs ».",
     "planLimitReached": "Votre plan « {plan} » est limité à {limit} talents actifs. Veuillez passer à un plan supérieur ou archiver un talent.",
     "acceptFailed": "Impossible d'accepter la candidature.",
-    "declineFailed": "Impossible de refuser la candidature."
+    "declineFailed": "Impossible de refuser la candidature.",
+    "rateLimited": "Trop de tentatives en peu de temps. Veuillez réessayer dans quelques minutes."
   },
   "clubReferralActions": {
     "requiredFields": "Veuillez remplir tous les champs obligatoires.",
-    "submitFailed": "Impossible d'envoyer la proposition. Veuillez réessayer."
+    "submitFailed": "Impossible d'envoyer la proposition. Veuillez réessayer.",
+    "rateLimited": "Trop de tentatives en peu de temps. Veuillez réessayer dans quelques minutes."
   },
   "reportActions": {
     "matchDateRequired": "La date du match est un champ obligatoire.",
@@ -1048,7 +1054,9 @@
     "rowUnknownError": "Erreur inconnue lors de l'enregistrement."
   },
   "verbandLayout": {
-    "logout": "Déconnexion"
+    "logout": "Déconnexion",
+    "impressumLink": "Mentions légales",
+    "privacyLink": "Politique de confidentialité"
   },
   "verbandHomePage": {
     "title": "Talents de vos clubs",

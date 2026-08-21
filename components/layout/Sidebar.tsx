@@ -223,6 +223,16 @@ export function Sidebar({ email, role }: { email: string; role: Role }) {
             {t("logout")}
           </button>
         </form>
+
+        <p className="mt-3 text-center text-[11px] text-muted">
+          <Link href="/impressum" className="underline-offset-2 hover:underline">
+            {t("impressumLink")}
+          </Link>
+          {" · "}
+          <Link href="/datenschutz" className="underline-offset-2 hover:underline">
+            {t("privacyLink")}
+          </Link>
+        </p>
       </div>
     </aside>
   );

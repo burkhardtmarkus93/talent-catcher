@@ -27,7 +27,9 @@
       "landesverband": "Landesverband",
       "player": "Spieler"
     },
-    "logout": "Abmelden"
+    "logout": "Abmelden",
+    "impressumLink": "Impressum",
+    "privacyLink": "Datenschutzerklärung"
   },
   "login": {
     "tagline": "Anmelden, um mit dem Scouting fortzufahren",
@@ -803,7 +805,9 @@
     "retry": "Erneut versuchen"
   },
   "parentLayout": {
-    "logout": "Abmelden"
+    "logout": "Abmelden",
+    "impressumLink": "Impressum",
+    "privacyLink": "Datenschutzerklärung"
   },
   "adminStripeActions": {
     "notAuthorized": "Nicht berechtigt.",
@@ -1015,11 +1019,13 @@
     "youthAccessRequired": "Für die Annahme minderjähriger Kandidaturen ist die Berechtigung „Zugriff auf Jugendtalente“ erforderlich.",
     "planLimitReached": "Dein Plan „{plan}“ ist auf {limit} aktive Talente begrenzt. Bitte upgraden oder ein Talent archivieren.",
     "acceptFailed": "Kandidatur konnte nicht angenommen werden.",
-    "declineFailed": "Kandidatur konnte nicht abgelehnt werden."
+    "declineFailed": "Kandidatur konnte nicht abgelehnt werden.",
+    "rateLimited": "Zu viele Versuche in kurzer Zeit. Bitte in ein paar Minuten erneut versuchen."
   },
   "clubReferralActions": {
     "requiredFields": "Bitte alle Pflichtfelder ausfüllen.",
-    "submitFailed": "Vorschlag konnte nicht übermittelt werden. Bitte erneut versuchen."
+    "submitFailed": "Vorschlag konnte nicht übermittelt werden. Bitte erneut versuchen.",
+    "rateLimited": "Zu viele Versuche in kurzer Zeit. Bitte in ein paar Minuten erneut versuchen."
   },
   "reportActions": {
     "matchDateRequired": "Spieldatum ist ein Pflichtfeld.",
@@ -1048,7 +1054,9 @@
     "rowUnknownError": "Unbekannter Fehler beim Speichern."
   },
   "verbandLayout": {
-    "logout": "Abmelden"
+    "logout": "Abmelden",
+    "impressumLink": "Impressum",
+    "privacyLink": "Datenschutzerklärung"
   },
   "verbandHomePage": {
     "title": "Talente eurer Vereine",
