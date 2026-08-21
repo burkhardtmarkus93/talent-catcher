@@ -24,16 +24,15 @@ function calculateAge(birthDate: string): number {
 // Öffentliches Formular, kein Login nötig — siehe
 // talent_candidates_insert_public (Migration 20260821100000).
 //
-// Zwei getrennte Abläufe je nach Alter (siehe Migration
-// 20260821120000): Volljährige registrieren sich weiterhin direkt und
-// kostenlos selbst. Minderjährige NICHT mehr selbst — hier trägt eine/n
-// Erziehungsberechtigte/n die eigenen Kontaktdaten ein (contactEmail
-// wird dabei zu guardian_email) und wird zu einer einmaligen Zahlung
-// (Stripe Checkout, mode "payment") weitergeleitet. Die Kandidatur wird
-// für den Verein erst nach bestätigter Zahlung sichtbar — siehe
+// Jede Kandidatur (volljährig oder minderjährig, siehe Migration
+// 20260821130000) wird erst nach einer einmaligen Zahlung (Stripe
+// Checkout, mode "payment") für den Verein sichtbar — bei
+// Minderjährigen trägt eine/n Erziehungsberechtigte/n die eigenen
+// Kontaktdaten ein (contactEmail wird dabei zu guardian_email), bei
+// Volljährigen ist contactEmail die eigene Adresse. Siehe
 // app/api/stripe/webhook/route.ts, das den Status von 'pending_payment'
-// auf 'pending_review' hebt und danach den Eltern-Portal-Zugang einlädt
-// (lib/candidateGuardianAccess.ts).
+// auf 'pending_review' hebt und bei Minderjährigen danach den
+// Eltern-Portal-Zugang einlädt (lib/candidateGuardianAccess.ts).
 export async function submitTalentCandidate(
   _prevState: CandidateActionState,
   formData: FormData
@@ -47,6 +46,7 @@ export async function submitTalentCandidate(
   const primaryPosition = String(formData.get("primaryPosition") ?? "").trim();
   const contactEmail = String(formData.get("contactEmail") ?? "").trim().toLowerCase();
   const consentGiven = formData.get("dataConsent") === "on";
+  const termsAccepted = formData.get("termsAccepted") === "on";
 
   if (!clubId || !firstName || !lastName || !birthDate || !primaryPosition || !contactEmail) {
     return { success: false, error: t("requiredFields") };
@@ -59,6 +59,10 @@ export async function submitTalentCandidate(
 
   if (!consentGiven) {
     return { success: false, error: t("consentRequired") };
+  }
+
+  if (!termsAccepted) {
+    return { success: false, error: t("termsRequired") };
   }
 
   const isMinor = calculateAge(birthDate) < 18;
@@ -93,10 +97,6 @@ export async function submitTalentCandidate(
       hint: insertError.hint,
     });
     return { success: false, error: t("submitFailed") };
-  }
-
-  if (!isMinor) {
-    return { success: true };
   }
 
   const stripe = getStripe();
