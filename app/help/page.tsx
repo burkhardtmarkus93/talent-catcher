@@ -53,6 +53,14 @@ export default async function HelpPage() {
           <Link href="/login" className="underline-offset-2 hover:underline">
             {t("backToLogin")}
           </Link>
+          {" · "}
+          <Link href="/impressum" className="underline-offset-2 hover:underline">
+            {t("impressumLink")}
+          </Link>
+          {" · "}
+          <Link href="/datenschutz" className="underline-offset-2 hover:underline">
+            {t("privacyLink")}
+          </Link>
         </p>
       </div>
     </main>
