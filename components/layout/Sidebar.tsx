@@ -31,6 +31,19 @@ const navItems = [
     ),
   },
   {
+    href: "/candidates",
+    labelKey: "candidates" as const,
+    tourId: "tour-nav-candidates",
+    icon: (
+      <>
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M19 8v6" />
+        <path d="M22 11h-6" />
+      </>
+    ),
+  },
+  {
     href: "/alerts-reminders",
     labelKey: "alerts" as const,
     tourId: "tour-nav-alerts",
@@ -154,6 +167,18 @@ export function Sidebar({ email, role }: { email: string; role: Role }) {
           </svg>
           {t("introTour")}
         </button>
+
+        <Link
+          href="/help"
+          className="mb-2 flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs font-medium text-muted transition-colors hover:bg-pitch-dim hover:text-pitch-dark"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <circle cx="12" cy="12" r="10" />
+            <path d="M9.5 9a2.5 2.5 0 0 1 4.9.8c0 1.7-2.4 1.7-2.4 3.2" />
+            <path d="M12 17h.01" />
+          </svg>
+          {t("help")}
+        </Link>
 
         <Link
           href="/profile"

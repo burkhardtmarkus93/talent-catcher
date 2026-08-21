@@ -10,6 +10,7 @@
     "nav": {
       "dashboard": "Dashboard",
       "talents": "Talents",
+      "candidates": "Candidates",
       "alerts": "Alerts & Follow-ups",
       "watchlists": "Watchlists",
       "import": "Import",
@@ -17,6 +18,7 @@
       "admin": "Administration"
     },
     "introTour": "Getting-Started Tour",
+    "help": "Help & Contact",
     "roles": {
       "scout": "Scout",
       "club_admin": "Club management",
@@ -35,7 +37,83 @@
     "submit": "Sign in",
     "forgotPassword": "Forgot your password?",
     "noAccount": "Don't have an account yet?",
-    "registerClub": "Register your club"
+    "registerClub": "Register your club",
+    "playerQuestion": "Are you a player and not yet a talent at a club here?",
+    "playerRegister": "Apply now",
+    "helpLink": "Help & Contact"
+  },
+  "candidateRegistrationPage": {
+    "title": "Apply to a club",
+    "tagline": "Not yet registered as a talent at a club? Suggest yourself directly to a club here.",
+    "club": "Club",
+    "clubPlaceholder": "Select club",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "birthDate": "Date of birth",
+    "primaryPosition": "Primary position",
+    "primaryPositionPlaceholder": "e.g. IV, TW, ST",
+    "goalkeeperHint": "There's a dedicated, specialized project for goalkeeper talents — feel free to check it out too (also relevant for parents of goalkeeper talents). You can still submit your application here independently of that.",
+    "goalkeeperLink": "Go to Goalkeeper Academy →",
+    "contactEmail": "Your email address",
+    "contactEmailPlaceholder": "so the club can reach you",
+    "guardianHint": "Based on your date of birth, you're still a minor. Your application will only be forwarded to the club after a parent or guardian has given consent via the email address provided below.",
+    "guardianEmail": "Parent/guardian email",
+    "dataConsent": "I agree that the data I provide here will be shared with the selected club to review my application.",
+    "submitting": "Submitting...",
+    "submit": "Submit application",
+    "successTitle": "Application received.",
+    "successBodyAdult": "The club is now reviewing your details and will get in touch if they add you as a talent.",
+    "successBodyMinor": "We've sent a confirmation email to the parent/guardian address you provided. Your application will only be forwarded to the club after their consent.",
+    "backToLogin": "Back to sign in",
+    "helpLink": "Help & Contact"
+  },
+  "candidatesPage": {
+    "title": "Candidates",
+    "subtitle": "Players who have applied directly to your club.",
+    "empty": "No open applications at the moment.",
+    "minorBadge": "Minor",
+    "candidateMeta": "{position} · {age} years",
+    "decline": "Decline",
+    "accept": "Accept as talent"
+  },
+  "helpPage": {
+    "title": "Help & Contact",
+    "tagline": "Frequently asked questions and how to reach us.",
+    "faqHeading": "Frequently Asked Questions",
+    "faq": [
+      {
+        "q": "What is Talent Catcher?",
+        "a": "A scouting and early-warning system for talent development in youth and professional football. Clubs, state associations, coaches, and parents document observations about talents — an automated risk engine flags when action may be needed, early on."
+      },
+      {
+        "q": "Who can register?",
+        "a": "Clubs can register themselves with a free trial period. Landesverband and parent access is set up by a club or on request. Players not yet registered as a talent at any club can apply directly to a club via a public form."
+      },
+      {
+        "q": "I'm a player and not yet registered at any club — how do I apply?",
+        "a": "Using the player registration form, you select a club and provide your details. The club reviews your application and decides whether to add you as a talent."
+      },
+      {
+        "q": "I'm a minor — what does that mean for my application?",
+        "a": "For applicants who are minors, a parent or guardian's email address is required. The application is only forwarded to the club after that person has actually confirmed the invitation."
+      },
+      {
+        "q": "How is my data protected?",
+        "a": "Each club only sees the talents assigned to it. Data about minors is additionally locked behind a separate youth-protection permission that not every person at the club automatically has."
+      },
+      {
+        "q": "What does Talent Catcher cost for clubs?",
+        "a": "There are tiered plans with a free 3-day trial period — details can be found during registration or on your club's subscription page."
+      },
+      {
+        "q": "How can I have my data deleted?",
+        "a": "Get in touch with us via the contact form below, and we'll take care of the deletion."
+      }
+    ],
+    "contactHeading": "Contact",
+    "contactBody": "Question not covered here, or a technical issue? Write to us directly.",
+    "contactButton": "Send an email",
+    "backToLogin": "Back to sign in"
   },
   "newTalentPage": {
     "backToList": "← Back to talent list",
@@ -469,6 +547,10 @@
         "title": "On the talent detail page",
         "body": "Update club and team, link a Transfermarkt/FuPa profile, upload video highlights, document injuries, note talented siblings — and more. To keep things clear with so much detail, the sections below the overview are collapsible: tap to expand or collapse."
       },
+      "nav-candidates": {
+        "title": "Candidates",
+        "body": "Players can apply directly to your club via a public form. Here you review incoming applications and add them as a regular talent by accepting them — or decline them. For minors, an application only appears after the parent or guardian has given consent."
+      },
       "nav-alerts": {
         "title": "Alerts & Follow-ups",
         "body": "All open action items in one place — automatic alerts and follow-ups you've set yourself."
@@ -865,6 +947,20 @@
     "updateFailed": "The talent could not be updated.",
     "clubUpdateFailed": "The club could not be updated.",
     "clubNameRequired": "Current club must not be empty."
+  },
+  "candidateActions": {
+    "requiredFields": "Please fill in all required fields.",
+    "invalidBirthDate": "The date of birth is invalid or lies in the future.",
+    "consentRequired": "Please agree to the data processing.",
+    "guardianEmailRequired": "For minor applicants, the email address of a parent or guardian is required.",
+    "submitFailed": "The application could not be submitted. Please try again.",
+    "noClubAssigned": "No club is assigned to your user.",
+    "candidateIdMissing": "Candidate ID missing.",
+    "candidateNotFound": "Application not found or already processed.",
+    "youthAccessRequired": "Accepting minor applications requires the \"Youth talent access\" permission.",
+    "planLimitReached": "Your plan \"{plan}\" is limited to {limit} active talents. Please upgrade or archive a talent.",
+    "acceptFailed": "The application could not be accepted.",
+    "declineFailed": "The application could not be declined."
   },
   "reportActions": {
     "matchDateRequired": "Match date is a required field.",

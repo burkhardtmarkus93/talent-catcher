@@ -6,6 +6,7 @@ export type TourStepId =
   | "nav-talente"
   | "talents-filters"
   | "talent-detail"
+  | "nav-candidates"
   | "nav-alerts"
   | "nav-watchlists"
   | "nav-import"
@@ -54,6 +55,11 @@ export const INTRO_TOUR_STEPS: TourStep[] = [
     path: "/talents",
   },
   { id: "talent-detail" },
+  {
+    id: "nav-candidates",
+    targetId: "tour-nav-candidates",
+    path: "/candidates",
+  },
   {
     id: "nav-alerts",
     targetId: "tour-nav-alerts",

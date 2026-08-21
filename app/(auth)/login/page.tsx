@@ -86,6 +86,22 @@ export default async function LoginPage({
             {t("registerClub")}
           </Link>
         </p>
+
+        <p className="mt-2 text-center text-sm text-muted">
+          {t("playerQuestion")}{" "}
+          <Link
+            href="/player-registration"
+            className="text-pitch underline-offset-2 hover:underline"
+          >
+            {t("playerRegister")}
+          </Link>
+        </p>
+
+        <p className="mt-4 text-center text-xs text-muted">
+          <Link href="/help" className="underline-offset-2 hover:underline">
+            {t("helpLink")}
+          </Link>
+        </p>
       </div>
     </main>
   );

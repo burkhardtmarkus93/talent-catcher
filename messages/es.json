@@ -10,6 +10,7 @@
     "nav": {
       "dashboard": "Panel",
       "talents": "Talentos",
+      "candidates": "Candidatos",
       "alerts": "Alertas y seguimientos",
       "watchlists": "Listas de seguimiento",
       "import": "Importar",
@@ -17,6 +18,7 @@
       "admin": "Administración"
     },
     "introTour": "Tour de introducción",
+    "help": "Ayuda y contacto",
     "roles": {
       "scout": "Ojeador",
       "club_admin": "Dirección del club",
@@ -35,7 +37,83 @@
     "submit": "Iniciar sesión",
     "forgotPassword": "¿Olvidaste tu contraseña?",
     "noAccount": "¿Aún no tienes cuenta?",
-    "registerClub": "Registrar club"
+    "registerClub": "Registrar club",
+    "playerQuestion": "¿Eres jugador/a y todavía no eres talento en ningún club aquí?",
+    "playerRegister": "Solicítalo ahora",
+    "helpLink": "Ayuda y contacto"
+  },
+  "candidateRegistrationPage": {
+    "title": "Solicitar ingreso a un club",
+    "tagline": "¿Todavía no estás registrado/a como talento en ningún club? Propónte directamente a un club aquí.",
+    "club": "Club",
+    "clubPlaceholder": "Seleccionar club",
+    "firstName": "Nombre",
+    "lastName": "Apellidos",
+    "birthDate": "Fecha de nacimiento",
+    "primaryPosition": "Posición principal",
+    "primaryPositionPlaceholder": "p. ej. IV, TW, ST",
+    "goalkeeperHint": "Existe un proyecto propio y especializado para talentos de portero — échale un vistazo también (relevante también para madres, padres o tutores de talentos de portero). Puedes enviar tu solicitud aquí de todos modos, independientemente de eso.",
+    "goalkeeperLink": "Ir a la Academia de Porteros →",
+    "contactEmail": "Tu dirección de correo electrónico",
+    "contactEmailPlaceholder": "para que el club pueda contactarte",
+    "guardianHint": "Según tu fecha de nacimiento, todavía eres menor de edad. Tu solicitud solo se propondrá al club después de que la madre, el padre o el tutor legal haya dado su consentimiento a través de la dirección de correo electrónico indicada abajo.",
+    "guardianEmail": "Correo electrónico de la madre, el padre o el tutor legal",
+    "dataConsent": "Acepto que los datos indicados aquí se transmitan al club seleccionado para la revisión de mi solicitud.",
+    "submitting": "Enviando...",
+    "submit": "Enviar solicitud",
+    "successTitle": "Solicitud recibida.",
+    "successBodyAdult": "El club está revisando tus datos ahora y se pondrá en contacto contigo si te incorpora como talento.",
+    "successBodyMinor": "Hemos enviado un correo electrónico de confirmación a la dirección indicada de la madre, el padre o el tutor legal. Tu solicitud solo se propondrá al club después de que se dé el consentimiento.",
+    "backToLogin": "Volver al inicio de sesión",
+    "helpLink": "Ayuda y contacto"
+  },
+  "candidatesPage": {
+    "title": "Candidatos",
+    "subtitle": "Jugadores que se han postulado directamente a tu club.",
+    "empty": "Actualmente no hay solicitudes pendientes.",
+    "minorBadge": "Menor de edad",
+    "candidateMeta": "{position} · {age} años",
+    "decline": "Rechazar",
+    "accept": "Aceptar como talento"
+  },
+  "helpPage": {
+    "title": "Ayuda y contacto",
+    "tagline": "Preguntas frecuentes y cómo contactarnos.",
+    "faqHeading": "Preguntas frecuentes",
+    "faq": [
+      {
+        "q": "¿Qué es Talent Catcher?",
+        "a": "Un sistema de scouting y alerta temprana para el desarrollo de talentos en el fútbol base y profesional. Clubes, federaciones regionales, entrenadores/as y familias documentan observaciones sobre los talentos — un motor de riesgo automatizado detecta a tiempo la necesidad de actuar."
+      },
+      {
+        "q": "¿Quién puede registrarse?",
+        "a": "Los clubes pueden registrarse ellos mismos con una fase de prueba gratuita. Los accesos para federaciones regionales y familias los configura un club o se habilitan a petición. Los jugadores que todavía no están registrados como talento en ningún club pueden postularse directamente a un club a través de un formulario público."
+      },
+      {
+        "q": "Soy jugador/a y todavía no estoy registrado/a en ningún club — ¿cómo me postulo?",
+        "a": "En el formulario de registro para jugadores eliges un club e indicas tus datos. El club revisa tu solicitud y decide si te incorpora como talento."
+      },
+      {
+        "q": "Soy menor de edad — ¿qué significa esto para mi solicitud?",
+        "a": "En el caso de solicitantes menores de edad, es obligatorio indicar el correo electrónico de la madre, el padre o el tutor legal. La solicitud solo se propone al club después de que esa persona haya confirmado realmente la invitación."
+      },
+      {
+        "q": "¿Cómo se protegen mis datos?",
+        "a": "Cada club solo puede ver los talentos que tiene asignados. Los datos de menores de edad están además protegidos por un permiso específico de protección de menores, del que no dispone automáticamente cualquier persona del club."
+      },
+      {
+        "q": "¿Cuánto cuesta Talent Catcher para los clubes?",
+        "a": "Hay planes escalonados con una fase de prueba gratuita de 3 días — encontrarás los detalles en el registro o en la página de suscripción de tu club."
+      },
+      {
+        "q": "¿Cómo puedo solicitar que se eliminen mis datos?",
+        "a": "Contáctanos a través del formulario de contacto de más abajo y nos encargaremos de la eliminación."
+      }
+    ],
+    "contactHeading": "Contacto",
+    "contactBody": "¿Tu pregunta no está aquí o tienes un problema técnico? Escríbenos directamente.",
+    "contactButton": "Escribir un correo electrónico",
+    "backToLogin": "Volver al inicio de sesión"
   },
   "newTalentPage": {
     "backToList": "← Volver a la lista de talentos",
@@ -469,6 +547,10 @@
         "title": "En la página de detalle del talento",
         "body": "Actualiza el club y el equipo, vincula el perfil de Transfermarkt/FuPa, sube vídeos destacados, documenta lesiones, registra hermanos/as con talento — y mucho más. Para que todo esto se mantenga claro pese a tantos detalles, las secciones debajo del resumen son desplegables: toca para expandir o contraer."
       },
+      "nav-candidates": {
+        "title": "Candidatos",
+        "body": "Los jugadores pueden postularse directamente a tu club a través de un formulario público. Aquí revisas las solicitudes recibidas y las das de alta como talento regular mediante Aceptar, o las rechazas. En el caso de menores de edad, una solicitud solo aparece después de que la madre, el padre o el tutor legal haya dado su consentimiento."
+      },
       "nav-alerts": {
         "title": "Alertas y seguimientos",
         "body": "Todas las acciones pendientes en un solo lugar — alertas automáticas y seguimientos programados por ti."
@@ -865,6 +947,20 @@
     "updateFailed": "No se pudo actualizar el talento.",
     "clubUpdateFailed": "No se pudo actualizar el club.",
     "clubNameRequired": "El club actual no puede estar vacío."
+  },
+  "candidateActions": {
+    "requiredFields": "Por favor, completa todos los campos obligatorios.",
+    "invalidBirthDate": "La fecha de nacimiento no es válida o está en el futuro.",
+    "consentRequired": "Por favor, acepta el tratamiento de datos.",
+    "guardianEmailRequired": "En el caso de solicitantes menores de edad, el correo electrónico de la madre, el padre o el tutor legal es obligatorio.",
+    "submitFailed": "No se pudo enviar la solicitud. Por favor, inténtalo de nuevo.",
+    "noClubAssigned": "Tu usuario no tiene ningún club asignado.",
+    "candidateIdMissing": "Falta el ID del candidato.",
+    "candidateNotFound": "Candidatura no encontrada o ya procesada.",
+    "youthAccessRequired": "Para aceptar candidaturas de menores de edad se requiere el permiso «Acceso a protección de menores».",
+    "planLimitReached": "Tu plan «{plan}» está limitado a {limit} talentos activos. Por favor, actualiza tu plan o archiva un talento.",
+    "acceptFailed": "No se pudo aceptar la candidatura.",
+    "declineFailed": "No se pudo rechazar la candidatura."
   },
   "reportActions": {
     "matchDateRequired": "La fecha del partido es un campo obligatorio.",

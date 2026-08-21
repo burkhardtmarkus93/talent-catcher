@@ -174,6 +174,39 @@ export interface Watchlist {
   talentCount: number;
 }
 
+// Öffentliches Vereinsverzeichnis fürs Registrierungsformular (siehe
+// public_club_directory, Migration 20260821100000) — bewusst nur id+Name.
+export interface PublicClubOption {
+  id: string;
+  name: string;
+}
+
+export type TalentCandidateStatus =
+  | "pending_guardian_consent"
+  | "pending_review"
+  | "accepted"
+  | "declined";
+
+// Spieler-Selbstregistrierung, die einem einzelnen Verein vorgeschlagen
+// wird (siehe talent_candidates, Migration 20260821100000). Scouts/Admins
+// sehen über die RLS-Policy talent_candidates_select_same_club nur
+// Kandidaturen im Status pending_review/accepted/declined — bei
+// Minderjährigen erst nach bestätigter Erziehungsberechtigten-Einwilligung.
+export interface TalentCandidate {
+  id: string;
+  clubId: string;
+  firstName: string;
+  lastName: string;
+  birthDate: string;
+  primaryPosition: string;
+  contactEmail: string;
+  isMinor: boolean;
+  guardianEmail: string | null;
+  guardianConfirmedAt: string | null;
+  status: TalentCandidateStatus;
+  createdAt: string;
+}
+
 export interface ImportJobPreview {
   id: string;
   sourceFilename: string;
