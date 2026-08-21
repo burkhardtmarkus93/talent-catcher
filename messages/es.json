@@ -55,15 +55,19 @@
     "goalkeeperHint": "Existe un proyecto propio y especializado para talentos de portero — échale un vistazo también (relevante también para madres, padres o tutores de talentos de portero). Puedes enviar tu solicitud aquí de todos modos, independientemente de eso.",
     "goalkeeperLink": "Ir a la Academia de Porteros →",
     "contactEmail": "Tu dirección de correo electrónico",
+    "contactEmailGuardian": "Correo electrónico (madre, padre o tutor legal)",
     "contactEmailPlaceholder": "para que el club pueda contactarte",
-    "guardianHint": "Según tu fecha de nacimiento, todavía eres menor de edad. Tu solicitud solo se propondrá al club después de que la madre, el padre o el tutor legal haya dado su consentimiento a través de la dirección de correo electrónico indicada abajo.",
-    "guardianEmail": "Correo electrónico de la madre, el padre o el tutor legal",
+    "guardianHint": "Este jugador es menor de edad según su fecha de nacimiento. Para jugadores menores de edad, el registro lo realiza directamente y en exclusiva la madre, el padre o el tutor legal — indica abajo tus propios datos de contacto. Se aplica una cuota única de {price}, que se abona en el siguiente paso del pago.",
     "dataConsent": "Acepto que los datos indicados aquí se transmitan al club seleccionado para la revisión de mi solicitud.",
+    "dataConsentGuardian": "Como madre, padre o tutor legal, acepto que los datos de mi hijo/a indicados aquí se transmitan al club seleccionado para la revisión de la solicitud.",
     "submitting": "Enviando...",
     "submit": "Enviar solicitud",
+    "submitToPayment": "Continuar al pago",
     "successTitle": "Solicitud recibida.",
     "successBodyAdult": "El club está revisando tus datos ahora y se pondrá en contacto contigo si te incorpora como talento.",
-    "successBodyMinor": "Hemos enviado un correo electrónico de confirmación a la dirección indicada de la madre, el padre o el tutor legal. Tu solicitud solo se propondrá al club después de que se dé el consentimiento.",
+    "paidSuccessTitle": "Pago realizado con éxito.",
+    "paidSuccessBody": "La solicitud se ha recibido. El club está revisando los datos ahora.",
+    "paymentCanceled": "Pago cancelado. Puedes intentarlo de nuevo en cualquier momento.",
     "backToLogin": "Volver al inicio de sesión",
     "helpLink": "Ayuda y contacto"
   },
@@ -94,8 +98,8 @@
         "a": "En el formulario de registro para jugadores eliges un club e indicas tus datos. El club revisa tu solicitud y decide si te incorpora como talento."
       },
       {
-        "q": "Soy menor de edad — ¿qué significa esto para mi solicitud?",
-        "a": "En el caso de solicitantes menores de edad, es obligatorio indicar el correo electrónico de la madre, el padre o el tutor legal. La solicitud solo se propone al club después de que esa persona haya confirmado realmente la invitación."
+        "q": "Soy menor de edad — ¿puedo postularme yo mismo/a?",
+        "a": "No. Los jugadores menores de edad no pueden registrarse por sí mismos — el registro lo realiza directamente la madre, el padre o el tutor legal, junto con una cuota única. La solicitud se presenta al club para su revisión tras completar el pago."
       },
       {
         "q": "¿Cómo se protegen mis datos?",
@@ -952,8 +956,9 @@
     "requiredFields": "Por favor, completa todos los campos obligatorios.",
     "invalidBirthDate": "La fecha de nacimiento no es válida o está en el futuro.",
     "consentRequired": "Por favor, acepta el tratamiento de datos.",
-    "guardianEmailRequired": "En el caso de solicitantes menores de edad, el correo electrónico de la madre, el padre o el tutor legal es obligatorio.",
     "submitFailed": "No se pudo enviar la solicitud. Por favor, inténtalo de nuevo.",
+    "paymentNotSetUp": "El pago no está disponible en este momento. Por favor, inténtalo de nuevo más tarde.",
+    "paymentSetupFailed": "No se pudo redirigir al pago. Por favor, inténtalo de nuevo.",
     "noClubAssigned": "Tu usuario no tiene ningún club asignado.",
     "candidateIdMissing": "Falta el ID del candidato.",
     "candidateNotFound": "Candidatura no encontrada o ya procesada.",
