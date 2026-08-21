@@ -27,7 +27,9 @@
       "landesverband": "Landesverband",
       "player": "Jugador"
     },
-    "logout": "Cerrar sesión"
+    "logout": "Cerrar sesión",
+    "impressumLink": "Aviso legal",
+    "privacyLink": "Política de privacidad"
   },
   "login": {
     "tagline": "Inicia sesión para continuar con el scouting",
@@ -803,7 +805,9 @@
     "retry": "Reintentar"
   },
   "parentLayout": {
-    "logout": "Cerrar sesión"
+    "logout": "Cerrar sesión",
+    "impressumLink": "Aviso legal",
+    "privacyLink": "Política de privacidad"
   },
   "adminStripeActions": {
     "notAuthorized": "No autorizado.",
@@ -1015,11 +1019,13 @@
     "youthAccessRequired": "Para aceptar candidaturas de menores de edad se requiere el permiso «Acceso a protección de menores».",
     "planLimitReached": "Tu plan «{plan}» está limitado a {limit} talentos activos. Por favor, actualiza tu plan o archiva un talento.",
     "acceptFailed": "No se pudo aceptar la candidatura.",
-    "declineFailed": "No se pudo rechazar la candidatura."
+    "declineFailed": "No se pudo rechazar la candidatura.",
+    "rateLimited": "Demasiados intentos en poco tiempo. Inténtalo de nuevo en unos minutos."
   },
   "clubReferralActions": {
     "requiredFields": "Por favor, completa todos los campos obligatorios.",
-    "submitFailed": "No se pudo enviar la propuesta. Por favor, inténtalo de nuevo."
+    "submitFailed": "No se pudo enviar la propuesta. Por favor, inténtalo de nuevo.",
+    "rateLimited": "Demasiados intentos en poco tiempo. Inténtalo de nuevo en unos minutos."
   },
   "reportActions": {
     "matchDateRequired": "La fecha del partido es un campo obligatorio.",
@@ -1048,7 +1054,9 @@
     "rowUnknownError": "Error desconocido al guardar."
   },
   "verbandLayout": {
-    "logout": "Cerrar sesión"
+    "logout": "Cerrar sesión",
+    "impressumLink": "Aviso legal",
+    "privacyLink": "Política de privacidad"
   },
   "verbandHomePage": {
     "title": "Talentos de vuestros clubes",

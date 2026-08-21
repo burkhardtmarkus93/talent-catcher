@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/recalculate-alerts",
       "schedule": "0 4 * * *"
+    },
+    {
+      "path": "/api/cron/archive-scheduled-talents",
+      "schedule": "30 4 * * *"
     }
   ]
 }

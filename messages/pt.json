@@ -27,7 +27,9 @@
       "landesverband": "Landesverband",
       "player": "Jogador"
     },
-    "logout": "Sair"
+    "logout": "Sair",
+    "impressumLink": "Aviso legal",
+    "privacyLink": "Política de privacidade"
   },
   "login": {
     "tagline": "Entre para continuar o scouting",
@@ -803,7 +805,9 @@
     "retry": "Tentar novamente"
   },
   "parentLayout": {
-    "logout": "Sair"
+    "logout": "Sair",
+    "impressumLink": "Aviso legal",
+    "privacyLink": "Política de privacidade"
   },
   "adminStripeActions": {
     "notAuthorized": "Não autorizado.",
@@ -1015,11 +1019,13 @@
     "youthAccessRequired": "Para aceitar candidaturas de menores de idade, é necessária a permissão \"Acesso à proteção de menores\".",
     "planLimitReached": "Seu plano \"{plan}\" está limitado a {limit} talentos ativos. Faça upgrade ou arquive um talento.",
     "acceptFailed": "Não foi possível aceitar a candidatura.",
-    "declineFailed": "Não foi possível recusar a candidatura."
+    "declineFailed": "Não foi possível recusar a candidatura.",
+    "rateLimited": "Muitas tentativas em pouco tempo. Tente novamente em alguns minutos."
   },
   "clubReferralActions": {
     "requiredFields": "Por favor, preencha todos os campos obrigatórios.",
-    "submitFailed": "Não foi possível enviar a indicação. Por favor, tente novamente."
+    "submitFailed": "Não foi possível enviar a indicação. Por favor, tente novamente.",
+    "rateLimited": "Muitas tentativas em pouco tempo. Tente novamente em alguns minutos."
   },
   "reportActions": {
     "matchDateRequired": "Data do jogo é um campo obrigatório.",
@@ -1048,7 +1054,9 @@
     "rowUnknownError": "Erro desconhecido ao salvar."
   },
   "verbandLayout": {
-    "logout": "Sair"
+    "logout": "Sair",
+    "impressumLink": "Aviso legal",
+    "privacyLink": "Política de privacidade"
   },
   "verbandHomePage": {
     "title": "Talentos dos seus clubes",

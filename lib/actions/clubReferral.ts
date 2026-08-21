@@ -2,6 +2,7 @@
 
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
+import { checkRateLimit } from "@/lib/rateLimit";
 
 export interface ClubReferralActionState {
   success: boolean;
@@ -29,6 +30,11 @@ export async function submitClubReferral(
 
   if (!referredClubName || !referrerName || !referrerEmail) {
     return { success: false, error: t("requiredFields") };
+  }
+
+  const allowed = await checkRateLimit("club_referral", 5, 600);
+  if (!allowed) {
+    return { success: false, error: t("rateLimited") };
   }
 
   const supabase = await createClient();
