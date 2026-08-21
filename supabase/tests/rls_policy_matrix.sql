@@ -29,6 +29,11 @@ insert into public.clubs (id, name) values
 
 -- auth.users braucht nur eine gültige id; public.users.id referenziert
 -- darauf (on delete cascade), daher für jeden Test-Nutzer beide Zeilen.
+-- WICHTIG: der on_auth_user_created-Trigger (handle_new_auth_user(),
+-- Migration 20260722031100) legt bei jedem auth.users-Insert bereits
+-- automatisch eine public.users-Basiszeile an (role='scout', kein
+-- club_id) — der folgende Insert muss das per ON CONFLICT überschreiben,
+-- sonst schlägt er mit "duplicate key value violates ... users_pkey" fehl.
 insert into auth.users (id, email, aud, role) values
   ('b0000000-0000-0000-0000-000000000001', 'rls-admin-a@test.local', 'authenticated', 'authenticated'),
   ('b0000000-0000-0000-0000-000000000002', 'rls-scout-no-youth-a@test.local', 'authenticated', 'authenticated'),
@@ -41,7 +46,13 @@ insert into public.users (id, email, club_id, role, has_youth_access, is_active)
   ('b0000000-0000-0000-0000-000000000002', 'rls-scout-no-youth-a@test.local', 'a0000000-0000-0000-0000-000000000001', 'scout', false, true),
   ('b0000000-0000-0000-0000-000000000003', 'rls-scout-youth-a@test.local', 'a0000000-0000-0000-0000-000000000001', 'scout', true, true),
   ('b0000000-0000-0000-0000-000000000004', 'rls-scout-b@test.local', 'a0000000-0000-0000-0000-000000000002', 'scout', true, true),
-  ('b0000000-0000-0000-0000-000000000005', 'rls-guardian@test.local', null, 'parent', false, true);
+  ('b0000000-0000-0000-0000-000000000005', 'rls-guardian@test.local', null, 'parent', false, true)
+on conflict (id) do update set
+  email = excluded.email,
+  club_id = excluded.club_id,
+  role = excluded.role,
+  has_youth_access = excluded.has_youth_access,
+  is_active = excluded.is_active;
 
 insert into public.talents (id, club_id, created_by, first_name, last_name, birth_date, primary_position, is_minor, club_name_text) values
   ('c0000000-0000-0000-0000-000000000001', 'a0000000-0000-0000-0000-000000000001', 'b0000000-0000-0000-0000-000000000001', 'RlsMinor', 'TestTalent', '2012-01-01', 'ST', true, 'RLS-Test-Verein A'),
