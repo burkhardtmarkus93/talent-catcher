@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { useTranslations } from "next-intl";
@@ -38,18 +39,6 @@ export function CandidateRegistrationForm({ clubs }: { clubs: PublicClubOption[]
   const age = useMemo(() => calculateAge(birthDate), [birthDate]);
   const isMinor = age !== null && age < 18;
   const isGoalkeeper = GOALKEEPER_PATTERN.test(primaryPosition.trim());
-
-  // Minderjährige verlassen die Seite bei erfolgreicher Übermittlung
-  // sofort Richtung Stripe Checkout (redirect() in submitTalentCandidate)
-  // — state.success wird für sie nie erreicht, nur für Volljährige.
-  if (state.success) {
-    return (
-      <div className="rounded-xl border border-pitch/30 bg-pitch/5 p-6 text-sm text-pitch-dark">
-        <p className="font-medium">{t("successTitle")}</p>
-        <p className="mt-1.5 text-pitch-dark/80">{t("successBodyAdult")}</p>
-      </div>
-    );
-  }
 
   return (
     <form action={formAction} className="rounded-xl border border-line bg-surface p-6">
@@ -122,7 +111,7 @@ export function CandidateRegistrationForm({ clubs }: { clubs: PublicClubOption[]
 
       {isMinor && (
         <div className="mb-4 rounded-lg border border-line bg-paper p-3">
-          <p className="text-sm text-ink">{t("guardianHint", { price: formatEuro(CANDIDATE_REGISTRATION_PRICE_EUR) })}</p>
+          <p className="text-sm text-ink">{t("guardianHint")}</p>
         </div>
       )}
 
@@ -136,13 +125,30 @@ export function CandidateRegistrationForm({ clubs }: { clubs: PublicClubOption[]
         />
       </div>
 
-      <label className="mb-6 flex items-start gap-2 text-sm text-ink">
+      <div className="mb-4 rounded-lg border border-line bg-paper p-3">
+        <p className="text-sm text-ink">
+          {t("paymentHint", { price: formatEuro(CANDIDATE_REGISTRATION_PRICE_EUR) })}
+        </p>
+      </div>
+
+      <label className="mb-3 flex items-start gap-2 text-sm text-ink">
         <input type="checkbox" name="dataConsent" required className="mt-0.5" />
         {isMinor ? t("dataConsentGuardian") : t("dataConsent")}
       </label>
 
+      <label className="mb-6 flex items-start gap-2 text-sm text-ink">
+        <input type="checkbox" name="termsAccepted" required className="mt-0.5" />
+        {t.rich("termsConsent", {
+          terms: (chunks) => (
+            <Link href="/terms" target="_blank" className="underline-offset-2 hover:underline">
+              {chunks}
+            </Link>
+          ),
+        })}
+      </label>
+
       <div className="flex justify-end">
-        <SubmitButton isMinor={isMinor} />
+        <SubmitButton />
       </div>
     </form>
   );
@@ -175,12 +181,12 @@ function Field({
   );
 }
 
-function SubmitButton({ isMinor }: { isMinor: boolean }) {
+function SubmitButton() {
   const { pending } = useFormStatus();
   const t = useTranslations("candidateRegistrationPage");
   return (
     <Button type="submit" disabled={pending}>
-      {pending ? t("submitting") : isMinor ? t("submitToPayment") : t("submit")}
+      {pending ? t("submitting") : t("submitToPayment")}
     </Button>
   );
 }

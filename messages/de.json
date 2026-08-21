@@ -57,14 +57,13 @@
     "contactEmail": "Deine E-Mail-Adresse",
     "contactEmailGuardian": "E-Mail-Adresse (Erziehungsberechtigte/r)",
     "contactEmailPlaceholder": "damit der Verein dich erreichen kann",
-    "guardianHint": "Dieser Spieler ist laut Geburtsdatum noch minderjährig. Für minderjährige Spieler registriert ausschließlich eine erziehungsberechtigte Person direkt — bitte trage unten deine eigenen Kontaktdaten ein. Es fällt eine einmalige Gebühr von {price} an, fällig im nächsten Schritt bei der Zahlung.",
+    "guardianHint": "Dieser Spieler ist laut Geburtsdatum noch minderjährig. Für minderjährige Spieler registriert ausschließlich eine erziehungsberechtigte Person direkt — bitte trage unten deine eigenen Kontaktdaten ein.",
+    "paymentHint": "Für die Bewerbung fällt eine einmalige Gebühr von {price} an, fällig im nächsten Schritt bei der Zahlung.",
     "dataConsent": "Ich bin damit einverstanden, dass meine hier angegebenen Daten an den gewählten Verein zur Prüfung meiner Bewerbung übermittelt werden.",
     "dataConsentGuardian": "Ich bin als Erziehungsberechtigte/r damit einverstanden, dass die hier angegebenen Daten meines Kindes an den gewählten Verein zur Prüfung der Bewerbung übermittelt werden.",
+    "termsConsent": "Ich habe die <terms>AGB und Widerrufsbelehrung</terms> gelesen und akzeptiere sie. Ich verlange ausdrücklich, dass mit der Bearbeitung meiner Bewerbung vor Ablauf der Widerrufsfrist begonnen wird, und weiß, dass ich dadurch mein Widerrufsrecht verliere, sobald die Bewerbung dem Verein vorgelegt wurde.",
     "submitting": "Wird übermittelt...",
-    "submit": "Bewerbung absenden",
     "submitToPayment": "Weiter zur Zahlung",
-    "successTitle": "Bewerbung eingegangen.",
-    "successBodyAdult": "Der Verein prüft deine Angaben jetzt und meldet sich bei dir, wenn er dich als Talent aufnimmt.",
     "paidSuccessTitle": "Zahlung erfolgreich.",
     "paidSuccessBody": "Die Bewerbung ist eingegangen. Der Verein prüft die Angaben jetzt.",
     "paymentCanceled": "Zahlung abgebrochen. Du kannst es jederzeit erneut versuchen.",
@@ -91,11 +90,11 @@
       },
       {
         "q": "Wer kann sich registrieren?",
-        "a": "Vereine können sich selbst mit kostenloser Testphase registrieren. Landesverbands- und Eltern-Zugänge werden von einem Verein bzw. auf Anfrage eingerichtet. Spieler, die noch bei keinem Verein als Talent erfasst sind, können sich über ein öffentliches Formular direkt bei einem Verein bewerben."
+        "a": "Vereine können sich selbst mit kostenloser Testphase registrieren. Landesverbands- und Eltern-Zugänge werden von einem Verein bzw. auf Anfrage eingerichtet. Spieler, die noch bei keinem Verein als Talent erfasst sind, können sich über ein öffentliches Formular gegen eine einmalige Gebühr direkt bei einem Verein bewerben."
       },
       {
         "q": "Ich bin Spieler und noch bei keinem Verein erfasst — wie bewerbe ich mich?",
-        "a": "Über das Registrierungsformular für Spieler wählst du einen Verein aus und gibst deine Daten an. Der Verein prüft deine Bewerbung und entscheidet, ob du als Talent aufgenommen wirst."
+        "a": "Über das Registrierungsformular für Spieler wählst du einen Verein aus und gibst deine Daten an. Für die Bearbeitung fällt eine einmalige Gebühr an (Betrag im Formular vor der Zahlung sichtbar). Der Verein prüft deine Bewerbung nach erfolgreicher Zahlung und entscheidet, ob du als Talent aufgenommen wirst."
       },
       {
         "q": "Ich bin minderjährig — kann ich mich selbst bewerben?",
@@ -956,6 +955,7 @@
     "requiredFields": "Bitte alle Pflichtfelder ausfüllen.",
     "invalidBirthDate": "Das Geburtsdatum ist ungültig oder liegt in der Zukunft.",
     "consentRequired": "Bitte der Datenverarbeitung zustimmen.",
+    "termsRequired": "Bitte AGB und Widerrufsbelehrung akzeptieren.",
     "submitFailed": "Bewerbung konnte nicht übermittelt werden. Bitte erneut versuchen.",
     "paymentNotSetUp": "Zahlung ist aktuell nicht verfügbar. Bitte später erneut versuchen.",
     "paymentSetupFailed": "Weiterleitung zur Zahlung fehlgeschlagen. Bitte erneut versuchen.",
