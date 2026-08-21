@@ -33,6 +33,8 @@ import { addInjury, deleteInjury } from "@/lib/actions/injuries";
 import { grantVideoConsent } from "@/lib/actions/consent";
 import { getGuardianInvitesForTalent } from "@/lib/queries/guardians";
 import { inviteGuardian } from "@/lib/actions/guardians";
+import { getOpenVideoRequest } from "@/lib/queries/videoRequests";
+import { requestVideoUpload, cancelVideoRequest } from "@/lib/actions/videos";
 
 function age(birthDate: string): number {
   const diff = Date.now() - new Date(birthDate).getTime();
@@ -82,6 +84,7 @@ export default async function TalentDetailPage({
     getGuardianInvitesForTalent(talent.id),
     getTranslations("talentDetailPage"),
   ]);
+  const openVideoRequest = await getOpenVideoRequest(talent.id);
 
   function formatFileSize(bytes: number | null): string {
     if (!bytes) return "—";
@@ -725,6 +728,54 @@ export default async function TalentDetailPage({
             title={t("videoHighlights")}
             meta={videos.length > 0 ? `${videos.length}` : undefined}
           >
+            {(!talent.isMinor || appUser?.hasYouthAccess) && (
+              <div className="mb-4 rounded-lg border border-line bg-paper p-4">
+                {openVideoRequest ? (
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                      <p className="text-sm font-medium text-ink">
+                        {t("videoRequestOpen", {
+                          date: openVideoRequest.createdAt.slice(0, 10),
+                        })}
+                      </p>
+                      {openVideoRequest.note && (
+                        <p className="mt-0.5 text-sm text-muted">{openVideoRequest.note}</p>
+                      )}
+                    </div>
+                    <form action={cancelVideoRequest}>
+                      <input type="hidden" name="talentId" value={talent.id} />
+                      <input type="hidden" name="requestId" value={openVideoRequest.id} />
+                      <button type="submit" className="text-sm text-muted hover:text-brick">
+                        {t("videoRequestCancel")}
+                      </button>
+                    </form>
+                  </div>
+                ) : (
+                  <form action={requestVideoUpload} className="flex flex-col gap-3">
+                    <input type="hidden" name="talentId" value={talent.id} />
+                    <div>
+                      <p className="text-sm font-medium text-ink">{t("videoRequestTitle")}</p>
+                      <p className="mt-0.5 text-xs text-muted">{t("videoRequestHint")}</p>
+                    </div>
+                    <div className="flex flex-wrap items-end gap-3">
+                      <label className="flex min-w-[240px] flex-1 flex-col gap-1.5 text-sm text-ink">
+                        {t("note")}
+                        <input
+                          type="text"
+                          name="note"
+                          placeholder={t("videoRequestNotePlaceholder")}
+                          className="field"
+                        />
+                      </label>
+                      <Button type="submit" variant="secondary">
+                        {t("videoRequestSubmit")}
+                      </Button>
+                    </div>
+                  </form>
+                )}
+              </div>
+            )}
+
             {videos.length === 0 ? (
               <p className="mb-4 text-sm text-muted">
                 {t("noVideos")}

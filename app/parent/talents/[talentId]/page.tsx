@@ -6,6 +6,7 @@ import { getGuardianTalent } from "@/lib/queries/guardians";
 import { updateGuardianTalentClub } from "@/lib/actions/guardians";
 import { getVideosForTalent } from "@/lib/queries/videos";
 import { hasGrantedVideoConsent } from "@/lib/queries/consent";
+import { getOpenVideoRequest } from "@/lib/queries/videoRequests";
 
 function age(birthDate: string): number {
   const diff = Date.now() - new Date(birthDate).getTime();
@@ -22,11 +23,13 @@ export default async function ParentTalentPage({
   const talent = await getGuardianTalent(params.talentId);
   if (!talent) notFound();
 
-  const [videos, canUploadVideo, t] = await Promise.all([
+  const [videos, hasConsent, openVideoRequest, t] = await Promise.all([
     getVideosForTalent(talent.id),
     talent.isMinor ? hasGrantedVideoConsent(talent.id) : Promise.resolve(true),
+    getOpenVideoRequest(talent.id),
     getTranslations("parentTalentPage"),
   ]);
+  const canUploadVideo = hasConsent && Boolean(openVideoRequest);
 
   function formatFileSize(bytes: number | null): string {
     if (!bytes) return "—";
@@ -122,10 +125,21 @@ export default async function ParentTalentPage({
         )}
 
         {canUploadVideo ? (
-          <VideoUploadForm talentId={talent.id} clubId={talent.clubId} />
-        ) : (
+          <div className="flex flex-col gap-3">
+            {openVideoRequest?.note && (
+              <p className="rounded-lg bg-paper px-4 py-3 text-sm text-ink">
+                {t("videoRequestNote", { note: openVideoRequest.note })}
+              </p>
+            )}
+            <VideoUploadForm talentId={talent.id} clubId={talent.clubId} />
+          </div>
+        ) : !hasConsent ? (
           <p className="rounded-lg bg-amber-dim px-4 py-3 text-sm text-amber-dark">
             {t("noConsent", { firstName: talent.firstName })}
+          </p>
+        ) : (
+          <p className="rounded-lg bg-paper px-4 py-3 text-sm text-muted">
+            {t("noRequest")}
           </p>
         )}
       </section>
