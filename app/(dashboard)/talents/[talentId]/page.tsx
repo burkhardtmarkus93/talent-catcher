@@ -18,7 +18,7 @@ import {
   updateTalentOverview,
   updateTalentClub,
 } from "@/lib/actions/talents";
-import type { CohortPercentileBucket } from "@/lib/types";
+import type { CohortPercentileBucket, RiskReason } from "@/lib/types";
 import { getGkCoordinationTestsForTalent } from "@/lib/queries/gkTests";
 import { getTalentActivityStatus } from "@/lib/queries/talentActivity";
 import { InactivityBanner } from "@/components/talents/InactivityBanner";
@@ -55,6 +55,44 @@ function cohortPercentileBucketLabel(
       return t("cohortPercentileBucketLowerMid");
     case "bottom25":
       return t("cohortPercentileBucketBottom25");
+  }
+}
+
+// Alte Alerts (vor der Umstellung auf strukturierte Gründe, siehe
+// RiskReason in lib/types.ts) liegen als reiner, unlokalisierter
+// String vor und werden unverändert angezeigt.
+function riskReasonLabel(
+  reason: string | RiskReason,
+  t: Awaited<ReturnType<typeof getTranslations<"talentDetailPage">>>
+): string {
+  if (typeof reason === "string") return reason;
+  switch (reason.code) {
+    case "noReportYet":
+      return t("riskReasons.noReportYet");
+    case "reportGap":
+      return t("riskReasons.reportGap", { days: reason.params?.days as number });
+    case "overdueReminder":
+      return t("riskReasons.overdueReminder");
+    case "contractEnding":
+      return t("riskReasons.contractEnding", { days: reason.params?.days as number });
+    case "ratingDisagreement":
+      return t("riskReasons.ratingDisagreement", { spread: reason.params?.spread as string });
+    case "upwardTrend":
+      return t("riskReasons.upwardTrend");
+    case "highPotential":
+      return t("riskReasons.highPotential");
+    case "lateBloomerSolid":
+      return t("riskReasons.lateBloomerSolid");
+    case "strongTinder":
+      return t("riskReasons.strongTinder");
+    case "strongGkTest":
+      return t("riskReasons.strongGkTest", { score: reason.params?.score as number });
+    case "hiddenGemByRating":
+      return t("riskReasons.hiddenGemByRating");
+    case "hiddenGemBySignals":
+      return t("riskReasons.hiddenGemBySignals");
+    default:
+      return "";
   }
 }
 
@@ -206,7 +244,9 @@ export default async function TalentDetailPage({
           {talent.currentAlert && talent.currentAlert.triggeredReasons.length > 0 && (
             <div className="mt-4 rounded-lg bg-paper px-4 py-3 text-sm text-ink">
               <span className="font-medium">{t("reasoningLabel")} </span>
-              {talent.currentAlert.triggeredReasons.join(" · ")}
+              {talent.currentAlert.triggeredReasons
+                .map((reason) => riskReasonLabel(reason, t))
+                .join(" · ")}
             </div>
           )}
 

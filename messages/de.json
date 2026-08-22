@@ -408,7 +408,21 @@
     "completeWithoutReport": "Ohne Bericht erledigen",
     "reminderStatusOffen": "Offen",
     "reminderStatusErledigt": "Erledigt",
-    "reminderStatusUeberfaellig": "Überfällig"
+    "reminderStatusUeberfaellig": "Überfällig",
+    "riskReasons": {
+      "noReportYet": "Noch kein Bericht vorhanden",
+      "reportGap": "Kein Bericht seit {days} Tagen",
+      "overdueReminder": "Wiedervorlage überfällig",
+      "contractEnding": "Vertrag läuft in {days} Tagen aus",
+      "ratingDisagreement": "Uneinigkeit zwischen den letzten Scout-Berichten (Bewertungsspanne {spread} Punkte)",
+      "upwardTrend": "Aufwärtstrend über die letzten Berichte erkannt (Late-Bloomer-Signal)",
+      "highPotential": "Hohes Potenzial laut jüngstem Bericht",
+      "lateBloomerSolid": "Spätentwickler mit bereits solider Leistung (Reifegrad-Signal)",
+      "strongTinder": "TINDER-Kriterien im jüngsten Bericht durchweg stark ausgeprägt",
+      "strongGkTest": "Starker Koordinationstest ({score}/18 Punkten)",
+      "hiddenGemByRating": "Wiederholt stark bewertet (Hidden-Gem-Signal)",
+      "hiddenGemBySignals": "Solide Leistung mit starken Potenzial-/Reifegrad-/TINDER-Signalen (Hidden-Gem-Signal)"
+    }
   },
   "reminderForm": {
     "saved": "Wiedervorlage gespeichert.",
@@ -708,6 +722,20 @@
     "cohortPercentileBucketUpperMid": "obere Mitte",
     "cohortPercentileBucketLowerMid": "untere Mitte",
     "cohortPercentileBucketBottom25": "unteres Viertel",
+    "riskReasons": {
+      "noReportYet": "Noch kein Bericht vorhanden",
+      "reportGap": "Kein Bericht seit {days} Tagen",
+      "overdueReminder": "Wiedervorlage überfällig",
+      "contractEnding": "Vertrag läuft in {days} Tagen aus",
+      "ratingDisagreement": "Uneinigkeit zwischen den letzten Scout-Berichten (Bewertungsspanne {spread} Punkte)",
+      "upwardTrend": "Aufwärtstrend über die letzten Berichte erkannt (Late-Bloomer-Signal)",
+      "highPotential": "Hohes Potenzial laut jüngstem Bericht",
+      "lateBloomerSolid": "Spätentwickler mit bereits solider Leistung (Reifegrad-Signal)",
+      "strongTinder": "TINDER-Kriterien im jüngsten Bericht durchweg stark ausgeprägt",
+      "strongGkTest": "Starker Koordinationstest ({score}/18 Punkten)",
+      "hiddenGemByRating": "Wiederholt stark bewertet (Hidden-Gem-Signal)",
+      "hiddenGemBySignals": "Solide Leistung mit starken Potenzial-/Reifegrad-/TINDER-Signalen (Hidden-Gem-Signal)"
+    },
     "overview": "Übersicht",
     "status": "Status",
     "statusInBeobachtung": "In Beobachtung",

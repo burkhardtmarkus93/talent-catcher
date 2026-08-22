@@ -134,9 +134,23 @@ export interface Alert {
   talentId: string;
   riskLevel: RiskLevel;
   riskScore: number;
-  triggeredReasons: string[];
+  triggeredReasons: (string | RiskReason)[];
   isHiddenGem: boolean;
   calculatedAt: string;
+}
+
+// Strukturierter Alert-Grund statt fertigem Text, damit die Begründung
+// erst beim Anzeigen (mit der jeweiligen Portalsprache) übersetzt wird —
+// siehe riskReasonLabel() in app/(dashboard)/talents/[talentId]/page.tsx.
+// Bereits gespeicherte Alerts von vor dieser Umstellung liegen weiterhin
+// als reiner String vor (triggeredReasons ist deshalb bewusst ein Union-
+// Typ) und werden unverändert (auf Deutsch) angezeigt, bis das jeweilige
+// Talent das nächste Mal neu bewertet wird — für Talente mit
+// status='verloren' passiert das laut riskEngine.ts nie mehr, ihr letzter
+// Alert bleibt also dauerhaft im alten Format.
+export interface RiskReason {
+  code: string;
+  params?: Record<string, string | number>;
 }
 
 export interface ScoutReport {
