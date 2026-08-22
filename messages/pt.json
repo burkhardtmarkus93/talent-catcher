@@ -810,6 +810,8 @@
     "noReports": "Ainda não há relatórios — o primeiro relatório define a avaliação inicial.",
     "vsOpponent": "vs. {opponent}",
     "manual": "(manual)",
+    "reportReviewed": "Aprovado ({name})",
+    "reviewReport": "Marcar como aprovado",
     "potenzialEntry": "Potencial: {value}/4",
     "reifegradLabel": "Grau de maturidade",
     "videoHighlights": "Vídeos em destaque",

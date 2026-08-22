@@ -77,6 +77,25 @@ on conflict (id) do update set
   has_youth_access = excluded.has_youth_access,
   is_active = excluded.is_active;
 
+-- Zusätzliche Fixture für die Scout-Bericht-Freigabe (Migration
+-- 20260823100000): ein zweiter Admin, aber in Verein B, um den dort
+-- behobenen Mandantentrennungs-Bug (Admin konnte bislang vereinsübergreifend
+-- Berichte aktualisieren) direkt zu testen.
+insert into auth.users (id, email, aud, role) values
+  ('b0000000-0000-0000-0000-000000000007', 'rls-admin-b@test.local', 'authenticated', 'authenticated');
+
+insert into public.users (id, email, club_id, role, has_youth_access, is_active) values
+  ('b0000000-0000-0000-0000-000000000007', 'rls-admin-b@test.local', 'a0000000-0000-0000-0000-000000000002', 'admin', true, true)
+on conflict (id) do update set
+  email = excluded.email,
+  club_id = excluded.club_id,
+  role = excluded.role,
+  has_youth_access = excluded.has_youth_access,
+  is_active = excluded.is_active;
+
+insert into public.scout_reports (id, talent_id, author_id, match_date, score_technik, score_taktik, score_athletik, score_mentalitaet) values
+  ('f0000000-0000-0000-0000-000000000001', 'c0000000-0000-0000-0000-000000000001', 'b0000000-0000-0000-0000-000000000002', '2026-08-01', 3, 3, 3, 3);
+
 -- set_candidate_derived_fields() erzwingt bei INSERT status/guardian_*
 -- unabhängig von den übergebenen Werten (siehe Migrationskommentar
 -- 20260821120000) — deshalb hier bewusst nur die Grunddaten einfügen
@@ -465,10 +484,56 @@ begin
 end $$;
 
 -- ============================================================
+-- Test 12: Regression für den in Migration 20260823100000 behobenen
+-- Mandantentrennungs-Bug — ein Admin aus Verein B darf einen Scout-
+-- Bericht aus Verein A NICHT freigeben/aktualisieren, ein Admin aus dem
+-- richtigen Verein (A) hingegen schon.
+-- ============================================================
+
+begin;
+set local role authenticated;
+set local "request.jwt.claims" = '{"sub":"b0000000-0000-0000-0000-000000000007","role":"authenticated"}';
+do $$
+declare
+  affected_rows int;
+begin
+  update public.scout_reports
+  set reviewed_at = now(), reviewed_by = 'b0000000-0000-0000-0000-000000000007'
+  where id = 'f0000000-0000-0000-0000-000000000001';
+  get diagnostics affected_rows = row_count;
+
+  if affected_rows <> 0 then
+    raise exception 'FAIL Test 12a: Admin aus fremdem Verein konnte Scout-Bericht aktualisieren (% Zeile(n))', affected_rows;
+  end if;
+  raise notice 'OK Test 12a: Admin aus fremdem Verein korrekt abgelehnt (0 Zeilen betroffen)';
+end $$;
+rollback;
+
+begin;
+set local role authenticated;
+set local "request.jwt.claims" = '{"sub":"b0000000-0000-0000-0000-000000000001","role":"authenticated"}';
+do $$
+declare
+  affected_rows int;
+begin
+  update public.scout_reports
+  set reviewed_at = now(), reviewed_by = 'b0000000-0000-0000-0000-000000000001'
+  where id = 'f0000000-0000-0000-0000-000000000001';
+  get diagnostics affected_rows = row_count;
+
+  if affected_rows <> 1 then
+    raise exception 'FAIL Test 12b: Admin aus dem richtigen Verein konnte Scout-Bericht NICHT aktualisieren (% Zeile(n))', affected_rows;
+  end if;
+  raise notice 'OK Test 12b: Admin aus dem richtigen Verein korrekt zugelassen';
+end $$;
+rollback;
+
+-- ============================================================
 -- Aufräumen
 -- ============================================================
 
 begin;
+delete from public.scout_reports where id = 'f0000000-0000-0000-0000-000000000001';
 delete from public.documents where talent_id in ('c0000000-0000-0000-0000-000000000001', 'c0000000-0000-0000-0000-000000000002');
 delete from public.videos where talent_id in ('c0000000-0000-0000-0000-000000000001', 'c0000000-0000-0000-0000-000000000002');
 delete from public.video_requests where talent_id in ('c0000000-0000-0000-0000-000000000001', 'c0000000-0000-0000-0000-000000000002');
@@ -483,7 +548,8 @@ delete from public.users where id in (
   'b0000000-0000-0000-0000-000000000003',
   'b0000000-0000-0000-0000-000000000004',
   'b0000000-0000-0000-0000-000000000005',
-  'b0000000-0000-0000-0000-000000000006'
+  'b0000000-0000-0000-0000-000000000006',
+  'b0000000-0000-0000-0000-000000000007'
 );
 delete from auth.users where id in (
   'b0000000-0000-0000-0000-000000000001',
@@ -491,7 +557,8 @@ delete from auth.users where id in (
   'b0000000-0000-0000-0000-000000000003',
   'b0000000-0000-0000-0000-000000000004',
   'b0000000-0000-0000-0000-000000000005',
-  'b0000000-0000-0000-0000-000000000006'
+  'b0000000-0000-0000-0000-000000000006',
+  'b0000000-0000-0000-0000-000000000007'
 );
 delete from public.clubs where id in ('a0000000-0000-0000-0000-000000000001', 'a0000000-0000-0000-0000-000000000002');
 commit;

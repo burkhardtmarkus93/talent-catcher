@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { recalculateAlertForTalent } from "@/lib/alerts/riskEngine";
+import { getCurrentAppUser } from "@/lib/queries/session";
 
 export interface ScoutReportActionState {
   success: boolean;
@@ -193,4 +194,35 @@ export async function createScoutReport(
   revalidatePath("/alerts-reminders");
 
   redirect(`/talents/${talentId}`);
+}
+
+// Rein informative Freigabe-Kennzeichnung ("Chef-Scout-Freigabe", siehe
+// Migration 20260823100000): bewusst OHNE Auswirkung auf die Risk-Engine
+// oder sonstige Berechnung — nur ein Badge für andere Scouts/Admins.
+// Deshalb reicht die Prüfung hier plus die RLS-Policy als zweite
+// Schutzschicht; anders als bei createScoutReport gibt es keinen
+// fachlichen Folgeeffekt, der eine Neuberechnung erfordern würde.
+export async function markScoutReportReviewed(
+  reportId: string,
+  talentId: string
+) {
+  const appUser = await getCurrentAppUser();
+  if (!appUser || (appUser.role !== "admin" && appUser.role !== "club_admin")) {
+    return;
+  }
+
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("scout_reports")
+    .update({ reviewed_at: new Date().toISOString(), reviewed_by: appUser.id })
+    .eq("id", reportId)
+    .is("reviewed_at", null);
+
+  if (error) {
+    console.error("markScoutReportReviewed() fehlgeschlagen:", error.message);
+    return;
+  }
+
+  revalidatePath(`/talents/${talentId}`);
 }
