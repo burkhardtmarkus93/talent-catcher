@@ -476,10 +476,11 @@ export default function TermsPage() {
               Änderungen dieser AGB werden bestehenden Vereins-/
               Verband-Kunden mit angemessener Frist vor Inkrafttreten in
               Textform (z. B. per E-Mail) mitgeteilt. Widerspricht der
-              Kunde nicht innerhalb von [PLATZHALTER: Frist, z. B. sechs
-              Wochen], gelten die geänderten Bedingungen als angenommen; auf
-              diese Rechtsfolge wird in der Mitteilung gesondert
-              hingewiesen. Für die einmaligen Gebühren nach § 2 b) und c)
+              Kunde nicht innerhalb von sechs Wochen ab Zugang der
+              Mitteilung, gelten die geänderten Bedingungen als
+              angenommen; auf diese Rechtsfolge wird in der Mitteilung
+              gesondert hingewiesen. Für die einmaligen Gebühren nach § 2
+              b) und c)
               gelten stets die zum Zeitpunkt der jeweiligen Zahlung
               angezeigten Bedingungen.
             </p>
