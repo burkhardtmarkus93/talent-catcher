@@ -61,6 +61,43 @@ insert into public.talents (id, club_id, created_by, first_name, last_name, birt
 insert into public.talent_guardians (talent_id, email, user_id, invited_by, claimed_at) values
   ('c0000000-0000-0000-0000-000000000002', 'rls-guardian@test.local', 'b0000000-0000-0000-0000-000000000005', 'b0000000-0000-0000-0000-000000000001', now());
 
+-- Zusätzliche Fixture für die Kandidaten-Video-/Vita-Erweiterung
+-- (Migration 20260822190000). Eigener "player"-Nutzer für den
+-- volljährigen Selbstregistrierungs-Fall, analog zu rls-guardian für
+-- den Minderjährigen-Fall.
+insert into auth.users (id, email, aud, role) values
+  ('b0000000-0000-0000-0000-000000000006', 'rls-player@test.local', 'authenticated', 'authenticated');
+
+insert into public.users (id, email, club_id, role, has_youth_access, is_active) values
+  ('b0000000-0000-0000-0000-000000000006', 'rls-player@test.local', null, 'player', false, true)
+on conflict (id) do update set
+  email = excluded.email,
+  club_id = excluded.club_id,
+  role = excluded.role,
+  has_youth_access = excluded.has_youth_access,
+  is_active = excluded.is_active;
+
+-- set_candidate_derived_fields() erzwingt bei INSERT status/guardian_*
+-- unabhängig von den übergebenen Werten (siehe Migrationskommentar
+-- 20260821120000) — deshalb hier bewusst nur die Grunddaten einfügen
+-- und den bezahlten/bestätigten Zustand danach per UPDATE simulieren,
+-- genau wie es der reale Zahlungs-/Bestätigungs-Ablauf tun würde.
+insert into public.talent_candidates (id, club_id, first_name, last_name, birth_date, primary_position, contact_email, guardian_email) values
+  ('e0000000-0000-0000-0000-000000000001', 'a0000000-0000-0000-0000-000000000001', 'RlsCandMinor', 'TestCandidate', '2012-01-01', 'ST', 'rls-guardian@test.local', 'rls-guardian@test.local'),
+  ('e0000000-0000-0000-0000-000000000002', 'a0000000-0000-0000-0000-000000000001', 'RlsCandAdult', 'TestCandidate', '2000-01-01', 'ST', 'rls-player@test.local', null);
+
+update public.talent_candidates
+set status = 'pending_review'
+where id in ('e0000000-0000-0000-0000-000000000001', 'e0000000-0000-0000-0000-000000000002');
+
+update public.talent_candidates
+set guardian_user_id = 'b0000000-0000-0000-0000-000000000005', guardian_confirmed_at = now()
+where id = 'e0000000-0000-0000-0000-000000000001';
+
+update public.talent_candidates
+set guardian_user_id = 'b0000000-0000-0000-0000-000000000006', guardian_confirmed_at = now()
+where id = 'e0000000-0000-0000-0000-000000000002';
+
 commit;
 
 -- ============================================================
@@ -232,27 +269,229 @@ begin
 end $$;
 
 -- ============================================================
+-- Test 6: Kandidaten-Gegenstück zu Test 1 — Scout ohne Jugendschutz-
+-- Zugriff darf für eine minderjährige Kandidatur keine Video-Anfrage
+-- stellen (Migration 20260822190000).
+-- ============================================================
+
+begin;
+set local role authenticated;
+set local "request.jwt.claims" = '{"sub":"b0000000-0000-0000-0000-000000000002","role":"authenticated"}';
+do $$
+begin
+  insert into public.video_requests (candidate_id, requested_by, note)
+  values ('e0000000-0000-0000-0000-000000000001', 'b0000000-0000-0000-0000-000000000002', 'sollte abgelehnt werden');
+  raise exception 'FAIL Test 6: Video-Anfrage fuer minderjaehrige Kandidatur ohne Jugendschutz-Zugriff haette RLS ablehnen muessen';
+exception
+  when insufficient_privilege then
+    raise notice 'OK Test 6: Video-Anfrage fuer Kandidatur ohne Jugendschutz-Zugriff korrekt abgelehnt';
+end $$;
+rollback;
+
+-- ============================================================
+-- Test 7: für eine VOLLJÄHRIGE Kandidatur greift die Jugendschutz-
+-- Sperre erwartungsgemäß NICHT — derselbe Scout wie in Test 6 darf
+-- hier anfragen. Zusätzlich Vereins-Mandantentrennung auf
+-- video_requests.candidate_id (Lese- und Schreibzugriff).
+-- ============================================================
+
+begin;
+set local role authenticated;
+set local "request.jwt.claims" = '{"sub":"b0000000-0000-0000-0000-000000000002","role":"authenticated"}';
+insert into public.video_requests (id, candidate_id, requested_by, note)
+values ('d0000000-0000-0000-0000-000000000002', 'e0000000-0000-0000-0000-000000000002', 'b0000000-0000-0000-0000-000000000002', 'Test 7 fixture (volljaehrige Kandidatur, ohne Jugendschutz-Zugriff angelegt)');
+commit;
+
+begin;
+set local role authenticated;
+set local "request.jwt.claims" = '{"sub":"b0000000-0000-0000-0000-000000000004","role":"authenticated"}';
+do $$
+declare
+  visible_count int;
+begin
+  select count(*) into visible_count
+  from public.video_requests
+  where candidate_id = 'e0000000-0000-0000-0000-000000000002';
+
+  if visible_count <> 0 then
+    raise exception 'FAIL Test 7a: Verein B sieht Video-Anfrage einer Kandidatur von Verein A (% Zeilen)', visible_count;
+  end if;
+  raise notice 'OK Test 7a: Vereins-Mandantentrennung auf video_requests.candidate_id (SELECT) korrekt';
+end $$;
+rollback;
+
+begin;
+set local role authenticated;
+set local "request.jwt.claims" = '{"sub":"b0000000-0000-0000-0000-000000000004","role":"authenticated"}';
+do $$
+begin
+  insert into public.video_requests (candidate_id, requested_by, note)
+  values ('e0000000-0000-0000-0000-000000000002', 'b0000000-0000-0000-0000-000000000004', 'sollte abgelehnt werden');
+  raise exception 'FAIL Test 7b: Verein B konnte Video-Anfrage fuer Kandidatur von Verein A anlegen';
+exception
+  when insufficient_privilege then
+    raise notice 'OK Test 7b: Video-Anfrage-Insert ueber Vereinsgrenze (candidate_id) korrekt abgelehnt';
+end $$;
+rollback;
+
+-- ============================================================
+-- Test 8: talent_candidates_select_guardian ist strikt auf die eigene,
+-- bestätigte Kandidatur begrenzt — nicht auf irgendeine verknüpfte
+-- Kandidatur einer anderen Person.
+-- ============================================================
+
+begin;
+set local role authenticated;
+set local "request.jwt.claims" = '{"sub":"b0000000-0000-0000-0000-000000000006","role":"authenticated"}';
+do $$
+declare
+  own_count int;
+  foreign_count int;
+begin
+  select count(*) into own_count from public.talent_candidates where id = 'e0000000-0000-0000-0000-000000000002';
+  select count(*) into foreign_count from public.talent_candidates where id = 'e0000000-0000-0000-0000-000000000001';
+
+  if own_count <> 1 then
+    raise exception 'FAIL Test 8a: bestaetigte eigene Kandidatur nicht sichtbar (% Zeilen)', own_count;
+  end if;
+  if foreign_count <> 0 then
+    raise exception 'FAIL Test 8b: fremde Kandidatur faelschlich sichtbar (% Zeilen)', foreign_count;
+  end if;
+  raise notice 'OK Test 8: talent_candidates_select_guardian korrekt auf die eigene, bestaetigte Kandidatur begrenzt';
+end $$;
+rollback;
+
+-- ============================================================
+-- Test 9: Guardian-Video-Upload für eine Kandidatur wird blockiert,
+-- sobald der Verein bereits entschieden hat (status <> 'pending_review')
+-- — Regressionstest für die in derselben Migration ergänzte
+-- Defense-in-Depth-Bedingung in videos_insert_candidate_guardian.
+-- ============================================================
+
+begin;
+update public.talent_candidates set status = 'declined' where id = 'e0000000-0000-0000-0000-000000000001';
+commit;
+
+begin;
+set local role authenticated;
+set local "request.jwt.claims" = '{"sub":"b0000000-0000-0000-0000-000000000005","role":"authenticated"}';
+do $$
+begin
+  insert into public.videos (candidate_id, uploaded_by, storage_key, file_size_bytes)
+  values (
+    'e0000000-0000-0000-0000-000000000001',
+    'b0000000-0000-0000-0000-000000000005',
+    'a0000000-0000-0000-0000-000000000001/candidate-e0000000-0000-0000-0000-000000000001/rls-test.mp4',
+    1000
+  );
+  raise exception 'FAIL Test 9: Video-Upload nach bereits entschiedener Kandidatur haette RLS ablehnen muessen';
+exception
+  when insufficient_privilege then
+    raise notice 'OK Test 9: Video-Upload nach Entscheidung korrekt abgelehnt';
+end $$;
+rollback;
+
+begin;
+update public.talent_candidates set status = 'pending_review' where id = 'e0000000-0000-0000-0000-000000000001';
+commit;
+
+-- ============================================================
+-- Test 10: Regressionstest für den in derselben Migration gefundenen
+-- Bug — public.documents hatte nie eine INSERT-Policy für die
+-- Vereinsseite (talent_id-Ziel), obwohl die Storage-Policies das
+-- Hochladen der Datei selbst längst erlaubten.
+-- ============================================================
+
+begin;
+set local role authenticated;
+set local "request.jwt.claims" = '{"sub":"b0000000-0000-0000-0000-000000000001","role":"authenticated"}';
+insert into public.documents (talent_id, uploaded_by, storage_key, file_type, file_size_bytes, description)
+values (
+  'c0000000-0000-0000-0000-000000000002',
+  'b0000000-0000-0000-0000-000000000001',
+  'a0000000-0000-0000-0000-000000000001/c0000000-0000-0000-0000-000000000002/rls-test.pdf',
+  'pdf',
+  1000,
+  'RLS-Test'
+);
+commit;
+
+do $$
+declare
+  inserted_count int;
+begin
+  select count(*) into inserted_count
+  from public.documents
+  where talent_id = 'c0000000-0000-0000-0000-000000000002';
+
+  if inserted_count <> 1 then
+    raise exception 'FAIL Test 10: documents_insert_same_club hat den Insert nicht zugelassen (% Zeilen)', inserted_count;
+  end if;
+  raise notice 'OK Test 10: documents_insert_same_club (vormals fehlende Policy) korrekt zugelassen';
+end $$;
+
+-- ============================================================
+-- Test 11: fulfill_video_requests_on_upload() erfüllt auch eine
+-- candidate_id-Anfrage automatisch (Kandidaten-Gegenstück zu Test 5).
+-- Nutzt die in Test 7 bereits angelegte offene Anfrage (d...0002) für
+-- dieselbe Kandidatur weiter — pro Kandidatur ist höchstens eine offene
+-- Anfrage gleichzeitig erlaubt (uq_video_requests_open_per_candidate).
+-- ============================================================
+
+begin;
+set local role authenticated;
+set local "request.jwt.claims" = '{"sub":"b0000000-0000-0000-0000-000000000006","role":"authenticated"}';
+insert into public.videos (candidate_id, uploaded_by, storage_key, file_size_bytes)
+values (
+  'e0000000-0000-0000-0000-000000000002',
+  'b0000000-0000-0000-0000-000000000006',
+  'a0000000-0000-0000-0000-000000000001/candidate-e0000000-0000-0000-0000-000000000002/rls-test.mp4',
+  1000
+);
+commit;
+
+do $$
+declare
+  request_status text;
+begin
+  select status into request_status
+  from public.video_requests
+  where id = 'd0000000-0000-0000-0000-000000000002';
+
+  if request_status is distinct from 'erledigt' then
+    raise exception 'FAIL Test 11: offene Kandidaten-Video-Anfrage wurde durch Upload nicht automatisch erfuellt (Status: %)', request_status;
+  end if;
+  raise notice 'OK Test 11: Kandidaten-Video-Upload erfuellt offene Anfrage automatisch';
+end $$;
+
+-- ============================================================
 -- Aufräumen
 -- ============================================================
 
 begin;
+delete from public.documents where talent_id in ('c0000000-0000-0000-0000-000000000001', 'c0000000-0000-0000-0000-000000000002');
 delete from public.videos where talent_id in ('c0000000-0000-0000-0000-000000000001', 'c0000000-0000-0000-0000-000000000002');
 delete from public.video_requests where talent_id in ('c0000000-0000-0000-0000-000000000001', 'c0000000-0000-0000-0000-000000000002');
+delete from public.videos where candidate_id in ('e0000000-0000-0000-0000-000000000001', 'e0000000-0000-0000-0000-000000000002');
+delete from public.video_requests where candidate_id in ('e0000000-0000-0000-0000-000000000001', 'e0000000-0000-0000-0000-000000000002');
 delete from public.talent_guardians where talent_id in ('c0000000-0000-0000-0000-000000000001', 'c0000000-0000-0000-0000-000000000002');
+delete from public.talent_candidates where id in ('e0000000-0000-0000-0000-000000000001', 'e0000000-0000-0000-0000-000000000002');
 delete from public.talents where id in ('c0000000-0000-0000-0000-000000000001', 'c0000000-0000-0000-0000-000000000002');
 delete from public.users where id in (
   'b0000000-0000-0000-0000-000000000001',
   'b0000000-0000-0000-0000-000000000002',
   'b0000000-0000-0000-0000-000000000003',
   'b0000000-0000-0000-0000-000000000004',
-  'b0000000-0000-0000-0000-000000000005'
+  'b0000000-0000-0000-0000-000000000005',
+  'b0000000-0000-0000-0000-000000000006'
 );
 delete from auth.users where id in (
   'b0000000-0000-0000-0000-000000000001',
   'b0000000-0000-0000-0000-000000000002',
   'b0000000-0000-0000-0000-000000000003',
   'b0000000-0000-0000-0000-000000000004',
-  'b0000000-0000-0000-0000-000000000005'
+  'b0000000-0000-0000-0000-000000000005',
+  'b0000000-0000-0000-0000-000000000006'
 );
 delete from public.clubs where id in ('a0000000-0000-0000-0000-000000000001', 'a0000000-0000-0000-0000-000000000002');
 commit;

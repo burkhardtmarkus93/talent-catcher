@@ -122,7 +122,7 @@ export async function POST(request: NextRequest) {
 
         const { data: candidate, error: fetchError } = await admin
           .from("talent_candidates")
-          .select("id, status, guardian_email")
+          .select("id, status, guardian_email, contact_email")
           .eq("id", recordId)
           .maybeSingle();
 
@@ -161,9 +161,18 @@ export async function POST(request: NextRequest) {
           break;
         }
 
-        if (candidate.guardian_email) {
-          await invitePortalAccess(candidate.guardian_email, "candidate_guardian");
-        }
+        // Bisher wurde hier nur bei Minderjährigen (guardian_email
+        // gesetzt) ein Portal-Zugang eingeladen — volljährige
+        // Selbstregistrierungen bekamen nie einen Account, obwohl
+        // derselbe invitePortalAccess()-Pfad (Rolle "player") direkt
+        // darüber bereits für den Edit-Access-Zweig existiert. Ohne
+        // eigenen Zugang könnten volljährige Bewerber:innen z. B. eine
+        // vom Verein angeforderte Video-/Vita-Anfrage nie erfüllen.
+        const grantEmail = candidate.guardian_email ?? candidate.contact_email;
+        await invitePortalAccess(
+          grantEmail,
+          candidate.guardian_email ? "candidate_guardian" : "player"
+        );
 
         break;
       }

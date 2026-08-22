@@ -83,7 +83,12 @@
     "minorBadge": "Mineur(e)",
     "candidateMeta": "{position} · {age} ans",
     "decline": "Refuser",
-    "accept": "Accepter comme talent"
+    "accept": "Accepter comme talent",
+    "vitaAvailable": "Voir le CV",
+    "noVita": "Aucun CV téléversé",
+    "videoAvailable": "Voir la vidéo",
+    "requestVideo": "Demander une vidéo",
+    "videoRequestOpenWithdraw": "Retirer la demande"
   },
   "helpPage": {
     "title": "Aide et contact",
@@ -501,7 +506,9 @@
     "subtitleSelf": "Gérez le club/l'équipe et les vidéos.",
     "emptySelf": "Aucun profil de talent n'est encore lié à votre compte.",
     "positionAge": "{position} · {age} ans",
-    "open": "Ouvrir →"
+    "open": "Ouvrir →",
+    "candidaturesHeading": "Candidatures en attente",
+    "candidaturePositionClub": "{position} · {club}"
   },
   "parentTalentPage": {
     "positionAge": "{position} · {age} ans",
@@ -519,6 +526,23 @@
     "noConsent": "La mise en ligne de vidéos nécessite d'abord une autorisation documentée auprès du club — merci de contacter brièvement le recruteur qui suit {firstName} à ce sujet.",
     "videoRequestNote": "Remarque du club : {note}",
     "noRequest": "Aucune demande de vidéo n'est en cours pour le moment. Afin d'éviter que les recruteurs ne soient submergés de vidéos non sollicitées, vous ne pouvez mettre en ligne une vidéo qu'une fois que le club en a fait la demande."
+  },
+  "parentCandidatePage": {
+    "positionAgeClub": "{position} · {age} ans · Candidature auprès de {club}",
+    "fileSizeMb": "{size} Mo",
+    "statusPendingConsent": "En attente de consentement",
+    "statusPendingPayment": "Paiement en attente",
+    "statusPendingReview": "En cours d'examen",
+    "statusAccepted": "Acceptée",
+    "statusDeclined": "Refusée",
+    "videoHeading": "Vidéo",
+    "videoRequested": "Le club a demandé une vidéo.",
+    "videoRequestedWithNote": "Le club a demandé une vidéo : {note}",
+    "noVideoRequest": "Aucune demande de vidéo n'est en cours pour le moment. Afin d'éviter que les recruteurs ne soient submergés de vidéos non sollicitées, vous ne pouvez mettre en ligne une vidéo qu'une fois que le club en a fait la demande.",
+    "watch": "Regarder",
+    "vitaHeading": "CV sportif",
+    "vitaHint": "Vous pouvez téléverser un CV sportif (PDF ou DOCX) à tout moment pendant que votre candidature est examinée.",
+    "open": "Ouvrir"
   },
   "profilePage": {
     "title": "Mon profil",
@@ -552,6 +576,14 @@
     "saveFailed": "Impossible d'enregistrer la vidéo.",
     "uploading": "Mise en ligne en cours…",
     "hint": "MP4, jusqu'à 150 Mo."
+  },
+  "candidateVitaUploadForm": {
+    "onlyPdfDocx": "Seuls les fichiers PDF ou DOCX sont pris en charge.",
+    "fileTooLarge": "Le fichier dépasse 20 Mo.",
+    "uploadFailed": "Échec de la mise en ligne : {message}",
+    "saveFailed": "Impossible d'enregistrer le fichier.",
+    "uploading": "Mise en ligne en cours…",
+    "hint": "PDF ou DOCX, jusqu'à 20 Mo."
   },
   "productTour": {
     "dialogLabel": "Visite de prise en main",
@@ -1021,6 +1053,11 @@
     "acceptFailed": "Impossible d'accepter la candidature.",
     "declineFailed": "Impossible de refuser la candidature.",
     "rateLimited": "Trop de tentatives en peu de temps. Veuillez réessayer dans quelques minutes."
+  },
+  "candidateDocumentActions": {
+    "notAuthenticated": "Non connecté(e).",
+    "candidateNotFound": "Candidature introuvable.",
+    "saveFailed": "Impossible d'enregistrer le fichier."
   },
   "clubReferralActions": {
     "requiredFields": "Veuillez remplir tous les champs obligatoires.",

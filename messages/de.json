@@ -83,7 +83,12 @@
     "minorBadge": "Minderjährig",
     "candidateMeta": "{position} · {age} Jahre",
     "decline": "Ablehnen",
-    "accept": "Als Talent annehmen"
+    "accept": "Als Talent annehmen",
+    "vitaAvailable": "Vita ansehen",
+    "noVita": "Keine Vita hochgeladen",
+    "videoAvailable": "Video ansehen",
+    "requestVideo": "Video anfordern",
+    "videoRequestOpenWithdraw": "Anfrage zurückziehen"
   },
   "helpPage": {
     "title": "Hilfe & Kontakt",
@@ -501,7 +506,9 @@
     "subtitleSelf": "Verein/Team pflegen und Videos verwalten.",
     "emptySelf": "Es ist noch kein Talent-Profil mit deinem Konto verknüpft.",
     "positionAge": "{position} · {age} Jahre",
-    "open": "Öffnen →"
+    "open": "Öffnen →",
+    "candidaturesHeading": "Offene Bewerbungen",
+    "candidaturePositionClub": "{position} · {club}"
   },
   "parentTalentPage": {
     "positionAge": "{position} · {age} Jahre",
@@ -519,6 +526,23 @@
     "noConsent": "Für den Video-Upload braucht es zuerst eine im Verein dokumentierte Einwilligung — bitte dafür kurz den Scout ansprechen, der {firstName} betreut.",
     "videoRequestNote": "Hinweis vom Verein: {note}",
     "noRequest": "Aktuell liegt keine Video-Anfrage vor. Damit Scouts nicht mit unaufgeforderten Videos überflutet werden, kannst du erst hochladen, sobald der Verein eines anfordert."
+  },
+  "parentCandidatePage": {
+    "positionAgeClub": "{position} · {age} Jahre · Bewerbung bei {club}",
+    "fileSizeMb": "{size} MB",
+    "statusPendingConsent": "Warten auf Einwilligung",
+    "statusPendingPayment": "Zahlung ausstehend",
+    "statusPendingReview": "Wird geprüft",
+    "statusAccepted": "Angenommen",
+    "statusDeclined": "Abgelehnt",
+    "videoHeading": "Video",
+    "videoRequested": "Der Verein hat ein Video angefordert.",
+    "videoRequestedWithNote": "Der Verein hat ein Video angefordert: {note}",
+    "noVideoRequest": "Aktuell liegt keine Video-Anfrage vor. Damit Scouts nicht mit unaufgeforderten Videos überflutet werden, kannst du erst hochladen, sobald der Verein eines anfordert.",
+    "watch": "Ansehen",
+    "vitaHeading": "Sportliche Vita",
+    "vitaHint": "Du kannst jederzeit eine sportliche Vita (PDF oder DOCX) hochladen, während deine Bewerbung geprüft wird.",
+    "open": "Öffnen"
   },
   "profilePage": {
     "title": "Mein Profil",
@@ -552,6 +576,14 @@
     "saveFailed": "Video konnte nicht gespeichert werden.",
     "uploading": "Wird hochgeladen…",
     "hint": "MP4, bis zu 150 MB."
+  },
+  "candidateVitaUploadForm": {
+    "onlyPdfDocx": "Nur PDF- oder DOCX-Dateien werden unterstützt.",
+    "fileTooLarge": "Die Datei ist größer als 20 MB.",
+    "uploadFailed": "Upload fehlgeschlagen: {message}",
+    "saveFailed": "Datei konnte nicht gespeichert werden.",
+    "uploading": "Wird hochgeladen…",
+    "hint": "PDF oder DOCX, bis zu 20 MB."
   },
   "productTour": {
     "dialogLabel": "Erste-Schritte-Tour",
@@ -1021,6 +1053,11 @@
     "acceptFailed": "Kandidatur konnte nicht angenommen werden.",
     "declineFailed": "Kandidatur konnte nicht abgelehnt werden.",
     "rateLimited": "Zu viele Versuche in kurzer Zeit. Bitte in ein paar Minuten erneut versuchen."
+  },
+  "candidateDocumentActions": {
+    "notAuthenticated": "Nicht angemeldet.",
+    "candidateNotFound": "Kandidatur nicht gefunden.",
+    "saveFailed": "Datei konnte nicht gespeichert werden."
   },
   "clubReferralActions": {
     "requiredFields": "Bitte alle Pflichtfelder ausfüllen.",

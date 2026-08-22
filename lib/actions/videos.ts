@@ -6,7 +6,10 @@ import { createClient } from "@/lib/supabase/server";
 import { getCurrentAppUser } from "@/lib/queries/session";
 import { hasGrantedVideoConsent } from "@/lib/queries/consent";
 import { getGuardianTalent } from "@/lib/queries/guardians";
-import { getOpenVideoRequest } from "@/lib/queries/videoRequests";
+import {
+  getOpenVideoRequest,
+  getOpenVideoRequestForCandidate,
+} from "@/lib/queries/videoRequests";
 
 export interface CreateVideoRecordInput {
   talentId: string;
@@ -194,4 +197,174 @@ export async function cancelVideoRequest(formData: FormData): Promise<void> {
 
   revalidatePath(`/talents/${talentId}`);
   revalidatePath(`/parent/talents/${talentId}`);
+}
+
+// --- Kandidaten-Gegenstücke (siehe Migration 20260822190000) ---
+// Bewusst eigene Funktionen statt Umbau der obigen talentId-Funktionen:
+// die RLS-Prüfung (talents vs. talent_candidates) unterscheidet sich
+// genug, dass ein gemeinsamer Parameter-Union hier mehr Verwirrung als
+// Nutzen stiften würde — gleiches Prinzip wie die getrennten
+// Guardian-/Scout-Funktionen an anderer Stelle im Projekt.
+
+export interface CreateCandidateVideoRecordInput {
+  candidateId: string;
+  storageKey: string;
+  fileSizeBytes: number;
+}
+
+export async function createCandidateVideoRecord(
+  input: CreateCandidateVideoRecordInput
+): Promise<{ success: boolean; error?: string }> {
+  const t = await getTranslations("videoActions");
+  const appUser = await getCurrentAppUser();
+  if (!appUser) {
+    return { success: false, error: t("notAuthenticated") };
+  }
+
+  const supabase = await createClient();
+  const isGuardian = appUser.role === "parent" || appUser.role === "player";
+
+  // Kein separates Consent-Gate wie bei bereits angenommenen Talenten
+  // (hasGrantedVideoConsent): die hochladende Person ist hier immer
+  // dieselbe, die die Kandidatur selbst eingereicht und bezahlt hat
+  // (Erziehungsberechtigte/r bzw. die volljährige Person selbst) — der
+  // Upload-Vorgang IST hier die Einwilligung, es gibt (anders als beim
+  // späteren Talent-Video) keine zweite, unabhängige Partei, die erst
+  // noch zustimmen müsste. Falls das anders bewertet werden soll, bitte
+  // gegenprüfen, bevor produktiv genutzt.
+  if (isGuardian) {
+    const { data: candidate, error: candidateError } = await supabase
+      .from("talent_candidates")
+      .select("id")
+      .eq("id", input.candidateId)
+      .maybeSingle();
+    if (candidateError || !candidate) {
+      return { success: false, error: t("talentNotFound") };
+    }
+  } else {
+    if (!appUser.clubId) {
+      return { success: false, error: t("notAuthenticated") };
+    }
+    const { data: candidate, error: candidateError } = await supabase
+      .from("talent_candidates")
+      .select("id, club_id")
+      .eq("id", input.candidateId)
+      .maybeSingle();
+    if (candidateError || !candidate || candidate.club_id !== appUser.clubId) {
+      return { success: false, error: t("talentNotFound") };
+    }
+  }
+
+  if (isGuardian) {
+    const openRequest = await getOpenVideoRequestForCandidate(input.candidateId);
+    if (!openRequest) {
+      return { success: false, error: t("noRequest") };
+    }
+  }
+
+  const { error } = await supabase.from("videos").insert({
+    candidate_id: input.candidateId,
+    uploaded_by: appUser.id,
+    storage_key: input.storageKey,
+    file_size_bytes: input.fileSizeBytes,
+  });
+
+  if (error) {
+    console.error("createCandidateVideoRecord() fehlgeschlagen:", {
+      message: error.message,
+      code: error.code,
+      details: error.details,
+      hint: error.hint,
+    });
+    return { success: false, error: t("saveFailed") };
+  }
+
+  revalidatePath("/candidates");
+  revalidatePath(`/parent/candidates/${input.candidateId}`);
+  return { success: true };
+}
+
+export async function requestCandidateVideoUpload(formData: FormData): Promise<void> {
+  const t = await getTranslations("videoActions");
+  const candidateId = String(formData.get("candidateId") ?? "");
+  const note = String(formData.get("note") ?? "").trim() || null;
+
+  if (!candidateId) {
+    throw new Error(t("talentIdMissing"));
+  }
+
+  const appUser = await getCurrentAppUser();
+  if (!appUser?.clubId) {
+    throw new Error(t("notAuthenticated"));
+  }
+
+  const supabase = await createClient();
+  const { data: candidate, error: candidateError } = await supabase
+    .from("talent_candidates")
+    .select("id, club_id, is_minor")
+    .eq("id", candidateId)
+    .maybeSingle();
+
+  if (candidateError || !candidate || candidate.club_id !== appUser.clubId) {
+    throw new Error(t("talentNotFound"));
+  }
+  if (candidate.is_minor && !appUser.hasYouthAccess) {
+    throw new Error(t("youthAccessRequired"));
+  }
+
+  const { error } = await supabase.from("video_requests").insert({
+    candidate_id: candidateId,
+    requested_by: appUser.id,
+    note,
+  });
+
+  if (error) {
+    if (error.code === "23505") {
+      throw new Error(t("requestAlreadyOpen"));
+    }
+    console.error("requestCandidateVideoUpload() fehlgeschlagen:", {
+      message: error.message,
+      code: error.code,
+      details: error.details,
+      hint: error.hint,
+    });
+    throw new Error(t("requestCreateFailed"));
+  }
+
+  revalidatePath("/candidates");
+}
+
+export async function cancelCandidateVideoRequest(formData: FormData): Promise<void> {
+  const t = await getTranslations("videoActions");
+  const candidateId = String(formData.get("candidateId") ?? "");
+  const requestId = String(formData.get("requestId") ?? "");
+
+  if (!candidateId || !requestId) {
+    throw new Error(t("talentIdMissing"));
+  }
+
+  const appUser = await getCurrentAppUser();
+  if (!appUser?.clubId) {
+    throw new Error(t("notAuthenticated"));
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("video_requests")
+    .delete()
+    .eq("id", requestId)
+    .eq("candidate_id", candidateId)
+    .eq("status", "offen");
+
+  if (error) {
+    console.error("cancelCandidateVideoRequest() fehlgeschlagen:", {
+      message: error.message,
+      code: error.code,
+      details: error.details,
+      hint: error.hint,
+    });
+    throw new Error(t("requestCancelFailed"));
+  }
+
+  revalidatePath("/candidates");
 }
