@@ -20,6 +20,7 @@ export type TalentFilters = {
   nationalmannschaft?: string;
   nlz?: string;
   euPassport?: string;
+  perspektivkader?: string;
 };
 
 function mapAlert(row: any): Alert {
@@ -71,6 +72,7 @@ export function mapTalent(row: any): Talent {
     nationalmannschaft: Boolean(row.nationalmannschaft),
     nlz: Boolean(row.nlz),
     euPassport: Boolean(row.eu_passport),
+    perspektivkader: Boolean(row.perspektivkader),
     upcomingTransferClubText: row.upcoming_transfer_club_text ?? null,
     upcomingTransferNote: row.upcoming_transfer_note ?? null,
     cohortPercentileBucket: row.cohort_percentile_bucket ?? null,
@@ -132,6 +134,7 @@ export async function getTalents(filters: TalentFilters = {}): Promise<Talent[]>
   const nationalmannschaft = filters.nationalmannschaft?.trim();
   const nlz = filters.nlz?.trim();
   const euPassport = filters.euPassport?.trim();
+  const perspektivkader = filters.perspektivkader?.trim();
 
   let query = supabase
     .from("talents")
@@ -195,6 +198,7 @@ export async function getTalents(filters: TalentFilters = {}): Promise<Talent[]>
     [nationalmannschaft, "nationalmannschaft"],
     [nlz, "nlz"],
     [euPassport, "euPassport"],
+    [perspektivkader, "perspektivkader"],
   ];
 
   for (const [value, key] of flagFilters) {

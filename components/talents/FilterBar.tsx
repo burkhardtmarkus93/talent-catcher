@@ -15,6 +15,7 @@ type FilterBarProps = {
   nationalmannschaft?: string;
   nlz?: string;
   euPassport?: string;
+  perspektivkader?: string;
 };
 
 export function FilterBar({
@@ -29,6 +30,7 @@ export function FilterBar({
   nationalmannschaft = "alle",
   nlz = "alle",
   euPassport = "alle",
+  perspektivkader = "alle",
 }: FilterBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -185,6 +187,14 @@ export function FilterBar({
           options={yesNoOptions}
           onChange={(value) =>
             updateParams({ q, showArchived, euPassport: value })
+          }
+        />
+        <Select
+          label={t("perspektivkader")}
+          value={perspektivkader}
+          options={yesNoOptions}
+          onChange={(value) =>
+            updateParams({ q, showArchived, perspektivkader: value })
           }
         />
       </div>

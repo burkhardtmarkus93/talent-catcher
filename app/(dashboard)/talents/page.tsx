@@ -38,6 +38,7 @@ export default async function TalentsPage({
     nationalmannschaft?: string;
     nlz?: string;
     euPassport?: string;
+    perspektivkader?: string;
   };
 }) {
   const filters = {
@@ -52,6 +53,7 @@ export default async function TalentsPage({
     nationalmannschaft: searchParams?.nationalmannschaft ?? "alle",
     nlz: searchParams?.nlz ?? "alle",
     euPassport: searchParams?.euPassport ?? "alle",
+    perspektivkader: searchParams?.perspektivkader ?? "alle",
   };
 
   const [talents, appUser, t] = await Promise.all([
@@ -95,6 +97,7 @@ export default async function TalentsPage({
         nationalmannschaft={filters.nationalmannschaft}
         nlz={filters.nlz}
         euPassport={filters.euPassport}
+        perspektivkader={filters.perspektivkader}
       />
       <div className="animate-fade-in-up">
         <TalentTable

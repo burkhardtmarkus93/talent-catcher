@@ -278,6 +278,7 @@
     "nationalmannschaft": "Seleção nacional",
     "nlz": "NLZ",
     "euPassport": "Passaporte UE",
+    "perspektivkader": "Perspektivkader",
     "all": "Todos",
     "yes": "Sim",
     "no": "Não",
@@ -771,6 +772,8 @@
     "nationalmannschaft": "Seleção nacional",
     "nlz": "NLZ",
     "euPassport": "Passaporte UE",
+    "perspektivkader": "Perspektivkader",
+    "perspektivkaderHint": "Avaliação própria do clube, não uma pertença oficial verificada a uma seleção — cada federação regional (Landesverband) define seus próprios critérios para os quadros de perspectiva/deteção de talentos.",
     "save": "Salvar",
     "siblingsTitle": "Irmãos talentosos",
     "siblingsHint": "Apenas uma anotação para você — por exemplo, quando durante o scouting você percebe que há um(a) irmão/irmã também talentoso(a). Não cria um perfil de talento próprio; para isso existe o link \"Registrar como talento\" abaixo.",
@@ -1149,6 +1152,7 @@
     "verbandsauswahl": "Seleção da federação",
     "nationalmannschaft": "Seleção nacional",
     "nlz": "NLZ",
-    "euPassport": "Passaporte UE"
+    "euPassport": "Passaporte UE",
+    "perspektivkader": "Perspektivkader"
   }
 }
