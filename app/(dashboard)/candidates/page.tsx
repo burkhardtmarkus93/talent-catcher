@@ -3,6 +3,13 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { Button } from "@/components/ui/Button";
 import { getPendingTalentCandidates } from "@/lib/queries/candidates";
 import { acceptTalentCandidate, declineTalentCandidate } from "@/lib/actions/candidates";
+import {
+  requestCandidateVideoUpload,
+  cancelCandidateVideoRequest,
+} from "@/lib/actions/videos";
+import { getOpenVideoRequestsForCandidates } from "@/lib/queries/videoRequests";
+import { getDocumentsForCandidate } from "@/lib/queries/candidateDocuments";
+import { getVideosForCandidate } from "@/lib/queries/candidateVideos";
 
 function age(birthDate: string): number {
   const diff = Date.now() - new Date(birthDate).getTime();
@@ -18,6 +25,15 @@ export default async function CandidatesPage({
     getPendingTalentCandidates(),
     getTranslations("candidatesPage"),
   ]);
+
+  const candidateIds = candidates.map((c) => c.id);
+  const [openVideoRequests, documentsByCandidate, videosByCandidate] = await Promise.all([
+    getOpenVideoRequestsForCandidates(candidateIds),
+    Promise.all(candidateIds.map((id) => getDocumentsForCandidate(id))),
+    Promise.all(candidateIds.map((id) => getVideosForCandidate(id))),
+  ]);
+  const documentsMap = new Map(candidateIds.map((id, i) => [id, documentsByCandidate[i]]));
+  const videosMap = new Map(candidateIds.map((id, i) => [id, videosByCandidate[i]]));
 
   return (
     <div>
@@ -44,42 +60,97 @@ export default async function CandidatesPage({
         <p className="mt-6 text-sm text-muted">{t("empty")}</p>
       ) : (
         <div className="flex flex-col gap-3">
-          {candidates.map((candidate) => (
-            <div
-              key={candidate.id}
-              className="flex items-center justify-between rounded-xl border border-line bg-surface p-4"
-            >
-              <div>
-                <p className="font-medium text-ink">
-                  {candidate.firstName} {candidate.lastName}
-                  {candidate.isMinor && (
-                    <span className="ml-2 inline-flex items-center rounded-full bg-brick-dim px-2 py-0.5 text-xs font-medium text-brick">
-                      {t("minorBadge")}
-                    </span>
-                  )}
-                </p>
-                <p className="mt-1 text-sm text-muted">
-                  {t("candidateMeta", {
-                    position: candidate.primaryPosition,
-                    age: age(candidate.birthDate),
-                  })}
-                </p>
-                <p className="mt-0.5 text-xs text-muted">{candidate.contactEmail}</p>
+          {candidates.map((candidate) => {
+            const openRequest = openVideoRequests.get(candidate.id);
+            const documents = documentsMap.get(candidate.id) ?? [];
+            const videos = videosMap.get(candidate.id) ?? [];
+
+            return (
+              <div
+                key={candidate.id}
+                className="flex flex-col gap-3 rounded-xl border border-line bg-surface p-4 sm:flex-row sm:items-center sm:justify-between"
+              >
+                <div>
+                  <p className="font-medium text-ink">
+                    {candidate.firstName} {candidate.lastName}
+                    {candidate.isMinor && (
+                      <span className="ml-2 inline-flex items-center rounded-full bg-brick-dim px-2 py-0.5 text-xs font-medium text-brick">
+                        {t("minorBadge")}
+                      </span>
+                    )}
+                  </p>
+                  <p className="mt-1 text-sm text-muted">
+                    {t("candidateMeta", {
+                      position: candidate.primaryPosition,
+                      age: age(candidate.birthDate),
+                    })}
+                  </p>
+                  <p className="mt-0.5 text-xs text-muted">{candidate.contactEmail}</p>
+
+                  <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
+                    {documents.length > 0 && documents[0].downloadUrl ? (
+                      <a
+                        href={documents[0].downloadUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center rounded-full bg-pitch-dim px-2 py-0.5 font-medium text-pitch underline-offset-2 hover:underline"
+                      >
+                        {t("vitaAvailable")}
+                      </a>
+                    ) : (
+                      <span className="text-muted">{t("noVita")}</span>
+                    )}
+
+                    {videos.length > 0 && videos[0].playbackUrl && (
+                      <a
+                        href={videos[0].playbackUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center rounded-full bg-pitch-dim px-2 py-0.5 font-medium text-pitch underline-offset-2 hover:underline"
+                      >
+                        {t("videoAvailable")}
+                      </a>
+                    )}
+
+                    {openRequest ? (
+                      <form action={cancelCandidateVideoRequest} className="inline-flex">
+                        <input type="hidden" name="candidateId" value={candidate.id} />
+                        <input type="hidden" name="requestId" value={openRequest.id} />
+                        <button
+                          type="submit"
+                          className="text-brick underline-offset-2 hover:underline"
+                        >
+                          {t("videoRequestOpenWithdraw")}
+                        </button>
+                      </form>
+                    ) : (
+                      <form action={requestCandidateVideoUpload} className="inline-flex">
+                        <input type="hidden" name="candidateId" value={candidate.id} />
+                        <button
+                          type="submit"
+                          className="text-pitch underline-offset-2 hover:underline"
+                        >
+                          {t("requestVideo")}
+                        </button>
+                      </form>
+                    )}
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <form action={declineTalentCandidate}>
+                    <input type="hidden" name="candidateId" value={candidate.id} />
+                    <Button type="submit" variant="secondary">
+                      {t("decline")}
+                    </Button>
+                  </form>
+                  <form action={acceptTalentCandidate}>
+                    <input type="hidden" name="candidateId" value={candidate.id} />
+                    <Button type="submit">{t("accept")}</Button>
+                  </form>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <form action={declineTalentCandidate}>
-                  <input type="hidden" name="candidateId" value={candidate.id} />
-                  <Button type="submit" variant="secondary">
-                    {t("decline")}
-                  </Button>
-                </form>
-                <form action={acceptTalentCandidate}>
-                  <input type="hidden" name="candidateId" value={candidate.id} />
-                  <Button type="submit">{t("accept")}</Button>
-                </form>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
