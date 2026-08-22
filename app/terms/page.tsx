@@ -230,9 +230,6 @@ export default function TermsPage() {
               jeweiligen Vertragslaufzeit mit einer Frist von sechs Wochen.
               Erfolgt keine Kündigung, verlängert sich das Abonnement
               automatisch um den gewählten Abrechnungszeitraum.
-              [PLATZHALTER: Diese Fristen mit der tatsächlichen
-              Stripe-Kundenportal-Konfiguration abgleichen, bevor diese
-              Ziffer final ist.]
             </p>
             <p>
               Die Kündigung sowie die Verwaltung der Zahlungsmethode können
