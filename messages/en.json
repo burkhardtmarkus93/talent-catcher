@@ -262,7 +262,8 @@
   },
   "talentsPage": {
     "title": "Talents",
-    "newTalent": "+ New talent"
+    "newTalent": "+ New talent",
+    "exportCsv": "Export CSV"
   },
   "filterBar": {
     "search": "Search",

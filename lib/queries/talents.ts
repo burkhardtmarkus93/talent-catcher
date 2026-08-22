@@ -8,7 +8,7 @@ import type {
   RiskLevel,
 } from "@/lib/types";
 
-type TalentFilters = {
+export type TalentFilters = {
   q?: string;
   showArchived?: boolean;
   position?: string;
