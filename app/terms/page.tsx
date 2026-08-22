@@ -44,10 +44,10 @@ export default function TermsPage() {
             erstellt, ersetzt aber keine anwaltliche Prüfung. Er darf nicht
             als endgültige, rechtsverbindliche Vertragsgrundlage verwendet
             werden, bevor er von einer Rechtsanwältin/einem Rechtsanwalt
-            geprüft und freigegeben wurde. Mit „[PLATZHALTER]“
-            gekennzeichnete Angaben (z. B. Firmierung, Anschrift,
-            Registerdaten) fehlen noch und müssen vor Freigabe ergänzt
-            werden.
+            geprüft und freigegeben wurde. Die Betreiberangaben sind
+            ausgefüllt; verbleibende „[PLATZHALTER]“ betreffen offene
+            Geschäfts-/Steuerfragen und Klauseln, die noch anwaltlich
+            festzulegen sind.
           </p>
           <p className="mt-1 text-xs text-brick/80">
             DRAFT — not yet reviewed by a lawyer. Content is grounded in the
@@ -76,13 +76,16 @@ export default function TermsPage() {
             <p className="mt-2">
               Anbieter und Vertragspartner ist:
               <br />
-              [PLATZHALTER: vollständiger Name/Firmierung des Betreibers]
+              Markus Burkhardt
               <br />
-              [PLATZHALTER: ladungsfähige Anschrift]
+              Gartenstraße 9, 72280 Dornstetten
               <br />
               E-Mail: burkhardt.markus93@gmail.com
               <br />
-              [PLATZHALTER: falls vorhanden — Handelsregister, USt-IdNr.]
+              Einzelunternehmer, kein Handelsregistereintrag. [PLATZHALTER:
+              Umsatzsteuer-Identifikationsnummer bzw. Hinweis auf
+              Kleinunternehmerregelung § 19 UStG — mit Finanzamt/
+              Steuerberater zu klären.]
               <br />
               (im Folgenden „wir“ oder „Talent Catcher“)
             </p>
@@ -273,11 +276,11 @@ export default function TermsPage() {
             </h2>
             <p>
               Informationen zur Verarbeitung personenbezogener Daten,
-              insbesondere von Minderjährigen, enthält die
-              Datenschutzerklärung. [PLATZHALTER: Eine eigene
-              Datenschutzerklärung nach Art. 13/14 DSGVO existiert für diese
-              Anwendung aktuell noch nicht und muss vor Live-Betrieb ergänzt
-              werden — ebenso ein Impressum nach § 5 TMG/DDG.]
+              insbesondere von Minderjährigen, enthält die{" "}
+              <Link href="/datenschutz" className="underline-offset-2 hover:underline">
+                Datenschutzerklärung
+              </Link>
+              .
             </p>
           </section>
 
@@ -306,9 +309,10 @@ export default function TermsPage() {
               Es gilt das Recht der Bundesrepublik Deutschland unter
               Ausschluss des UN-Kaufrechts. Ist der Kunde Kaufmann,
               juristische Person des öffentlichen Rechts oder öffentlich-
-              rechtliches Sondervermögen, ist [PLATZHALTER: Gerichtsstand]
-              ausschließlicher Gerichtsstand für alle Streitigkeiten aus
-              diesem Vertrag. Sollten einzelne Bestimmungen dieser AGB
+              rechtliches Sondervermögen, ist der Sitz des Anbieters
+              (Dornstetten) ausschließlicher Gerichtsstand für alle
+              Streitigkeiten aus diesem Vertrag. Sollten einzelne
+              Bestimmungen dieser AGB
               unwirksam sein, bleibt die Wirksamkeit der übrigen
               Bestimmungen unberührt.
             </p>
@@ -336,8 +340,8 @@ export default function TermsPage() {
               beträgt vierzehn Tage ab dem Tag des Vertragsschlusses.
             </p>
             <p className="mt-2">
-              Um Ihr Widerrufsrecht auszuüben, müssen Sie uns ([PLATZHALTER:
-              Name/Firmierung], Kontaktdaten siehe{" "}
+              Um Ihr Widerrufsrecht auszuüben, müssen Sie uns (Markus
+              Burkhardt, Kontaktdaten siehe{" "}
               <Link href="/help" className="underline-offset-2 hover:underline">
                 Hilfe &amp; Kontakt
               </Link>
@@ -395,7 +399,8 @@ export default function TermsPage() {
                 dieses Formular aus und senden Sie es zurück.)
               </p>
               <p className="mt-2 text-xs text-ink">
-                An: [PLATZHALTER: Name/Firmierung, Anschrift, E-Mail-Adresse]
+                An: Markus Burkhardt, Gartenstraße 9, 72280 Dornstetten,
+                burkhardt.markus93@gmail.com
                 <br />
                 <br />
                 Hiermit widerrufe(n) ich/wir (*) den von mir/uns (*)

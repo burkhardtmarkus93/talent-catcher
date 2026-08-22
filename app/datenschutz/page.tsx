@@ -47,9 +47,9 @@ export default function DatenschutzPage() {
               Verantwortlicher im Sinne der Datenschutz-Grundverordnung
               (DSGVO) ist:
               <br />
-              [PLATZHALTER: vollständiger Name/Firmierung]
+              Markus Burkhardt
               <br />
-              [PLATZHALTER: ladungsfähige Anschrift]
+              Gartenstraße 9, 72280 Dornstetten
               <br />
               E-Mail: burkhardt.markus93@gmail.com
               <br />
@@ -66,13 +66,18 @@ export default function DatenschutzPage() {
               2. Datenschutzbeauftragte/r
             </h2>
             <p>
-              [PLATZHALTER: Zu prüfen, ob nach § 38 BDSG die Pflicht zur
-              Bestellung einer/eines Datenschutzbeauftragten besteht —
-              insbesondere weil im Rahmen der Talentbeobachtung auch
-              Gesundheitsdaten (Verletzungen, siehe Ziffer 5) als besondere
-              Kategorien personenbezogener Daten nach Art. 9 DSGVO
-              verarbeitet werden. Falls ja, hier Name und Kontaktdaten
-              ergänzen.]
+              Nach derzeitigem Stand ist keine/kein Datenschutzbeauftragte/r
+              bestellt: Talent Catcher wird von einer einzelnen Person
+              betrieben, sodass die Schwelle des § 38 Abs. 1 BDSG (in der
+              Regel mindestens 20 Personen, die ständig mit der
+              automatisierten Verarbeitung personenbezogener Daten befasst
+              sind) nicht erreicht wird. [PLATZHALTER: Diese Einschätzung
+              vor Live-Betrieb anwaltlich bestätigen lassen — insbesondere
+              weil im Rahmen der Talentbeobachtung auch Gesundheitsdaten
+              (Verletzungen, siehe Ziffer 6) als besondere Kategorie
+              personenbezogener Daten nach Art. 9 DSGVO verarbeitet werden,
+              und erneut prüfen, sobald weitere Personen mit der
+              Datenverarbeitung befasst werden.]
             </p>
           </section>
 
@@ -313,9 +318,14 @@ export default function DatenschutzPage() {
               Sie haben das Recht, sich bei einer Datenschutz-
               Aufsichtsbehörde zu beschweren. Zuständig ist in der Regel die
               Aufsichtsbehörde Ihres gewöhnlichen Aufenthalts oder die für
-              den Verantwortlichen zuständige Behörde: [PLATZHALTER: Name
-              und Anschrift der zuständigen Landesdatenschutzbehörde,
-              abhängig vom Sitz des Verantwortlichen, ergänzen.]
+              den Verantwortlichen zuständige Behörde. Für den
+              Verantwortlichen (Sitz in Dornstetten, Baden-Württemberg) ist
+              das der/die Landesbeauftragte für den Datenschutz und die
+              Informationsfreiheit Baden-Württemberg (LfDI
+              Baden-Württemberg). [PLATZHALTER: aktuelle Postanschrift,
+              Telefonnummer und E-Mail-Adresse des LfDI Baden-Württemberg
+              vor Veröffentlichung auf dessen Website prüfen und ergänzen,
+              da sich Kontaktdaten von Behörden ändern können.]
             </p>
           </section>
 
