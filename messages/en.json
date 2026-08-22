@@ -408,7 +408,21 @@
     "completeWithoutReport": "Mark done without report",
     "reminderStatusOffen": "Open",
     "reminderStatusErledigt": "Done",
-    "reminderStatusUeberfaellig": "Overdue"
+    "reminderStatusUeberfaellig": "Overdue",
+    "riskReasons": {
+      "noReportYet": "No report yet",
+      "reportGap": "No report for {days} days",
+      "overdueReminder": "Follow-up overdue",
+      "contractEnding": "Contract ends in {days} days",
+      "ratingDisagreement": "Disagreement between the latest scout reports (rating spread {spread} points)",
+      "upwardTrend": "Upward trend detected over recent reports (late-bloomer signal)",
+      "highPotential": "High potential according to the latest report",
+      "lateBloomerSolid": "Late bloomer with already solid performance (maturity signal)",
+      "strongTinder": "TINDER criteria consistently strong in the latest report",
+      "strongGkTest": "Strong coordination test ({score}/18 points)",
+      "hiddenGemByRating": "Repeatedly rated highly (hidden-gem signal)",
+      "hiddenGemBySignals": "Solid performance with strong potential/maturity/TINDER signals (hidden-gem signal)"
+    }
   },
   "reminderForm": {
     "saved": "Follow-up saved.",
@@ -708,6 +722,20 @@
     "cohortPercentileBucketUpperMid": "upper middle",
     "cohortPercentileBucketLowerMid": "lower middle",
     "cohortPercentileBucketBottom25": "bottom quarter",
+    "riskReasons": {
+      "noReportYet": "No report yet",
+      "reportGap": "No report for {days} days",
+      "overdueReminder": "Follow-up overdue",
+      "contractEnding": "Contract ends in {days} days",
+      "ratingDisagreement": "Disagreement between the latest scout reports (rating spread {spread} points)",
+      "upwardTrend": "Upward trend detected over recent reports (late-bloomer signal)",
+      "highPotential": "High potential according to the latest report",
+      "lateBloomerSolid": "Late bloomer with already solid performance (maturity signal)",
+      "strongTinder": "TINDER criteria consistently strong in the latest report",
+      "strongGkTest": "Strong coordination test ({score}/18 points)",
+      "hiddenGemByRating": "Repeatedly rated highly (hidden-gem signal)",
+      "hiddenGemBySignals": "Solid performance with strong potential/maturity/TINDER signals (hidden-gem signal)"
+    },
     "overview": "Overview",
     "status": "Status",
     "statusInBeobachtung": "Under observation",

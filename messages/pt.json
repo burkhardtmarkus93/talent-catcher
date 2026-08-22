@@ -408,7 +408,21 @@
     "completeWithoutReport": "Concluir sem relatório",
     "reminderStatusOffen": "Em aberto",
     "reminderStatusErledigt": "Concluído",
-    "reminderStatusUeberfaellig": "Atrasado"
+    "reminderStatusUeberfaellig": "Atrasado",
+    "riskReasons": {
+      "noReportYet": "Ainda não há nenhum relatório",
+      "reportGap": "Sem relatório há {days} dias",
+      "overdueReminder": "Acompanhamento em atraso",
+      "contractEnding": "O contrato termina em {days} dias",
+      "ratingDisagreement": "Divergência entre os últimos relatórios de olheiros (amplitude de avaliação {spread} pontos)",
+      "upwardTrend": "Tendência de alta detetada nos últimos relatórios (sinal de desenvolvimento tardio)",
+      "highPotential": "Alto potencial segundo o relatório mais recente",
+      "lateBloomerSolid": "Desenvolvimento tardio com desempenho já sólido (sinal de maturidade)",
+      "strongTinder": "Critérios TINDER consistentemente fortes no relatório mais recente",
+      "strongGkTest": "Teste de coordenação forte ({score}/18 pontos)",
+      "hiddenGemByRating": "Avaliado repetidamente de forma elevada (sinal de joia escondida)",
+      "hiddenGemBySignals": "Desempenho sólido com fortes sinais de potencial/maturidade/TINDER (sinal de joia escondida)"
+    }
   },
   "reminderForm": {
     "saved": "Retorno salvo.",
@@ -708,6 +722,20 @@
     "cohortPercentileBucketUpperMid": "metade superior",
     "cohortPercentileBucketLowerMid": "metade inferior",
     "cohortPercentileBucketBottom25": "quarto inferior",
+    "riskReasons": {
+      "noReportYet": "Ainda não há nenhum relatório",
+      "reportGap": "Sem relatório há {days} dias",
+      "overdueReminder": "Acompanhamento em atraso",
+      "contractEnding": "O contrato termina em {days} dias",
+      "ratingDisagreement": "Divergência entre os últimos relatórios de olheiros (amplitude de avaliação {spread} pontos)",
+      "upwardTrend": "Tendência de alta detetada nos últimos relatórios (sinal de desenvolvimento tardio)",
+      "highPotential": "Alto potencial segundo o relatório mais recente",
+      "lateBloomerSolid": "Desenvolvimento tardio com desempenho já sólido (sinal de maturidade)",
+      "strongTinder": "Critérios TINDER consistentemente fortes no relatório mais recente",
+      "strongGkTest": "Teste de coordenação forte ({score}/18 pontos)",
+      "hiddenGemByRating": "Avaliado repetidamente de forma elevada (sinal de joia escondida)",
+      "hiddenGemBySignals": "Desempenho sólido com fortes sinais de potencial/maturidade/TINDER (sinal de joia escondida)"
+    },
     "overview": "Visão geral",
     "status": "Status",
     "statusInBeobachtung": "Em observação",

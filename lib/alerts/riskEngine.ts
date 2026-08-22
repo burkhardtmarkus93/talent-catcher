@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import type { RiskReason } from "@/lib/types";
 
 // Minimale, aber fachlich reale Umsetzung der Alert-Engine-Logik aus dem
 // Konzeptdokument — bewusst reduziert gegenüber der vollen Spezifikation:
@@ -90,7 +91,7 @@ export async function recalculateAlertForTalent(
     }
   }
 
-  const reasons: string[] = [];
+  const reasons: RiskReason[] = [];
   let neglectScore = 0;
 
   // --- Zeitkomponente: Tage seit letztem Bericht ---
@@ -103,19 +104,19 @@ export async function recalculateAlertForTalent(
 
   if (daysSinceLastReport === null) {
     neglectScore += 20;
-    reasons.push("Noch kein Bericht vorhanden");
+    reasons.push({ code: "noReportYet" });
   } else if (daysSinceLastReport > gapThresholdRed) {
     neglectScore += 60;
-    reasons.push(`Kein Bericht seit ${daysSinceLastReport} Tagen`);
+    reasons.push({ code: "reportGap", params: { days: daysSinceLastReport } });
   } else if (daysSinceLastReport > gapThresholdYellow) {
     neglectScore += 20;
-    reasons.push(`Kein Bericht seit ${daysSinceLastReport} Tagen`);
+    reasons.push({ code: "reportGap", params: { days: daysSinceLastReport } });
   }
 
   // --- Wiedervorlage-Komponente ---
   if ((overdueReminderCount ?? 0) > 0) {
     neglectScore += 25;
-    reasons.push("Wiedervorlage überfällig");
+    reasons.push({ code: "overdueReminder" });
   }
 
   // --- Vertragskomponente ---
@@ -125,7 +126,7 @@ export async function recalculateAlertForTalent(
     );
     if (daysToContractEnd < 90 && (daysSinceLastReport === null || daysSinceLastReport > 30)) {
       neglectScore += 30;
-      reasons.push(`Vertrag läuft in ${Math.max(daysToContractEnd, 0)} Tagen aus`);
+      reasons.push({ code: "contractEnding", params: { days: Math.max(daysToContractEnd, 0) } });
     }
   }
 
@@ -148,9 +149,10 @@ export async function recalculateAlertForTalent(
   if (ratings.length >= 2) {
     const ratingSpread = Math.max(...ratings) - Math.min(...ratings);
     if (ratingSpread > disagreementThreshold) {
-      reasons.push(
-        `Uneinigkeit zwischen den letzten Scout-Berichten (Bewertungsspanne ${ratingSpread.toFixed(1)} Punkte)`
-      );
+      reasons.push({
+        code: "ratingDisagreement",
+        params: { spread: ratingSpread.toFixed(1) },
+      });
     }
   }
 
@@ -191,14 +193,14 @@ export async function recalculateAlertForTalent(
     ratings.length >= 2 && ratings[0] - ratings[ratings.length - 1] >= trendThreshold;
   if (isUpwardTrend) {
     multiplier = Math.min(multiplier + 0.2, multiplierCap);
-    reasons.push("Aufwärtstrend über die letzten Berichte erkannt (Late-Bloomer-Signal)");
+    reasons.push({ code: "upwardTrend" });
   }
 
   // Potenzial 1 = "hoch" (Skala 1–4, 1 ist bester Wert).
   const hasHighPotenzial = latestPotenzial === 1;
   if (hasHighPotenzial) {
     multiplier = Math.min(multiplier + 0.15, multiplierCap);
-    reasons.push("Hohes Potenzial laut jüngstem Bericht");
+    reasons.push({ code: "highPotential" });
   }
 
   // Reifegrad <= -1 = "eher spät" bis "Spätentwickler" (Skala -2..+2).
@@ -207,26 +209,26 @@ export async function recalculateAlertForTalent(
   const isLateBloomer = latestReifegrad !== null && latestReifegrad <= -1;
   if (isLateBloomer && avgRating !== null && avgRating >= 3.0) {
     multiplier = Math.min(multiplier + 0.1, multiplierCap);
-    reasons.push("Spätentwickler mit bereits solider Leistung (Reifegrad-Signal)");
+    reasons.push({ code: "lateBloomerSolid" });
   }
 
   const hasStrongTinderAvg = tinderAvg !== null && tinderAvg >= 3.5;
   if (hasStrongTinderAvg) {
     multiplier = Math.min(multiplier + 0.1, multiplierCap);
-    reasons.push("TINDER-Kriterien im jüngsten Bericht durchweg stark ausgeprägt");
+    reasons.push({ code: "strongTinder" });
   }
 
   const gkTestThreshold = 15; // von max. 18 Punkten (6 Tests × 0–3)
   const hasStrongGkTest = latestGkTestScore !== null && latestGkTestScore >= gkTestThreshold;
   if (hasStrongGkTest) {
     multiplier = Math.min(multiplier + 0.15, multiplierCap);
-    reasons.push(`Starker Koordinationstest (${latestGkTestScore}/18 Punkten)`);
+    reasons.push({ code: "strongGkTest", params: { score: latestGkTestScore! } });
   }
 
   const isHiddenGemByRating =
     ratings.length >= (isGoalkeeper ? 2 : 3) && ratings.every((r) => r >= 4.0);
   if (isHiddenGemByRating) {
-    reasons.push("Wiederholt stark bewertet (Hidden-Gem-Signal)");
+    reasons.push({ code: "hiddenGemByRating" });
   }
 
   // Zweiter Hidden-Gem-Pfad: (noch) keine durchweg exzellente Bewertung,
@@ -242,9 +244,7 @@ export async function recalculateAlertForTalent(
     (hasHighPotenzial || isLateBloomer) &&
     hasStrongTinderAvg;
   if (isHiddenGemBySignals) {
-    reasons.push(
-      "Solide Leistung mit starken Potenzial-/Reifegrad-/TINDER-Signalen (Hidden-Gem-Signal)"
-    );
+    reasons.push({ code: "hiddenGemBySignals" });
   }
 
   const isHiddenGem = isHiddenGemByRating || isHiddenGemBySignals;

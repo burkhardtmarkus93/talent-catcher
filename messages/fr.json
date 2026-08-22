@@ -408,7 +408,21 @@
     "completeWithoutReport": "Marquer comme terminée sans rapport",
     "reminderStatusOffen": "Ouverte",
     "reminderStatusErledigt": "Terminée",
-    "reminderStatusUeberfaellig": "En retard"
+    "reminderStatusUeberfaellig": "En retard",
+    "riskReasons": {
+      "noReportYet": "Aucun rapport pour le moment",
+      "reportGap": "Aucun rapport depuis {days} jours",
+      "overdueReminder": "Relance en retard",
+      "contractEnding": "Le contrat expire dans {days} jours",
+      "ratingDisagreement": "Désaccord entre les derniers rapports de recruteurs (écart de notation {spread} points)",
+      "upwardTrend": "Tendance à la hausse détectée sur les derniers rapports (signal de développement tardif)",
+      "highPotential": "Potentiel élevé selon le dernier rapport",
+      "lateBloomerSolid": "Développement tardif avec une performance déjà solide (signal de maturité)",
+      "strongTinder": "Critères TINDER constamment forts dans le dernier rapport",
+      "strongGkTest": "Test de coordination solide ({score}/18 points)",
+      "hiddenGemByRating": "Évalué de manière répétée à un niveau élevé (signal de pépite cachée)",
+      "hiddenGemBySignals": "Performance solide avec de forts signaux de potentiel/maturité/TINDER (signal de pépite cachée)"
+    }
   },
   "reminderForm": {
     "saved": "Relance enregistrée.",
@@ -708,6 +722,20 @@
     "cohortPercentileBucketUpperMid": "moitié supérieure",
     "cohortPercentileBucketLowerMid": "moitié inférieure",
     "cohortPercentileBucketBottom25": "quart inférieur",
+    "riskReasons": {
+      "noReportYet": "Aucun rapport pour le moment",
+      "reportGap": "Aucun rapport depuis {days} jours",
+      "overdueReminder": "Relance en retard",
+      "contractEnding": "Le contrat expire dans {days} jours",
+      "ratingDisagreement": "Désaccord entre les derniers rapports de recruteurs (écart de notation {spread} points)",
+      "upwardTrend": "Tendance à la hausse détectée sur les derniers rapports (signal de développement tardif)",
+      "highPotential": "Potentiel élevé selon le dernier rapport",
+      "lateBloomerSolid": "Développement tardif avec une performance déjà solide (signal de maturité)",
+      "strongTinder": "Critères TINDER constamment forts dans le dernier rapport",
+      "strongGkTest": "Test de coordination solide ({score}/18 points)",
+      "hiddenGemByRating": "Évalué de manière répétée à un niveau élevé (signal de pépite cachée)",
+      "hiddenGemBySignals": "Performance solide avec de forts signaux de potentiel/maturité/TINDER (signal de pépite cachée)"
+    },
     "overview": "Aperçu",
     "status": "Statut",
     "statusInBeobachtung": "En observation",
