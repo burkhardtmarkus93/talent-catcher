@@ -101,6 +101,8 @@ function mapScoutReport(row: any): ScoutReport {
     tinderResilienz: row.tinder_resilienz ?? null,
     potenzial: row.potenzial ?? null,
     reifegrad: row.reifegrad ?? null,
+    reviewedAt: row.reviewed_at ?? null,
+    reviewedByName: row.reviewer?.email ?? null,
   };
 }
 
@@ -232,7 +234,7 @@ export async function getScoutReportsForTalent(
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("scout_reports")
-    .select("*, author:users(email)")
+    .select("*, author:users!scout_reports_author_id_fkey(email), reviewer:users!scout_reports_reviewed_by_fkey(email)")
     .eq("talent_id", talentId)
     .order("created_at", { ascending: false });
 

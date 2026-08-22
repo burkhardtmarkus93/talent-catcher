@@ -810,6 +810,8 @@
     "noReports": "Aucun rapport pour le moment — le premier rapport définira l'évaluation de référence.",
     "vsOpponent": "vs. {opponent}",
     "manual": "(manuel)",
+    "reportReviewed": "Validé ({name})",
+    "reviewReport": "Marquer comme validé",
     "potenzialEntry": "Potentiel : {value}/4",
     "reifegradLabel": "Degré de maturité",
     "videoHighlights": "Temps forts vidéo",

@@ -810,6 +810,8 @@
     "noReports": "Aún no hay informes — el primer informe establecerá la valoración inicial.",
     "vsOpponent": "vs. {opponent}",
     "manual": "(manual)",
+    "reportReviewed": "Revisado ({name})",
+    "reviewReport": "Marcar como revisado",
     "potenzialEntry": "Potencial: {value}/4",
     "reifegradLabel": "Grado de madurez",
     "videoHighlights": "Vídeos destacados",
