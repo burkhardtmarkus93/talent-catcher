@@ -283,11 +283,17 @@ export default function DatenschutzPage() {
               zur Aufbewahrung verpflichtet sind. Vereine können für
               einzelne Talent-Profile ein Lösch-/Archivierungsdatum
               hinterlegen; eine automatisierte, fristauslösende Löschung
-              findet aktuell nicht statt. [PLATZHALTER: konkrete
-              Regel-Löschfristen je Datenkategorie festlegen — insbesondere
-              für Daten zu abgelehnten Kandidaturen, inaktive Talent-Profile
-              und Zahlungsdaten — und einen tatsächlichen Löschmechanismus
-              ergänzen, bevor diese Ziffer final ist.]
+              findet aktuell nicht statt.
+            </p>
+            <p className="mt-2">
+              Rechnungs- und Zahlungsdaten unterliegen den gesetzlichen
+              Aufbewahrungspflichten nach § 147 AO und § 257 HGB und werden
+              dementsprechend bis zu zehn Jahre aufbewahrt. [PLATZHALTER:
+              konkrete Regel-Löschfristen für Daten ohne gesetzliche
+              Aufbewahrungspflicht festlegen — insbesondere für Daten zu
+              abgelehnten Kandidaturen und inaktive Talent-Profile — und
+              einen tatsächlichen Löschmechanismus ergänzen, bevor diese
+              Ziffer final ist.]
             </p>
           </section>
 
