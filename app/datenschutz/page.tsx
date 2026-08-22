@@ -28,13 +28,19 @@ export default function DatenschutzPage() {
             anwaltliche/datenschutzrechtliche Prüfung. Er darf nicht als
             endgültige, rechtsverbindliche Datenschutzerklärung verwendet
             werden, bevor er geprüft und freigegeben wurde. Mit
-            „[PLATZHALTER]“ gekennzeichnete Angaben fehlen noch.
+            „[PLATZHALTER]“ gekennzeichnete Angaben fehlen noch. Vor dem
+            eigentlichen Livegang zusätzlich in die übrigen vier
+            Portalsprachen (en/es/pt/fr) übersetzen — bisher bewusst nur
+            Deutsch, siehe Datei-Kommentar oben.
           </p>
           <p className="mt-1 text-xs text-brick/80">
             DRAFT — not yet reviewed by a lawyer or data-protection
             professional. Grounded in the data actually processed by the
             product, but must still be reviewed before publication. Fields
-            marked „[PLATZHALTER]“ are still missing.
+            marked „[PLATZHALTER]“ are still missing. Before the actual
+            public launch, also translate into the other four portal
+            languages (en/es/pt/fr) — deliberately German-only for now,
+            see the file comment above.
           </p>
         </div>
 

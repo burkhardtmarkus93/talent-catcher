@@ -25,14 +25,18 @@ export default function ImpressumPage() {
             steuerliche Einordnung (Kleinunternehmerregelung im Rahmen der
             freiberuflichen Tätigkeit des Betreibers) sollte bei
             wachsenden Umsätzen regelmäßig mit dem Finanzamt/Steuerberater
-            neu abgestimmt werden.
+            neu abgestimmt werden. Vor dem eigentlichen Livegang zusätzlich
+            in die übrigen vier Portalsprachen (en/es/pt/fr) übersetzen —
+            bisher bewusst nur Deutsch, siehe Datei-Kommentar oben.
           </p>
           <p className="mt-1 text-xs text-brick/80">
             DRAFT — all mandatory details are filled in. Still needs
             review by a lawyer before publication; the tax classification
             (small-business exemption under the operator's freelance
             registration) should be re-checked with a tax advisor as
-            revenue grows.
+            revenue grows. Before the actual public launch, also translate
+            into the other four portal languages (en/es/pt/fr) —
+            deliberately German-only for now, see the file comment above.
           </p>
         </div>
 

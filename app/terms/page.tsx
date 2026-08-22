@@ -47,7 +47,9 @@ export default function TermsPage() {
             geprüft und freigegeben wurde. Die Betreiberangaben sind
             ausgefüllt; verbleibende „[PLATZHALTER]“ betreffen offene
             Geschäfts-/Steuerfragen und Klauseln, die noch anwaltlich
-            festzulegen sind.
+            festzulegen sind. Vor dem eigentlichen Livegang zusätzlich in
+            die übrigen vier Portalsprachen (en/es/pt/fr) übersetzen —
+            bisher bewusst nur Deutsch, siehe Datei-Kommentar oben.
           </p>
           <p className="mt-1 text-xs text-brick/80">
             DRAFT — not yet reviewed by a lawyer. Content is grounded in the
@@ -55,6 +57,9 @@ export default function TermsPage() {
             this must still be reviewed and approved by a lawyer before it
             may be used as the final, binding contract basis. Fields marked
             „[PLATZHALTER]“ are still missing and must be filled in first.
+            Before the actual public launch, also translate into the other
+            four portal languages (en/es/pt/fr) — deliberately German-only
+            for now, see the file comment above.
           </p>
         </div>
 
