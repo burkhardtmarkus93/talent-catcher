@@ -119,7 +119,15 @@ export interface Talent {
   euPassport: boolean;
   upcomingTransferClubText?: string | null;
   upcomingTransferNote?: string | null;
+  cohortPercentileBucket?: CohortPercentileBucket | null;
+  cohortPercentileUpdatedAt?: string | null;
 }
+
+// Grober Positions-/Jahrgangs-Vergleich, siehe Migration 20260822200000
+// und app/api/cron/recalculate-talent-cohort-percentiles — bewusst nur
+// vier grobe Quartile, kein Score/Rang, keine Auskunft über andere
+// Vereine/Talente in der Vergleichsgruppe.
+export type CohortPercentileBucket = "top25" | "upper_mid" | "lower_mid" | "bottom25";
 
 export interface Alert {
   id: string;

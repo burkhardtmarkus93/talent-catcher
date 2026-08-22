@@ -18,6 +18,7 @@ import {
   updateTalentOverview,
   updateTalentClub,
 } from "@/lib/actions/talents";
+import type { CohortPercentileBucket } from "@/lib/types";
 import { getGkCoordinationTestsForTalent } from "@/lib/queries/gkTests";
 import { getTalentActivityStatus } from "@/lib/queries/talentActivity";
 import { InactivityBanner } from "@/components/talents/InactivityBanner";
@@ -39,6 +40,22 @@ import { requestVideoUpload, cancelVideoRequest } from "@/lib/actions/videos";
 function age(birthDate: string): number {
   const diff = Date.now() - new Date(birthDate).getTime();
   return Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+}
+
+function cohortPercentileBucketLabel(
+  bucket: CohortPercentileBucket,
+  t: Awaited<ReturnType<typeof getTranslations<"talentDetailPage">>>
+): string {
+  switch (bucket) {
+    case "top25":
+      return t("cohortPercentileBucketTop25");
+    case "upper_mid":
+      return t("cohortPercentileBucketUpperMid");
+    case "lower_mid":
+      return t("cohortPercentileBucketLowerMid");
+    case "bottom25":
+      return t("cohortPercentileBucketBottom25");
+  }
 }
 
 const TINDER_KEYS = [
@@ -196,6 +213,19 @@ export default async function TalentDetailPage({
           {!talent.currentAlert && (
             <p className="mt-4 text-sm text-muted">
               {t("noRiskAssessment")}
+            </p>
+          )}
+
+          {talent.cohortPercentileBucket && (
+            <p className="mt-3 text-xs text-muted">
+              {t("cohortPercentileLabel", {
+                bucket: cohortPercentileBucketLabel(talent.cohortPercentileBucket, t),
+                position: talent.primaryPosition,
+                year: new Date(talent.birthDate).getFullYear(),
+                date: talent.cohortPercentileUpdatedAt
+                  ? new Date(talent.cohortPercentileUpdatedAt).toLocaleDateString("de-DE")
+                  : "",
+              })}
             </p>
           )}
         </div>

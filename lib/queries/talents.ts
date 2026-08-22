@@ -73,6 +73,8 @@ export function mapTalent(row: any): Talent {
     euPassport: Boolean(row.eu_passport),
     upcomingTransferClubText: row.upcoming_transfer_club_text ?? null,
     upcomingTransferNote: row.upcoming_transfer_note ?? null,
+    cohortPercentileBucket: row.cohort_percentile_bucket ?? null,
+    cohortPercentileUpdatedAt: row.cohort_percentile_updated_at ?? null,
   };
 }
 

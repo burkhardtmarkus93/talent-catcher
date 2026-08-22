@@ -7,6 +7,10 @@
     {
       "path": "/api/cron/archive-scheduled-talents",
       "schedule": "30 4 * * *"
+    },
+    {
+      "path": "/api/cron/recalculate-talent-cohort-percentiles",
+      "schedule": "0 5 1 * *"
     }
   ]
 }
