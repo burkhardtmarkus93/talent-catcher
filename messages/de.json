@@ -591,6 +591,11 @@
     "uploading": "Wird hochgeladen…",
     "hint": "MP4, bis zu 150 MB."
   },
+  "videoTags": {
+    "labelPlaceholder": "Szene benennen, z. B. „Tor“",
+    "markAtCurrentTime": "Bei aktueller Position markieren",
+    "deleteTag": "Zeitmarke löschen"
+  },
   "candidateVitaUploadForm": {
     "onlyPdfDocx": "Nur PDF- oder DOCX-Dateien werden unterstützt.",
     "fileTooLarge": "Die Datei ist größer als 20 MB.",

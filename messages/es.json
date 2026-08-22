@@ -591,6 +591,11 @@
     "uploading": "Subiendo…",
     "hint": "MP4, hasta 150 MB."
   },
+  "videoTags": {
+    "labelPlaceholder": "Nombra la escena, p. ej. «Gol»",
+    "markAtCurrentTime": "Marcar en la posición actual",
+    "deleteTag": "Eliminar marca"
+  },
   "candidateVitaUploadForm": {
     "onlyPdfDocx": "Solo se admiten archivos PDF o DOCX.",
     "fileTooLarge": "El archivo supera los 20 MB.",

@@ -591,6 +591,11 @@
     "uploading": "Mise en ligne en cours…",
     "hint": "MP4, jusqu'à 150 Mo."
   },
+  "videoTags": {
+    "labelPlaceholder": "Nommez la scène, p. ex. « But »",
+    "markAtCurrentTime": "Marquer à la position actuelle",
+    "deleteTag": "Supprimer le repère"
+  },
   "candidateVitaUploadForm": {
     "onlyPdfDocx": "Seuls les fichiers PDF ou DOCX sont pris en charge.",
     "fileTooLarge": "Le fichier dépasse 20 Mo.",
