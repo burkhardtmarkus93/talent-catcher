@@ -27,6 +27,7 @@ import { TalentTags } from "@/components/talents/TalentTags";
 import { getVideosForTalent } from "@/lib/queries/videos";
 import { hasGrantedVideoConsent } from "@/lib/queries/consent";
 import { VideoUploadForm } from "@/components/videos/VideoUploadForm";
+import { VideoWithTags } from "@/components/videos/VideoWithTags";
 import { getSiblingsForTalent } from "@/lib/queries/siblings";
 import { addSibling, deleteSibling } from "@/lib/actions/siblings";
 import { getInjuriesForTalent } from "@/lib/queries/injuries";
@@ -853,22 +854,17 @@ export default async function TalentDetailPage({
             ) : (
               <div className="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {videos.map((v) => (
-                  <div key={v.id} className="overflow-hidden rounded-lg border border-line bg-paper">
-                    {v.playbackUrl ? (
-                      <video controls className="aspect-video w-full bg-black" preload="metadata">
-                        <source src={v.playbackUrl} type="video/mp4" />
-                      </video>
-                    ) : (
-                      <div className="flex aspect-video w-full items-center justify-center bg-ink/5 text-xs text-muted">
-                        {t("videoUnavailable")}
-                      </div>
-                    )}
-                    <div className="px-3 py-2 text-xs text-muted">
-                      {formatFileSize(v.fileSizeBytes)}
-                      {formatDuration(v.durationSeconds)}
-                      {v.uploaderEmail && <> · {v.uploaderEmail}</>}
-                    </div>
-                  </div>
+                  <VideoWithTags
+                    key={v.id}
+                    video={v}
+                    talentId={talent.id}
+                    canManageTags={Boolean(appUser?.clubId)}
+                    currentUserEmail={appUser?.email ?? null}
+                    videoUnavailableLabel={t("videoUnavailable")}
+                    metaLine={`${formatFileSize(v.fileSizeBytes)}${formatDuration(v.durationSeconds)}${
+                      v.uploaderEmail ? ` · ${v.uploaderEmail}` : ""
+                    }`}
+                  />
                 ))}
               </div>
             )}

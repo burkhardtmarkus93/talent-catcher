@@ -77,6 +77,11 @@ on conflict (id) do update set
   has_youth_access = excluded.has_youth_access,
   is_active = excluded.is_active;
 
+-- Zusätzliche Fixture für Video-Tagging (Migration 20260823110000):
+-- eigenes Video, unabhängig von den Video-Anfrage-Fixtures in Test 5/9/11.
+insert into public.videos (id, talent_id, uploaded_by, storage_key, file_size_bytes) values
+  ('f0000000-0000-0000-0000-000000000002', 'c0000000-0000-0000-0000-000000000001', 'b0000000-0000-0000-0000-000000000003', 'a0000000-0000-0000-0000-000000000001/c0000000-0000-0000-0000-000000000001/rls-test-tags.mp4', 1000);
+
 -- set_candidate_derived_fields() erzwingt bei INSERT status/guardian_*
 -- unabhängig von den übergebenen Werten (siehe Migrationskommentar
 -- 20260821120000) — deshalb hier bewusst nur die Grunddaten einfügen
@@ -465,10 +470,90 @@ begin
 end $$;
 
 -- ============================================================
+-- Test 12: Video-Tagging (Migration 20260823110000) — Vereins-Isolation
+-- (Einfügen/Sehen) und "nur eigene Markierung löschbar".
+-- ============================================================
+
+begin;
+set local role authenticated;
+set local "request.jwt.claims" = '{"sub":"b0000000-0000-0000-0000-000000000004","role":"authenticated"}';
+do $$
+begin
+  insert into public.video_tags (video_id, created_by, timestamp_seconds, label)
+  values ('f0000000-0000-0000-0000-000000000002', 'b0000000-0000-0000-0000-000000000004', 30, 'sollte abgelehnt werden');
+  raise exception 'FAIL Test 12a: Scout aus fremdem Verein konnte Zeitmarke einfuegen';
+exception
+  when insufficient_privilege then
+    raise notice 'OK Test 12a: Zeitmarke aus fremdem Verein korrekt abgelehnt';
+end $$;
+rollback;
+
+begin;
+set local role authenticated;
+set local "request.jwt.claims" = '{"sub":"b0000000-0000-0000-0000-000000000003","role":"authenticated"}';
+insert into public.video_tags (id, video_id, created_by, timestamp_seconds, label)
+values ('f0000000-0000-0000-0000-000000000004', 'f0000000-0000-0000-0000-000000000002', 'b0000000-0000-0000-0000-000000000003', 42, 'Tor');
+commit;
+
+begin;
+set local role authenticated;
+set local "request.jwt.claims" = '{"sub":"b0000000-0000-0000-0000-000000000004","role":"authenticated"}';
+do $$
+declare
+  visible_count int;
+begin
+  select count(*) into visible_count
+  from public.video_tags
+  where id = 'f0000000-0000-0000-0000-000000000004';
+
+  if visible_count <> 0 then
+    raise exception 'FAIL Test 12b: Scout aus fremdem Verein konnte Zeitmarke sehen (% Zeile(n))', visible_count;
+  end if;
+  raise notice 'OK Test 12b: Zeitmarke fuer fremden Verein korrekt unsichtbar';
+end $$;
+rollback;
+
+begin;
+set local role authenticated;
+set local "request.jwt.claims" = '{"sub":"b0000000-0000-0000-0000-000000000001","role":"authenticated"}';
+do $$
+declare
+  affected_rows int;
+begin
+  delete from public.video_tags where id = 'f0000000-0000-0000-0000-000000000004';
+  get diagnostics affected_rows = row_count;
+
+  if affected_rows <> 0 then
+    raise exception 'FAIL Test 12c: Admin (nicht Ersteller) konnte fremde Zeitmarke loeschen (% Zeile(n))', affected_rows;
+  end if;
+  raise notice 'OK Test 12c: Zeitmarke ist korrekt nur fuer die/den Ersteller/in loeschbar';
+end $$;
+rollback;
+
+begin;
+set local role authenticated;
+set local "request.jwt.claims" = '{"sub":"b0000000-0000-0000-0000-000000000003","role":"authenticated"}';
+do $$
+declare
+  affected_rows int;
+begin
+  delete from public.video_tags where id = 'f0000000-0000-0000-0000-000000000004';
+  get diagnostics affected_rows = row_count;
+
+  if affected_rows <> 1 then
+    raise exception 'FAIL Test 12d: Ersteller/in konnte eigene Zeitmarke NICHT loeschen (% Zeile(n))', affected_rows;
+  end if;
+  raise notice 'OK Test 12d: Ersteller/in kann eigene Zeitmarke loeschen';
+end $$;
+commit;
+
+-- ============================================================
 -- Aufräumen
 -- ============================================================
 
 begin;
+delete from public.video_tags where video_id = 'f0000000-0000-0000-0000-000000000002';
+delete from public.videos where id = 'f0000000-0000-0000-0000-000000000002';
 delete from public.documents where talent_id in ('c0000000-0000-0000-0000-000000000001', 'c0000000-0000-0000-0000-000000000002');
 delete from public.videos where talent_id in ('c0000000-0000-0000-0000-000000000001', 'c0000000-0000-0000-0000-000000000002');
 delete from public.video_requests where talent_id in ('c0000000-0000-0000-0000-000000000001', 'c0000000-0000-0000-0000-000000000002');
