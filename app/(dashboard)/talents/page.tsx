@@ -7,6 +7,22 @@ import { TalentTable } from "@/components/talents/TalentTable";
 import { getTalents } from "@/lib/queries/talents";
 import { getCurrentAppUser } from "@/lib/queries/session";
 
+// Nur die Filter-relevanten Felder werden an den CSV-Export
+// weitergereicht (dieselben Keys/Defaults wie `filters` unten) — der
+// Export soll exakt dieselbe, bereits gefilterte Liste widerspiegeln,
+// die gerade sichtbar ist, statt einen eigenen ungefilterten Datensatz.
+function buildExportQuery(filters: Record<string, string | boolean>): string {
+  const params = new URLSearchParams();
+  for (const [key, value] of Object.entries(filters)) {
+    if (typeof value === "boolean") {
+      if (value) params.set(key, "1");
+    } else if (value && value !== "alle") {
+      params.set(key, value);
+    }
+  }
+  return params.toString();
+}
+
 export default async function TalentsPage({
   searchParams,
 }: {
@@ -57,9 +73,14 @@ export default async function TalentsPage({
           </svg>
         }
         action={
-          <Link href="/talents/new">
-            <Button>{t("newTalent")}</Button>
-          </Link>
+          <div className="flex items-center gap-2">
+            <a href={`/api/talents/export?${buildExportQuery(filters)}`}>
+              <Button variant="secondary">{t("exportCsv")}</Button>
+            </a>
+            <Link href="/talents/new">
+              <Button>{t("newTalent")}</Button>
+            </Link>
+          </div>
         }
       />
       <FilterBar
