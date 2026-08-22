@@ -634,11 +634,11 @@
       },
       "talent-detail": {
         "title": "Na página de detalhes do talento",
-        "body": "Atualizar clube e equipe, vincular o perfil do Transfermarkt/FuPa, enviar vídeos em destaque, documentar lesões, registrar irmãos talentosos — e muito mais. Para que tudo isso continue organizado com tantos detalhes, as seções abaixo da visão geral são expansíveis: toque para abrir e fechar."
+        "body": "Atualizar clube e equipe, vincular o perfil do Transfermarkt/FuPa, enviar vídeos em destaque, documentar lesões, registrar irmãos talentosos, consultar a comparação aproximada com outros talentos da mesma posição e do mesmo ano de nascimento — e muito mais. Para que tudo isso continue organizado com tantos detalhes, as seções abaixo da visão geral são expansíveis: toque para abrir e fechar."
       },
       "nav-candidates": {
         "title": "Candidatos",
-        "body": "Jogadores podem se candidatar diretamente ao seu clube através de um formulário público. Aqui você analisa as candidaturas recebidas e as transforma em talentos regulares ao aceitá-las — ou as recusa. No caso de menores de idade, a candidatura só aparece depois que o(a) responsável legal confirmar o consentimento."
+        "body": "Jogadores podem se candidatar diretamente ao seu clube através de um formulário público. Aqui você analisa as candidaturas recebidas, solicita antecipadamente um vídeo ou o currículo esportivo se necessário, e as transforma em talentos regulares ao aceitá-las — ou as recusa. No caso de menores de idade, a candidatura só aparece depois que o(a) responsável legal confirmar o consentimento."
       },
       "nav-alerts": {
         "title": "Alertas e retornos",
