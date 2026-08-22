@@ -183,6 +183,7 @@ export interface PublicClubOption {
 
 export type TalentCandidateStatus =
   | "pending_guardian_consent"
+  | "pending_payment"
   | "pending_review"
   | "accepted"
   | "declined";
@@ -203,6 +204,22 @@ export interface TalentCandidate {
   isMinor: boolean;
   guardianEmail: string | null;
   guardianConfirmedAt: string | null;
+  status: TalentCandidateStatus;
+  createdAt: string;
+}
+
+// Eng geschnittene Sicht für Eltern-/Spieler-Accounts auf die eigene(n)
+// noch offene(n) Bewerbung(en) — analog zu GuardianTalent, aber vor der
+// Annahme durch den Verein (siehe Migration 20260822190000).
+export interface GuardianCandidate {
+  id: string;
+  clubId: string;
+  clubName: string;
+  firstName: string;
+  lastName: string;
+  birthDate: string;
+  primaryPosition: string;
+  isMinor: boolean;
   status: TalentCandidateStatus;
   createdAt: string;
 }

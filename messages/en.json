@@ -83,7 +83,12 @@
     "minorBadge": "Minor",
     "candidateMeta": "{position} · {age} years",
     "decline": "Decline",
-    "accept": "Accept as talent"
+    "accept": "Accept as talent",
+    "vitaAvailable": "View CV",
+    "noVita": "No CV uploaded",
+    "videoAvailable": "View video",
+    "requestVideo": "Request video",
+    "videoRequestOpenWithdraw": "Withdraw request"
   },
   "helpPage": {
     "title": "Help & Contact",
@@ -501,7 +506,9 @@
     "subtitleSelf": "Manage club/team and videos.",
     "emptySelf": "No talent profile is linked to your account yet.",
     "positionAge": "{position} · {age} years",
-    "open": "Open →"
+    "open": "Open →",
+    "candidaturesHeading": "Open applications",
+    "candidaturePositionClub": "{position} · {club}"
   },
   "parentTalentPage": {
     "positionAge": "{position} · {age} years",
@@ -519,6 +526,23 @@
     "noConsent": "Video upload requires consent documented with the club first — please reach out to the scout who supports {firstName} about this.",
     "videoRequestNote": "Note from the club: {note}",
     "noRequest": "There is currently no video request. To keep scouts from being flooded with unsolicited videos, you can upload only once the club requests one."
+  },
+  "parentCandidatePage": {
+    "positionAgeClub": "{position} · {age} years · Application at {club}",
+    "fileSizeMb": "{size} MB",
+    "statusPendingConsent": "Awaiting consent",
+    "statusPendingPayment": "Payment pending",
+    "statusPendingReview": "Under review",
+    "statusAccepted": "Accepted",
+    "statusDeclined": "Declined",
+    "videoHeading": "Video",
+    "videoRequested": "The club has requested a video.",
+    "videoRequestedWithNote": "The club has requested a video: {note}",
+    "noVideoRequest": "There is currently no video request. To keep scouts from being flooded with unsolicited videos, you can upload only once the club requests one.",
+    "watch": "Watch",
+    "vitaHeading": "Athletic CV",
+    "vitaHint": "You can upload an athletic CV (PDF or DOCX) at any time while your application is under review.",
+    "open": "Open"
   },
   "profilePage": {
     "title": "My profile",
@@ -552,6 +576,14 @@
     "saveFailed": "The video could not be saved.",
     "uploading": "Uploading…",
     "hint": "MP4, up to 150 MB."
+  },
+  "candidateVitaUploadForm": {
+    "onlyPdfDocx": "Only PDF or DOCX files are supported.",
+    "fileTooLarge": "The file is larger than 20 MB.",
+    "uploadFailed": "Upload failed: {message}",
+    "saveFailed": "The file could not be saved.",
+    "uploading": "Uploading…",
+    "hint": "PDF or DOCX, up to 20 MB."
   },
   "productTour": {
     "dialogLabel": "Getting-started tour",
@@ -1021,6 +1053,11 @@
     "acceptFailed": "The application could not be accepted.",
     "declineFailed": "The application could not be declined.",
     "rateLimited": "Too many attempts in a short time. Please try again in a few minutes."
+  },
+  "candidateDocumentActions": {
+    "notAuthenticated": "Not signed in.",
+    "candidateNotFound": "Application not found.",
+    "saveFailed": "The file could not be saved."
   },
   "clubReferralActions": {
     "requiredFields": "Please fill in all required fields.",

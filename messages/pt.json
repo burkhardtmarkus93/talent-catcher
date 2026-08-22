@@ -83,7 +83,12 @@
     "minorBadge": "Menor de idade",
     "candidateMeta": "{position} · {age} anos",
     "decline": "Recusar",
-    "accept": "Aceitar como talento"
+    "accept": "Aceitar como talento",
+    "vitaAvailable": "Ver currículo",
+    "noVita": "Nenhum currículo enviado",
+    "videoAvailable": "Ver vídeo",
+    "requestVideo": "Solicitar vídeo",
+    "videoRequestOpenWithdraw": "Retirar solicitação"
   },
   "helpPage": {
     "title": "Ajuda e contato",
@@ -501,7 +506,9 @@
     "subtitleSelf": "Atualize clube/equipe e gerencie vídeos.",
     "emptySelf": "Ainda não há nenhum perfil de talento vinculado à sua conta.",
     "positionAge": "{position} · {age} anos",
-    "open": "Abrir →"
+    "open": "Abrir →",
+    "candidaturesHeading": "Candidaturas em aberto",
+    "candidaturePositionClub": "{position} · {club}"
   },
   "parentTalentPage": {
     "positionAge": "{position} · {age} anos",
@@ -519,6 +526,23 @@
     "noConsent": "Para enviar vídeos, é necessário primeiro um consentimento documentado junto ao clube — fale rapidamente com o olheiro responsável por {firstName}.",
   "videoRequestNote": "Observação do clube: {note}",
   "noRequest": "No momento não há pedido de vídeo. Para que os olheiros não sejam inundados com vídeos não solicitados, você só poderá enviar quando o clube fizer um pedido."
+  },
+  "parentCandidatePage": {
+    "positionAgeClub": "{position} · {age} anos · Candidatura em {club}",
+    "fileSizeMb": "{size} MB",
+    "statusPendingConsent": "Aguardando consentimento",
+    "statusPendingPayment": "Pagamento pendente",
+    "statusPendingReview": "Em análise",
+    "statusAccepted": "Aceita",
+    "statusDeclined": "Recusada",
+    "videoHeading": "Vídeo",
+    "videoRequested": "O clube solicitou um vídeo.",
+    "videoRequestedWithNote": "O clube solicitou um vídeo: {note}",
+    "noVideoRequest": "No momento não há pedido de vídeo. Para que os olheiros não sejam inundados com vídeos não solicitados, você só poderá enviar quando o clube fizer um pedido.",
+    "watch": "Assistir",
+    "vitaHeading": "Currículo esportivo",
+    "vitaHint": "Você pode enviar um currículo esportivo (PDF ou DOCX) a qualquer momento enquanto sua candidatura está em análise.",
+    "open": "Abrir"
   },
   "profilePage": {
     "title": "Meu perfil",
@@ -552,6 +576,14 @@
     "saveFailed": "Não foi possível salvar o vídeo.",
     "uploading": "Enviando…",
     "hint": "MP4, até 150 MB."
+  },
+  "candidateVitaUploadForm": {
+    "onlyPdfDocx": "Somente arquivos PDF ou DOCX são suportados.",
+    "fileTooLarge": "O arquivo é maior que 20 MB.",
+    "uploadFailed": "Falha no envio: {message}",
+    "saveFailed": "Não foi possível salvar o arquivo.",
+    "uploading": "Enviando…",
+    "hint": "PDF ou DOCX, até 20 MB."
   },
   "productTour": {
     "dialogLabel": "Tour de introdução",
@@ -1021,6 +1053,11 @@
     "acceptFailed": "Não foi possível aceitar a candidatura.",
     "declineFailed": "Não foi possível recusar a candidatura.",
     "rateLimited": "Muitas tentativas em pouco tempo. Tente novamente em alguns minutos."
+  },
+  "candidateDocumentActions": {
+    "notAuthenticated": "Não está autenticado.",
+    "candidateNotFound": "Candidatura não encontrada.",
+    "saveFailed": "Não foi possível salvar o arquivo."
   },
   "clubReferralActions": {
     "requiredFields": "Por favor, preencha todos os campos obrigatórios.",
