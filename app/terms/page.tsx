@@ -264,20 +264,193 @@ export default function TermsPage() {
             <h2 className="mb-1.5 font-display text-base font-medium text-ink">
               § 9 Haftung
             </h2>
+
+            <p className="mb-2">
+              <span className="font-medium">(1) Unbeschränkte Haftung.</span>{" "}
+              Der Anbieter haftet unbeschränkt für Schäden, die durch
+              vorsätzliches oder grob fahrlässiges Verhalten des Anbieters,
+              seiner gesetzlichen Vertreter, Mitarbeitenden oder
+              Erfüllungsgehilfen verursacht wurden. Der Anbieter haftet
+              außerdem unbeschränkt für Schäden aus der Verletzung des
+              Lebens, des Körpers oder der Gesundheit, die auf einer
+              vorsätzlichen oder fahrlässigen Pflichtverletzung des
+              Anbieters, seiner gesetzlichen Vertreter, Mitarbeitenden oder
+              Erfüllungsgehilfen beruhen.
+            </p>
+
+            <p className="mb-2">
+              <span className="font-medium">
+                (2) Haftung bei leicht fahrlässiger Verletzung wesentlicher
+                Vertragspflichten.
+              </span>{" "}
+              Bei leicht fahrlässiger Verletzung wesentlicher
+              Vertragspflichten haftet der Anbieter nur auf Ersatz des
+              vertragstypischen, bei Vertragsschluss vorhersehbaren
+              Schadens. Wesentliche Vertragspflichten sind Pflichten, deren
+              Erfüllung die ordnungsgemäße Durchführung des Vertrags
+              überhaupt erst ermöglicht und auf deren Einhaltung der Nutzer
+              regelmäßig vertrauen darf. Hierzu zählt insbesondere die
+              Bereitstellung des vertraglich vereinbarten Zugangs zu den
+              jeweils gebuchten Funktionen der Plattform.
+            </p>
+
+            <p className="mb-2">
+              <span className="font-medium">
+                (3) Ausschluss der weitergehenden Haftung bei leichter
+                Fahrlässigkeit.
+              </span>{" "}
+              Im Übrigen ist eine Haftung des Anbieters für leicht
+              fahrlässig verursachte Schäden ausgeschlossen.
+            </p>
+
+            <p className="mb-1">
+              <span className="font-medium">
+                (4) Kein Anspruch auf sportlichen, wirtschaftlichen oder
+                vermittelnden Erfolg.
+              </span>{" "}
+              Talent Catcher stellt eine digitale Plattform zur Verwaltung,
+              Übermittlung und Einsichtnahme von Talentprofilen, Videos,
+              Leistungsinformationen und Scoutberichten bereit. Der
+              Anbieter schuldet keinen bestimmten sportlichen, persönlichen
+              oder wirtschaftlichen Erfolg. Insbesondere besteht kein
+              Anspruch auf:
+            </p>
+            <ul className="mb-2 ml-5 list-disc">
+              <li>
+                eine Sichtung, Bewertung oder Kontaktaufnahme durch einen
+                Scout;
+              </li>
+              <li>
+                die Einladung zu einem Probetraining, Auswahlverfahren oder
+                sonstigen Termin;
+              </li>
+              <li>
+                die Aufnahme in ein Team, einen Verein, ein
+                Nachwuchsleistungszentrum oder eine sonstige Organisation;
+              </li>
+              <li>
+                den Abschluss eines Spielervertrags, Ausbildungs-, Förder-
+                oder Sponsoringvertrags;
+              </li>
+              <li>
+                eine Vermittlung, Förderung, Nominierung, Empfehlung oder
+                sonstige Karrierechance.
+              </li>
+            </ul>
+            <p className="mb-2">
+              Talent Catcher ist — sofern nicht im Einzelfall ausdrücklich
+              und in Textform etwas anderes vereinbart wurde — weder
+              Sportagentur noch Arbeitsvermittler und übernimmt keine
+              Verpflichtung zur Vermittlung von Talenten an Vereine,
+              Scouts, Agenturen oder sonstige Dritte.
+            </p>
+
+            <p className="mb-2">
+              <span className="font-medium">
+                (5) Inhalte von Nutzern und Scouts.
+              </span>{" "}
+              Für die Richtigkeit, Vollständigkeit, Aktualität, Qualität,
+              rechtliche Zulässigkeit oder sportliche Aussagekraft von
+              durch Eltern, Sorgeberechtigte, Scouts oder sonstige
+              berechtigte Nutzer eingestellten Profilangaben, Videos,
+              Leistungsdaten, Nachrichten, Bewertungen, Einschätzungen,
+              Empfehlungen oder Scoutberichten übernimmt der Anbieter keine
+              Gewähr. Scoutberichte und Einschätzungen stellen
+              ausschließlich die persönliche fachliche Bewertung des
+              jeweils zuständigen Scouts zum Zeitpunkt ihrer Erstellung
+              dar. Sie sind weder eine Garantie für die sportliche
+              Entwicklung eines Talents noch eine verbindliche Prognose,
+              Zusage oder Vermittlungsempfehlung. Gesetzliche Prüf-,
+              Sperr-, Lösch- und Entfernungspflichten des Anbieters,
+              insbesondere nach Kenntniserlangung von rechtswidrigen
+              Inhalten, bleiben unberührt.
+            </p>
+
+            <p className="mb-2">
+              <span className="font-medium">
+                (6) Eingeschränkter Zugriff auf vertrauliche Inhalte.
+              </span>{" "}
+              Videos, Scoutberichte und sonstige als vertraulich
+              gekennzeichnete Inhalte sind nicht öffentlich abrufbar. Sie
+              werden ausschließlich denjenigen Scouts und sonstigen
+              berechtigten Nutzern zugänglich gemacht, denen der jeweilige
+              Zugriff im Rahmen der Plattform ausdrücklich zugeordnet oder
+              erteilt wurde. Der Anbieter trifft angemessene technische und
+              organisatorische Maßnahmen, um unbefugte Zugriffe zu
+              verhindern. Eine absolute Sicherheit der Datenübertragung,
+              Datenspeicherung oder Zugriffskontrolle kann jedoch nicht
+              gewährleistet werden. Soweit gesetzlich zulässig, haftet der
+              Anbieter nicht für Schäden, die durch einen unbefugten
+              Zugriff Dritter entstehen, sofern dieser nicht auf einer
+              vorsätzlichen oder grob fahrlässigen Pflichtverletzung des
+              Anbieters beruht; Absatz 2 bleibt unberührt.
+            </p>
+
+            <p className="mb-2">
+              <span className="font-medium">
+                (7) Verantwortung der Eltern und Sorgeberechtigten.
+              </span>{" "}
+              Bei Profilen minderjähriger Talente handelt ausschließlich
+              der anmeldende Elternteil bzw. die anmeldende
+              sorgeberechtigte Person als Vertragspartner und
+              Verantwortlicher für die Registrierung sowie die
+              eingestellten Inhalte. Der anmeldende Elternteil bzw. die
+              anmeldende sorgeberechtigte Person sichert zu, zur Anmeldung
+              und zur Übermittlung der Daten, Bildnisse, Videos und
+              sonstigen Inhalte des minderjährigen Talents berechtigt zu
+              sein. Dies gilt insbesondere für die erforderliche
+              Einwilligung aller Sorgeberechtigten, soweit diese nach den
+              Umständen erforderlich ist. Der Anbieter haftet nicht für
+              Nachteile oder Ansprüche, die daraus entstehen, dass eine für
+              die Anmeldung, Verarbeitung oder Bereitstellung von Daten und
+              Inhalten erforderliche Einwilligung oder Berechtigung nicht,
+              nicht wirksam oder nicht ausreichend vorlag, es sei denn, der
+              Anbieter hat den Umstand vorsätzlich oder grob fahrlässig
+              verursacht.
+            </p>
+
+            <p className="mb-2">
+              <span className="font-medium">
+                (8) Verfügbarkeit der Plattform und Dienste Dritter.
+              </span>{" "}
+              Der Anbieter bemüht sich um eine möglichst
+              unterbrechungsfreie Verfügbarkeit von Talent Catcher. Eine
+              jederzeitige, fehlerfreie und unterbrechungsfreie
+              Verfügbarkeit der Plattform wird jedoch nicht geschuldet,
+              soweit dies nicht ausdrücklich individuell vereinbart wurde.
+              Der Anbieter haftet nicht für Beeinträchtigungen, Ausfälle,
+              Verzögerungen, Datenübertragungsfehler oder Datenverluste,
+              die auf Umständen beruhen, die der Anbieter nicht zu
+              vertreten hat. Dies betrifft insbesondere Störungen oder
+              Ausfälle von Telekommunikationsnetzen, Internetverbindungen,
+              Hosting-, Cloud-, Video-, E-Mail-, Zahlungs- oder sonstigen
+              Drittanbieterdiensten, Endgeräten oder Software der Nutzer,
+              Cyberangriffe, unbefugte Zugriffe Dritter, höhere Gewalt
+              sowie sonstige Ereignisse außerhalb des Einflussbereichs des
+              Anbieters. Die Haftung nach den Absätzen 1 und 2 bleibt
+              hiervon unberührt.
+            </p>
+
+            <p className="mb-2">
+              <span className="font-medium">
+                (9) Gesetzlich zwingende Ansprüche.
+              </span>{" "}
+              Die Haftung nach dem Produkthaftungsgesetz, für ausdrücklich
+              übernommene Garantien sowie aufgrund sonstiger zwingender
+              gesetzlicher Vorschriften bleibt unberührt.
+            </p>
+
             <p>
-              Wir haften unbeschränkt bei Vorsatz und grober Fahrlässigkeit
-              sowie nach Maßgabe des Produkthaftungsgesetzes und bei
-              Verletzung von Leben, Körper oder Gesundheit. Bei leicht
-              fahrlässiger Verletzung wesentlicher Vertragspflichten
-              (Kardinalpflichten), deren Erfüllung die ordnungsgemäße
-              Durchführung des Vertrags erst ermöglicht und auf deren
-              Einhaltung die Nutzer regelmäßig vertrauen dürfen, ist die
-              Haftung auf den bei Vertragsschluss vorhersehbaren,
-              vertragstypischen Schaden begrenzt. Im Übrigen ist die
-              Haftung ausgeschlossen. [PLATZHALTER: Haftungsklausel final
-              anwaltlich formulieren, insbesondere im Hinblick auf die
-              Verarbeitung von Daten Minderjähriger und mögliche
-              Ausfallzeiten der Anwendung.]
+              <span className="font-medium">
+                (10) Einbeziehung von Mitarbeitenden und
+                Erfüllungsgehilfen.
+              </span>{" "}
+              Soweit die Haftung des Anbieters nach diesen Bestimmungen
+              ausgeschlossen oder beschränkt ist, gilt dies auch zugunsten
+              seiner gesetzlichen Vertreter, Mitarbeitenden, freien
+              Mitarbeitenden, Scouts, Erfüllungsgehilfen und sonstigen
+              Personen, deren sich der Anbieter zur Erfüllung seiner
+              vertraglichen Pflichten bedient.
             </p>
           </section>
 
