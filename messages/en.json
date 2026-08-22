@@ -634,11 +634,11 @@
       },
       "talent-detail": {
         "title": "On the talent detail page",
-        "body": "Update club and team, link a Transfermarkt/FuPa profile, upload video highlights, document injuries, note talented siblings — and more. To keep things clear with so much detail, the sections below the overview are collapsible: tap to expand or collapse."
+        "body": "Update club and team, link a Transfermarkt/FuPa profile, upload video highlights, document injuries, note talented siblings, view the coarse comparison with other talents of the same position and birth year — and more. To keep things clear with so much detail, the sections below the overview are collapsible: tap to expand or collapse."
       },
       "nav-candidates": {
         "title": "Candidates",
-        "body": "Players can apply directly to your club via a public form. Here you review incoming applications and add them as a regular talent by accepting them — or decline them. For minors, an application only appears after the parent or guardian has given consent."
+        "body": "Players can apply directly to your club via a public form. Here you review incoming applications, request a video or sporting CV upfront if needed, and add them as a regular talent by accepting them — or decline them. For minors, an application only appears after the parent or guardian has given consent."
       },
       "nav-alerts": {
         "title": "Alerts & Follow-ups",

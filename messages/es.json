@@ -634,11 +634,11 @@
       },
       "talent-detail": {
         "title": "En la página de detalle del talento",
-        "body": "Actualiza el club y el equipo, vincula el perfil de Transfermarkt/FuPa, sube vídeos destacados, documenta lesiones, registra hermanos/as con talento — y mucho más. Para que todo esto se mantenga claro pese a tantos detalles, las secciones debajo del resumen son desplegables: toca para expandir o contraer."
+        "body": "Actualiza el club y el equipo, vincula el perfil de Transfermarkt/FuPa, sube vídeos destacados, documenta lesiones, registra hermanos/as con talento, consulta la comparación aproximada con otros talentos de la misma posición y del mismo año de nacimiento — y mucho más. Para que todo esto se mantenga claro pese a tantos detalles, las secciones debajo del resumen son desplegables: toca para expandir o contraer."
       },
       "nav-candidates": {
         "title": "Candidatos",
-        "body": "Los jugadores pueden postularse directamente a tu club a través de un formulario público. Aquí revisas las solicitudes recibidas y las das de alta como talento regular mediante Aceptar, o las rechazas. En el caso de menores de edad, una solicitud solo aparece después de que la madre, el padre o el tutor legal haya dado su consentimiento."
+        "body": "Los jugadores pueden postularse directamente a tu club a través de un formulario público. Aquí revisas las solicitudes recibidas, solicitas de antemano un vídeo o el currículum deportivo si es necesario, y las das de alta como talento regular mediante Aceptar, o las rechazas. En el caso de menores de edad, una solicitud solo aparece después de que la madre, el padre o el tutor legal haya dado su consentimiento."
       },
       "nav-alerts": {
         "title": "Alertas y seguimientos",
