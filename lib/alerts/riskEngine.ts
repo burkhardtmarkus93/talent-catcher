@@ -135,6 +135,25 @@ export async function recalculateAlertForTalent(
   const ratings = (reports ?? []).map((r) => Number(r.overall_rating)).filter((n) => !Number.isNaN(n));
   const avgRating = ratings.length > 0 ? ratings.reduce((a, b) => a + b, 0) / ratings.length : null;
 
+  // --- Uneinigkeits-Hinweis ---
+  // Rein informativ, verändert weder Score noch Multiplikator: die
+  // Risk-Engine konsolidiert Berichte unterschiedlicher Scouts (siehe
+  // author_id in scout_reports) bereits stillschweigend zu einem
+  // Durchschnitt/Trend. Bei großer Spannweite zwischen den letzten
+  // Berichten soll das aber sichtbar werden, statt in der Glättung zu
+  // verschwinden — Schwellenwert 1,5 Punkte ist eine Ersteinschätzung,
+  // keine abgestimmte Geschäftsentscheidung (gleiche Einschränkung wie
+  // beim Rest der Gewichtung, siehe Datei-Kommentar oben).
+  const disagreementThreshold = 1.5;
+  if (ratings.length >= 2) {
+    const ratingSpread = Math.max(...ratings) - Math.min(...ratings);
+    if (ratingSpread > disagreementThreshold) {
+      reasons.push(
+        `Uneinigkeit zwischen den letzten Scout-Berichten (Bewertungsspanne ${ratingSpread.toFixed(1)} Punkte)`
+      );
+    }
+  }
+
   // Potenzial/Reifegrad/TINDER-Kriterien beziehen sich auf die
   // Einschätzung des Scouts zum Zeitpunkt des jüngsten Berichts, nicht
   // auf einen Verlauf — anders als overall_rating werden sie deshalb aus
