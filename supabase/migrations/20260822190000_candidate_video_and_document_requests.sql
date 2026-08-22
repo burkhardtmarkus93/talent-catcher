@@ -33,12 +33,12 @@
 -- unabhängig davon, ob die Person schon offiziell als Talent geführt wird
 -- oder noch Kandidat ist.
 --
--- Bewusst NICHT Teil dieser Migration: automatische Übernahme bereits
--- während der Kandidatur hochgeladener Videos/Dokumente in die normale
--- Talent-Video-/Dokumentenliste beim Annehmen (acceptTalentCandidate) --
--- die Kandidatur-Zeile (inkl. verknüpfter Uploads) bleibt über
--- resulting_talent_id weiterhin auffindbar, wird aber nicht automatisch
--- umgehängt. Kann bei Bedarf nachgezogen werden.
+-- Die automatische Übernahme bereits während der Kandidatur hochgeladener
+-- Videos/Dokumente in die normale Talent-Ansicht beim Annehmen ist NICHT
+-- Teil dieser Migration, sondern von lib/actions/candidates.ts::
+-- migrateCandidateUploadsToTalent() erledigt (Storage-Verschiebung per
+-- Admin-Client, da für diese Tabellen bewusst keine UPDATE-Policy für
+-- Vereinsmitglieder existiert).
 
 -- 0) talent_candidates: der/die bestätigte Erziehungsberechtigte bzw.
 -- der volljährige Bewerber selbst konnte die eigene Kandidatur bisher

@@ -377,6 +377,8 @@ export async function acceptTalentCandidate(formData: FormData): Promise<void> {
     }
   }
 
+  await migrateCandidateUploadsToTalent(candidateId, newTalent.id);
+
   const { error: updateError } = await supabase
     .from("talent_candidates")
     .update({
@@ -396,6 +398,110 @@ export async function acceptTalentCandidate(formData: FormData): Promise<void> {
 
   revalidatePath("/candidates");
   redirect(`/talents/${newTalent.id}`);
+}
+
+// Verschiebt während der Kandidatur hochgeladene Videos/Dokumente in die
+// normale Talent-Ansicht, statt sie nur über resulting_talent_id
+// auffindbar zu lassen (siehe Migration 20260822190000). Läuft über den
+// Admin-Client: für videos/documents/video_requests existiert bewusst
+// keine UPDATE-Policy für Vereinsmitglieder (nur INSERT/SELECT/DELETE) —
+// ein Update über den normalen RLS-Client würde hier still 0 Zeilen
+// treffen, ohne Fehler (exakt die Bug-Klasse aus Migration 20260821140000,
+// die die RLS-Testsuite seitdem gezielt abdeckt).
+//
+// Bewusst best-effort statt transaktional: die Storage-Verschiebung
+// (externer API-Call) und der anschließende DB-Update sind zwei getrennte
+// Schritte, die nicht gemeinsam zurückgerollt werden können. Schlägt ein
+// einzelner Datensatz fehl, wird das geloggt und mit den übrigen
+// fortgefahren — der Rest der Annahme (das eigentlich angefragte Ergebnis
+// für den Scout) darf dadurch nicht blockiert werden. Im schlimmsten Fall
+// bleibt eine Datei unter der alten Kandidatur-Zuordnung auffindbar,
+// nichts geht verloren.
+function candidateStorageKeyToTalent(storageKey: string, talentId: string): string {
+  const segments = storageKey.split("/");
+  segments[1] = talentId;
+  return segments.join("/");
+}
+
+async function migrateCandidateUploadsToTalent(
+  candidateId: string,
+  talentId: string
+): Promise<void> {
+  const admin = createAdminClient();
+
+  const { data: videos, error: videosError } = await admin
+    .from("videos")
+    .select("id, storage_key")
+    .eq("candidate_id", candidateId);
+
+  if (videosError) {
+    console.error("migrateCandidateUploadsToTalent(): Videos konnten nicht geladen werden:", videosError.message);
+  }
+
+  for (const video of videos ?? []) {
+    const newKey = candidateStorageKeyToTalent(video.storage_key, talentId);
+    const { error: moveError } = await admin.storage.from("videos").move(video.storage_key, newKey);
+    if (moveError) {
+      console.error("migrateCandidateUploadsToTalent(): Video-Verschiebung im Storage fehlgeschlagen:", {
+        videoId: video.id,
+        message: moveError.message,
+      });
+      continue;
+    }
+    const { error: videoUpdateError } = await admin
+      .from("videos")
+      .update({ talent_id: talentId, candidate_id: null, storage_key: newKey })
+      .eq("id", video.id);
+    if (videoUpdateError) {
+      console.error("migrateCandidateUploadsToTalent(): Video-Metadaten-Update fehlgeschlagen:", {
+        videoId: video.id,
+        message: videoUpdateError.message,
+      });
+    }
+  }
+
+  const { data: documents, error: documentsError } = await admin
+    .from("documents")
+    .select("id, storage_key")
+    .eq("candidate_id", candidateId);
+
+  if (documentsError) {
+    console.error("migrateCandidateUploadsToTalent(): Dokumente konnten nicht geladen werden:", documentsError.message);
+  }
+
+  for (const document of documents ?? []) {
+    const newKey = candidateStorageKeyToTalent(document.storage_key, talentId);
+    const { error: moveError } = await admin.storage.from("documents").move(document.storage_key, newKey);
+    if (moveError) {
+      console.error("migrateCandidateUploadsToTalent(): Dokument-Verschiebung im Storage fehlgeschlagen:", {
+        documentId: document.id,
+        message: moveError.message,
+      });
+      continue;
+    }
+    const { error: documentUpdateError } = await admin
+      .from("documents")
+      .update({ talent_id: talentId, candidate_id: null, storage_key: newKey })
+      .eq("id", document.id);
+    if (documentUpdateError) {
+      console.error("migrateCandidateUploadsToTalent(): Dokument-Metadaten-Update fehlgeschlagen:", {
+        documentId: document.id,
+        message: documentUpdateError.message,
+      });
+    }
+  }
+
+  // Kein Storage-Bezug, daher unabhängig vom Erfolg der obigen Schritte —
+  // auch eine bereits erledigte Anfrage wird mitverschoben, damit die
+  // Historie (wer hat wann was angefordert) am Talent erhalten bleibt.
+  const { error: requestsError } = await admin
+    .from("video_requests")
+    .update({ talent_id: talentId, candidate_id: null })
+    .eq("candidate_id", candidateId);
+
+  if (requestsError) {
+    console.error("migrateCandidateUploadsToTalent(): Video-Anfragen-Update fehlgeschlagen:", requestsError.message);
+  }
 }
 
 export async function declineTalentCandidate(formData: FormData): Promise<void> {
