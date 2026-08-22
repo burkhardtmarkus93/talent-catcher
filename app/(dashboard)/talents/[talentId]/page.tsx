@@ -415,7 +415,16 @@ export default async function TalentDetailPage({
                     />
                     {t("euPassport")}
                   </label>
+                  <label className="flex items-center gap-2 text-ink">
+                    <input
+                      type="checkbox"
+                      name="perspektivkader"
+                      defaultChecked={talent.perspektivkader}
+                    />
+                    {t("perspektivkader")}
+                  </label>
                 </div>
+                <p className="mt-2 text-xs text-muted">{t("perspektivkaderHint")}</p>
               </div>
 
               <div>

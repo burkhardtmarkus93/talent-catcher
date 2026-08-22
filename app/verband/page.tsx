@@ -12,12 +12,13 @@ export default async function VerbandHomePage() {
     getTranslations("verbandHomePage"),
   ]);
 
-  const flagBadges: { key: "dfbStuetzpunkt" | "verbandsauswahl" | "nationalmannschaft" | "nlz" | "euPassport"; label: string }[] = [
+  const flagBadges: { key: "dfbStuetzpunkt" | "verbandsauswahl" | "nationalmannschaft" | "nlz" | "euPassport" | "perspektivkader"; label: string }[] = [
     { key: "dfbStuetzpunkt", label: t("dfbStuetzpunkt") },
     { key: "verbandsauswahl", label: t("verbandsauswahl") },
     { key: "nationalmannschaft", label: t("nationalmannschaft") },
     { key: "nlz", label: t("nlz") },
     { key: "euPassport", label: t("euPassport") },
+    { key: "perspektivkader", label: t("perspektivkader") },
   ];
 
   return (

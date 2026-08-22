@@ -43,6 +43,7 @@ export interface LandesverbandTalent {
   nationalmannschaft: boolean;
   nlz: boolean;
   euPassport: boolean;
+  perspektivkader: boolean;
   updatedAt: string;
 }
 
@@ -117,6 +118,10 @@ export interface Talent {
   nationalmannschaft: boolean;
   nlz: boolean;
   euPassport: boolean;
+  // Vereins-eigene Einschätzung, kein geprüfter, offizieller Kader-
+  // Status — "Perspektivkader" ist nicht bundeseinheitlich definiert,
+  // siehe Migration 20260823120000.
+  perspektivkader: boolean;
   upcomingTransferClubText?: string | null;
   upcomingTransferNote?: string | null;
   cohortPercentileBucket?: CohortPercentileBucket | null;

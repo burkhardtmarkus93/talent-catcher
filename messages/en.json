@@ -277,6 +277,7 @@
     "nationalmannschaft": "National team",
     "nlz": "NLZ",
     "euPassport": "EU passport",
+    "perspektivkader": "Perspektivkader",
     "all": "All",
     "yes": "Yes",
     "no": "No",
@@ -765,6 +766,8 @@
     "nationalmannschaft": "National team",
     "nlz": "NLZ",
     "euPassport": "EU passport",
+    "perspektivkader": "Perspektivkader",
+    "perspektivkaderHint": "The club's own assessment, not a verified official squad membership — the exact criteria for prospect/talent-ID squads are set individually by each regional football association (Landesverband).",
     "save": "Save",
     "siblingsTitle": "Talented siblings",
     "siblingsHint": "A private note for yourself — e.g. when scouting reveals that there's a talented brother or sister as well. This does not create a separate talent profile; use the \"Register as talent\" link below for that.",
@@ -1143,6 +1146,7 @@
     "verbandsauswahl": "Regional select team",
     "nationalmannschaft": "National team",
     "nlz": "NLZ",
-    "euPassport": "EU passport"
+    "euPassport": "EU passport",
+    "perspektivkader": "Perspektivkader"
   }
 }
