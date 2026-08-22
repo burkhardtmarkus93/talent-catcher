@@ -82,10 +82,17 @@ export default function TermsPage() {
               <br />
               E-Mail: burkhardt.markus93@gmail.com
               <br />
-              Einzelunternehmer, kein Handelsregistereintrag. [PLATZHALTER:
-              Umsatzsteuer-Identifikationsnummer bzw. Hinweis auf
-              Kleinunternehmerregelung § 19 UStG — mit Finanzamt/
-              Steuerberater zu klären.]
+              Einzelunternehmer, kein Handelsregistereintrag. Talent
+              Catcher wird im Rahmen derselben freiberuflichen Tätigkeit
+              betrieben wie das übrige Trainer-/Coaching-Angebot des
+              Betreibers; es wird von der Kleinunternehmerregelung gemäß
+              § 19 UStG Gebrauch gemacht, es wird daher keine Umsatzsteuer
+              ausgewiesen. [PLATZHALTER: Diese Einordnung setzt voraus, dass
+              der Gesamtumsatz aus allen freiberuflichen Tätigkeiten des
+              Betreibers zusammen im Vorjahr 25.000 € und im laufenden Jahr
+              voraussichtlich 100.000 € nicht übersteigt (§ 19 Abs. 1 UStG,
+              Stand 2025/2026) — bei Wachstum der Umsätze regelmäßig mit
+              dem Finanzamt/Steuerberater neu prüfen.]
               <br />
               (im Folgenden „wir“ oder „Talent Catcher“)
             </p>
@@ -139,9 +146,10 @@ export default function TermsPage() {
               § 3 Preise und Zahlung
             </h2>
             <p className="mb-2">
-              Alle Preise verstehen sich als Endpreise in Euro. [PLATZHALTER:
-              Angabe, ob und in welcher Höhe Umsatzsteuer ausgewiesen wird —
-              abhängig von Rechtsform/Kleinunternehmerstatus des Anbieters.]
+              Alle Preise verstehen sich als Endpreise in Euro. Der Anbieter
+              macht von der Kleinunternehmerregelung gemäß § 19 UStG
+              Gebrauch; die ausgewiesenen Preise enthalten daher keine
+              Umsatzsteuer.
             </p>
             <p className="mb-2">
               Die Vereins-/Verband-Abonnements werden monatlich oder
@@ -217,11 +225,14 @@ export default function TermsPage() {
               Vereins-/Verband-Abonnements werden von Vereinen und
               Landesverbänden im Rahmen ihrer organisatorischen Tätigkeit
               und damit als Unternehmer im Sinne des § 14 BGB abgeschlossen.
-              [PLATZHALTER: genaue Laufzeit und Kündigungsfrist je
-              Abrechnungszeitraum — z. B. monatlich kündbar zum Ende des
-              Abrechnungsmonats, jährlich kündbar zum Ende der Vertragslaufzeit
-              mit Frist von X Wochen; anwaltlich festzulegen und mit der
-              tatsächlichen Stripe-Konfiguration abzugleichen.]
+              Monatliche Abonnements sind zum Ende des jeweils laufenden
+              Abrechnungsmonats kündbar, jährliche Abonnements zum Ende der
+              jeweiligen Vertragslaufzeit mit einer Frist von sechs Wochen.
+              Erfolgt keine Kündigung, verlängert sich das Abonnement
+              automatisch um den gewählten Abrechnungszeitraum.
+              [PLATZHALTER: Diese Fristen mit der tatsächlichen
+              Stripe-Kundenportal-Konfiguration abgleichen, bevor diese
+              Ziffer final ist.]
             </p>
             <p>
               Die Kündigung sowie die Verwaltung der Zahlungsmethode können

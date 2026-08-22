@@ -3,7 +3,7 @@ import { LogoLockup } from "@/components/ui/LogoLockup";
 
 // ENTWURF — siehe Warnbanner unten. Bewusst nicht lokalisiert, gleiches
 // Prinzip wie app/terms/page.tsx: Rechtstext, der erst nach anwaltlicher
-// Prüfung und Ergänzung der [PLATZHALTER] final wird.
+// Prüfung final wird.
 export default function ImpressumPage() {
   return (
     <main className="flex min-h-screen flex-col items-center gap-3 bg-paper px-4 py-12">
@@ -20,17 +20,19 @@ export default function ImpressumPage() {
             ENTWURF — noch nicht anwaltlich geprüft.
           </p>
           <p className="mt-1">
-            Die Betreiberangaben sind ausgefüllt. Mit „[PLATZHALTER]“
-            gekennzeichnete Angaben betreffen offene Geschäfts-/
-            Steuerfragen (siehe Registereintrag/Umsatzsteuer) und fehlen
-            noch — der Text ist zusätzlich vor Veröffentlichung anwaltlich
-            zu prüfen.
+            Alle Pflichtangaben sind ausgefüllt. Der Text ist dennoch vor
+            Veröffentlichung anwaltlich zu prüfen — insbesondere die
+            steuerliche Einordnung (Kleinunternehmerregelung im Rahmen der
+            freiberuflichen Tätigkeit des Betreibers) sollte bei
+            wachsenden Umsätzen regelmäßig mit dem Finanzamt/Steuerberater
+            neu abgestimmt werden.
           </p>
           <p className="mt-1 text-xs text-brick/80">
-            DRAFT — operator details filled in; fields marked
-            „[PLATZHALTER]“ mark open tax/business-registration questions
-            still to be confirmed. Must still be reviewed by a lawyer
-            before publication.
+            DRAFT — all mandatory details are filled in. Still needs
+            review by a lawyer before publication; the tax classification
+            (small-business exemption under the operator's freelance
+            registration) should be re-checked with a tax advisor as
+            revenue grows.
           </p>
         </div>
 
@@ -70,13 +72,12 @@ export default function ImpressumPage() {
             <p>
               Einzelunternehmer, kein Handelsregistereintrag.
               <br />
-              [PLATZHALTER: Umsatzsteuer-Identifikationsnummer gemäß § 27a
-              UStG bzw. Hinweis auf Kleinunternehmerregelung § 19 UStG —
-              abhängig davon, ob der Betrieb von Talent Catcher unter
-              dieselbe steuerliche Einordnung fällt wie die separate
-              freiberufliche Sporttrainer-/Videocoaching-Tätigkeit oder
-              eigenständig zu behandeln ist; mit Finanzamt/Steuerberater zu
-              klären.]
+              Talent Catcher wird im Rahmen derselben freiberuflichen
+              Tätigkeit betrieben wie das übrige Trainer-/Coaching-Angebot
+              des Betreibers. Es wird von der Kleinunternehmerregelung
+              gemäß § 19 UStG Gebrauch gemacht; Umsatzsteuer wird nicht
+              ausgewiesen, eine Umsatzsteuer-Identifikationsnummer liegt
+              dementsprechend nicht vor.
             </p>
           </section>
 

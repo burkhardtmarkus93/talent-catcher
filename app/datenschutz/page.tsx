@@ -288,12 +288,21 @@ export default function DatenschutzPage() {
             <p className="mt-2">
               Rechnungs- und Zahlungsdaten unterliegen den gesetzlichen
               Aufbewahrungspflichten nach § 147 AO und § 257 HGB und werden
-              dementsprechend bis zu zehn Jahre aufbewahrt. [PLATZHALTER:
-              konkrete Regel-Löschfristen für Daten ohne gesetzliche
-              Aufbewahrungspflicht festlegen — insbesondere für Daten zu
-              abgelehnten Kandidaturen und inaktive Talent-Profile — und
-              einen tatsächlichen Löschmechanismus ergänzen, bevor diese
-              Ziffer final ist.]
+              dementsprechend bis zu zehn Jahre aufbewahrt.
+            </p>
+            <p className="mt-2">
+              Für Daten ohne gesetzliche Aufbewahrungspflicht gelten
+              folgende Regel-Löschfristen: Daten zu abgelehnten
+              Kandidaturen werden sechs Monate nach der Ablehnung gelöscht;
+              inaktive Talent-Profile (keine Aktualisierung oder
+              Anmeldeaktivität) werden nach 24 Monaten gelöscht, sofern der
+              betreuende Verein kein früheres Lösch-/Archivierungsdatum
+              hinterlegt hat. [PLATZHALTER: Diese Fristen setzen aktuell
+              eine manuelle Löschung voraus — ein automatisierter
+              Löschmechanismus für diese beiden Fristen existiert im
+              Produkt noch nicht (anders als bei manuell gesetzten
+              Lösch-/Archivierungsdaten, siehe oben) und muss vor
+              Live-Betrieb ergänzt werden.]
             </p>
           </section>
 
