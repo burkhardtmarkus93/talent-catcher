@@ -252,6 +252,16 @@ export async function recalculateAlertForTalent(
   const riskScore = Math.min(Math.round(neglectScore * multiplier * 100) / 100, 100);
   const riskLevel = riskScore >= 60 ? "rot" : riskScore >= 30 ? "gelb" : "gruen";
 
+  // Für den plattformweiten Positions-/Jahrgangs-Vergleich (Migration
+  // 20260822200000, app/api/cron/recalculate-talent-cohort-percentiles):
+  // derselbe Werthaltigkeits-Multiplikator wie oben, nur unabhängig vom
+  // riskScore persistiert -- riskScore mischt Vernachlässigung und
+  // Werthaltigkeit, ein gut betreutes Top-Talent hätte dort einen
+  // niedrigen Wert trotz hoher Qualität. null, solange noch kein Bericht
+  // vorliegt (avgRating null) -- ein Talent ohne jede Bewertung kann
+  // nicht eingeordnet werden.
+  const valueScore = avgRating !== null ? Math.round(avgRating * multiplier * 100) / 100 : null;
+
   // Alten aktuellen Alert deaktivieren, neuen als aktuell speichern.
   // Hinweis: kein DB-Transaction-Wrapper in diesem Prototyp — für
   // Produktivbetrieb sollte dies als einzelne Postgres-Funktion
@@ -275,6 +285,7 @@ export async function recalculateAlertForTalent(
     triggered_reasons: reasons,
     is_hidden_gem: isHiddenGem,
     is_current: true,
+    value_score: valueScore,
   });
 
   if (insertError) {
