@@ -224,11 +224,14 @@ export default function DatenschutzPage() {
               Zahlungsdaten (z. B. Kreditkartendaten) werden ausschließlich
               von Stripe verarbeitet und nicht von uns gespeichert. Es kann
               dabei zu einer Übermittlung personenbezogener Daten
-              (Name, E-Mail, Zahlungsbetrag) in die USA kommen; Stripe
-              stellt hierfür geeignete Garantien bereit ([PLATZHALTER:
-              genaue Grundlage prüfen — Standardvertragsklauseln und/oder
-              EU-US Data Privacy Framework, je nach aktuellem Stand bei
-              Stripe]). Näheres in der Datenschutzerklärung von Stripe.
+              (Name, E-Mail, Zahlungsbetrag) in die USA kommen; Stripe ist
+              nach eigenen Angaben unter dem EU-US Data Privacy Framework
+              (sowie dessen UK- und Schweizer Erweiterungen) zertifiziert
+              und verwendet ergänzend die EU-Standardvertragsklauseln als
+              zusätzliche Übermittlungsgrundlage. [PLATZHALTER: Zertifizierung
+              vor Veröffentlichung auf der DPF-Liste (dataprivacyframework.gov)
+              gegenprüfen, da sich der Status ändern kann.] Näheres in der
+              Datenschutzerklärung von Stripe.
             </p>
           </section>
 
@@ -241,10 +244,16 @@ export default function DatenschutzPage() {
               Authentifizierung und Dateispeicher werden über Supabase
               betrieben (Serverstandort innerhalb der EU). Beide Anbieter
               werden als Auftragsverarbeiter im Sinne von Art. 28 DSGVO
-              eingesetzt. [PLATZHALTER: Bestehen von
-              Auftragsverarbeitungsverträgen bestätigen; bei Vercel als
-              US-Unternehmen zusätzlich Übermittlungsgrundlage in
-              Drittländer prüfen und hier ergänzen.]
+              eingesetzt; die jeweiligen Auftragsverarbeitungsverträge
+              (Data Processing Addendum) sind Bestandteil der
+              Nutzungsbedingungen von Vercel bzw. Supabase und gelten mit
+              Nutzung des jeweiligen Dienstes automatisch. Vercel ist ein
+              US-Unternehmen; die Übermittlung personenbezogener Daten in
+              Drittländer stützt sich dabei auf die in das Vercel-DPA
+              einbezogenen EU-Standardvertragsklauseln. [PLATZHALTER: Vor
+              Veröffentlichung eine eigene Kopie des jeweils aktuellen
+              Vercel- und Supabase-DPA herunterladen und zu den
+              Vertragsunterlagen nehmen.]
             </p>
           </section>
 
@@ -320,12 +329,22 @@ export default function DatenschutzPage() {
               Aufsichtsbehörde Ihres gewöhnlichen Aufenthalts oder die für
               den Verantwortlichen zuständige Behörde. Für den
               Verantwortlichen (Sitz in Dornstetten, Baden-Württemberg) ist
-              das der/die Landesbeauftragte für den Datenschutz und die
+              das:
+              <br />
+              Der Landesbeauftragte für den Datenschutz und die
               Informationsfreiheit Baden-Württemberg (LfDI
-              Baden-Württemberg). [PLATZHALTER: aktuelle Postanschrift,
-              Telefonnummer und E-Mail-Adresse des LfDI Baden-Württemberg
-              vor Veröffentlichung auf dessen Website prüfen und ergänzen,
-              da sich Kontaktdaten von Behörden ändern können.]
+              Baden-Württemberg)
+              <br />
+              Heilbronner Straße 35, 70191 Stuttgart
+              <br />
+              Postfach 10 29 32, 70025 Stuttgart
+              <br />
+              Telefon: 0711 615541-0, E-Mail: poststelle@lfdi.bwl.de
+              <br />
+              [PLATZHALTER: Kontaktdaten vor Veröffentlichung auf
+              baden-wuerttemberg.datenschutz.de gegenprüfen, da sich
+              Behördenkontaktdaten ändern können — die Behörde ist Ende
+              2025 umgezogen.]
             </p>
           </section>
 
