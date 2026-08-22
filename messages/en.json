@@ -815,6 +815,8 @@
     "noReports": "No reports yet — the first report will establish the baseline rating.",
     "vsOpponent": "vs. {opponent}",
     "manual": "(manual)",
+    "reportReviewed": "Reviewed ({name})",
+    "reviewReport": "Mark as reviewed",
     "potenzialEntry": "Potential: {value}/4",
     "reifegradLabel": "Maturity level",
     "videoHighlights": "Video highlights",

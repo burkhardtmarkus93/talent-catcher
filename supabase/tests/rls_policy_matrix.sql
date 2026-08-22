@@ -77,6 +77,25 @@ on conflict (id) do update set
   has_youth_access = excluded.has_youth_access,
   is_active = excluded.is_active;
 
+-- Zusätzliche Fixture für die Scout-Bericht-Freigabe (Migration
+-- 20260823100000): ein zweiter Admin, aber in Verein B, um den dort
+-- behobenen Mandantentrennungs-Bug (Admin konnte bislang vereinsübergreifend
+-- Berichte aktualisieren) direkt zu testen.
+insert into auth.users (id, email, aud, role) values
+  ('b0000000-0000-0000-0000-000000000007', 'rls-admin-b@test.local', 'authenticated', 'authenticated');
+
+insert into public.users (id, email, club_id, role, has_youth_access, is_active) values
+  ('b0000000-0000-0000-0000-000000000007', 'rls-admin-b@test.local', 'a0000000-0000-0000-0000-000000000002', 'admin', true, true)
+on conflict (id) do update set
+  email = excluded.email,
+  club_id = excluded.club_id,
+  role = excluded.role,
+  has_youth_access = excluded.has_youth_access,
+  is_active = excluded.is_active;
+
+insert into public.scout_reports (id, talent_id, author_id, match_date, score_technik, score_taktik, score_athletik, score_mentalitaet) values
+  ('f0000000-0000-0000-0000-000000000001', 'c0000000-0000-0000-0000-000000000001', 'b0000000-0000-0000-0000-000000000002', '2026-08-01', 3, 3, 3, 3);
+
 -- Zusätzliche Fixture für Video-Tagging (Migration 20260823110000):
 -- eigenes Video, unabhängig von den Video-Anfrage-Fixtures in Test 5/9/11.
 insert into public.videos (id, talent_id, uploaded_by, storage_key, file_size_bytes) values
@@ -470,7 +489,52 @@ begin
 end $$;
 
 -- ============================================================
--- Test 12: Video-Tagging (Migration 20260823110000) — Vereins-Isolation
+-- Test 12: Regression für den in Migration 20260823100000 behobenen
+-- Mandantentrennungs-Bug — ein Admin aus Verein B darf einen Scout-
+-- Bericht aus Verein A NICHT freigeben/aktualisieren, ein Admin aus dem
+-- richtigen Verein (A) hingegen schon.
+-- ============================================================
+
+begin;
+set local role authenticated;
+set local "request.jwt.claims" = '{"sub":"b0000000-0000-0000-0000-000000000007","role":"authenticated"}';
+do $$
+declare
+  affected_rows int;
+begin
+  update public.scout_reports
+  set reviewed_at = now(), reviewed_by = 'b0000000-0000-0000-0000-000000000007'
+  where id = 'f0000000-0000-0000-0000-000000000001';
+  get diagnostics affected_rows = row_count;
+
+  if affected_rows <> 0 then
+    raise exception 'FAIL Test 12a: Admin aus fremdem Verein konnte Scout-Bericht aktualisieren (% Zeile(n))', affected_rows;
+  end if;
+  raise notice 'OK Test 12a: Admin aus fremdem Verein korrekt abgelehnt (0 Zeilen betroffen)';
+end $$;
+rollback;
+
+begin;
+set local role authenticated;
+set local "request.jwt.claims" = '{"sub":"b0000000-0000-0000-0000-000000000001","role":"authenticated"}';
+do $$
+declare
+  affected_rows int;
+begin
+  update public.scout_reports
+  set reviewed_at = now(), reviewed_by = 'b0000000-0000-0000-0000-000000000001'
+  where id = 'f0000000-0000-0000-0000-000000000001';
+  get diagnostics affected_rows = row_count;
+
+  if affected_rows <> 1 then
+    raise exception 'FAIL Test 12b: Admin aus dem richtigen Verein konnte Scout-Bericht NICHT aktualisieren (% Zeile(n))', affected_rows;
+  end if;
+  raise notice 'OK Test 12b: Admin aus dem richtigen Verein korrekt zugelassen';
+end $$;
+rollback;
+
+-- ============================================================
+-- Test 13: Video-Tagging (Migration 20260823110000) — Vereins-Isolation
 -- (Einfügen/Sehen) und "nur eigene Markierung löschbar".
 -- ============================================================
 
@@ -481,10 +545,10 @@ do $$
 begin
   insert into public.video_tags (video_id, created_by, timestamp_seconds, label)
   values ('f0000000-0000-0000-0000-000000000002', 'b0000000-0000-0000-0000-000000000004', 30, 'sollte abgelehnt werden');
-  raise exception 'FAIL Test 12a: Scout aus fremdem Verein konnte Zeitmarke einfuegen';
+  raise exception 'FAIL Test 13a: Scout aus fremdem Verein konnte Zeitmarke einfuegen';
 exception
   when insufficient_privilege then
-    raise notice 'OK Test 12a: Zeitmarke aus fremdem Verein korrekt abgelehnt';
+    raise notice 'OK Test 13a: Zeitmarke aus fremdem Verein korrekt abgelehnt';
 end $$;
 rollback;
 
@@ -507,9 +571,9 @@ begin
   where id = 'f0000000-0000-0000-0000-000000000004';
 
   if visible_count <> 0 then
-    raise exception 'FAIL Test 12b: Scout aus fremdem Verein konnte Zeitmarke sehen (% Zeile(n))', visible_count;
+    raise exception 'FAIL Test 13b: Scout aus fremdem Verein konnte Zeitmarke sehen (% Zeile(n))', visible_count;
   end if;
-  raise notice 'OK Test 12b: Zeitmarke fuer fremden Verein korrekt unsichtbar';
+  raise notice 'OK Test 13b: Zeitmarke fuer fremden Verein korrekt unsichtbar';
 end $$;
 rollback;
 
@@ -524,9 +588,9 @@ begin
   get diagnostics affected_rows = row_count;
 
   if affected_rows <> 0 then
-    raise exception 'FAIL Test 12c: Admin (nicht Ersteller) konnte fremde Zeitmarke loeschen (% Zeile(n))', affected_rows;
+    raise exception 'FAIL Test 13c: Admin (nicht Ersteller) konnte fremde Zeitmarke loeschen (% Zeile(n))', affected_rows;
   end if;
-  raise notice 'OK Test 12c: Zeitmarke ist korrekt nur fuer die/den Ersteller/in loeschbar';
+  raise notice 'OK Test 13c: Zeitmarke ist korrekt nur fuer die/den Ersteller/in loeschbar';
 end $$;
 rollback;
 
@@ -541,9 +605,9 @@ begin
   get diagnostics affected_rows = row_count;
 
   if affected_rows <> 1 then
-    raise exception 'FAIL Test 12d: Ersteller/in konnte eigene Zeitmarke NICHT loeschen (% Zeile(n))', affected_rows;
+    raise exception 'FAIL Test 13d: Ersteller/in konnte eigene Zeitmarke NICHT loeschen (% Zeile(n))', affected_rows;
   end if;
-  raise notice 'OK Test 12d: Ersteller/in kann eigene Zeitmarke loeschen';
+  raise notice 'OK Test 13d: Ersteller/in kann eigene Zeitmarke loeschen';
 end $$;
 commit;
 
@@ -552,6 +616,7 @@ commit;
 -- ============================================================
 
 begin;
+delete from public.scout_reports where id = 'f0000000-0000-0000-0000-000000000001';
 delete from public.video_tags where video_id = 'f0000000-0000-0000-0000-000000000002';
 delete from public.videos where id = 'f0000000-0000-0000-0000-000000000002';
 delete from public.documents where talent_id in ('c0000000-0000-0000-0000-000000000001', 'c0000000-0000-0000-0000-000000000002');
@@ -568,7 +633,8 @@ delete from public.users where id in (
   'b0000000-0000-0000-0000-000000000003',
   'b0000000-0000-0000-0000-000000000004',
   'b0000000-0000-0000-0000-000000000005',
-  'b0000000-0000-0000-0000-000000000006'
+  'b0000000-0000-0000-0000-000000000006',
+  'b0000000-0000-0000-0000-000000000007'
 );
 delete from auth.users where id in (
   'b0000000-0000-0000-0000-000000000001',
@@ -576,7 +642,8 @@ delete from auth.users where id in (
   'b0000000-0000-0000-0000-000000000003',
   'b0000000-0000-0000-0000-000000000004',
   'b0000000-0000-0000-0000-000000000005',
-  'b0000000-0000-0000-0000-000000000006'
+  'b0000000-0000-0000-0000-000000000006',
+  'b0000000-0000-0000-0000-000000000007'
 );
 delete from public.clubs where id in ('a0000000-0000-0000-0000-000000000001', 'a0000000-0000-0000-0000-000000000002');
 commit;

@@ -815,6 +815,8 @@
     "noReports": "Noch keine Berichte vorhanden — der erste Bericht legt die Ausgangsbewertung fest.",
     "vsOpponent": "vs. {opponent}",
     "manual": "(manuell)",
+    "reportReviewed": "Freigegeben ({name})",
+    "reviewReport": "Freigeben",
     "potenzialEntry": "Potenzial: {value}/4",
     "reifegradLabel": "Reifegrad",
     "videoHighlights": "Video-Highlights",

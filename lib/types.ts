@@ -175,6 +175,8 @@ export interface ScoutReport {
   tinderResilienz?: number | null;
   potenzial?: number | null;
   reifegrad?: number | null;
+  reviewedAt?: string | null;
+  reviewedByName?: string | null;
 }
 
 export type ReminderStatus = "offen" | "erledigt" | "ueberfaellig";

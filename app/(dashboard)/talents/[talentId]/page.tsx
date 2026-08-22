@@ -37,6 +37,7 @@ import { getGuardianInvitesForTalent } from "@/lib/queries/guardians";
 import { inviteGuardian } from "@/lib/actions/guardians";
 import { getOpenVideoRequest } from "@/lib/queries/videoRequests";
 import { requestVideoUpload, cancelVideoRequest } from "@/lib/actions/videos";
+import { markScoutReportReviewed } from "@/lib/actions/reports";
 
 function age(birthDate: string): number {
   const diff = Date.now() - new Date(birthDate).getTime();
@@ -787,7 +788,30 @@ export default async function TalentDetailPage({
                         </div>
                       )}
 
-                      <p className="mt-1 text-xs text-muted">{r.authorName}</p>
+                      <div className="mt-1 flex items-center justify-between gap-2">
+                        <p className="text-xs text-muted">{r.authorName}</p>
+                        {r.reviewedAt ? (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-pitch-dim px-2 py-0.5 text-xs text-pitch-dark">
+                            {t("reportReviewed", { name: r.reviewedByName ?? "" })}
+                          </span>
+                        ) : (
+                          (appUser?.role === "admin" || appUser?.role === "club_admin") && (
+                            <form
+                              action={async () => {
+                                "use server";
+                                await markScoutReportReviewed(r.id, talent.id);
+                              }}
+                            >
+                              <button
+                                type="submit"
+                                className="text-xs text-muted underline-offset-2 hover:text-ink hover:underline"
+                              >
+                                {t("reviewReport")}
+                              </button>
+                            </form>
+                          )
+                        )}
+                      </div>
                     </li>
                   );
                 })}
